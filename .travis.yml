@@ -41,7 +41,6 @@ install:
     fi
 
 script:
-  - $run setup.sh MyEffect
   - cmake -Bbuild
   - cmake --build build --config Release
 
