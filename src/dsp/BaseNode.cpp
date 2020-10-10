@@ -1,22 +1,27 @@
 #include "BaseNode.h"
+#include "InputNode.h"
 #include "DelayNode.h"
 #include "../gui/DelayNodeComponent.h"
 
-BaseNode::BaseNode()
+template<typename Child>
+BaseNode<Child>::BaseNode()
 {
 
 }
 
-Component* BaseNode::getEditor()
+template<typename Child>
+NodeComponent* BaseNode<Child>::getEditor()
 {
     return editor;
 }
 
-BaseNode* BaseNode::addChild()
+template<typename Child>
+Child* BaseNode<Child>::addChild()
 {
-    // @TODO: make DelayNode
-    children.add (std::make_unique<DelayNode>());
-    children.getLast()->parent = this;
+    auto newChild = children.add (std::make_unique<Child>());
+    newChild->parent = this;
 
-    return children.getLast();
+    return newChild;
 }
+
+template class BaseNode<DelayNode>;

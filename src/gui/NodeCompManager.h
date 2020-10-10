@@ -1,0 +1,29 @@
+#pragma once
+
+#include "../dsp/InputNode.h"
+#include "../dsp/DelayNode.h"
+#include "DelayNodeComponent.h"
+#include "InputNodeComponent.h"
+
+class GraphView;
+class NodeCompManager
+{
+public:
+    NodeCompManager (GraphView* parent);
+
+    void createAndAddEditor (InputNode*);
+    void createAndAddEditor (DelayNode*);
+
+    using NodeFunc = std::function<void(NodeComponent*, DelayNode*)>;
+    void doForAllNodes (NodeFunc nodeFunc);
+
+    friend class GraphView;
+
+private:
+    GraphView* parent;
+
+    OwnedArray<InputNodeComponent> inputNodeComponents;
+    OwnedArray<DelayNodeComponent> delayNodeComponents;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NodeCompManager)
+};

@@ -2,7 +2,9 @@
 
 #include <JuceHeader.h>
 #include "../ChowMatrix.h"
-#include "NodeComponent.h"
+#include "DelayNodeComponent.h"
+#include "InputNodeComponent.h"
+#include "NodeCompManager.h"
 
 class GraphView : public Component
 {
@@ -18,10 +20,10 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
 
-    void addNode (BaseNode* newNode);
+    void addNode (DelayNode* newNode);
 
 private:
-    OwnedArray<Component> nodeComponents;
+    NodeCompManager manager;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GraphView)
 };

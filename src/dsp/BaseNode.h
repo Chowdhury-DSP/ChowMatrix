@@ -2,26 +2,30 @@
 
 #include <JuceHeader.h>
 
+class NodeComponent;
+class GraphView;
+
+template<typename Child>
 class BaseNode
 {
 public:
     BaseNode();
     virtual ~BaseNode() {}
 
-    virtual std::unique_ptr<Component> createEditor() = 0;
-    Component* getEditor();
+    virtual std::unique_ptr<NodeComponent> createEditor (GraphView*) = 0;
+    NodeComponent* getEditor();
 
-    BaseNode* addChild();
+    Child* addChild();
     int getNumChildren() const noexcept { return children.size(); }
-    BaseNode* getChild (int idx) {return children[idx]; }
+    Child* getChild (int idx) { return children[idx]; }
     BaseNode* getParent() {return parent; }
 
 protected:
-    Component* editor = nullptr;
+    NodeComponent* editor = nullptr;
     BaseNode* parent = nullptr;
 
 private:
-    OwnedArray<BaseNode> children;
+    OwnedArray<Child> children;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BaseNode)
 };

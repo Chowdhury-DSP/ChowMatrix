@@ -6,13 +6,13 @@
 class DelayNodeComponent : public NodeComponent
 {
 public:
-    DelayNodeComponent (DelayNode& node);
+    DelayNodeComponent (DelayNode& node, GraphView* view);
 
     void mouseDrag (const MouseEvent& e) override;
-    Point<float> getDistance();
+    void updatePosition() override;
 
 private:
-    void updatePosition();
+    void updateParams();
 
     DelayNode& node;
 

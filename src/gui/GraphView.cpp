@@ -1,35 +1,15 @@
 #include "GraphView.h"
-#include "DelayNodeComponent.h"
 
-GraphView::GraphView (ChowMatrix& plugin)
+GraphView::GraphView (ChowMatrix& plugin) :
+    manager (this)
 {
     setColour (backgroundColour, Colours::darkgrey);
     setColour (nodeColour, Colours::greenyellow);
 
     for (auto& node : plugin.inputNodes)
-    {
-        nodeComponents.add (node.createEditor());
-        addAndMakeVisible (nodeComponents.getLast());
-    }
-}
+        manager.createAndAddEditor (&node);
 
-void drawNodeConnections (NodeComponent* root, Graphics& g)
-{
-    if (root == nullptr)
-        return;
-
-    auto& rootNode = root->getNode();
-    auto rootPos = root->getPosition().translated (root->getWidth() / 2, root->getHeight() / 2);
-
-    for (int i = 0; i < rootNode.getNumChildren(); ++i)
-    {
-        auto* childNode = rootNode.getChild (i);
-        auto* editor = dynamic_cast<DelayNodeComponent*> (childNode->getEditor());
-        auto childPos = editor->getPosition().translated (editor->getWidth() / 2, editor->getHeight() / 2);
-
-        g.drawLine (Line (rootPos, childPos).toFloat());
-        drawNodeConnections (editor, g);
-    }
+    manager.doForAllNodes ([=] (NodeComponent*, DelayNode* child) { manager.createAndAddEditor (child); });
 }
 
 void GraphView::paint (Graphics& g)
@@ -37,40 +17,28 @@ void GraphView::paint (Graphics& g)
     g.fillAll (findColour (backgroundColour));
 
     g.setColour (findColour (nodeColour));
-    drawNodeConnections (dynamic_cast<NodeComponent*> (nodeComponents[0]), g);
-    drawNodeConnections (dynamic_cast<NodeComponent*> (nodeComponents[1]), g);
-}
-
-void positionNodes (NodeComponent* root)
-{
-    if (root == nullptr)
-        return;
-
-    auto& rootNode = root->getNode();
-    auto rootPos = root->getPosition().translated (root->getWidth() / 2, root->getHeight() / 2);
-
-    for (int i = 0; i < rootNode.getNumChildren(); ++i)
-    {
-        auto* childNode = rootNode.getChild (i);
-        auto* editor = dynamic_cast<DelayNodeComponent*> (childNode->getEditor());
-        editor->setCentrePosition (rootPos + editor->getDistance().toInt());
-        positionNodes (editor);
-    }
+    manager.doForAllNodes ([&g] (NodeComponent* root, DelayNode* childNode) {
+        auto* editor = childNode->getEditor();
+        auto rootPos = root->getCentrePosition();
+        auto childPos = editor->getCentrePosition();
+        g.drawLine (Line (rootPos, childPos).toFloat());
+    });
 }
 
 void GraphView::resized()
 {
-    nodeComponents[0]->setCentrePosition (1 * getWidth() / 3, getHeight());
-    nodeComponents[1]->setCentrePosition (2 * getWidth() / 3, getHeight());
+    int idx = 1;
+    for (auto* nodeComp : manager.inputNodeComponents)
+    {
+        nodeComp->setCentrePosition (idx * getWidth() / 3, getHeight());
+        idx++;
+    }
 
-    positionNodes (dynamic_cast<NodeComponent*> (nodeComponents[0]));
-    positionNodes (dynamic_cast<NodeComponent*> (nodeComponents[1]));
+    manager.doForAllNodes ([=] (NodeComponent*, DelayNode* childNode) { childNode->getEditor()->updatePosition(); });
 }
 
-void GraphView::addNode (BaseNode* newNode)
+void GraphView::addNode (DelayNode* newNode)
 {
-    nodeComponents.add (newNode->createEditor());
-    addAndMakeVisible (nodeComponents.getLast());
+    manager.createAndAddEditor (newNode);
     resized();
-    repaint();
 }
