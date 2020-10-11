@@ -23,9 +23,11 @@ public:
         return getPosition().translated (getWidth() / 2, getHeight() / 2);
     }
 
+protected:
+    GraphView* graphView;
+
 private:
     DBaseNode& node;
-    GraphView* graphView;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NodeComponent)
 };

@@ -12,6 +12,11 @@ GraphView::GraphView (ChowMatrix& plugin) :
     manager.doForAllNodes ([=] (NodeComponent*, DelayNode* child) { manager.createAndAddEditor (child); });
 }
 
+void GraphView::mouseDown (const MouseEvent&)
+{
+    clearSelected();
+}
+
 void GraphView::paint (Graphics& g)
 {
     g.fillAll (findColour (backgroundColour));
@@ -35,6 +40,12 @@ void GraphView::resized()
     }
 
     manager.doForAllNodes ([=] (NodeComponent*, DelayNode* childNode) { childNode->getEditor()->updatePosition(); });
+}
+
+void GraphView::clearSelected()
+{
+    for (auto* nodeComp : manager.delayNodeComponents)
+        nodeComp->setSelected (false);
 }
 
 void GraphView::addNode (DelayNode* newNode)

@@ -1,23 +1,41 @@
 #include "DelayNodeComponent.h"
+#include "GraphView.h"
 
 DelayNodeComponent::DelayNodeComponent (DelayNode& node, GraphView* view) :
     NodeComponent (node, view),
-    node (node)
+    node (node),
+    nodeInfo (node)
 {
+    view->addChildComponent (nodeInfo);
+}
 
+void DelayNodeComponent::mouseDown (const MouseEvent&)
+{
+    graphView->clearSelected();
+    setSelected (true);
 }
 
 void DelayNodeComponent::mouseDrag (const MouseEvent& e)
 {
-    auto* parent = getParentComponent();
-    setCentrePosition (e.getEventRelativeTo (parent).getPosition());
+    setCentrePosition (e.getEventRelativeTo (graphView).getPosition());
     updateParams();
     updatePosition();
 }
 
+void DelayNodeComponent::paint (Graphics& g)
+{
+    NodeComponent::paint (g);
+
+    if (isSelected)
+    {
+        g.setColour (Colours::white);
+        g.drawEllipse (getLocalBounds().toFloat().reduced (1.0f), 1.0f);
+    }
+}
+
 void DelayNodeComponent::updateParams()
 {
-    const float maxDist = (float) getParentComponent()->getHeight() / 5.0f;
+    const float maxDist = (float) graphView->getHeight() / 5.0f;
 
     auto parentEditor = node.getParent()->getEditor();
     auto parentPos = parentEditor->getCentrePosition().toFloat();
@@ -32,7 +50,7 @@ void DelayNodeComponent::updateParams()
 
 void DelayNodeComponent::updatePosition()
 {
-    const float maxDist = (float) getParentComponent()->getHeight() / 5.0f;
+    const float maxDist = (float) graphView->getHeight() / 5.0f;
 
     auto parentEditor = node.getParent()->getEditor();
     auto parentPos = parentEditor->getCentrePosition().toFloat();
@@ -47,6 +65,14 @@ void DelayNodeComponent::updatePosition()
     for (int i = 0; i < node.getNumChildren(); ++i)
         node.getChild (i)->getEditor()->updatePosition();
 
-    auto* parent = getParentComponent();
-    parent->repaint();
+    nodeInfo.setTopLeftPosition (getPosition().translated (getWidth() + 5, 0));
+
+    graphView->repaint();
+}
+
+void DelayNodeComponent::setSelected (bool shouldBeSelected)
+{
+    isSelected = shouldBeSelected;
+    nodeInfo.setVisible (isSelected);
+    repaint();
 }

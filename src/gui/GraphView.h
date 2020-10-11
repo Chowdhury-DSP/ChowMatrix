@@ -17,9 +17,11 @@ public:
         nodeColour,
     };
 
+    void mouseDown (const MouseEvent& e) override;
     void paint (Graphics& g) override;
     void resized() override;
 
+    void clearSelected();
     void addNode (DelayNode* newNode);
 
 private:

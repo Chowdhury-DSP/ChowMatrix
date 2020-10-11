@@ -9,5 +9,6 @@ target_sources(ChowMatrix PRIVATE
     gui/GraphView.cpp
     gui/NodeCompManager.cpp
     gui/NodeComponent.cpp
+    gui/ParamSlider.cpp
 )
     
