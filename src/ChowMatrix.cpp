@@ -8,12 +8,15 @@ ChowMatrix::ChowMatrix()
 
 void ChowMatrix::addParameters (Parameters& params)
 {
-    
 }
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-
+    for (int ch = 0; ch < 2; ++ch)
+    {
+        inputNodes[ch].prepare (sampleRate, samplesPerBlock);
+        chBuffers[ch].setSize (1, samplesPerBlock);
+    }
 }
 
 void ChowMatrix::releaseResources()
@@ -23,7 +26,17 @@ void ChowMatrix::releaseResources()
 
 void ChowMatrix::processBlock (AudioBuffer<float>& buffer)
 {
+    const int numSamples = buffer.getNumSamples();
+    for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
+    {
+        chBuffers[ch].clear();
+        chBuffers[ch].copyFrom (0, 0, buffer, ch, 0, numSamples);
+    }
 
+    buffer.clear();
+
+    for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
+        inputNodes[ch].process (chBuffers[ch], buffer, numSamples);
 }
 
 AudioProcessorEditor* ChowMatrix::createEditor()

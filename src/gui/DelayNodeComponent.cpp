@@ -33,15 +33,18 @@ void DelayNodeComponent::paint (Graphics& g)
     }
 }
 
+float DelayNodeComponent::getMaxDist() const noexcept
+{
+    return (float) graphView->getHeight() / 4.0f;
+}
+
 void DelayNodeComponent::updateParams()
 {
-    const float maxDist = (float) graphView->getHeight() / 5.0f;
-
     auto parentEditor = node.getParent()->getEditor();
     auto parentPos = parentEditor->getCentrePosition().toFloat();
     auto myPos = getCentrePosition().toFloat();
 
-    auto newDelay = DelayConsts::maxDelay * jlimit (0.0f, 1.0f, myPos.getDistanceFrom (parentPos) / maxDist);
+    auto newDelay = DelayConsts::maxDelay * jlimit (0.0f, 1.0f, myPos.getDistanceFrom (parentPos) / getMaxDist());
     node.setDelay (newDelay);
 
     auto newPan = jlimit (-1.0f, 1.0f, parentPos.getAngleToPoint (myPos) / MathConstants<float>::halfPi);
@@ -50,15 +53,13 @@ void DelayNodeComponent::updateParams()
 
 void DelayNodeComponent::updatePosition()
 {
-    const float maxDist = (float) graphView->getHeight() / 5.0f;
-
     auto parentEditor = node.getParent()->getEditor();
     auto parentPos = parentEditor->getCentrePosition().toFloat();
 
     float delay = node.getDelayMs();
     float pan = node.getPan();
 
-    float radius = (delay / DelayConsts::maxDelay) * maxDist;
+    float radius = (delay / DelayConsts::maxDelay) * getMaxDist();
     float angle = (pan - 1.0f) * MathConstants<float>::halfPi;
     setCentrePosition (parentPos.translated (radius * std::cos (angle), radius * std::sin (angle)).toInt());
     

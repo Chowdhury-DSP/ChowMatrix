@@ -18,6 +18,7 @@ public:
 
 private:
     void updateParams();
+    float getMaxDist() const noexcept;
 
     DelayNode& node;
     bool isSelected = false;

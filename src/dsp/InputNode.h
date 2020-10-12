@@ -5,7 +5,7 @@
 class InputNode : public DBaseNode
 {
 public:
-    InputNode() {}
+    InputNode() = default;
 
     std::unique_ptr<NodeComponent> createEditor (GraphView*) override;
 
