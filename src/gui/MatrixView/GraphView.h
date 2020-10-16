@@ -1,15 +1,17 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "../ChowMatrix.h"
+#include "../../ChowMatrix.h"
 #include "DelayNodeComponent.h"
 #include "InputNodeComponent.h"
 #include "NodeCompManager.h"
 
-class GraphView : public Component
+class GraphView : public Component,
+                  public DBaseNode::Listener
 {
 public:
     GraphView (ChowMatrix& plugin);
+    ~GraphView();
 
     enum ColourIDs
     {
@@ -22,9 +24,10 @@ public:
     void resized() override;
 
     void clearSelected();
-    void addNode (DelayNode* newNode);
+    void nodeAdded (DelayNode* newNode) override;
 
 private:
+    ChowMatrix& plugin;
     NodeCompManager manager;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GraphView)

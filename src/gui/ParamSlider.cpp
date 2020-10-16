@@ -9,6 +9,7 @@ ParamSlider::ParamSlider (AudioParameterFloat* param) :
     addAndMakeVisible (valueLabel);
 
     nameLabel.setText (param->paramID, sendNotification);
+    parameterValueChanged (0, 0.0f);
 }
 
 ParamSlider::~ParamSlider()
@@ -16,7 +17,7 @@ ParamSlider::~ParamSlider()
     param->removeListener (this);
 }
 
-void ParamSlider::parameterValueChanged (int, float newVal)
+void ParamSlider::parameterValueChanged (int, float)
 {
     valueLabel.setText (param->getCurrentValueAsText(), sendNotification);
 }

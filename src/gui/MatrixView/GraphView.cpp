@@ -1,6 +1,7 @@
 #include "GraphView.h"
 
 GraphView::GraphView (ChowMatrix& plugin) :
+    plugin (plugin),
     manager (this)
 {
     setColour (backgroundColour, Colours::darkgrey);
@@ -10,6 +11,14 @@ GraphView::GraphView (ChowMatrix& plugin) :
         manager.createAndAddEditor (&node);
 
     manager.doForAllNodes ([=] (NodeComponent*, DelayNode* child) { manager.createAndAddEditor (child); });
+}
+
+GraphView::~GraphView()
+{
+    for (auto& node : plugin.inputNodes)
+        node.removeListener (this);
+
+    manager.doForAllNodes ([=] (NodeComponent*, DelayNode* child) { child->removeListener (this); });
 }
 
 void GraphView::mouseDown (const MouseEvent&)
@@ -48,8 +57,11 @@ void GraphView::clearSelected()
         nodeComp->setSelected (false);
 }
 
-void GraphView::addNode (DelayNode* newNode)
+void GraphView::nodeAdded (DelayNode* newNode)
 {
     manager.createAndAddEditor (newNode);
+
+    MessageManagerLock mml;
     resized();
+    repaint();
 }

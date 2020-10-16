@@ -3,6 +3,11 @@
 #include "ParamSlider.h"
 #include "../dsp/DelayNode.h"
 
+namespace NodeInfoConsts
+{
+    constexpr int InfoWidth = 120;
+}
+
 class NodeInfo : public Component
 {
 public:
@@ -11,7 +16,7 @@ public:
         for (int i = 0; i < node.getNumParams(); ++i)
             addAndMakeVisible (sliders.add (std::make_unique<ParamSlider> (node.getParam (i))));
 
-        setSize (120, 30 * sliders.size());
+        setSize (NodeInfoConsts::InfoWidth, 30 * sliders.size());
     }
 
     void paint (Graphics& g) override

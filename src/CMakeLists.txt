@@ -5,10 +5,11 @@ target_sources(ChowMatrix PRIVATE
     dsp/DelayNode.cpp
     dsp/InputNode.cpp
 
-    gui/DelayNodeComponent.cpp
-    gui/GraphView.cpp
-    gui/NodeCompManager.cpp
-    gui/NodeComponent.cpp
     gui/ParamSlider.cpp
+    gui/DetailsView/NodeDetailsComponent.cpp
+    gui/MatrixView/DelayNodeComponent.cpp
+    gui/MatrixView/GraphView.cpp
+    gui/MatrixView/NodeCompManager.cpp
+    gui/MatrixView/NodeComponent.cpp
 )
     

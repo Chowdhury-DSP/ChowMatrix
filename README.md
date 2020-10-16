@@ -8,24 +8,31 @@ audio plugin.
 ## Roadmap
 
 - [ ] Basic GUI Layout
-  - [ ] Top Bar
+  - [x] Top Bar
   - [ ] Bottom Bar
-  - [ ] Main View
+  - [x] Main View
   - [ ] Insanity slider
   - [ ] Detail View
-- [ ] Basic matrix node
-  - [ ] Delay
-  - [ ] Panner
+  - [ ] Tooltip view
+- [ ] Matrix node
+  - [x] Delay
+  - [x] Panner
   - [ ] Gain
   - [ ] Feedback
-- [ ] Node graph view
-  - [ ] Node circles w/ click and drag
-  - [ ] Graph connections
-  - [ ] Details tooltip
+- [x] Node graph view
+  - [x] Node circles w/ click and drag
+  - [x] Graph connections
+  - [x] Details tooltip
 - [ ] Scroll view
   - [ ] Scroll bar
   - [ ] Node circles
   - [ ] Details boxes
+- [ ] Utilities
+  - [ ] save/load
+  - [ ] presets
+- [ ] Extras
+  - [ ] Spaghetti mode
+  - [ ] Auto-updater
 
 ## Building
 

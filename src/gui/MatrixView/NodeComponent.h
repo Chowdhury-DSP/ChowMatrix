@@ -1,7 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "../dsp/DelayNode.h"
+#include "../../dsp/DelayNode.h"
 
 class GraphView;
 class NodeComponent : public Component

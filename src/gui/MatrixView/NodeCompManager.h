@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../dsp/InputNode.h"
-#include "../dsp/DelayNode.h"
+#include "../../dsp/InputNode.h"
 #include "DelayNodeComponent.h"
 #include "InputNodeComponent.h"
 

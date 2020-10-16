@@ -1,7 +1,7 @@
 #include "BaseNode.h"
 #include "InputNode.h"
 #include "DelayNode.h"
-#include "../gui/DelayNodeComponent.h"
+#include "../gui/MatrixView/DelayNodeComponent.h"
 
 template<typename Child>
 BaseNode<Child>::BaseNode()
@@ -37,8 +37,11 @@ Child* BaseNode<Child>::addChild()
 {
     auto newChild = std::make_unique<Child>();
     newChild->setParent (this);
+    auto* createdChild = children.add (std::move (newChild));
 
-    return children.add (std::move (newChild));
+    listeners.call (&BaseNode<Child>::Listener::nodeAdded, createdChild);
+
+    return createdChild;
 }
 
 template<typename Child>

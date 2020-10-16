@@ -29,11 +29,13 @@ NodeCompManager::NodeCompManager (GraphView* parent) :
 void NodeCompManager::createAndAddEditor (InputNode* node)
 {
     parent->addAndMakeVisible (createAndAddEditorToList (node, inputNodeComponents, parent));
+    node->addListener (parent);
 }
 
 void NodeCompManager::createAndAddEditor (DelayNode* node)
 {
     parent->addAndMakeVisible (createAndAddEditorToList (node, delayNodeComponents, parent));
+    node->addListener (parent);
 }
 
 void NodeCompManager::doForAllNodes (NodeFunc nodeFunc)

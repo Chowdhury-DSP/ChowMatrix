@@ -1,5 +1,5 @@
 #include "DelayNode.h"
-#include "../gui/DelayNodeComponent.h"
+#include "../gui/MatrixView/DelayNodeComponent.h"
 
 using namespace DelayConsts;
 

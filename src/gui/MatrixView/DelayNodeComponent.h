@@ -1,8 +1,8 @@
 #pragma once
 
 #include "NodeComponent.h"
-#include "../dsp/DelayNode.h"
-#include "NodeInfo.h"
+#include "../../dsp/DelayNode.h"
+#include "../NodeInfo.h"
 
 class DelayNodeComponent : public NodeComponent
 {

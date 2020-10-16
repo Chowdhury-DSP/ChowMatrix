@@ -1,7 +1,6 @@
 #include "NodeComponent.h"
 #include "GraphView.h"
-#include "../dsp/DelayNode.h"
-#include "../dsp/InputNode.h"
+#include "../../dsp/InputNode.h"
 
 NodeComponent::NodeComponent (DBaseNode& node, GraphView* view) :
     node (node),
@@ -19,5 +18,4 @@ void NodeComponent::paint (Graphics& g)
 void NodeComponent::mouseDoubleClick (const MouseEvent& e)
 {
     auto newNode = node.addChild();
-    graphView->addNode (newNode);
 }

@@ -1,5 +1,5 @@
 #include "InputNode.h"
-#include "../gui/InputNodeComponent.h"
+#include "../gui/MatrixView/InputNodeComponent.h"
 
 std::unique_ptr<NodeComponent> InputNode::createEditor (GraphView* view)
 {

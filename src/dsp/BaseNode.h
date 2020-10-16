@@ -24,6 +24,16 @@ public:
     BaseNode* getParent() {return parent; }
     void setParent (BaseNode* parent);
 
+    struct Listener
+    {
+        virtual ~Listener() {}
+        virtual void nodeAdded (Child* /*newNode*/) {}
+        virtual void node2() {}
+    };
+
+    void addListener (Listener* l) { listeners.add (l); }
+    void removeListener (Listener* l) { listeners.remove (l); }
+
 protected:
     NodeComponent* editor = nullptr;
     BaseNode* parent = nullptr;
@@ -31,6 +41,8 @@ protected:
     OwnedArray<Child> children;
 
 private:
+    ListenerList<Listener> listeners;
+
     double sampleRate = 44100.0;
     int samplesPerBlock = 256;
 

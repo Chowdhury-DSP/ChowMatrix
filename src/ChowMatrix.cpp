@@ -1,5 +1,6 @@
 #include "ChowMatrix.h"
-#include "gui/GraphView.h"
+#include "gui/MatrixView/GraphView.h"
+#include "gui/DetailsView/NodeDetailsGUI.h"
 
 ChowMatrix::ChowMatrix()
 {
@@ -43,6 +44,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
 {
     auto builder = chowdsp::createGUIBuilder (magicState);
     builder->registerFactory ("GraphView", &GraphViewItem::factory);
+    builder->registerFactory ("NodeDetails", &NodeDetailsItem::factory);
 
     return new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
 }

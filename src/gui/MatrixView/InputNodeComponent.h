@@ -1,7 +1,7 @@
 #pragma once
 
 #include "NodeComponent.h"
-#include "../dsp/InputNode.h"
+#include "../../dsp/InputNode.h"
 
 class InputNodeComponent : public NodeComponent
 {
