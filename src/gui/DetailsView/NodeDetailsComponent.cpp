@@ -39,7 +39,7 @@ NodeDetailsComponent::~NodeDetailsComponent()
 
 void NodeDetailsComponent::addNode (DelayNode* node)
 {
-    addAndMakeVisible (nodes.add (std::make_unique<NodeInfo> (*node)));
+    addAndMakeVisible (nodes.add (std::make_unique<NodeInfo> (*node, false)));
     node->addListener (this);
 }
 
@@ -52,15 +52,14 @@ void NodeDetailsComponent::resized()
 {
     for (int i = 0; i < nodes.size(); ++i)
     {
-        nodes[i]->setBounds (xOffset + (NodeInfoConsts::InfoWidth + xPad) * i, 0,
-            NodeInfoConsts::InfoWidth, getHeight());
+        nodes[i]->setBounds (xOffset + (NodeInfoConsts::InfoWidthNoLabel + xPad) * i, 0,
+            NodeInfoConsts::InfoWidthNoLabel, getHeight());
     }
 }
 
 void NodeDetailsComponent::nodeAdded (DelayNode* newNode)
 {
-    addAndMakeVisible (nodes.add (std::make_unique<NodeInfo> (*newNode)));
-    newNode->addListener (this);
+    addNode (newNode);
 
     MessageManagerLock mml;
     setSize (calcWidth(), getHeight());
@@ -76,6 +75,6 @@ void NodeDetailsComponent::setMinWidth (int newMinWidth)
 
 int NodeDetailsComponent::calcWidth()
 {
-    int width = 2 * xOffset + (xPad + NodeInfoConsts::InfoWidth) * nodes.size();
+    int width = 2 * xOffset + (xPad + NodeInfoConsts::InfoWidthNoLabel) * nodes.size();
     return jmax (width, minWidth);
 }

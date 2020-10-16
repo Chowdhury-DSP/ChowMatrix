@@ -3,18 +3,13 @@
 #include "BaseNode.h"
 #include "DelayProc.h"
 
-namespace DelayConsts
-{
-    constexpr float maxDelay = 500.0f;
-}
-
 class DelayNode : public BaseNode<DelayNode>
 {
 public:
     DelayNode();
 
-    float getDelayMs() const noexcept { return delayMs->get(); }
-    void setDelay (float newDelayMs) { *delayMs = newDelayMs; }
+    float getDelay() const noexcept { return delayRange.convertTo0to1 (delayMs->get()); }
+    void setDelay (float newDelay) { *delayMs = delayRange.convertFrom0to1 (newDelay); }
 
     float getPan() const noexcept { return pan->get(); }
     void setPan (float newPan) { *pan = newPan; }
@@ -32,6 +27,8 @@ private:
 
     AudioParameterFloat* delayMs = nullptr;
     AudioParameterFloat* pan = nullptr;
+
+    NormalisableRange<float> delayRange;
 
     float fs = 44100.0f;
 

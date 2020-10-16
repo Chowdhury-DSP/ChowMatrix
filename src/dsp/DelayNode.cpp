@@ -1,15 +1,40 @@
 #include "DelayNode.h"
 #include "../gui/MatrixView/DelayNodeComponent.h"
 
-using namespace DelayConsts;
+namespace
+{
+    constexpr float maxDelay = 500.0f;
+}
+
+String delayValToString (float delayVal, int)
+{
+    String delayStr = String (delayVal, 2, false);
+    return delayStr + " ms";
+}
+
+String panValToString (float panVal, int)
+{
+    String panChar = "";
+    if (panVal > 0.0f)
+        panChar = "R";
+    else if (panVal < 0.0f)
+        panChar = "L";
+    
+    String panStr = String (int (panVal * 50.0f));
+    return panStr + panChar;
+}
 
 DelayNode::DelayNode()
 {
-    NormalisableRange<float> delayRange { 0.0f, maxDelay };
-    delayMs = params.add (std::make_unique<AudioParameterFloat> ("DLY", "Delay", delayRange, 50.0f));
+    delayRange = NormalisableRange<float> { 0.0f, maxDelay };
+    delayRange.setSkewForCentre (50.0f);
+
+    delayMs = params.add (std::make_unique<AudioParameterFloat> ("DLY", "Delay", delayRange, 50.0f, String(),
+        AudioProcessorParameter::genericParameter, [] (float val, int len) { return delayValToString (val, len); }));
 
     NormalisableRange<float> panRange { -1.0f, 1.0f };
-    pan = params.add (std::make_unique<AudioParameterFloat> ("PAN", "Pan", panRange, 0.0f));
+    pan = params.add (std::make_unique<AudioParameterFloat> ("PAN", "Pan", panRange, 0.0f, String(),
+        AudioProcessorParameter::genericParameter, [] (float val, int len) { return panValToString (val, len); }));
 
     panner.setRule (dsp::PannerRule::squareRoot3dB);
 }

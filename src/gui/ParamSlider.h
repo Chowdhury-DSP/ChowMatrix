@@ -6,7 +6,7 @@ class ParamSlider : public Component,
                     private AudioProcessorParameter::Listener
 {
 public:
-    ParamSlider (AudioParameterFloat* param);
+    ParamSlider (AudioParameterFloat* param, bool showLabel = true);
     ~ParamSlider();
 
     void parameterValueChanged (int, float newVal) override;
@@ -18,6 +18,8 @@ private:
     AudioParameterFloat* param;
     Label nameLabel;
     Label valueLabel;
+
+    const bool showLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ParamSlider)
 };

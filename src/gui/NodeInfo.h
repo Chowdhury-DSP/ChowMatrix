@@ -6,17 +6,20 @@
 namespace NodeInfoConsts
 {
     constexpr int InfoWidth = 120;
+    constexpr int InfoWidthNoLabel = 60;
 }
 
 class NodeInfo : public Component
 {
 public:
-    NodeInfo (DelayNode& node)
+    NodeInfo (DelayNode& node, bool showLabel = true) :
+        showLabel (showLabel)
     {
         for (int i = 0; i < node.getNumParams(); ++i)
-            addAndMakeVisible (sliders.add (std::make_unique<ParamSlider> (node.getParam (i))));
+            addAndMakeVisible (sliders.add (std::make_unique<ParamSlider> (node.getParam (i), showLabel)));
 
-        setSize (NodeInfoConsts::InfoWidth, 30 * sliders.size());
+        int width = showLabel ? NodeInfoConsts::InfoWidth : NodeInfoConsts::InfoWidthNoLabel;
+        setSize (width, 30 * sliders.size());
     }
 
     void paint (Graphics& g) override
@@ -32,6 +35,7 @@ public:
 
 private:
     OwnedArray<ParamSlider> sliders;
+    const bool showLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NodeInfo)
 };
