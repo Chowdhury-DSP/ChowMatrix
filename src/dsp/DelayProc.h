@@ -7,32 +7,22 @@ class DelayProc
 public:
     DelayProc() = default;
 
-    void prepare (const dsp::ProcessSpec& spec)
-    {
-        delay.prepare (spec);
-        fs = (float) spec.sampleRate;
-    }
-
-    void reset()
-    {
-        delay.reset();
-    }
+    void prepare (const dsp::ProcessSpec& spec);
+    void reset();
 
     template<typename ProcessContext>
-    void process (const ProcessContext& context)
-    {
-        delay.process (context);
-    }
+    void process (const ProcessContext& context);
 
-    void setDelay (float delayMs)
-    {
-        delay.setDelay ((delayMs / 1000.0f) * fs);
-    }
+    void setDelay (float delayMs);
+    void setFeedback (float newFeedback);
 
 private:
     dsp::DelayLine<float, dsp::DelayLineInterpolationTypes::Lagrange3rd> delay { 1 << 21 };
 
     float fs = 44100.0f;
+    
+    SmoothedValue<float, ValueSmoothingTypes::Linear> feedback;
+    std::vector<float> state;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayProc)
 };

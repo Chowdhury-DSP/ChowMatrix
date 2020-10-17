@@ -16,7 +16,9 @@ public:
         showLabel (showLabel)
     {
         for (int i = 0; i < node.getNumParams(); ++i)
-            addAndMakeVisible (sliders.add (std::make_unique<ParamSlider> (node.getParam (i), showLabel)));
+            addAndMakeVisible (sliders.add (std::make_unique<ParamSlider>
+                (dynamic_cast<AudioProcessorValueTreeState::Parameter*>
+                (node.getNodeParameter (i)), showLabel)));
 
         int width = showLabel ? NodeInfoConsts::InfoWidth : NodeInfoConsts::InfoWidthNoLabel;
         setSize (width, 30 * sliders.size());

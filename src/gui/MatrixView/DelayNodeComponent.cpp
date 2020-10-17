@@ -1,12 +1,22 @@
 #include "DelayNodeComponent.h"
 #include "GraphView.h"
 
+using namespace ParamTags;
+
 DelayNodeComponent::DelayNodeComponent (DelayNode& node, GraphView* view) :
     NodeComponent (node, view),
     node (node),
     nodeInfo (node)
 {
     view->addChildComponent (nodeInfo);
+    node.getNodeParameter (delayTag)->addListener (this);
+    node.getNodeParameter (panTag)->addListener (this);
+}
+
+DelayNodeComponent::~DelayNodeComponent()
+{
+    node.getNodeParameter (delayTag)->removeListener (this);
+    node.getNodeParameter (panTag)->removeListener (this);
 }
 
 void DelayNodeComponent::mouseDown (const MouseEvent&)
@@ -76,6 +86,11 @@ void DelayNodeComponent::updatePosition()
     nodeInfo.setTopLeftPosition (getPosition().translated (x, y));
 
     graphView->repaint();
+}
+
+void DelayNodeComponent::parameterValueChanged (int, float)
+{
+    updatePosition();
 }
 
 void DelayNodeComponent::setSelected (bool shouldBeSelected)

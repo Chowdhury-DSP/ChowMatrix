@@ -2,42 +2,51 @@
 
 #include "BaseNode.h"
 #include "DelayProc.h"
+#include "ProcessorBase.h"
+#include "ParamHelpers.h"
 
-class DelayNode : public BaseNode<DelayNode>
+class DelayNode : public BaseNode<DelayNode>,
+                  private ProcessorBase
 {
 public:
     DelayNode();
 
-    float getDelay() const noexcept { return delayRange.convertTo0to1 (delayMs->get()); }
-    void setDelay (float newDelay) { *delayMs = delayRange.convertFrom0to1 (newDelay); }
+    float getDelay() const noexcept { return delayMs->convertTo0to1 (delayMs->get()); }
+    void setDelay (float newDelay) { ParamHelpers::setParameterValue (delayMs, delayMs->convertFrom0to1 (newDelay)); }
 
     float getPan() const noexcept { return pan->get(); }
-    void setPan (float newPan) { *pan = newPan; }
+    void setPan (float newPan) { ParamHelpers::setParameterValue (pan, newPan); }
 
     void prepare (double sampleRate, int samplesPerBlock) override;
     void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples) override;
 
     std::unique_ptr<NodeComponent> createEditor (GraphView*) override;
 
-    int getNumParams() const noexcept { return params.size(); }
-    AudioParameterFloat* getParam (int idx) { return params[idx]; }
+    int getNumParams() const noexcept { return paramIDs.size(); }
+    String getParamID (int idx) { return paramIDs[idx]; }
+    RangedAudioParameter* getNodeParameter (int idx) { return params.getParameter (paramIDs[idx]); }
+    RangedAudioParameter* getNodeParameter (const String& id) { return params.getParameter (id); }
 
 private:
-    OwnedArray<AudioParameterFloat> params;
+    void cookParameters();
 
-    AudioParameterFloat* delayMs = nullptr;
-    AudioParameterFloat* pan = nullptr;
+    AudioProcessorValueTreeState params;
+    StringArray paramIDs;
 
-    NormalisableRange<float> delayRange;
+    Parameter* delayMs = nullptr;
+    Parameter* pan = nullptr;
+    Parameter* feedback = nullptr;
+    Parameter* gainDB = nullptr;
 
     float fs = 44100.0f;
 
     enum
     {
+        gainIdx,
         delayIdx,
     };
 
-    dsp::ProcessorChain<DelayProc> processors;
+    dsp::ProcessorChain<dsp::Gain<float>, DelayProc> processors;
 
     AudioBuffer<float> childBuffer;
     AudioBuffer<float> panBuffer;

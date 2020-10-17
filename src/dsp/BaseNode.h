@@ -31,8 +31,8 @@ public:
         virtual void node2() {}
     };
 
-    void addListener (Listener* l) { listeners.add (l); }
-    void removeListener (Listener* l) { listeners.remove (l); }
+    void addNodeListener (Listener* l) { listeners.add (l); }
+    void removeNodeListener (Listener* l) { listeners.remove (l); }
 
 protected:
     NodeComponent* editor = nullptr;

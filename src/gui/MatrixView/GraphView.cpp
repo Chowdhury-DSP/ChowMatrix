@@ -16,9 +16,9 @@ GraphView::GraphView (ChowMatrix& plugin) :
 GraphView::~GraphView()
 {
     for (auto& node : plugin.inputNodes)
-        node.removeListener (this);
+        node.removeNodeListener (this);
 
-    manager.doForAllNodes ([=] (NodeComponent*, DelayNode* child) { child->removeListener (this); });
+    manager.doForAllNodes ([=] (NodeComponent*, DelayNode* child) { child->removeNodeListener (this); });
 }
 
 void GraphView::mouseDown (const MouseEvent&)

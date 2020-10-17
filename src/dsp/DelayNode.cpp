@@ -1,48 +1,41 @@
 #include "DelayNode.h"
 #include "../gui/MatrixView/DelayNodeComponent.h"
+#include "ParamHelpers.h"
 
-namespace
+using namespace ParamTags;
+
+DelayNode::DelayNode() :
+    params (*this, nullptr, Identifier ("Parameters"), ParamHelpers::createParameterLayout())
 {
-    constexpr float maxDelay = 500.0f;
-}
+    auto loadParam = [=] (String paramID) -> Parameter*
+    {
+        paramIDs.add (paramID);
+        return dynamic_cast<Parameter*> (params.getParameter (paramID));
+    };
 
-String delayValToString (float delayVal, int)
-{
-    String delayStr = String (delayVal, 2, false);
-    return delayStr + " ms";
-}
+    delayMs  = loadParam (delayTag);
+    pan      = loadParam (panTag);
+    feedback = loadParam (fbTag);
+    gainDB   = loadParam (gainTag);
 
-String panValToString (float panVal, int)
-{
-    String panChar = "";
-    if (panVal > 0.0f)
-        panChar = "R";
-    else if (panVal < 0.0f)
-        panChar = "L";
-    
-    String panStr = String (int (panVal * 50.0f));
-    return panStr + panChar;
-}
-
-DelayNode::DelayNode()
-{
-    delayRange = NormalisableRange<float> { 0.0f, maxDelay };
-    delayRange.setSkewForCentre (50.0f);
-
-    delayMs = params.add (std::make_unique<AudioParameterFloat> ("DLY", "Delay", delayRange, 50.0f, String(),
-        AudioProcessorParameter::genericParameter, [] (float val, int len) { return delayValToString (val, len); }));
-
-    NormalisableRange<float> panRange { -1.0f, 1.0f };
-    pan = params.add (std::make_unique<AudioParameterFloat> ("PAN", "Pan", panRange, 0.0f, String(),
-        AudioProcessorParameter::genericParameter, [] (float val, int len) { return panValToString (val, len); }));
-
+    processors.get<gainIdx>().setRampDurationSeconds (0.05);
     panner.setRule (dsp::PannerRule::squareRoot3dB);
+}
+
+void DelayNode::cookParameters()
+{
+    processors.get<gainIdx>().setGainDecibels (*gainDB);
+    processors.get<delayIdx>().setDelay (*delayMs);
+    processors.get<delayIdx>().setFeedback (*feedback);
+
+    panner.setPan (*pan);
 }
 
 void DelayNode::prepare (double sampleRate, int samplesPerBlock)
 {
     DBaseNode::prepare (sampleRate, samplesPerBlock);
 
+    cookParameters();
     processors.prepare ({ sampleRate, (uint32) samplesPerBlock, 1 });
     panner.prepare ({ sampleRate, (uint32) samplesPerBlock, 2 });
     
@@ -53,7 +46,7 @@ void DelayNode::prepare (double sampleRate, int samplesPerBlock)
 void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples)
 {
     dsp::AudioBlock<float> inBlock { inBuffer };
-    processors.get<delayIdx>().setDelay (*delayMs);
+    cookParameters();
     processors.process<dsp::ProcessContextReplacing<float>> ({ inBlock });
 
     for (auto* child : children)
@@ -62,7 +55,6 @@ void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBu
         child->process (childBuffer, outBuffer, numSamples);
     }
 
-    panner.setPan (*pan);
     dsp::AudioBlock<float> panBlock { panBuffer };
     panner.process<dsp::ProcessContextNonReplacing<float>> ({ inBlock, panBlock });
 

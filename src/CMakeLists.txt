@@ -3,7 +3,9 @@ target_sources(ChowMatrix PRIVATE
     
     dsp/BaseNode.cpp
     dsp/DelayNode.cpp
+    dsp/DelayProc.cpp
     dsp/InputNode.cpp
+    dsp/ParamHelpers.cpp
 
     gui/ParamSlider.cpp
     gui/DetailsView/NodeDetailsComponent.cpp

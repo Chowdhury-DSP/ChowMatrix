@@ -4,10 +4,12 @@
 #include "../../dsp/DelayNode.h"
 #include "../NodeInfo.h"
 
-class DelayNodeComponent : public NodeComponent
+class DelayNodeComponent : public NodeComponent,
+                           private AudioProcessorParameter::Listener
 {
 public:
     DelayNodeComponent (DelayNode& node, GraphView* view);
+    ~DelayNodeComponent();
 
     void mouseDown (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
@@ -15,6 +17,9 @@ public:
     void updatePosition() override;
 
     void setSelected (bool shouldBeSelected);
+
+    void parameterValueChanged (int, float) override;
+    void parameterGestureChanged (int, bool) override {}
 
 private:
     void updateParams();

@@ -23,7 +23,7 @@ NodeDetailsComponent::NodeDetailsComponent (ChowMatrix& plugin) :
 
     for (auto& node : plugin.inputNodes)
     {
-        node.addListener (this);
+        node.addNodeListener (this);
         doForNodes (&node, [=] (DelayNode* node) { addNode (node); });
     }
 }
@@ -32,15 +32,15 @@ NodeDetailsComponent::~NodeDetailsComponent()
 {
     for (auto& node : plugin.inputNodes)
     {
-        doForNodes (&node, [=] (DelayNode* node) { node->removeListener (this); });
-        node.removeListener (this);
+        doForNodes (&node, [=] (DelayNode* node) { node->removeNodeListener (this); });
+        node.removeNodeListener (this);
     }
 }
 
 void NodeDetailsComponent::addNode (DelayNode* node)
 {
     addAndMakeVisible (nodes.add (std::make_unique<NodeInfo> (*node, false)));
-    node->addListener (this);
+    node->addNodeListener (this);
 }
 
 void NodeDetailsComponent::paint (Graphics& g)
