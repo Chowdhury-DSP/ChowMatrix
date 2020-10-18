@@ -17,5 +17,5 @@ void NodeComponent::paint (Graphics& g)
 
 void NodeComponent::mouseDoubleClick (const MouseEvent& e)
 {
-    auto newNode = node.addChild();
+    node.addChild();
 }

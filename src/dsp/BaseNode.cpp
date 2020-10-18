@@ -52,10 +52,42 @@ void BaseNode<Child>::removeChild (Child* childToRemove)
 }
 
 template<typename Child>
+void BaseNode<Child>::clearChildren()
+{
+    while (! children.isEmpty())
+        children.getLast()->deleteNode();
+    
+    nodeBeingDeleted.reset();
+}
+
+template<typename Child>
 void BaseNode<Child>::setParent (BaseNode* newParent)
 {
     parent = newParent;
     prepare (parent->sampleRate, parent->samplesPerBlock);
+}
+
+template<typename Child>
+XmlElement* BaseNode<Child>::saveXml()
+{
+    std::unique_ptr<XmlElement> xml = std::make_unique<XmlElement> ("children");
+    for (auto* child : children)
+        xml->addChildElement (child->saveXml());
+    
+    return xml.release();
+}
+
+template<typename Child>
+void BaseNode<Child>::loadXml (XmlElement* xml)
+{
+    if (xml == nullptr)
+        return;
+
+    if (xml->hasTagName ("children"))
+    {
+        forEachXmlChildElement (*xml, childXml)
+            addChild()->loadXml (childXml);
+    }
 }
 
 template class BaseNode<DelayNode>;

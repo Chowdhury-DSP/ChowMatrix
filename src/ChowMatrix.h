@@ -15,6 +15,9 @@ public:
 
     AudioProcessorEditor* createEditor() override;
 
+    void getStateInformation (MemoryBlock& destData) override;
+    void setStateInformation (const void* data, int sizeInBytes) override;
+
     // @TODO: don't make this public
     InputNode inputNodes[2];
 

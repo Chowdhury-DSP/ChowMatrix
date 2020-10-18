@@ -38,4 +38,6 @@ float stringToFbVal (const String& s);
 String gainValToString (float gainVal);
 float stringToGainVal (const String& s);
 
+String getTooltip (const String& paramID);
+
 } // ParamHelpers

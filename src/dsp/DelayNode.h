@@ -27,6 +27,8 @@ public:
     RangedAudioParameter* getNodeParameter (int idx) { return params.getParameter (paramIDs[idx]); }
     RangedAudioParameter* getNodeParameter (const String& id) { return params.getParameter (id); }
 
+    XmlElement* saveXml() override;
+    void loadXml (XmlElement*) override;
     void deleteNode();
 
 private:

@@ -69,12 +69,30 @@ std::unique_ptr<NodeComponent> DelayNode::createEditor (GraphView* view)
     return std::move (editorPtr);
 }
 
+XmlElement* DelayNode::saveXml()
+{
+    auto state = params.copyState();
+    std::unique_ptr<XmlElement> xml (state.createXml());
+    xml->addChildElement (DBaseNode::saveXml());
+
+    return xml.release();
+}
+
+void DelayNode::loadXml (XmlElement* xmlState)
+{
+    if (xmlState == nullptr)
+        return;
+
+    if (xmlState->hasTagName (params.state.getType()))
+    {
+        params.replaceState (ValueTree::fromXml (*xmlState));
+        DBaseNode::loadXml (xmlState->getChildByName ("children"));
+    }
+}
+
 void DelayNode::deleteNode()
 {
-    while (! children.isEmpty())
-        children.getLast()->deleteNode();
-    cleanupLeftoverChildren();
-
+    clearChildren();
     parent->removeChild (this);
     nodeListeners.call (&DBaseNode::Listener::nodeRemoved, this);
 }

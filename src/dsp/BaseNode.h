@@ -20,6 +20,7 @@ public:
 
     Child* addChild();
     void removeChild (Child* childToRemove);
+    void clearChildren();
 
     int getNumChildren() const noexcept { return children.size(); }
     Child* getChild (int idx) { return children[idx]; }
@@ -36,14 +37,15 @@ public:
     void addNodeListener (Listener* l) { nodeListeners.add (l); }
     void removeNodeListener (Listener* l) { nodeListeners.remove (l); }
 
+    virtual XmlElement* saveXml();
+    virtual void loadXml (XmlElement*);
+
 protected:
     NodeComponent* editor = nullptr;
     BaseNode* parent = nullptr;
 
     OwnedArray<Child> children;
     ListenerList<Listener> nodeListeners;
-    
-    void cleanupLeftoverChildren() { nodeBeingDeleted.reset(); }
 
 private:
     std::unique_ptr<Child> nodeBeingDeleted;

@@ -5,6 +5,9 @@ ParamSlider::ParamSlider (Parameter* param, bool showLabel) :
     param (param),
     showLabel (showLabel)
 {
+    setName (param->name);
+    setTooltip (ParamHelpers::getTooltip (param->paramID));
+
     param->addListener (this);
 
     addAndMakeVisible (nameLabel);

@@ -82,4 +82,21 @@ String gainValToString (float gainVal)
 
 float stringToGainVal (const String& s) { return s.getFloatValue(); }
 
+String getTooltip (const String& paramID)
+{
+    if (paramID == delayTag)
+        return "Sets the length of the delay between the previous delay node and this one.";
+
+    if (paramID == panTag)
+        return "Sets the stereo image for this delay node.";
+
+    if (paramID == fbTag)
+        return "Sets the feedback gain for this delay line";
+
+    if (paramID == gainTag)
+        return "Sets the gain for this delay node";
+
+    return {};
+}
+
 } // ParamHelpers

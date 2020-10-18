@@ -49,6 +49,51 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     return new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
 }
 
+void ChowMatrix::getStateInformation (MemoryBlock& destData)
+{
+    auto state = vts.copyState();
+    std::unique_ptr<XmlElement> xml = std::make_unique<XmlElement> ("state");
+    xml->addChildElement (state.createXml().release());
+
+    std::unique_ptr<XmlElement> childrenXml = std::make_unique<XmlElement> ("children");
+    for (auto& node : inputNodes)
+        childrenXml->addChildElement (node.saveXml());
+    
+    xml->addChildElement (childrenXml.release());
+    
+    copyXmlToBinary (*xml, destData);
+}
+
+void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
+{
+    std::unique_ptr<XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
+
+    if (xmlState == nullptr)
+        return;
+
+    auto vtsXml = xmlState->getChildByName (vts.state.getType());
+    if (vtsXml == nullptr)
+        return;
+
+    auto childrenXml = xmlState->getChildByName ("children");
+    if (childrenXml == nullptr)
+        return;
+
+    for (auto& node : inputNodes)
+        node.clearChildren();
+
+    vts.replaceState (ValueTree::fromXml (*vtsXml));
+
+    int count = 0;
+    forEachXmlChildElement (*childrenXml, childXml)
+    {
+        if (count > 2)
+            break;
+
+        inputNodes[count++].loadXml (childXml);
+    }
+}
+
 // This creates new instances of the plugin
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
