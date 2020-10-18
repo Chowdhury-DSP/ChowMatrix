@@ -1,14 +1,37 @@
 #include "ChowMatrix.h"
 #include "gui/MatrixView/GraphView.h"
 #include "gui/DetailsView/NodeDetailsGUI.h"
+#include "gui/BottomBar/TextSliderItem.h"
+
+namespace
+{
+    const String dryTag = "dry_param";
+    const String wetTag = "wet_param";
+
+    constexpr double gainFadeTime = 0.05;
+}
 
 ChowMatrix::ChowMatrix()
 {
-    
+    dryParamDB = vts.getRawParameterValue (dryTag);
+    wetParamDB = vts.getRawParameterValue (wetTag);
+
+    dryGain.setRampDurationSeconds (gainFadeTime);
+    wetGain.setRampDurationSeconds (gainFadeTime);
 }
 
 void ChowMatrix::addParameters (Parameters& params)
 {
+    NormalisableRange<float> gainRange (-60.0f, 12.0f);
+
+    auto gainToString = [] (float x) { return String (x) + " dB"; };
+    auto stringToGain = [] (const String& t) { return t.getFloatValue(); };
+
+    params.push_back (std::make_unique<Parameter> (dryTag, "Dry", String(),
+        gainRange, 0.0f, gainToString, stringToGain));
+
+    params.push_back (std::make_unique<Parameter> (wetTag, "Wet", String(),
+        gainRange, 0.0f, gainToString, stringToGain));
 }
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
@@ -18,6 +41,10 @@ void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
         inputNodes[ch].prepare (sampleRate, samplesPerBlock);
         chBuffers[ch].setSize (1, samplesPerBlock);
     }
+
+    dryBuffer.setSize (2, samplesPerBlock);
+    dryGain.prepare ({ sampleRate, (uint32) samplesPerBlock, 2 });
+    wetGain.prepare ({ sampleRate, (uint32) samplesPerBlock, 2 });
 }
 
 void ChowMatrix::releaseResources()
@@ -27,6 +54,17 @@ void ChowMatrix::releaseResources()
 
 void ChowMatrix::processBlock (AudioBuffer<float>& buffer)
 {
+    // get parameters
+    dryGain.setGainDecibels (*dryParamDB);
+    wetGain.setGainDecibels (*wetParamDB);
+
+    // Keep dry signal
+    dryBuffer.makeCopyOf (buffer, true);
+    dsp::AudioBlock<float> dryBlock (dryBuffer);
+    dsp::ProcessContextReplacing<float> dryContext (dryBlock);
+    dryGain.process (dryContext);
+
+    // copy input channels
     const int numSamples = buffer.getNumSamples();
     for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
     {
@@ -34,10 +72,18 @@ void ChowMatrix::processBlock (AudioBuffer<float>& buffer)
         chBuffers[ch].copyFrom (0, 0, buffer, ch, 0, numSamples);
     }
 
+    // get wet signal
     buffer.clear();
-
     for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
         inputNodes[ch].process (chBuffers[ch], buffer, numSamples);
+
+    dsp::AudioBlock<float> wetBlock (buffer);
+    dsp::ProcessContextReplacing<float> wetContext (wetBlock);
+    wetGain.process (wetContext);
+
+    // sum with dry signal
+    for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
+        buffer.addFrom (ch, 0, dryBuffer, ch, 0, numSamples);
 }
 
 AudioProcessorEditor* ChowMatrix::createEditor()
@@ -45,6 +91,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     auto builder = chowdsp::createGUIBuilder (magicState);
     builder->registerFactory ("GraphView", &GraphViewItem::factory);
     builder->registerFactory ("NodeDetails", &NodeDetailsItem::factory);
+    builder->registerFactory ("TextSlider", &TextSliderItem::factory);
 
     return new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
 }

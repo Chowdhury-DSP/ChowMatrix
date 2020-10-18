@@ -22,7 +22,14 @@ public:
     InputNode inputNodes[2];
 
 private:
+    std::atomic<float>* dryParamDB = nullptr;
+    std::atomic<float>* wetParamDB = nullptr;
+
     AudioBuffer<float> chBuffers[2];
+
+    AudioBuffer<float> dryBuffer;
+    dsp::Gain<float> dryGain;
+    dsp::Gain<float> wetGain;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChowMatrix)
 };

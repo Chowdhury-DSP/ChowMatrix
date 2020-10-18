@@ -8,6 +8,7 @@ target_sources(ChowMatrix PRIVATE
     dsp/ParamHelpers.cpp
 
     gui/ParamSlider.cpp
+    gui/BottomBar/BottomBarLNF.cpp
     gui/DetailsView/NodeDetailsComponent.cpp
     gui/MatrixView/DelayNodeComponent.cpp
     gui/MatrixView/GraphView.cpp
