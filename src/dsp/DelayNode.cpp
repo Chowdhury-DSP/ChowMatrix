@@ -68,3 +68,13 @@ std::unique_ptr<NodeComponent> DelayNode::createEditor (GraphView* view)
     editor = editorPtr.get();
     return std::move (editorPtr);
 }
+
+void DelayNode::deleteNode()
+{
+    while (! children.isEmpty())
+        children.getLast()->deleteNode();
+    cleanupLeftoverChildren();
+
+    parent->removeChild (this);
+    nodeListeners.call (&DBaseNode::Listener::nodeRemoved, this);
+}

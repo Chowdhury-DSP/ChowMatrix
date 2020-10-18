@@ -27,6 +27,8 @@ public:
     RangedAudioParameter* getNodeParameter (int idx) { return params.getParameter (paramIDs[idx]); }
     RangedAudioParameter* getNodeParameter (const String& id) { return params.getParameter (id); }
 
+    void deleteNode();
+
 private:
     void cookParameters();
 
@@ -37,8 +39,6 @@ private:
     Parameter* pan = nullptr;
     Parameter* feedback = nullptr;
     Parameter* gainDB = nullptr;
-
-    float fs = 44100.0f;
 
     enum
     {

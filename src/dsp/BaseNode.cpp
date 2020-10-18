@@ -39,9 +39,16 @@ Child* BaseNode<Child>::addChild()
     newChild->setParent (this);
     auto* createdChild = children.add (std::move (newChild));
 
-    listeners.call (&BaseNode<Child>::Listener::nodeAdded, createdChild);
+    nodeListeners.call (&BaseNode<Child>::Listener::nodeAdded, createdChild);
 
     return createdChild;
+}
+
+template<typename Child>
+void BaseNode<Child>::removeChild (Child* childToRemove)
+{
+    int indexToRemove = children.indexOf (childToRemove);
+    nodeBeingDeleted.reset (children.removeAndReturn (indexToRemove));
 }
 
 template<typename Child>

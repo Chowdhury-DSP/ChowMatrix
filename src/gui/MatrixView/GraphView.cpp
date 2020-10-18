@@ -65,3 +65,12 @@ void GraphView::nodeAdded (DelayNode* newNode)
     resized();
     repaint();
 }
+
+void GraphView::nodeRemoved (DelayNode* newNode)
+{
+    manager.removeEditor (newNode);
+
+    MessageManagerLock mml;
+    resized();
+    repaint();
+}

@@ -19,8 +19,14 @@ DelayNodeComponent::~DelayNodeComponent()
     node.getNodeParameter (panTag)->removeListener (this);
 }
 
-void DelayNodeComponent::mouseDown (const MouseEvent&)
+void DelayNodeComponent::mouseDown (const MouseEvent& e)
 {
+    if (e.mods.isCommandDown())
+    {
+        node.deleteNode();
+        return;
+    }
+
     graphView->clearSelected();
     setSelected (true);
 }

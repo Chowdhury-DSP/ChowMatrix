@@ -19,6 +19,8 @@ public:
     virtual void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples);
 
     Child* addChild();
+    void removeChild (Child* childToRemove);
+
     int getNumChildren() const noexcept { return children.size(); }
     Child* getChild (int idx) { return children[idx]; }
     BaseNode* getParent() {return parent; }
@@ -28,20 +30,23 @@ public:
     {
         virtual ~Listener() {}
         virtual void nodeAdded (Child* /*newNode*/) {}
-        virtual void node2() {}
+        virtual void nodeRemoved (Child* /*nodeToRemove*/) {}
     };
 
-    void addNodeListener (Listener* l) { listeners.add (l); }
-    void removeNodeListener (Listener* l) { listeners.remove (l); }
+    void addNodeListener (Listener* l) { nodeListeners.add (l); }
+    void removeNodeListener (Listener* l) { nodeListeners.remove (l); }
 
 protected:
     NodeComponent* editor = nullptr;
     BaseNode* parent = nullptr;
 
     OwnedArray<Child> children;
+    ListenerList<Listener> nodeListeners;
+    
+    void cleanupLeftoverChildren() { nodeBeingDeleted.reset(); }
 
 private:
-    ListenerList<Listener> listeners;
+    std::unique_ptr<Child> nodeBeingDeleted;
 
     double sampleRate = 44100.0;
     int samplesPerBlock = 256;

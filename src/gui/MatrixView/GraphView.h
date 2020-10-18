@@ -25,6 +25,7 @@ public:
 
     void clearSelected();
     void nodeAdded (DelayNode* newNode) override;
+    void nodeRemoved (DelayNode* nodeToRemove) override;
 
 private:
     ChowMatrix& plugin;

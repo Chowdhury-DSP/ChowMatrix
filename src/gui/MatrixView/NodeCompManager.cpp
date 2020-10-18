@@ -38,6 +38,12 @@ void NodeCompManager::createAndAddEditor (DelayNode* node)
     node->addNodeListener (parent);
 }
 
+void NodeCompManager::removeEditor (DelayNode* nodeToRemove)
+{
+    delayNodeComponents.removeObject (dynamic_cast<DelayNodeComponent*> (nodeToRemove->getEditor()));
+    nodeToRemove->removeNodeListener (parent);
+}
+
 void NodeCompManager::doForAllNodes (NodeFunc nodeFunc)
 {
     for (auto* nodeComp : inputNodeComponents)

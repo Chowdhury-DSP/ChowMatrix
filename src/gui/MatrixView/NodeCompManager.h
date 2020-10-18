@@ -12,6 +12,7 @@ public:
 
     void createAndAddEditor (InputNode*);
     void createAndAddEditor (DelayNode*);
+    void removeEditor (DelayNode*);
 
     using NodeFunc = std::function<void(NodeComponent*, DelayNode*)>;
     void doForAllNodes (NodeFunc nodeFunc);

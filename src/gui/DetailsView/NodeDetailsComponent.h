@@ -14,6 +14,7 @@ public:
     void resized() override;
 
     void nodeAdded (DelayNode* newNode) override;
+    void nodeRemoved (DelayNode* nodeToRemove) override;
 
     void setMinWidth (int newMinWidth);
     int calcWidth();

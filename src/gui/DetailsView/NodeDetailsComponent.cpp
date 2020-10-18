@@ -67,6 +67,25 @@ void NodeDetailsComponent::nodeAdded (DelayNode* newNode)
     repaint();
 }
 
+void NodeDetailsComponent::nodeRemoved (DelayNode* nodeToRemove)
+{
+    for (auto* node : nodes)
+    {
+        if (node->getNode() == nodeToRemove)
+        {
+            nodes.removeObject (node);
+            break;
+        }
+    }
+
+    nodeToRemove->removeNodeListener (this);
+
+    MessageManagerLock mml;
+    setSize (calcWidth(), getHeight());
+    resized();
+    repaint();
+}
+
 void NodeDetailsComponent::setMinWidth (int newMinWidth)
 {
     minWidth = newMinWidth;

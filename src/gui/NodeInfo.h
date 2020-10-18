@@ -13,6 +13,7 @@ class NodeInfo : public Component
 {
 public:
     NodeInfo (DelayNode& node, bool showLabel = true) :
+        node (node),
         showLabel (showLabel)
     {
         for (int i = 0; i < node.getNumParams(); ++i)
@@ -35,8 +36,11 @@ public:
             sliders[i]->setBounds (0, 30 * i, getWidth(), 30);
     }
 
+    const DelayNode* getNode() const noexcept { return &node; }
+
 private:
     OwnedArray<ParamSlider> sliders;
+    const DelayNode& node;
     const bool showLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NodeInfo)
