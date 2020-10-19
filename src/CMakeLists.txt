@@ -4,6 +4,7 @@ target_sources(ChowMatrix PRIVATE
     dsp/BaseNode.cpp
     dsp/DelayNode.cpp
     dsp/DelayProc.cpp
+    dsp/Distortion.cpp
     dsp/InputNode.cpp
     dsp/ParamHelpers.cpp
 

@@ -41,6 +41,9 @@ private:
     Parameter* pan = nullptr;
     Parameter* feedback = nullptr;
     Parameter* gainDB = nullptr;
+    Parameter* lpfHz = nullptr;
+    Parameter* hpfHz = nullptr;
+    Parameter* distortion = nullptr;
 
     enum
     {

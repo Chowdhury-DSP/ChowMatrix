@@ -38,8 +38,24 @@ AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
     // set up gain
     NormalisableRange<float> gainRange { -maxGain, maxGain };
     params.push_back (std::make_unique<Parameter> (gainTag, "Gain", String(), gainRange,
-        0.0f, [] (float val) { return gainValToString (val); },
-        [] (const String& s) { return stringToGainVal (s); }));
+        0.0f, &gainValToString, &stringToGainVal));
+
+    // set up LPF
+    NormalisableRange<float> lpfRange { minLPF, maxLPF };
+    lpfRange.setSkewForCentre (std::sqrt (minLPF * maxLPF));
+    params.push_back (std::make_unique<Parameter> (lpfTag, "LPF", String(), lpfRange,
+        maxLPF, &freqValToString, &stringToFreqVal));
+
+    // set up HPF
+    NormalisableRange<float> hpfRange { minHPF, maxHPF };
+    hpfRange.setSkewForCentre (std::sqrt (minHPF * maxHPF));
+    params.push_back (std::make_unique<Parameter> (hpfTag, "HPF", String(), hpfRange,
+        minHPF, &freqValToString, &stringToFreqVal));
+
+    // set up distortion
+    NormalisableRange<float> distRange { 0.0f, 1.0f };
+    params.push_back (std::make_unique<Parameter> (distTag, "Distortion", String(), distRange,
+        0.0f, &distValToString, &stringToDistVal));
 
     return { params.begin(), params.end() };
 }
@@ -72,7 +88,7 @@ String fbValToString (float fbVal)
     return fbStr + "%";
 }
 
-float stringToFbVal (const String& s) { return s.getFloatValue(); }
+float stringToFbVal (const String& s) { return s.getFloatValue() / 100.0f; }
 
 String gainValToString (float gainVal)
 {
@@ -81,6 +97,32 @@ String gainValToString (float gainVal)
 }
 
 float stringToGainVal (const String& s) { return s.getFloatValue(); }
+
+String freqValToString (float freqVal)
+{
+    if (freqVal < 1000.0f)
+        return String (freqVal, 2, false) + " Hz";
+
+    return String (freqVal / 1000.0f, 2, false) + " kHz";
+}
+
+float stringToFreqVal (const String& s)
+{
+    auto freqVal = s.getFloatValue();
+    
+    if (s.getLastCharacter() == 'k')
+        freqVal *= 1000.0f;
+
+    return freqVal;
+}
+
+String distValToString (float distVal)
+{
+    String distStr = String (int (distVal * 100.0f));
+    return distStr + "%";
+}
+
+float stringToDistVal (const String& s) { return s.getFloatValue() / 100.0f; }
 
 String getTooltip (const String& paramID)
 {
@@ -95,6 +137,15 @@ String getTooltip (const String& paramID)
 
     if (paramID == gainTag)
         return "Sets the gain for this delay node";
+
+    if (paramID == lpfTag)
+        return "Sets the cutoff frequency of a lowpass filter on this delay node";
+
+    if (paramID == hpfTag)
+        return "Sets the cutoff frequency of a highpass filter on this delay node";
+
+    if (paramID == distTag)
+        return "Sets the amount of distortion on this delay node";
 
     return {};
 }

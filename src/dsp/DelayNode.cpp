@@ -13,10 +13,13 @@ DelayNode::DelayNode() :
         return dynamic_cast<Parameter*> (params.getParameter (paramID));
     };
 
-    delayMs  = loadParam (delayTag);
-    pan      = loadParam (panTag);
-    feedback = loadParam (fbTag);
-    gainDB   = loadParam (gainTag);
+    delayMs    = loadParam (delayTag);
+    pan        = loadParam (panTag);
+    feedback   = loadParam (fbTag);
+    gainDB     = loadParam (gainTag);
+    lpfHz      = loadParam (lpfTag);
+    hpfHz      = loadParam (hpfTag);
+    distortion = loadParam (distTag);
 
     processors.get<gainIdx>().setRampDurationSeconds (0.05);
     panner.setRule (dsp::PannerRule::squareRoot3dB);
@@ -25,8 +28,13 @@ DelayNode::DelayNode() :
 void DelayNode::cookParameters()
 {
     processors.get<gainIdx>().setGainDecibels (*gainDB);
-    processors.get<delayIdx>().setDelay (*delayMs);
-    processors.get<delayIdx>().setFeedback (*feedback);
+    processors.get<delayIdx>().setParameters ({
+        *delayMs,
+        *feedback,
+        *lpfHz,
+        *hpfHz,
+        *distortion
+    });
 
     panner.setPan (*pan);
 }

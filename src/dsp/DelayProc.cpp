@@ -9,11 +9,14 @@ void DelayProc::prepare (const dsp::ProcessSpec& spec)
     state.resize (spec.numChannels, 0.0f);
 
     reset();
+
+    procs.prepare (spec);
 }
 
 void DelayProc::reset()
 {
     delay.reset();
+    procs.reset();
 }
 
 template<typename ProcessContext>
@@ -40,21 +43,23 @@ void DelayProc::process (const ProcessContext& context)
 
         for (size_t i = 0; i < numSamples; ++i)
         {
-            delay.pushSample ((int) channel, inputSamples[i] + state[channel]);
+            auto input = procs.processSample (inputSamples[i] + state[channel]);
+            delay.pushSample ((int) channel, input);
             outputSamples[i] = delay.popSample ((int) channel);
             state[channel] = outputSamples[i] * feedback.getNextValue();
         }
     }
 }
 
-void DelayProc::setDelay (float delayMs)
-{
-    delay.setDelay ((delayMs / 1000.0f) * fs);
-}
+using IIRCoefs = dsp::IIR::Coefficients<float>;
 
-void DelayProc::setFeedback (float newFeedback)
+void DelayProc::setParameters (const Parameters& params)
 {
-    feedback.setTargetValue (newFeedback);
+    delay.setDelay ((params.delayMs / 1000.0f) * fs);
+    feedback.setTargetValue (params.feedback);
+    procs.get<lpfIdx>().coefficients = IIRCoefs::makeFirstOrderLowPass ((double) fs, params.lpfFreq);
+    procs.get<hpfIdx>().coefficients = IIRCoefs::makeFirstOrderHighPass ((double) fs, params.hpfFreq);
+    procs.get<distortionIdx>().setGain (19.8f * std::pow (params.distortion, 2) + 0.2f);
 }
 
 //==================================================

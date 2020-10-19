@@ -3,6 +3,7 @@ project(ChowMatrix VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 17)
 add_subdirectory(modules)
+include_directories(modules)
 
 # juce_set_vst2_sdk_path(C:/SDKs/VST_SDK/VST2_SDK/)
 
@@ -31,4 +32,6 @@ target_link_libraries(ChowMatrix PRIVATE
     BinaryData
     juce::juce_audio_utils
     foleys_gui_magic
-    chowdsp_utils)
+    chowdsp_utils
+    polylogarithm
+)
