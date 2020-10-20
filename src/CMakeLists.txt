@@ -6,6 +6,7 @@ target_sources(ChowMatrix PRIVATE
     dsp/DelayProc.cpp
     dsp/Distortion.cpp
     dsp/InputNode.cpp
+    dsp/LookupTables.cpp
     dsp/ParamHelpers.cpp
 
     gui/ParamSlider.cpp

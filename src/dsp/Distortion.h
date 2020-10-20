@@ -1,6 +1,6 @@
 #pragma once
 
-#include <JuceHeader.h>
+#include "LookupTables.h"
 
 namespace ADAAConsts
 {
@@ -37,10 +37,10 @@ private:
     inline double calcD1 (double x0) noexcept
     {
         bool illCondition = std::abs (x0 - x1) < ADAAConsts::TOL;
-        double ad2_x0 = lut_AD2.processSample (x0);
+        double ad2_x0 = tables->lut_AD2.processSample (x0);
 
         double y = illCondition ?
-            lut_AD1.processSample (0.5 * (x0 + x1)) :
+            tables->lut_AD1.processSample (0.5 * (x0 + x1)) :
             (ad2_x0 - ad2_x1) / (x0 - x1);
 
         ad2_x1 = ad2_x0;
@@ -54,9 +54,9 @@ private:
 
         bool illCondition = std::abs (delta) < ADAAConsts::TOL;
         return illCondition ?
-            lut.processSample (0.5 * (xBar + x)) :
-            (2.0 / delta) * (lut_AD1.processSample (xBar)
-                + (lut_AD2.processSample (x) - lut_AD2.processSample (xBar)) / delta);
+            tables->lut.processSample (0.5 * (xBar + x)) :
+            (2.0 / delta) * (tables->lut_AD1.processSample (xBar)
+                + (tables->lut_AD2.processSample (x) - tables->lut_AD2.processSample (xBar)) / delta);
     }
 
     double x1 = 0.0;
@@ -64,9 +64,7 @@ private:
     double ad2_x1 = 0.0;
     double d2 = 0.0;
 
-    dsp::LookupTableTransform<double> lut;
-    dsp::LookupTableTransform<double> lut_AD1;
-    dsp::LookupTableTransform<double> lut_AD2;
+    SharedResourcePointer<LookupTables> tables;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ADAA2)
 };
