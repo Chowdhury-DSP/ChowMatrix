@@ -17,6 +17,7 @@ public:
     {
         backgroundColour,
         nodeColour,
+        nodeSelectedColour,
     };
 
     void mouseDown (const MouseEvent& e) override;
@@ -47,8 +48,9 @@ public:
         graphView = std::make_unique<GraphView> (*plugin);
 
         setColourTranslation ({
-            { "background", GraphView::backgroundColour },
-            { "node",       GraphView::nodeColour },
+            { "background",    GraphView::backgroundColour },
+            { "node",          GraphView::nodeColour },
+            { "node-selected", GraphView::nodeSelectedColour },
         });
 
         addAndMakeVisible (graphView.get());

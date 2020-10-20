@@ -5,9 +5,10 @@
 
 namespace NodeInfoConsts
 {
-    constexpr int InfoWidth = 120;
-    constexpr int InfoWidthNoLabel = 60;
-    constexpr int paramHeight = 22;
+    constexpr int InfoWidth = 95;
+    constexpr int InfoWidthNoLabel = 80;
+    constexpr int InfoHeight = 18;
+    constexpr int InfoHeightNoLabel = 22;
 }
 
 class NodeInfo : public Component
@@ -22,19 +23,22 @@ public:
                 (dynamic_cast<AudioProcessorValueTreeState::Parameter*>
                 (node.getNodeParameter (i)), showLabel)));
 
-        int width = showLabel ? NodeInfoConsts::InfoWidth : NodeInfoConsts::InfoWidthNoLabel;
-        setSize (width, NodeInfoConsts::paramHeight * sliders.size());
+        const int width = showLabel ? NodeInfoConsts::InfoWidth : NodeInfoConsts::InfoWidthNoLabel;
+        const int height = showLabel ? NodeInfoConsts::InfoHeight : NodeInfoConsts::InfoHeightNoLabel;
+        setSize (width, height * sliders.size());
     }
 
     void paint (Graphics& g) override
     {
-        g.fillAll (Colours::slategrey);
+        Colour background = showLabel ? Colour (0xFF344B6F) : Colour (0xFF162947);
+        g.fillAll (background);
     }
 
     void resized() override
     {
+        const int height = showLabel ? NodeInfoConsts::InfoHeight : NodeInfoConsts::InfoHeightNoLabel;
         for (int i = 0; i < sliders.size(); ++i)
-            sliders[i]->setBounds (0, NodeInfoConsts::paramHeight * i, getWidth(), 30);
+            sliders[i]->setBounds (0, height * i, getWidth(), height);
     }
 
     const DelayNode* getNode() const noexcept { return &node; }

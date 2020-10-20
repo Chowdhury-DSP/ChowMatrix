@@ -40,13 +40,17 @@ void DelayNodeComponent::mouseDrag (const MouseEvent& e)
 
 void DelayNodeComponent::paint (Graphics& g)
 {
-    NodeComponent::paint (g);
-
     if (isSelected)
     {
+        g.setColour (findColour (GraphView::nodeSelectedColour, true));
+        g.fillEllipse (getLocalBounds().toFloat());
+
         g.setColour (Colours::white);
-        g.drawEllipse (getLocalBounds().toFloat().reduced (1.0f), 1.0f);
+        g.drawEllipse (getLocalBounds().toFloat().reduced (1.0f), 2.0f);
+        return;
     }
+
+    NodeComponent::paint (g);
 }
 
 float DelayNodeComponent::getMaxDist() const noexcept

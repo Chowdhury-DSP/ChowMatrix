@@ -13,8 +13,20 @@ ParamSlider::ParamSlider (Parameter* param, bool showLabel) :
     addAndMakeVisible (nameLabel);
     addAndMakeVisible (valueLabel);
 
-    if (! showLabel)
+    if (showLabel)
+    {
+        nameLabel.setFont (Font (13.0f, Font::bold));
+        nameLabel.setColour (Label::textColourId, Colours::white);
+        valueLabel.setFont (Font (13.0f, Font::bold));
+        valueLabel.setColour (Label::textColourId, Colour (0xFF21CCA5));
+        valueLabel.setJustificationType (Justification::right);
+    }
+    else
+    {
+        valueLabel.setFont (Font (16.0f));
+        valueLabel.setColour (Label::textColourId, Colours::white);
         valueLabel.setJustificationType (Justification::centred);
+    }
 
     nameLabel.setText (param->paramID, sendNotification);
     valueLabel.setInterceptsMouseClicks (false, false);
@@ -48,9 +60,9 @@ void ParamSlider::resized()
 {
     if (showLabel)
     {
-        const int halfWidth = getWidth() / 2;
+        const int halfWidth = getBounds().getProportion (Rectangle<float> (0.4f, 1.0f)).getWidth();
         nameLabel.setBounds (0, 0, halfWidth, getHeight());
-        valueLabel.setBounds (halfWidth, 0, halfWidth, getHeight());
+        valueLabel.setBounds (halfWidth, 0, getWidth() - halfWidth, getHeight());
     }
     else
     {

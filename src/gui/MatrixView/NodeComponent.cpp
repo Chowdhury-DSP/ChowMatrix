@@ -6,7 +6,7 @@ NodeComponent::NodeComponent (DBaseNode& node, GraphView* view) :
     node (node),
     graphView (view)
 {
-    setSize (30, 30);
+    setSize (32, 32);
 }
 
 void NodeComponent::paint (Graphics& g)

@@ -7,17 +7,16 @@ Editor* createAndAddEditorToList (Node* node, OwnedArray<Editor>& list, GraphVie
     return list.add (dynamic_cast<Editor*> (node->createEditor (view).release()));
 }
 
-void doForAllChildNodes (NodeComponent* root, NodeCompManager::NodeFunc funcToDo)
+void doForAllChildNodes (DBaseNode* root, NodeCompManager::NodeFunc funcToDo)
 {
     if (root == nullptr)
         return;
-    
-    auto& rootNode = root->getNode();
-    for (int i = 0; i < rootNode.getNumChildren(); ++i)
+
+    for (int i = 0; i < root->getNumChildren(); ++i)
     {
-        auto* childNode = rootNode.getChild (i);
+        auto* childNode = root->getChild (i);
         funcToDo (root, childNode);
-        doForAllChildNodes (childNode->getEditor(), funcToDo);
+        doForAllChildNodes (childNode, funcToDo);
     }
 }
 
@@ -47,5 +46,5 @@ void NodeCompManager::removeEditor (DelayNode* nodeToRemove)
 void NodeCompManager::doForAllNodes (NodeFunc nodeFunc)
 {
     for (auto* nodeComp : inputNodeComponents)
-        doForAllChildNodes (nodeComp, nodeFunc);
+        doForAllChildNodes (&nodeComp->getNode(), nodeFunc);
 }

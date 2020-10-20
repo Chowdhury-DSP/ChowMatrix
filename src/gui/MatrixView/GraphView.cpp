@@ -5,12 +5,13 @@ GraphView::GraphView (ChowMatrix& plugin) :
     manager (this)
 {
     setColour (backgroundColour, Colours::darkgrey);
-    setColour (nodeColour, Colours::greenyellow);
+    setColour (nodeColour, Colours::pink);
+    setColour (nodeSelectedColour, Colours::greenyellow);
 
     for (auto& node : plugin.inputNodes)
         manager.createAndAddEditor (&node);
 
-    manager.doForAllNodes ([=] (NodeComponent*, DelayNode* child) { manager.createAndAddEditor (child); });
+    manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { manager.createAndAddEditor (child); });
 }
 
 GraphView::~GraphView()
@@ -18,7 +19,7 @@ GraphView::~GraphView()
     for (auto& node : plugin.inputNodes)
         node.removeNodeListener (this);
 
-    manager.doForAllNodes ([=] (NodeComponent*, DelayNode* child) { child->removeNodeListener (this); });
+    manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { child->removeNodeListener (this); });
 }
 
 void GraphView::mouseDown (const MouseEvent&)
@@ -31,11 +32,11 @@ void GraphView::paint (Graphics& g)
     g.fillAll (findColour (backgroundColour));
 
     g.setColour (findColour (nodeColour));
-    manager.doForAllNodes ([&g] (NodeComponent* root, DelayNode* childNode) {
+    manager.doForAllNodes ([&g] (DBaseNode* root, DelayNode* childNode) {
         auto* editor = childNode->getEditor();
-        auto rootPos = root->getCentrePosition();
+        auto rootPos = root->getEditor()->getCentrePosition();
         auto childPos = editor->getCentrePosition();
-        g.drawLine (Line (rootPos, childPos).toFloat());
+        g.drawLine (Line (rootPos, childPos).toFloat(), 2.0f);
     });
 }
 
@@ -48,7 +49,7 @@ void GraphView::resized()
         idx++;
     }
 
-    manager.doForAllNodes ([=] (NodeComponent*, DelayNode* childNode) { childNode->getEditor()->updatePosition(); });
+    manager.doForAllNodes ([=] (DBaseNode*, DelayNode* childNode) { childNode->getEditor()->updatePosition(); });
 }
 
 void GraphView::clearSelected()
