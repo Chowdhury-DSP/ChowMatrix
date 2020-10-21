@@ -6,7 +6,7 @@
 #include "ParamHelpers.h"
 
 class DelayNode : public BaseNode<DelayNode>,
-                  private ProcessorBase
+                  public ProcessorBase
 {
 public:
     DelayNode();

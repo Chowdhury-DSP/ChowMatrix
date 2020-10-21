@@ -12,8 +12,8 @@ public:
     void parameterValueChanged (int, float) override;
     void parameterGestureChanged (int, bool) override {}
 
-    void paint (Graphics& g) override;
     void resized() override;
+    void paint (Graphics&) override {}
 
     void mouseDrag (const MouseEvent& e) override;
     void mouseDoubleClick (const MouseEvent& e) override;

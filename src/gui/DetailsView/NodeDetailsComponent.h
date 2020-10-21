@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../ChowMatrix.h"
-#include "../NodeInfo.h"
+#include "NodeDetails.h"
 
 class NodeDetailsComponent : public Component,
                              private DBaseNode::Listener
@@ -23,7 +23,7 @@ private:
     void addNode (DelayNode* node);
 
     ChowMatrix& plugin;
-    OwnedArray<NodeInfo> nodes;
+    OwnedArray<NodeDetails> nodes;
     int minWidth = 0;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NodeDetailsComponent)

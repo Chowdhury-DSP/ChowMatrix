@@ -5,18 +5,10 @@
 class NodeDetailsViewport : public Viewport
 {
 public:
-    NodeDetailsViewport (ChowMatrix& chowMatrix) :
-        detailsComp (chowMatrix)
-    {
-        setViewedComponent (&detailsComp, false);
-        setScrollBarsShown (false, true);
-    }
+    NodeDetailsViewport (ChowMatrix& chowMatrix);
 
-    void resized() override
-    {
-        detailsComp.setSize (detailsComp.getWidth(), getHeight());
-        detailsComp.setMinWidth (getWidth());
-    }
+    void resized() override;
+    void paint (Graphics&) override;
 
 private:
     NodeDetailsComponent detailsComp;

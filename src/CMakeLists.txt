@@ -11,7 +11,10 @@ target_sources(ChowMatrix PRIVATE
 
     gui/ParamSlider.cpp
     gui/BottomBar/BottomBarLNF.cpp
+    gui/DetailsView/NodeDetails.cpp
     gui/DetailsView/NodeDetailsComponent.cpp
+    gui/DetailsView/NodeDetailsGUI.cpp
+    gui/DetailsView/NodeDetailsViewport.cpp
     gui/MatrixView/DelayNodeComponent.cpp
     gui/MatrixView/GraphView.cpp
     gui/MatrixView/NodeCompManager.cpp

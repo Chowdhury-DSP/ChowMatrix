@@ -2,8 +2,8 @@
 
 namespace
 {
-    constexpr int xOffset = 5;
-    constexpr int xPad = 10;
+    constexpr int xOffset = 0;
+    constexpr int xPad = 3;
 }
 
 void doForNodes (DBaseNode* root, std::function<void(DelayNode*)> nodeFunc)
@@ -39,13 +39,13 @@ NodeDetailsComponent::~NodeDetailsComponent()
 
 void NodeDetailsComponent::addNode (DelayNode* node)
 {
-    addAndMakeVisible (nodes.add (std::make_unique<NodeInfo> (*node, false)));
+    addAndMakeVisible (nodes.add (std::make_unique<NodeDetails> (*node)));
     node->addNodeListener (this);
 }
 
 void NodeDetailsComponent::paint (Graphics& g)
 {
-    g.fillAll (Colours::black);
+    g.fillAll (Colours::transparentBlack);
 }
 
 void NodeDetailsComponent::resized()

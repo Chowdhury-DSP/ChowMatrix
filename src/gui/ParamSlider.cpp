@@ -51,11 +51,6 @@ void ParamSlider::parameterValueChanged (int, float)
     this->setValue (param->convertTo0to1 (param->get()), dontSendNotification);
 }
 
-void ParamSlider::paint (Graphics& g)
-{
-    Component::paint (g);   
-}
-
 void ParamSlider::resized()
 {
     if (showLabel)
