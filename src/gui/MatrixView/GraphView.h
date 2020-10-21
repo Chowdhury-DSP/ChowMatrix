@@ -24,7 +24,7 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
 
-    void clearSelected();
+    void setSelected (DelayNode* node);
     void nodeAdded (DelayNode* newNode) override;
     void nodeRemoved (DelayNode* nodeToRemove) override;
 

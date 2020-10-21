@@ -104,3 +104,14 @@ void DelayNode::deleteNode()
     parent->removeChild (this);
     nodeListeners.call (&DBaseNode::Listener::nodeRemoved, this);
 }
+
+void DelayNode::setSelected (bool shouldBeSelected)
+{ 
+    isSelected = shouldBeSelected;
+
+    if (auto edCast = dynamic_cast<DelayNodeComponent*> (editor))
+        edCast->selectionChanged();
+
+    if (nodeDetails)
+        nodeDetails->repaint();
+}

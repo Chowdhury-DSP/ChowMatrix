@@ -24,7 +24,7 @@ GraphView::~GraphView()
 
 void GraphView::mouseDown (const MouseEvent&)
 {
-    clearSelected();
+    setSelected (nullptr);
 }
 
 void GraphView::paint (Graphics& g)
@@ -52,10 +52,15 @@ void GraphView::resized()
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* childNode) { childNode->getEditor()->updatePosition(); });
 }
 
-void GraphView::clearSelected()
+// void GraphView::clearSelected()
+// {
+//     for (auto* nodeComp : manager.delayNodeComponents)
+//         nodeComp->setSelected (false);
+// }
+
+void GraphView::setSelected (DelayNode* node)
 {
-    for (auto* nodeComp : manager.delayNodeComponents)
-        nodeComp->setSelected (false);
+    plugin.getManager().setSelected (node);
 }
 
 void GraphView::nodeAdded (DelayNode* newNode)

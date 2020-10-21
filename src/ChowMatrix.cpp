@@ -13,6 +13,8 @@ namespace
 
 ChowMatrix::ChowMatrix()
 {
+    manager.initialise (&inputNodes);
+
     dryParamDB = vts.getRawParameterValue (dryTag);
     wetParamDB = vts.getRawParameterValue (wetTag);
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "NodeManager.h"
 #include "dsp/InputNode.h"
 
 class ChowMatrix : public chowdsp::PluginBase<ChowMatrix>
@@ -19,9 +20,14 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     // @TODO: don't make this public
-    InputNode inputNodes[2];
+    std::array<InputNode, 2> inputNodes;
+    // InputNode inputNodes[2];
+
+    NodeManager& getManager() { return manager; }
 
 private:
+    NodeManager manager;
+
     std::atomic<float>* dryParamDB = nullptr;
     std::atomic<float>* wetParamDB = nullptr;
 

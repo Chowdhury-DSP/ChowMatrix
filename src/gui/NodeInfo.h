@@ -41,11 +41,11 @@ public:
             sliders[i]->setBounds (0, height * i, getWidth(), height);
     }
 
-    const DelayNode* getNode() const noexcept { return &node; }
+    DelayNode* getNode() { return &node; }
 
 private:
     OwnedArray<ParamSlider> sliders;
-    const DelayNode& node;
+    DelayNode& node;
     const bool showLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NodeInfo)

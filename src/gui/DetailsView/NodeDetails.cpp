@@ -4,12 +4,20 @@
 
 using namespace DetailsConsts;
 
-NodeDetails::NodeDetails (DelayNode& node) :
+NodeDetails::NodeDetails (DelayNode& node, NodeManager& manager) :
+    manager (manager),
     nodeInfo (node, false),
-    button (nodeInfo)
+    button (*this)
 {
+    node.setNodeDetails (this);
+
     addAndMakeVisible (nodeInfo);
     addAndMakeVisible (button);
+}
+
+NodeDetails::~NodeDetails()
+{
+    getNode()->setNodeDetails (nullptr);
 }
 
 void NodeDetails::resized()
@@ -18,8 +26,8 @@ void NodeDetails::resized()
     nodeInfo.setBounds (0, buttonHeight, getWidth(), getHeight() - buttonHeight);
 }
 
-NodeDetails::Button::Button (NodeInfo& nodeInfo) :
-    nodeInfo (nodeInfo)
+NodeDetails::Button::Button (NodeDetails& nodeDetails) :
+    nodeDetails (nodeDetails)
 {
 }
 
@@ -27,11 +35,28 @@ void NodeDetails::Button::paint (Graphics& g)
 {
     const int x = getWidth() / 2 - circleRadius;
     const int y = getHeight() / 2 - circleRadius;
+    auto bounds = Rectangle<int> (x, y, 2 * circleRadius, 2 * circleRadius).toFloat();
 
-    Colour cc = true ? // nodeInfo.getNode()->getEditor()->isSelected() ?
+    bool isSelected = nodeDetails.getNode()->getSelected();
+    Colour cc = isSelected ?
         findColour (NodeDetailsGUI::nodeSelectedColour, true) :
         findColour (NodeDetailsGUI::nodeColour, true);
 
     g.setColour (cc);
-    g.fillEllipse (x, y, 2 * circleRadius, 2 * circleRadius);
+    g.fillEllipse (bounds);
+
+    if (isSelected)
+    {
+        g.setColour (Colours::white);
+        g.drawEllipse (bounds.reduced (1.0f), 2.0f);
+    }
+
+    g.setColour (Colours::white);
+    g.drawFittedText (String (nodeDetails.getNode()->getIndex() + 1),
+        bounds.toNearestInt(), Justification::centred, 1);
+}
+
+void NodeDetails::Button::mouseDown (const MouseEvent&)
+{
+    nodeDetails.setSelected();
 }

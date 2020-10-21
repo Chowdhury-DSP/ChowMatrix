@@ -27,8 +27,7 @@ void DelayNodeComponent::mouseDown (const MouseEvent& e)
         return;
     }
 
-    graphView->clearSelected();
-    setSelected (true);
+    graphView->setSelected (&node);
 }
 
 void DelayNodeComponent::mouseDrag (const MouseEvent& e)
@@ -40,17 +39,21 @@ void DelayNodeComponent::mouseDrag (const MouseEvent& e)
 
 void DelayNodeComponent::paint (Graphics& g)
 {
-    if (isSelected)
+    if (node.getSelected())
     {
         g.setColour (findColour (GraphView::nodeSelectedColour, true));
         g.fillEllipse (getLocalBounds().toFloat());
 
         g.setColour (Colours::white);
         g.drawEllipse (getLocalBounds().toFloat().reduced (1.0f), 2.0f);
-        return;
+    }
+    else
+    {
+        NodeComponent::paint (g);
     }
 
-    NodeComponent::paint (g);
+    g.setColour (Colours::white);
+    g.drawFittedText (String (node.getIndex() + 1), getLocalBounds(), Justification::centred, 1);
 }
 
 float DelayNodeComponent::getMaxDist() const noexcept
@@ -103,9 +106,9 @@ void DelayNodeComponent::parameterValueChanged (int, float)
     updatePosition();
 }
 
-void DelayNodeComponent::setSelected (bool shouldBeSelected)
+void DelayNodeComponent::selectionChanged()
 {
-    isSelected = shouldBeSelected;
+    bool isSelected = node.getSelected();
     nodeInfo.setVisible (isSelected);
     nodeInfo.toFront (true);
     repaint();

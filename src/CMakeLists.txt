@@ -1,5 +1,6 @@
 target_sources(ChowMatrix PRIVATE
     ChowMatrix.cpp
+    NodeManager.cpp
     
     dsp/BaseNode.cpp
     dsp/DelayNode.cpp

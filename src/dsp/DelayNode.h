@@ -31,6 +31,13 @@ public:
     void loadXml (XmlElement*) override;
     void deleteNode();
 
+    void setIndex (int newIdx) { nodeIdx = newIdx; }
+    int getIndex() const noexcept { return nodeIdx; }
+
+    bool getSelected() const noexcept { return isSelected; }
+    void setSelected (bool shouldBeSelected);
+    void setNodeDetails (Component* detailsComp) { nodeDetails = detailsComp; }
+
 private:
     void cookParameters();
 
@@ -56,6 +63,11 @@ private:
     AudioBuffer<float> childBuffer;
     AudioBuffer<float> panBuffer;
     dsp::Panner<float> panner;
+
+    // needed for GUI
+    int nodeIdx = 0;
+    bool isSelected = false;
+    Component* nodeDetails;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayNode)
 };

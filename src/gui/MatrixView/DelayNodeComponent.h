@@ -16,8 +16,7 @@ public:
     void paint (Graphics& g) override;
     void updatePosition() override;
 
-    void setSelected (bool shouldBeSelected);
-
+    void selectionChanged();
     void parameterValueChanged (int, float) override;
     void parameterGestureChanged (int, bool) override {}
 
@@ -26,7 +25,6 @@ private:
     float getMaxDist() const noexcept;
 
     DelayNode& node;
-    bool isSelected = false;
     NodeInfo nodeInfo;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayNodeComponent)

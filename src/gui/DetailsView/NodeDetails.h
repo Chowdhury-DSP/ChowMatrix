@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../NodeInfo.h"
+#include "../../NodeManager.h"
 
 namespace DetailsConsts
 {
@@ -11,22 +12,27 @@ namespace DetailsConsts
 class NodeDetails : public Component
 {
 public:
-    NodeDetails (DelayNode& node);
+    NodeDetails (DelayNode& node, NodeManager& manager);
+    ~NodeDetails();
 
     void resized() override;
-    const DelayNode* getNode() const noexcept { return nodeInfo.getNode(); }
+    DelayNode* getNode() { return nodeInfo.getNode(); }
+
+    void setSelected() { manager.setSelected (getNode()); }
 
     struct Button : Component
     {
-        Button (NodeInfo& nodeInfo);
+        Button (NodeDetails& nodeDetails);
         enum ColourIDs { nodeColour, selectedColour };
+        void mouseDown (const MouseEvent& e) override;
         void paint (Graphics& g) override;
 
     private:
-        NodeInfo& nodeInfo;
+        NodeDetails& nodeDetails;
     };
 
 private:
+    NodeManager& manager;
     NodeInfo nodeInfo;
     Button button;
 

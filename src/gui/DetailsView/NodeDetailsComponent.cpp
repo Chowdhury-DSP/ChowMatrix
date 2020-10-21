@@ -1,19 +1,10 @@
 #include "NodeDetailsComponent.h"
+#include "../../NodeManager.h"
 
 namespace
 {
     constexpr int xOffset = 0;
     constexpr int xPad = 3;
-}
-
-void doForNodes (DBaseNode* root, std::function<void(DelayNode*)> nodeFunc)
-{
-    for (int i = 0; i < root->getNumChildren(); ++i)
-    {
-        auto child = root->getChild (i);
-        nodeFunc (child);
-        doForNodes (child, nodeFunc);
-    }
 }
 
 NodeDetailsComponent::NodeDetailsComponent (ChowMatrix& plugin) :
@@ -24,7 +15,7 @@ NodeDetailsComponent::NodeDetailsComponent (ChowMatrix& plugin) :
     for (auto& node : plugin.inputNodes)
     {
         node.addNodeListener (this);
-        doForNodes (&node, [=] (DelayNode* node) { addNode (node); });
+        NodeManager::doForNodes (&node, [=] (DelayNode* node) { addNode (node); });
     }
 }
 
@@ -32,14 +23,14 @@ NodeDetailsComponent::~NodeDetailsComponent()
 {
     for (auto& node : plugin.inputNodes)
     {
-        doForNodes (&node, [=] (DelayNode* node) { node->removeNodeListener (this); });
+        NodeManager::doForNodes (&node, [=] (DelayNode* node) { node->removeNodeListener (this); });
         node.removeNodeListener (this);
     }
 }
 
 void NodeDetailsComponent::addNode (DelayNode* node)
 {
-    addAndMakeVisible (nodes.add (std::make_unique<NodeDetails> (*node)));
+    addAndMakeVisible (nodes.add (std::make_unique<NodeDetails> (*node, plugin.getManager())));
     node->addNodeListener (this);
 }
 
