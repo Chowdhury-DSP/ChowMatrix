@@ -31,6 +31,7 @@ private:
 
     float fs = 44100.0f;
     
+    SmoothedValue<float, ValueSmoothingTypes::Linear> delaySmooth;
     SmoothedValue<float, ValueSmoothingTypes::Linear> feedback;
     std::vector<float> state;
 

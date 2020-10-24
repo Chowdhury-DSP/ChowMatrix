@@ -3,7 +3,7 @@
 
 namespace
 {
-    constexpr int N = 1 << 16;
+    constexpr int N = 1 << 17;
     constexpr double minVal = -10.0;
     constexpr double maxVal = 10.0;
 }

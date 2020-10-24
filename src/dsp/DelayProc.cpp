@@ -6,6 +6,7 @@ void DelayProc::prepare (const dsp::ProcessSpec& spec)
     fs = (float) spec.sampleRate;
 
     feedback.reset (spec.sampleRate, 0.05 * spec.numChannels);
+    delaySmooth.reset (spec.sampleRate, 0.05 * spec.numChannels);
     state.resize (spec.numChannels, 0.0f);
 
     reset();
@@ -43,6 +44,7 @@ void DelayProc::process (const ProcessContext& context)
 
         for (size_t i = 0; i < numSamples; ++i)
         {
+            delay.setDelay (delaySmooth.getNextValue());
             auto input = procs.processSample (inputSamples[i] + state[channel]);
             delay.pushSample ((int) channel, input);
             outputSamples[i] = delay.popSample ((int) channel);
@@ -55,11 +57,11 @@ using IIRCoefs = dsp::IIR::Coefficients<float>;
 
 void DelayProc::setParameters (const Parameters& params)
 {
-    delay.setDelay ((params.delayMs / 1000.0f) * fs);
+    delaySmooth.setTargetValue ((params.delayMs / 1000.0f) * fs);
     feedback.setTargetValue (params.feedback);
     procs.get<lpfIdx>().coefficients = IIRCoefs::makeFirstOrderLowPass ((double) fs, params.lpfFreq);
     procs.get<hpfIdx>().coefficients = IIRCoefs::makeFirstOrderHighPass ((double) fs, params.hpfFreq);
-    procs.get<distortionIdx>().setGain (19.8f * std::pow (params.distortion, 2) + 0.2f);
+    procs.get<distortionIdx>().setGain (19.5f * std::pow (params.distortion, 2) + 0.5f);
 }
 
 //==================================================

@@ -7,32 +7,44 @@ audio plugin.
 
 ## Roadmap
 
-- [ ] Basic GUI Layout
+- [x] Basic GUI Layout
   - [x] Top Bar
-  - [ ] Bottom Bar
+  - [x] Bottom Bar
   - [x] Main View
-  - [ ] Insanity slider
-  - [ ] Detail View
-  - [ ] Tooltip view
-- [ ] Matrix node
+  - [x] Insanity slider
+  - [x] Detail View
+  - [x] Tooltip view
+- [x] Matrix node
   - [x] Delay
   - [x] Panner
-  - [ ] Gain
-  - [ ] Feedback
+  - [x] Gain
+  - [x] Feedback
 - [x] Node graph view
   - [x] Node circles w/ click and drag
   - [x] Graph connections
   - [x] Details tooltip
-- [ ] Scroll view
-  - [ ] Scroll bar
-  - [ ] Node circles
-  - [ ] Details boxes
+- [x] Scroll view
+  - [x] Scroll bar
+  - [x] Node circles
+  - [x] Details boxes
+  - [x] Parameter labels next to scroll view
+- [ ] GUI audit
+  - [x] Colours
+  - [ ] Fonts
+  - [ ] Layout
+- [ ] Insanity
+  - [x] Slider
+  - [ ] Algorithm
+  - [ ] Aurora....
 - [ ] Utilities
-  - [ ] save/load
+  - [x] save/load
   - [ ] presets
 - [ ] Extras
-  - [ ] Spaghetti mode
-  - [ ] Auto-updater
+  - [ ] Delay line mixing
+  - [ ] Delay line modes...
+  - [ ] Auto-updating
+
+TESTING!!!!
 
 ## Building
 

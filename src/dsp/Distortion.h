@@ -4,7 +4,7 @@
 
 namespace ADAAConsts
 {
-    constexpr double TOL = 1.0e-5;
+    constexpr double TOL = 1.0e-4;
 }
 
 class ADAA2

@@ -2,11 +2,13 @@
 #include "gui/MatrixView/GraphView.h"
 #include "gui/DetailsView/NodeDetailsGUI.h"
 #include "gui/BottomBar/TextSliderItem.h"
+#include "gui/InsanityLNF.h"
 
 namespace
 {
     const String dryTag = "dry_param";
     const String wetTag = "wet_param";
+    const String insanityTag = "insanity";
 
     constexpr double gainFadeTime = 0.05;
 }
@@ -17,6 +19,7 @@ ChowMatrix::ChowMatrix()
 
     dryParamDB = vts.getRawParameterValue (dryTag);
     wetParamDB = vts.getRawParameterValue (wetTag);
+    insanityParam = vts.getRawParameterValue (insanityTag);
 
     dryGain.setRampDurationSeconds (gainFadeTime);
     wetGain.setRampDurationSeconds (gainFadeTime);
@@ -34,6 +37,11 @@ void ChowMatrix::addParameters (Parameters& params)
 
     params.push_back (std::make_unique<Parameter> (wetTag, "Wet", String(),
         gainRange, 0.0f, gainToString, stringToGain));
+
+    auto insanityToString = [] (float x) { return String (x * 100.0f) + "%"; };
+    auto stringToInsanity = [] (const String& t) { return t.getFloatValue() / 100.0f; };
+    params.push_back (std::make_unique<Parameter> (insanityTag, "Insanity", String(),
+        NormalisableRange<float> { 0.0f, 1.0f }, 0.0f, insanityToString, stringToInsanity));
 }
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
@@ -94,6 +102,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerFactory ("GraphView", &GraphViewItem::factory);
     builder->registerFactory ("NodeDetails", &NodeDetailsItem::factory);
     builder->registerFactory ("TextSlider", &TextSliderItem::factory);
+    builder->registerLookAndFeel ("InsanityLNF", std::make_unique<InsanityLNF>());
 
     return new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
 }

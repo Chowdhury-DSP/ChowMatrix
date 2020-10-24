@@ -14,8 +14,8 @@ int getNameWidth (int height, const String& text)
 void BottomBarLNF::drawRotarySlider (Graphics& g, int x, int y, int, int height,
                                           float, const float, const float, Slider& slider)
 {
-    g.setColour (Colours::yellow); // @TODO: make colour selectable
-    g.setFont ((float) height * heightFrac);
+    g.setColour (Colours::white); // @TODO: make colour selectable
+    g.setFont (Font ((float) height * heightFrac).boldened());
 
     String text = slider.getName() + ":";
     int width = getNameWidth (height, text);
@@ -38,11 +38,16 @@ Label* BottomBarLNF::createSliderTextBox (Slider& slider)
     label->setColour (Label::outlineColourId, Colours::transparentBlack);
     label->setColour (Label::outlineWhenEditingColourId, Colours::transparentBlack);
     label->setJustificationType (Justification::centred);
+    label->setFont (Font (16.0f).boldened());
 
     label->onEditorShow = [label]
     {
-        if (label->getCurrentTextEditor() != nullptr)
-            label->getCurrentTextEditor()->setJustification (Justification::centred);
+        if (auto editor = label->getCurrentTextEditor())
+        {
+            editor->setJustification (Justification::centred);
+            editor->setBounds (label->getBoundsInParent());
+            editor->setColour (CaretComponent::caretColourId, Colour (0xFFC954D4));
+        }
     };
 
     return label;

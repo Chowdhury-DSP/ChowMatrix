@@ -52,12 +52,6 @@ void GraphView::resized()
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* childNode) { childNode->getEditor()->updatePosition(); });
 }
 
-// void GraphView::clearSelected()
-// {
-//     for (auto* nodeComp : manager.delayNodeComponents)
-//         nodeComp->setSelected (false);
-// }
-
 void GraphView::setSelected (DelayNode* node)
 {
     plugin.getManager().setSelected (node);

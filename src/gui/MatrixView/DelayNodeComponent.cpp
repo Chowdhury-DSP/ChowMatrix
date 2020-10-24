@@ -58,7 +58,7 @@ void DelayNodeComponent::paint (Graphics& g)
 
 float DelayNodeComponent::getMaxDist() const noexcept
 {
-    return (float) graphView->getHeight() / 4.0f;
+    return (float) graphView->getHeight() / 2.0f;
 }
 
 void DelayNodeComponent::updateParams()

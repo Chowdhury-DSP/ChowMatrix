@@ -10,7 +10,7 @@ include_directories(modules)
 juce_add_plugin(ChowMatrix
     COMPANY_NAME chowdsp
     PLUGIN_MANUFACTURER_CODE Chow
-    PLUGIN_CODE tmp3
+    PLUGIN_CODE spg3
     FORMATS AU VST3 Standalone #VST
     ProductName "ChowMatrix")
 

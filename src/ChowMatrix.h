@@ -30,6 +30,7 @@ private:
 
     std::atomic<float>* dryParamDB = nullptr;
     std::atomic<float>* wetParamDB = nullptr;
+    std::atomic<float>* insanityParam = nullptr;
 
     AudioBuffer<float> chBuffers[2];
 
