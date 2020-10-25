@@ -71,7 +71,7 @@ public:
             if (context.usesSeparateInputAndOutputBlocks() && index != 0)
             {
                 jassert (context.getOutputBlock().getNumChannels() == context.getInputBlock().getNumChannels());
-                ProcessContextReplacing<typename ProcessContext::SampleType> replacingContext (context.getOutputBlock());
+                dsp::ProcessContextReplacing<typename ProcessContext::SampleType> replacingContext (context.getOutputBlock());
                 replacingContext.isBypassed = (bypassed[index] || context.isBypassed);
 
                 proc.process (replacingContext);

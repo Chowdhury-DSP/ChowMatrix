@@ -10,13 +10,14 @@ NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) :
     setColour (scrollTrackColour, Colours::grey);
 
     auto node = std::make_unique<DelayNode>();
-    for (int i = 0; i < 1 + node->getNumParameters(); ++i)
+    auto& params = node->getParameters();
+    for (int i = 0; i < 1 + params.size(); ++i)
     {
         String name = "Node";
         String text = "Node";
         if (i > 0)
         {
-            name = node->getParameters()[i-1]->getName(1024);
+            name = params[i-1]->getName(1024);
             text = name;
         }
 
