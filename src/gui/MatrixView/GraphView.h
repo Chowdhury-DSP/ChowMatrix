@@ -5,6 +5,7 @@
 #include "DelayNodeComponent.h"
 #include "InputNodeComponent.h"
 #include "NodeCompManager.h"
+#include "MatrixAurora.h"
 
 class GraphView : public Component,
                   public DBaseNode::Listener
@@ -31,6 +32,7 @@ public:
 private:
     ChowMatrix& plugin;
     NodeCompManager manager;
+    MatrixAurora aurora;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GraphView)
 };

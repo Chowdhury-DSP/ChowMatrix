@@ -38,6 +38,10 @@ public:
     void setSelected (bool shouldBeSelected);
     void setNodeDetails (Component* detailsComp) { nodeDetails = detailsComp; }
 
+    // Filters to smooth random param changes from Insanity
+    dsp::IIR::Filter<float> delaySmoother;
+    dsp::IIR::Filter<float> panSmoother;
+
 private:
     void cookParameters();
 

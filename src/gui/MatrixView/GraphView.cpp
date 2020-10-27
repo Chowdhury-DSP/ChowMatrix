@@ -2,8 +2,11 @@
 
 GraphView::GraphView (ChowMatrix& plugin) :
     plugin (plugin),
-    manager (this)
+    manager (this),
+    aurora (plugin.getInsanityParam())
 {
+    addAndMakeVisible (aurora);
+
     setColour (backgroundColour, Colours::darkgrey);
     setColour (nodeColour, Colours::pink);
     setColour (nodeSelectedColour, Colours::greenyellow);
@@ -42,6 +45,8 @@ void GraphView::paint (Graphics& g)
 
 void GraphView::resized()
 {
+    aurora.setBounds (getLocalBounds());
+
     int idx = 1;
     for (auto* nodeComp : manager.inputNodeComponents)
     {

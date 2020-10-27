@@ -7,6 +7,7 @@ target_sources(ChowMatrix PRIVATE
     dsp/DelayProc.cpp
     dsp/Distortion.cpp
     dsp/InputNode.cpp
+    dsp/InsanityControl.cpp
     dsp/LookupTables.cpp
     dsp/ParamHelpers.cpp
 
@@ -18,6 +19,7 @@ target_sources(ChowMatrix PRIVATE
     gui/DetailsView/NodeDetailsViewport.cpp
     gui/MatrixView/DelayNodeComponent.cpp
     gui/MatrixView/GraphView.cpp
+    gui/MatrixView/MatrixAurora.cpp
     gui/MatrixView/NodeCompManager.cpp
     gui/MatrixView/NodeComponent.cpp
 )

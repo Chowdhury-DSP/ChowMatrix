@@ -8,18 +8,17 @@ namespace
 {
     const String dryTag = "dry_param";
     const String wetTag = "wet_param";
-    const String insanityTag = "insanity";
 
     constexpr double gainFadeTime = 0.05;
 }
 
-ChowMatrix::ChowMatrix()
+ChowMatrix::ChowMatrix() :
+    insanityControl (vts, &inputNodes)
 {
     manager.initialise (&inputNodes);
 
     dryParamDB = vts.getRawParameterValue (dryTag);
     wetParamDB = vts.getRawParameterValue (wetTag);
-    insanityParam = vts.getRawParameterValue (insanityTag);
 
     dryGain.setRampDurationSeconds (gainFadeTime);
     wetGain.setRampDurationSeconds (gainFadeTime);
@@ -38,10 +37,7 @@ void ChowMatrix::addParameters (Parameters& params)
     params.push_back (std::make_unique<Parameter> (wetTag, "Wet", String(),
         gainRange, 0.0f, gainToString, stringToGain));
 
-    auto insanityToString = [] (float x) { return String (x * 100.0f) + "%"; };
-    auto stringToInsanity = [] (const String& t) { return t.getFloatValue() / 100.0f; };
-    params.push_back (std::make_unique<Parameter> (insanityTag, "Insanity", String(),
-        NormalisableRange<float> { 0.0f, 1.0f }, 0.0f, insanityToString, stringToInsanity));
+    InsanityControl::addParameters (params);
 }
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)

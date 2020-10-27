@@ -23,6 +23,9 @@ DelayNode::DelayNode() :
 
     processors.get<gainIdx>().setRampDurationSeconds (0.05);
     panner.setRule (dsp::PannerRule::squareRoot3dB);
+
+    delaySmoother.reset();
+    panSmoother.reset();
 }
 
 void DelayNode::cookParameters()
