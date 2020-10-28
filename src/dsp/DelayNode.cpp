@@ -1,6 +1,6 @@
 #include "DelayNode.h"
 #include "../gui/MatrixView/DelayNodeComponent.h"
-#include "ParamHelpers.h"
+#include "Parameters/ParamHelpers.h"
 
 using namespace ParamTags;
 
@@ -40,6 +40,11 @@ void DelayNode::cookParameters()
     });
 
     panner.setPan (*pan);
+}
+
+void DelayNode::setDelayType (VariableDelay::DelayType type)
+{
+    processors.get<delayIdx>().setDelayType (type);
 }
 
 void DelayNode::prepare (double sampleRate, int samplesPerBlock)

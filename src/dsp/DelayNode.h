@@ -1,9 +1,9 @@
 #pragma once
 
 #include "BaseNode.h"
-#include "DelayProc.h"
+#include "Delay/DelayProc.h"
 #include "ProcessorBase.h"
-#include "ParamHelpers.h"
+#include "Parameters/ParamHelpers.h"
 
 class DelayNode : public BaseNode<DelayNode>,
                   public ProcessorBase
@@ -17,6 +17,7 @@ public:
     float getPan() const noexcept { return pan->get(); }
     void setPan (float newPan) { ParamHelpers::setParameterValue (pan, newPan); }
 
+    void setDelayType (VariableDelay::DelayType type);
     void prepare (double sampleRate, int samplesPerBlock) override;
     void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples) override;
 
@@ -31,8 +32,14 @@ public:
     void loadXml (XmlElement*) override;
     void deleteNode();
 
-    void setIndex (int newIdx) { nodeIdx = newIdx; }
-    int getIndex() const noexcept { return nodeIdx; }
+    void setIndex (int newIdx)
+    {
+        nodeIdx = newIdx;
+    }
+    int getIndex() const noexcept
+    { 
+        return nodeIdx;
+    }
 
     bool getSelected() const noexcept { return isSelected; }
     void setSelected (bool shouldBeSelected);

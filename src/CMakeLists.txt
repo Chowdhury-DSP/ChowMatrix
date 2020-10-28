@@ -4,12 +4,14 @@ target_sources(ChowMatrix PRIVATE
     
     dsp/BaseNode.cpp
     dsp/DelayNode.cpp
-    dsp/DelayProc.cpp
-    dsp/Distortion.cpp
     dsp/InputNode.cpp
-    dsp/InsanityControl.cpp
-    dsp/LookupTables.cpp
-    dsp/ParamHelpers.cpp
+    dsp/Delay/DelayProc.cpp
+    dsp/Delay/VariableDelay.cpp
+    dsp/Distortion/Distortion.cpp
+    dsp/Distortion/LookupTables.cpp
+    dsp/Parameters/DelayTypeControl.cpp
+    dsp/Parameters/InsanityControl.cpp
+    dsp/Parameters/ParamHelpers.cpp
 
     gui/ParamSlider.cpp
     gui/BottomBar/BottomBarLNF.cpp

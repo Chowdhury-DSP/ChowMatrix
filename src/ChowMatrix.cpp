@@ -1,8 +1,9 @@
 #include "ChowMatrix.h"
-#include "gui/MatrixView/GraphView.h"
-#include "gui/DetailsView/NodeDetailsGUI.h"
+#include "gui/BottomBar/BottomBarLNF.h"
 #include "gui/BottomBar/TextSliderItem.h"
+#include "gui/DetailsView/NodeDetailsGUI.h"
 #include "gui/InsanityLNF.h"
+#include "gui/MatrixView/GraphView.h"
 
 namespace
 {
@@ -13,7 +14,8 @@ namespace
 }
 
 ChowMatrix::ChowMatrix() :
-    insanityControl (vts, &inputNodes)
+    insanityControl (vts, &inputNodes),
+    delayTypeControl (vts, &inputNodes)
 {
     manager.initialise (&inputNodes);
 
@@ -28,7 +30,7 @@ void ChowMatrix::addParameters (Parameters& params)
 {
     NormalisableRange<float> gainRange (-60.0f, 12.0f);
 
-    auto gainToString = [] (float x) { return String (x) + " dB"; };
+    auto gainToString = [] (float x) { return String (x, 1, false) + " dB"; };
     auto stringToGain = [] (const String& t) { return t.getFloatValue(); };
 
     params.push_back (std::make_unique<Parameter> (dryTag, "Dry", String(),
@@ -38,6 +40,7 @@ void ChowMatrix::addParameters (Parameters& params)
         gainRange, 0.0f, gainToString, stringToGain));
 
     InsanityControl::addParameters (params);
+    DelayTypeControl::addParameters (params);
 }
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
@@ -99,6 +102,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerFactory ("NodeDetails", &NodeDetailsItem::factory);
     builder->registerFactory ("TextSlider", &TextSliderItem::factory);
     builder->registerLookAndFeel ("InsanityLNF", std::make_unique<InsanityLNF>());
+    builder->registerLookAndFeel ("BottomBarLNF", std::make_unique<BottomBarLNF>());
 
     return new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
 }

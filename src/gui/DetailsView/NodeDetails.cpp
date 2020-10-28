@@ -53,8 +53,9 @@ void NodeDetails::Button::paint (Graphics& g)
     }
 
     g.setColour (Colours::white);
-    g.drawFittedText (String (nodeDetails.getNode()->getIndex() + 1),
-        bounds.toNearestInt(), Justification::centred, 1);
+    int nodeIdx = nodeDetails.getNode()->getIndex();
+    jassert (nodeIdx >= 0);
+    g.drawFittedText (String (nodeIdx + 1), bounds.toNearestInt(), Justification::centred, 1);
 }
 
 void NodeDetails::Button::mouseDown (const MouseEvent& e)

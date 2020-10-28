@@ -1,5 +1,5 @@
 #include "InsanityControl.h"
-#include "../NodeManager.h"
+#include "../../NodeManager.h"
 
 namespace
 {

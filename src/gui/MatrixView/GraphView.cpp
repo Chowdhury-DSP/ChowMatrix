@@ -11,7 +11,7 @@ GraphView::GraphView (ChowMatrix& plugin) :
     setColour (nodeColour, Colours::pink);
     setColour (nodeSelectedColour, Colours::greenyellow);
 
-    for (auto& node : plugin.inputNodes)
+    for (auto& node : *plugin.getNodes())
         manager.createAndAddEditor (&node);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { manager.createAndAddEditor (child); });
@@ -19,7 +19,7 @@ GraphView::GraphView (ChowMatrix& plugin) :
 
 GraphView::~GraphView()
 {
-    for (auto& node : plugin.inputNodes)
+    for (auto& node : *plugin.getNodes())
         node.removeNodeListener (this);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { child->removeNodeListener (this); });

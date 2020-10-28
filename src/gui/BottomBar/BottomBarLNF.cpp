@@ -11,6 +11,13 @@ int getNameWidth (int height, const String& text)
     return f.getStringWidth (text);
 }
 
+BottomBarLNF::BottomBarLNF()
+{
+    setColour (PopupMenu::backgroundColourId, Colour (0xFF31323A));
+    setColour (PopupMenu::highlightedBackgroundColourId, Colour (0x7FC954D4));
+    setColour (PopupMenu::highlightedTextColourId, Colours::white);
+}
+
 void BottomBarLNF::drawRotarySlider (Graphics& g, int x, int y, int, int height,
                                           float, const float, const float, Slider& slider)
 {
@@ -44,12 +51,44 @@ Label* BottomBarLNF::createSliderTextBox (Slider& slider)
     {
         if (auto editor = label->getCurrentTextEditor())
         {
-            editor->setJustification (Justification::centred);
             editor->setBounds (label->getBoundsInParent());
             editor->setColour (CaretComponent::caretColourId, Colour (0xFFC954D4));
+            editor->setJustification (Justification::left);
         }
     };
 
     return label;
 }
 
+void BottomBarLNF::drawComboBox (Graphics& g, int width, int height, bool, int, int, int, int, ComboBox& box)
+{
+    auto cornerSize = 5.0f;
+    Rectangle<int> boxBounds (0, 0, width, height);
+
+    g.setColour (box.findColour (ComboBox::backgroundColourId));
+    g.fillRoundedRectangle (boxBounds.toFloat(), cornerSize);
+
+    if (box.getName().isNotEmpty())
+    {
+        g.setColour (Colours::white);
+        g.setFont (getComboBoxFont (box).boldened());
+        auto nameBox = boxBounds.withWidth (boxBounds.proportionOfWidth (0.3f));
+        g.drawFittedText (box.getName() + ": ", nameBox, Justification::right, 1);
+    }
+}
+
+void BottomBarLNF::positionComboBoxText (ComboBox& box, Label& label)
+{
+    auto b = box.getBounds();
+
+    if (box.getName().isNotEmpty())
+    {
+        auto width = b.proportionOfWidth (0.7f);
+        auto x = b.proportionOfWidth (0.3f);
+        b = b.withX (x).withWidth (width);
+    }
+
+    label.setBounds (b);
+    label.setFont (getComboBoxFont (box).boldened());
+    label.setJustificationType (Justification::topLeft);
+}

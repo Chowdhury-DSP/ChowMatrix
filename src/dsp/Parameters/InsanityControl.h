@@ -1,7 +1,7 @@
 #pragma once
 
 #include <random>
-#include "InputNode.h"
+#include "../InputNode.h"
 
 class InsanityControl : private AudioProcessorValueTreeState::Listener,
                         private DBaseNode::Listener,

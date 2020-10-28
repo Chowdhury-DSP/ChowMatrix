@@ -1,8 +1,9 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "Distortion.h"
-#include "ProcessorChain.h"
+#include "../Distortion/Distortion.h"
+#include "../ProcessorChain.h"
+#include "VariableDelay.h"
 
 class DelayProc
 {
@@ -25,9 +26,10 @@ public:
     };
 
     void setParameters (const Parameters& params);
+    void setDelayType (VariableDelay::DelayType type) { delay.setDelayType (type); };
 
 private:
-    dsp::DelayLine<float, dsp::DelayLineInterpolationTypes::Lagrange3rd> delay { 1 << 21 };
+    VariableDelay delay { 1 << 19 };
 
     float fs = 44100.0f;
     

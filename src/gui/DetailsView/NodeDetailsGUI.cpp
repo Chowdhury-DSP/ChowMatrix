@@ -1,5 +1,5 @@
 #include "NodeDetailsGUI.h"
-#include "../../dsp/ParamHelpers.h"
+#include "../../dsp/Parameters/ParamHelpers.h"
 
 NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) :
     nodeDetailsViewport (chowMatrix)

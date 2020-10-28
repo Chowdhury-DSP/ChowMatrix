@@ -16,7 +16,7 @@ constexpr int calcHeight()
 NodeDetailsComponent::NodeDetailsComponent (ChowMatrix& plugin) :
     plugin (plugin)
 {
-    for (auto& node : plugin.inputNodes)
+    for (auto& node : *plugin.getNodes())
     {
         node.addNodeListener (this);
         NodeManager::doForNodes (&node, [=] (DelayNode* node) { addNode (node); });
@@ -27,7 +27,7 @@ NodeDetailsComponent::NodeDetailsComponent (ChowMatrix& plugin) :
 
 NodeDetailsComponent::~NodeDetailsComponent()
 {
-    for (auto& node : plugin.inputNodes)
+    for (auto& node : *plugin.getNodes())
     {
         NodeManager::doForNodes (&node, [=] (DelayNode* node) { node->removeNodeListener (this); });
         node.removeNodeListener (this);

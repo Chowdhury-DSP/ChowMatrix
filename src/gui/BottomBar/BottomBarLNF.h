@@ -5,7 +5,7 @@
 class BottomBarLNF : public chowdsp::ChowLNF
 {
 public:
-    BottomBarLNF() {}
+    BottomBarLNF();
     virtual ~BottomBarLNF() {}
 
 protected:
@@ -13,6 +13,26 @@ protected:
                            float, const float, const float, Slider& slider) override;
 
     Slider::SliderLayout getSliderLayout (Slider& slider) override;
-
     Label* createSliderTextBox (Slider& slider) override;
+
+    void drawComboBox (Graphics& g, int width, int height, bool, int, int, int, int, ComboBox& box) override;
+    void positionComboBoxText (ComboBox& box, Label& label) override;
+
+    void drawPopupMenuItem (Graphics& g, const Rectangle<int>& area,
+        const bool isSeparator, const bool isActive,
+        const bool isHighlighted, const bool /*isTicked*/,
+        const bool hasSubMenu, const String& text,
+        const String& shortcutKeyText,
+        const Drawable* icon, const Colour* const textColourToUse) override
+    {
+        LookAndFeel_V4::drawPopupMenuItem (g, area, isSeparator, isActive,
+            isHighlighted, false /*isTicked*/, hasSubMenu, text,
+            shortcutKeyText, icon, textColourToUse);
+    }
+
+    void drawPopupMenuBackground (Graphics& g, int width, int height) override
+    {
+        g.fillAll (findColour (PopupMenu::backgroundColourId));
+        ignoreUnused (width, height);
+    }
 };

@@ -3,8 +3,9 @@
 #include <JuceHeader.h>
 #include "NodeManager.h"
 #include "dsp/InputNode.h"
-#include "dsp/InsanityControl.h"
-#include "dsp/LookupTables.h"
+#include "dsp/Parameters/InsanityControl.h"
+#include "dsp/Parameters/DelayTypeControl.h"
+#include "dsp/Distortion/LookupTables.h"
 
 class ChowMatrix : public chowdsp::PluginBase<ChowMatrix>
 {
@@ -21,14 +22,12 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    // @TODO: don't make this public
-    std::array<InputNode, 2> inputNodes;
-    // InputNode inputNodes[2];
-
     NodeManager& getManager() { return manager; }
     std::atomic<float>* getInsanityParam() const noexcept { return insanityControl.getParameter(); }
+    std::array<InputNode, 2>* getNodes() { return &inputNodes; }
 
 private:
+    std::array<InputNode, 2> inputNodes;
     NodeManager manager;
 
     std::atomic<float>* dryParamDB = nullptr;
@@ -41,6 +40,7 @@ private:
     dsp::Gain<float> wetGain;
 
     InsanityControl insanityControl;
+    DelayTypeControl delayTypeControl;
 
     // create this here so loading new nodes is always fast
     SharedResourcePointer<LookupTables> luts;
