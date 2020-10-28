@@ -29,6 +29,7 @@ void NodeDetails::resized()
 NodeDetails::Button::Button (NodeDetails& nodeDetails) :
     nodeDetails (nodeDetails)
 {
+    setWantsKeyboardFocus (true);
 }
 
 void NodeDetails::Button::paint (Graphics& g)
@@ -56,7 +57,21 @@ void NodeDetails::Button::paint (Graphics& g)
         bounds.toNearestInt(), Justification::centred, 1);
 }
 
-void NodeDetails::Button::mouseDown (const MouseEvent&)
+void NodeDetails::Button::mouseDown (const MouseEvent& e)
 {
     nodeDetails.setSelected();
+    grabKeyboardFocus();
+}
+
+bool NodeDetails::Button::keyPressed (const KeyPress& key)
+{
+    if (key == KeyPress::deleteKey || key == KeyPress::backspaceKey)
+    {
+        if (nodeDetails.getNode()->getSelected())
+            nodeDetails.getNode()->deleteNode();
+            
+        return true;
+    }
+
+    return false;
 }

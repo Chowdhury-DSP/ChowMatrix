@@ -4,6 +4,7 @@
 #include "NodeManager.h"
 #include "dsp/InputNode.h"
 #include "dsp/InsanityControl.h"
+#include "dsp/LookupTables.h"
 
 class ChowMatrix : public chowdsp::PluginBase<ChowMatrix>
 {
@@ -40,6 +41,9 @@ private:
     dsp::Gain<float> wetGain;
 
     InsanityControl insanityControl;
+
+    // create this here so loading new nodes is always fast
+    SharedResourcePointer<LookupTables> luts;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChowMatrix)
 };

@@ -8,6 +8,7 @@ DelayNodeComponent::DelayNodeComponent (DelayNode& node, GraphView* view) :
     node (node),
     nodeInfo (node)
 {
+    setWantsKeyboardFocus (true);
     view->addChildComponent (nodeInfo);
     node.getNodeParameter (delayTag)->addListener (this);
     node.getNodeParameter (panTag)->addListener (this);
@@ -28,6 +29,7 @@ void DelayNodeComponent::mouseDown (const MouseEvent& e)
     }
 
     graphView->setSelected (&node);
+    grabKeyboardFocus();
 }
 
 void DelayNodeComponent::mouseDrag (const MouseEvent& e)
@@ -35,6 +37,19 @@ void DelayNodeComponent::mouseDrag (const MouseEvent& e)
     setCentrePosition (e.getEventRelativeTo (graphView).getPosition());
     updateParams();
     updatePosition();
+}
+
+bool DelayNodeComponent::keyPressed (const KeyPress& key)
+{
+    if (key == KeyPress::deleteKey || key == KeyPress::backspaceKey)
+    {
+        if (node.getSelected())
+            node.deleteNode();
+
+        return true;
+    }
+
+    return false;
 }
 
 void DelayNodeComponent::paint (Graphics& g)
@@ -96,7 +111,9 @@ void DelayNodeComponent::updatePosition()
 
     int x = showOnRight ? getWidth() + pad : -(nodeInfo.getWidth() + pad);
     int y = jmin ((int) parentPos.y - getPosition().translated (0, nodeInfo.getHeight()).y, 0);
-    nodeInfo.setTopLeftPosition (getPosition().translated (x, y));
+    auto infoPos = getPosition().translated (x, y);
+    infoPos.setY (jmax (infoPos.y, 0));
+    nodeInfo.setTopLeftPosition (infoPos);
 
     graphView->repaint();
 }

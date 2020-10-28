@@ -25,6 +25,7 @@ public:
         Button (NodeDetails& nodeDetails);
         enum ColourIDs { nodeColour, selectedColour };
         void mouseDown (const MouseEvent& e) override;
+        bool keyPressed (const KeyPress& key) override;
         void paint (Graphics& g) override;
 
     private:
