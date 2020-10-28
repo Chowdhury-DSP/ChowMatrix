@@ -9,6 +9,7 @@ public:
 
     void resized() override;
     void paint (Graphics&) override;
+    void visibleAreaChanged (const Rectangle<int>&) override;
 
 private:
     NodeDetailsComponent detailsComp;

@@ -31,12 +31,10 @@ NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) :
 
 void NodeDetailsGUI::resized()
 {
-    const auto labelBounds = getLocalBounds()
-        .getProportion (Rectangle<float> { 0.12f, 1.0f / (float) labels.size() });
-    const auto labelWidth = labelBounds.getWidth();
-    const auto labelHeight = labelBounds.getHeight();
+    const auto labelWidth = int ((float) getLocalBounds().getWidth() * 0.12f);
+    const auto yOffset = nodeDetailsViewport.getViewPositionY();
 
-    labels[0]->setBounds (0, 0, labelWidth, DetailsConsts::buttonHeight);
+    labels[0]->setBounds (0, -yOffset, labelWidth, DetailsConsts::buttonHeight);
     for (int i = 1; i < labels.size(); ++i)
         labels[i]->setBounds (0, labels[i-1]->getBottom(), labelWidth, NodeInfoConsts::InfoHeightNoLabel);
 

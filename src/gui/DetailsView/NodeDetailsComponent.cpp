@@ -5,18 +5,24 @@ namespace
 {
     constexpr int xOffset = 0;
     constexpr int xPad = 3;
+    constexpr int scrollOffset = 4;
+}
+
+constexpr int calcHeight()
+{
+    return DetailsConsts::buttonHeight + NodeInfoConsts::InfoHeightNoLabel * ParamHelpers::numParams + scrollOffset;
 }
 
 NodeDetailsComponent::NodeDetailsComponent (ChowMatrix& plugin) :
     plugin (plugin)
 {
-    setSize (1500, 200);
-
     for (auto& node : plugin.inputNodes)
     {
         node.addNodeListener (this);
         NodeManager::doForNodes (&node, [=] (DelayNode* node) { addNode (node); });
     }
+
+    setSize (calcWidth(), calcHeight());
 }
 
 NodeDetailsComponent::~NodeDetailsComponent()
@@ -53,7 +59,7 @@ void NodeDetailsComponent::nodeAdded (DelayNode* newNode)
     addNode (newNode);
 
     MessageManagerLock mml;
-    setSize (calcWidth(), getHeight());
+    setSize (calcWidth(), calcHeight());
     resized();
     repaint();
 }
@@ -72,7 +78,7 @@ void NodeDetailsComponent::nodeRemoved (DelayNode* nodeToRemove)
     nodeToRemove->removeNodeListener (this);
 
     MessageManagerLock mml;
-    setSize (calcWidth(), getHeight());
+    setSize (calcWidth(), calcHeight());
     resized();
     repaint();
 }
@@ -80,10 +86,10 @@ void NodeDetailsComponent::nodeRemoved (DelayNode* nodeToRemove)
 void NodeDetailsComponent::setMinWidth (int newMinWidth)
 {
     minWidth = newMinWidth;
-    setSize (calcWidth(), getHeight());
+    setSize (calcWidth(), calcHeight());
 }
 
-int NodeDetailsComponent::calcWidth()
+int NodeDetailsComponent::calcWidth() const
 {
     int width = 2 * xOffset + (xPad + NodeInfoConsts::InfoWidthNoLabel) * nodes.size();
     return jmax (width, minWidth);

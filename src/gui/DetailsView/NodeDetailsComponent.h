@@ -17,7 +17,7 @@ public:
     void nodeRemoved (DelayNode* nodeToRemove) override;
 
     void setMinWidth (int newMinWidth);
-    int calcWidth();
+    int calcWidth() const;
 
 private:
     void addNode (DelayNode* node);

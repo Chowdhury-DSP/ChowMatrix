@@ -26,6 +26,7 @@ constexpr float minLPF = 200.0f;
 constexpr float maxLPF = 20000.0f;
 constexpr float minHPF = 20.0f;
 constexpr float maxHPF = 2000.0f;
+constexpr int numParams = 7;
 
 /** Sets a parameter value */
 void setParameterValue (Parameter* param, float newVal);
