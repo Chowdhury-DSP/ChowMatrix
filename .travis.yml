@@ -46,4 +46,4 @@ script:
 
   # Validate
   - cd ${TRAVIS_BUILD_DIR}
-  - $run validate.sh
+  # - $run validate.sh

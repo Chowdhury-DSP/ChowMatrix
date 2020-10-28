@@ -38,8 +38,8 @@ inline std::pair<float, float> rangeCalc (float x, float t, float intensity)
         + 0.04f * std::pow (std::sin ((2 * x + t) * omega_t * 33.7f - 0.1f), 3);
 
     auto intensityScale = 1.0f + 1.5f * std::pow (intensity, 1.5f);
-    auto top = jlimit (0.0f, 10.0f, fullEnv * tEnv * intensityScale);
-    auto bot = jlimit (0.0f, 10.0f, fullEnv * bEnv * intensityScale);
+    auto top = jlimit (0.0f, 10.0f, float (fullEnv * tEnv * intensityScale));
+    auto bot = jlimit (0.0f, 10.0f, float (fullEnv * bEnv * intensityScale));
 
     return { 0.2f * top, 0.2f * bot };
 }
