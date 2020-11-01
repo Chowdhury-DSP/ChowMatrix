@@ -53,6 +53,7 @@ Label* BottomBarLNF::createSliderTextBox (Slider& slider)
         {
             editor->setBounds (label->getBoundsInParent());
             editor->setColour (CaretComponent::caretColourId, Colour (0xFFC954D4));
+            editor->setColour (TextEditor::backgroundColourId, Colours::transparentBlack);
             editor->setJustification (Justification::left);
         }
     };
@@ -91,4 +92,22 @@ void BottomBarLNF::positionComboBoxText (ComboBox& box, Label& label)
     label.setBounds (b);
     label.setFont (getComboBoxFont (box).boldened());
     label.setJustificationType (Justification::topLeft);
+}
+
+void BottomBarLNF::drawButtonBackground (Graphics& g,
+                                         Button& button,
+                                         const Colour& backgroundColour,
+                                         bool shouldDrawButtonAsHighlighted,
+                                         bool shouldDrawButtonAsDown)
+{
+    auto bounds = button.getLocalBounds().toFloat().reduced (0.5f, 0.5f);
+
+    auto baseColour = backgroundColour.withMultipliedSaturation (button.hasKeyboardFocus (true) ? 1.3f : 0.9f)
+                                      .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f);
+
+    if (shouldDrawButtonAsDown || shouldDrawButtonAsHighlighted)
+        baseColour = baseColour.contrasting (shouldDrawButtonAsDown ? 0.2f : 0.05f);
+
+    g.setColour (baseColour);
+    g.fillRect (bounds);
 }

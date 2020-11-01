@@ -12,6 +12,7 @@ public:
 
     void prepare (const dsp::ProcessSpec& spec);
     void reset();
+    void flushDelay();
 
     template<typename ProcessContext>
     void process (const ProcessContext& context);

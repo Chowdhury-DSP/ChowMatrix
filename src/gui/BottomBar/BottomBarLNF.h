@@ -18,6 +18,15 @@ protected:
     void drawComboBox (Graphics& g, int width, int height, bool, int, int, int, int, ComboBox& box) override;
     void positionComboBoxText (ComboBox& box, Label& label) override;
 
+    void drawButtonBackground (Graphics& g, Button& button, const Colour& backgroundColour,
+                               bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
+
+    Font getTextButtonFont (TextButton&, int buttonHeight) override
+    {
+        float fontHeight = jmin (18.0f, (float) buttonHeight * 0.75f);
+        return Font { fontHeight, Font::bold };
+    }
+
     void drawPopupMenuItem (Graphics& g, const Rectangle<int>& area,
         const bool isSeparator, const bool isActive,
         const bool isHighlighted, const bool /*isTicked*/,

@@ -59,6 +59,11 @@ void DelayNode::prepare (double sampleRate, int samplesPerBlock)
     panBuffer.setSize (2, samplesPerBlock);
 }
 
+void DelayNode::flushDelays()
+{
+    processors.get<delayIdx>().flushDelay();
+}
+
 void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples)
 {
     dsp::AudioBlock<float> inBlock { inBuffer };

@@ -104,6 +104,11 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerLookAndFeel ("InsanityLNF", std::make_unique<InsanityLNF>());
     builder->registerLookAndFeel ("BottomBarLNF", std::make_unique<BottomBarLNF>());
 
+    magicState.addTrigger ("flush_delays", [=] {
+        for (auto& node : inputNodes)
+            NodeManager::doForNodes (&node, [] (DelayNode* n) { n->flushDelays(); });
+    });
+
     return new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
 }
 

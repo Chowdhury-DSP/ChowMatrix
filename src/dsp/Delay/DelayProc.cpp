@@ -20,6 +20,11 @@ void DelayProc::reset()
     procs.reset();
 }
 
+void DelayProc::flushDelay()
+{
+    delay.reset();
+}
+
 template<typename ProcessContext>
 void DelayProc::process (const ProcessContext& context)
 {
