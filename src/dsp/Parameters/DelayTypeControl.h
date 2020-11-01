@@ -3,6 +3,9 @@
 #include "../Delay/VariableDelay.h"
 #include "../InputNode.h"
 
+/**
+ * Utility class to manage delay interpolation types
+ */ 
 class DelayTypeControl : private AudioProcessorValueTreeState::Listener,
                          private DBaseNode::Listener
 {

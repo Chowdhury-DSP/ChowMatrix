@@ -11,6 +11,7 @@ namespace NodeInfoConsts
     constexpr int InfoHeightNoLabel = 22;
 }
 
+/** Node info component containing a column of ParamSliders */
 class NodeInfo : public Component
 {
 public:

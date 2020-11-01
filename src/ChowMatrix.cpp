@@ -97,6 +97,7 @@ void ChowMatrix::processBlock (AudioBuffer<float>& buffer)
 
 AudioProcessorEditor* ChowMatrix::createEditor()
 {
+    // Register GUI items for Foleys GUI Magic
     auto builder = chowdsp::createGUIBuilder (magicState);
     builder->registerFactory ("GraphView", &GraphViewItem::factory);
     builder->registerFactory ("NodeDetails", &NodeDetailsItem::factory);
@@ -104,6 +105,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerLookAndFeel ("InsanityLNF", std::make_unique<InsanityLNF>());
     builder->registerLookAndFeel ("BottomBarLNF", std::make_unique<BottomBarLNF>());
 
+    // GUI trigger functions
     magicState.addTrigger ("flush_delays", [=] {
         for (auto& node : inputNodes)
             NodeManager::doForNodes (&node, [] (DelayNode* n) { n->flushDelays(); });
@@ -131,15 +133,15 @@ void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
 {
     std::unique_ptr<XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
 
-    if (xmlState == nullptr)
+    if (xmlState == nullptr) // invalid XML
         return;
 
     auto vtsXml = xmlState->getChildByName (vts.state.getType());
-    if (vtsXml == nullptr)
+    if (vtsXml == nullptr) // invalid ValueTreeState
         return;
 
     auto childrenXml = xmlState->getChildByName ("children");
-    if (childrenXml == nullptr)
+    if (childrenXml == nullptr) // invalid children XML
         return;
 
     for (auto& node : inputNodes)

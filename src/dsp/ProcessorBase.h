@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 
+/** Base class to override (mostly) unused juce::AudioProcessor functions */
 class ProcessorBase : public AudioProcessor
 {
 public:

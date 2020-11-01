@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 
+/** Look and feel for the bottom bar section */
 class BottomBarLNF : public chowdsp::ChowLNF
 {
 public:

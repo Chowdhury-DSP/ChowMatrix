@@ -5,17 +5,24 @@
 #include "../ProcessorChain.h"
 #include "VariableDelay.h"
 
+/**
+ * Audio processor that implements delay line with feedback,
+ * including filtering and distortion in the feedback path
+ */ 
 class DelayProc
 {
 public:
     DelayProc() = default;
 
+    // processing functions
     void prepare (const dsp::ProcessSpec& spec);
     void reset();
-    void flushDelay();
 
     template<typename ProcessContext>
     void process (const ProcessContext& context);
+
+    // flush delay line state
+    void flushDelay();
 
     struct Parameters
     {

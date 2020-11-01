@@ -35,10 +35,17 @@ NodeComponent* BaseNode<Child>::getEditor()
 template<typename Child>
 Child* BaseNode<Child>::addChild()
 {
+    // create child
     auto newChild = std::make_unique<Child>();
+
+    // make this node parent of new child
     newChild->setParent (this);
+
+    // add child to array of children
+    // this must be done last so child is prepared before called to process audio
     auto* createdChild = children.add (std::move (newChild));
 
+    // tell listeners about new child
     nodeListeners.call (&BaseNode<Child>::Listener::nodeAdded, createdChild);
 
     return createdChild;
@@ -47,7 +54,10 @@ Child* BaseNode<Child>::addChild()
 template<typename Child>
 void BaseNode<Child>::removeChild (Child* childToRemove)
 {
+    // remove child from children array
     int indexToRemove = children.indexOf (childToRemove);
+
+    // put child in `toBeDeleted` placeholder
     nodeBeingDeleted.reset (children.removeAndReturn (indexToRemove));
 }
 

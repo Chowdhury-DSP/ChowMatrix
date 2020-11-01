@@ -28,6 +28,7 @@ void DelayProc::flushDelay()
 template<typename ProcessContext>
 void DelayProc::process (const ProcessContext& context)
 {
+    // manage audio context
     const auto& inputBlock = context.getInputBlock();
     auto& outputBlock      = context.getOutputBlock();
     const auto numChannels = outputBlock.getNumChannels();
@@ -42,6 +43,7 @@ void DelayProc::process (const ProcessContext& context)
         return;
     }
 
+    // process context
     for (size_t channel = 0; channel < numChannels; ++channel)
     {
         auto* inputSamples = inputBlock.getChannelPointer (channel);
@@ -50,10 +52,10 @@ void DelayProc::process (const ProcessContext& context)
         for (size_t i = 0; i < numSamples; ++i)
         {
             delay.setDelay (delaySmooth.getNextValue());
-            auto input = procs.processSample (inputSamples[i] + state[channel]);
-            delay.pushSample ((int) channel, input);
-            outputSamples[i] = delay.popSample ((int) channel);
-            state[channel] = outputSamples[i] * feedback.getNextValue();
+            auto input = procs.processSample (inputSamples[i] + state[channel]);    // process input + feedback state
+            delay.pushSample ((int) channel, input);                                // push input to delay line
+            outputSamples[i] = delay.popSample ((int) channel);                     // pop output from delay line
+            state[channel] = outputSamples[i] * feedback.getNextValue();            // save feedback state
         }
     }
 }

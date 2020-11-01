@@ -5,28 +5,40 @@
 #include "ProcessorBase.h"
 #include "Parameters/ParamHelpers.h"
 
+/**
+ * Class for delay processing node
+ */ 
 class DelayNode : public BaseNode<DelayNode>,
                   public ProcessorBase
 {
 public:
     DelayNode();
 
+    // Get/Set delay param
     float getDelay() const noexcept { return delayMs->convertTo0to1 (delayMs->get()); }
     void setDelay (float newDelay) { ParamHelpers::setParameterValue (delayMs, delayMs->convertFrom0to1 (newDelay)); }
 
+    // Get/Set pan param
     float getPan() const noexcept { return pan->get(); }
     void setPan (float newPan) { ParamHelpers::setParameterValue (pan, newPan); }
 
+    /** Call node listeners to set parameter */
     void setParameterListeners (const String& paramID, float value01);
+    
+    /** Sets the parameter with given ID to a 0-1 normalized value */
     void setParameter (const String& paramID, float value01);
 
+    /** Sets the delay interpolation type for this node */
     void setDelayType (VariableDelay::DelayType type);
+    
+    /** Flushes delay buffers for this node */
     void flushDelays();
     void prepare (double sampleRate, int samplesPerBlock) override;
     void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples) override;
 
     std::unique_ptr<NodeComponent> createEditor (GraphView*) override;
 
+    // Manage parameters
     int getNumParams() const noexcept { return paramIDs.size(); }
     String getParamID (int idx) { return paramIDs[idx]; }
     RangedAudioParameter* getNodeParameter (int idx) { return params.getParameter (paramIDs[idx]); }
@@ -53,6 +65,7 @@ private:
     AudioProcessorValueTreeState params;
     StringArray paramIDs;
 
+    // parameter handles
     Parameter* delayMs = nullptr;
     Parameter* pan = nullptr;
     Parameter* feedback = nullptr;

@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 
+/** Look and feel for the insanity slider */
 class InsanityLNF : public chowdsp::ChowLNF
 {
 public:

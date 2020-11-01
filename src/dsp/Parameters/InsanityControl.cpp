@@ -41,9 +41,10 @@ void InsanityControl::addParameters (Parameters& params)
 
 void InsanityControl::timerCallback()
 {
-    if (insanityParam->load() == 0.0f)
+    if (insanityParam->load() == 0.0f) // nothing to do...
         return;
 
+    // set randomised params
     float scale = 0.5f * std::pow (insanityParam->load(), 2.0f);
     for (auto& node : *nodes)
         NodeManager::doForNodes (&node, [=] (DelayNode* n) {
@@ -60,6 +61,7 @@ void InsanityControl::timerCallback()
 
 void InsanityControl::parameterChanged (const String&, float newValue)
 {
+    // timer callback won't do anything, so reset smoothing filters
     if (newValue == 0.0f)
     {
         for (auto& node : *nodes)
@@ -69,9 +71,11 @@ void InsanityControl::parameterChanged (const String&, float newValue)
             });
     }
 
+    // update timer callback rate
     timerFreq = int (std::pow (10, 1.0f + std::sqrt (newValue)));
     startTimerHz (timerFreq);
 
+    // update smoothing filters
     auto smoothCoefs = dsp::IIR::Coefficients<float>::makeFirstOrderLowPass ((double) timerFreq, smoothFreq);
     for (auto& node : *nodes)
         NodeManager::doForNodes (&node, [=] (DelayNode* n) {

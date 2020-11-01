@@ -2,6 +2,9 @@
 
 #include <JuceHeader.h>
 
+/**
+ * Delay class with variable interpolation type
+ */ 
 class VariableDelay
 {
 public:
@@ -12,12 +15,15 @@ public:
         NoInterp,
         LinearInterp,
         ThirdInterp,
+        FifthInterp,
     };
 
+    // manage parameters
     void setDelay (float newDelayInSamples);
     float getDelay() const;
     void setDelayType (DelayType newType);
 
+    // delegate everything else to dsp::DelayLine
     void prepare (const juce::dsp::ProcessSpec& spec);
     void reset();
 

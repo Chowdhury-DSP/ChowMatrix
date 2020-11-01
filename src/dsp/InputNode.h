@@ -2,6 +2,9 @@
 
 #include "DelayNode.h"
 
+/**
+ * Class for audio Input Node
+ */ 
 class InputNode : public DBaseNode
 {
 public:

@@ -3,6 +3,9 @@
 #include <random>
 #include "../InputNode.h"
 
+/**
+ * Utility class to manage insanity controls
+ */ 
 class InsanityControl : private AudioProcessorValueTreeState::Listener,
                         private DBaseNode::Listener,
                         private Timer

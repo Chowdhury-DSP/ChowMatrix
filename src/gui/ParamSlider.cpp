@@ -58,6 +58,8 @@ void ParamSlider::parameterValueChanged (int, float)
 void ParamSlider::sliderValueChanged (Slider*)
 {
     auto value01 = param->convertTo0to1 (param->get());
+
+    // if slider is linked, set parameter for all nodes
     if (linkFlag.load() && isDragging)
         node.setParameterListeners (param->paramID, value01);
 }

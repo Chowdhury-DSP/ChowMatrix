@@ -77,19 +77,23 @@ void DelayNode::flushDelays()
 
 void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples)
 {
+    // process through node delay processors
     dsp::AudioBlock<float> inBlock { inBuffer };
     cookParameters();
     processors.process<dsp::ProcessContextReplacing<float>> ({ inBlock });
 
+    // process through children
     for (auto* child : children)
     {
         childBuffer.makeCopyOf (inBuffer, true);
         child->process (childBuffer, outBuffer, numSamples);
     }
 
+    // apply pan
     dsp::AudioBlock<float> panBlock { panBuffer };
     panner.process<dsp::ProcessContextNonReplacing<float>> ({ inBlock, panBlock });
 
+    // add to output
     for (int ch = 0; ch < outBuffer.getNumChannels(); ++ch)
         outBuffer.addFrom (ch, 0, panBuffer, ch, 0, numSamples);
 }

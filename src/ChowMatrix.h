@@ -7,6 +7,9 @@
 #include "dsp/Parameters/DelayTypeControl.h"
 #include "dsp/Distortion/LookupTables.h"
 
+/**
+ * Main class for the Matrix plugin
+ */ 
 class ChowMatrix : public chowdsp::PluginBase<ChowMatrix>
 {
 public:
@@ -22,8 +25,13 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    /** Handle to access node manager */
     NodeManager& getManager() { return manager; }
+
+    /** Handle to read insanity parameter (used by MatrixAurora) */
     std::atomic<float>* getInsanityParam() const noexcept { return insanityControl.getParameter(); }
+    
+    /** Access to array of input nodes */
     std::array<InputNode, 2>* getNodes() { return &inputNodes; }
 
 private:

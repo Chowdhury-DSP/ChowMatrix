@@ -7,6 +7,9 @@ namespace ADAAConsts
     constexpr double TOL = 1.0e-4;
 }
 
+/**
+ *  Class to implement 2nd-order anti-derivative anti-aliasing
+ */ 
 class ADAA2
 {
 public:
@@ -69,6 +72,9 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ADAA2)
 };
 
+/**
+ * Class to implement tanh distortion
+ */
 class Distortion
 {
 public:

@@ -21,9 +21,11 @@ void VariableDelay::setDelayType (DelayType newType)
 {
     auto oldType = type;
 
+    // copy state and parameters first...
     delays[newType]->setDelay (delays[oldType]->getDelay());
     delays[newType]->copyState (*delays[oldType]);
 
+    // then set new type
     type = newType;
 }
 

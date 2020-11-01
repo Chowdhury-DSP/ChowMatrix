@@ -3,6 +3,9 @@
 #include <JuceHeader.h>
 #include "../dsp/DelayNode.h"
 
+/**
+ * Text slider mapped to a parameter
+ */ 
 class ParamSlider : public Slider,
                     private AudioProcessorParameter::Listener,
                     private Slider::Listener
