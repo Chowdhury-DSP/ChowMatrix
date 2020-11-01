@@ -20,8 +20,8 @@ public:
     {
         for (int i = 0; i < node.getNumParams(); ++i)
             addAndMakeVisible (sliders.add (std::make_unique<ParamSlider>
-                (dynamic_cast<AudioProcessorValueTreeState::Parameter*>
-                (node.getNodeParameter (i)), showLabel)));
+                (node, dynamic_cast<AudioProcessorValueTreeState::Parameter*>
+                    (node.getNodeParameter (i)), showLabel)));
 
         const int width = showLabel ? NodeInfoConsts::InfoWidth : NodeInfoConsts::InfoWidthNoLabel;
         const int height = showLabel ? NodeInfoConsts::InfoHeight : NodeInfoConsts::InfoHeightNoLabel;

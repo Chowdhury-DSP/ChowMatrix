@@ -15,6 +15,8 @@ GraphView::GraphView (ChowMatrix& plugin) :
         manager.createAndAddEditor (&node);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { manager.createAndAddEditor (child); });
+
+    doubleClickFlag = false;
 }
 
 GraphView::~GraphView()
@@ -25,9 +27,42 @@ GraphView::~GraphView()
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { child->removeNodeListener (this); });
 }
 
-void GraphView::mouseDown (const MouseEvent&)
+void GraphView::mouseDown (const MouseEvent& e)
 {
-    setSelected (nullptr);
+    if (e.getNumberOfClicks() > 1)
+        return;
+
+    Timer::callAfterDelay (MouseEvent::getDoubleClickTimeout(), [=] {
+        if (doubleClickFlag.load())
+        {
+            doubleClickFlag = false;
+            return;
+        }
+
+        setSelected (nullptr);
+    });
+}
+
+void GraphView::mouseDoubleClick (const MouseEvent& e)
+{
+    doubleClickFlag = true;
+
+    auto addNode = [=] (DBaseNode* parent) {
+        auto child = parent->addChild();
+        child->getEditor()->mouseDrag (e);
+    };
+
+    const auto selectedNode = plugin.getManager().getSelected();
+
+    if (selectedNode)
+    {
+        addNode (selectedNode);
+        return;
+    }
+
+    bool mouseSide = e.getPosition().x > getWidth() / 2;
+    auto& inputNodes = plugin.getNodes()[(int) mouseSide];
+    addNode (&inputNodes[(int) mouseSide]);
 }
 
 void GraphView::paint (Graphics& g)

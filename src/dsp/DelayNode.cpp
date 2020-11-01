@@ -42,6 +42,17 @@ void DelayNode::cookParameters()
     panner.setPan (*pan);
 }
 
+void DelayNode::setParameterListeners (const String& paramID, float value01)
+{
+    nodeListeners.call (&DBaseNode::Listener::setParameter, this, paramID, value01);
+}
+
+void DelayNode::setParameter (const String& paramID, float value01)
+{
+    auto thisParam = params.getParameter (paramID);
+    thisParam->setValueNotifyingHost (value01);
+}
+
 void DelayNode::setDelayType (VariableDelay::DelayType type)
 {
     processors.get<delayIdx>().setDelayType (type);

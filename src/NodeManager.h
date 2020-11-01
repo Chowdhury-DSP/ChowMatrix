@@ -13,12 +13,15 @@ public:
 
     void nodeAdded (DelayNode* newNode) override;
     void nodeRemoved (DelayNode* nodeToRemove) override;
+    void setParameter (DelayNode* sourceNode, const String& paramID, float value01) override;
 
     void setSelected (DelayNode* node);
+    DelayNode* getSelected() const noexcept;
 
 private:
     std::array<InputNode, 2>* nodes = nullptr;
     int nodeCount = 0;
+    DelayNode* selectedNodePtr = nullptr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NodeManager)
 };

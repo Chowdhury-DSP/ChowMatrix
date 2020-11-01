@@ -1,13 +1,16 @@
 #include "ParamSlider.h"
 #include "../dsp/DelayNode.h"
 
-ParamSlider::ParamSlider (Parameter* param, bool showLabel) :
+ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) :
+    node (node),
     param (param),
     showLabel (showLabel)
 {
     setName (param->name);
     setTooltip (ParamHelpers::getTooltip (param->paramID));
+    linkFlag.store (false);
 
+    addListener (this);
     param->addListener (this);
 
     addAndMakeVisible (nameLabel);
@@ -48,7 +51,15 @@ ParamSlider::~ParamSlider()
 void ParamSlider::parameterValueChanged (int, float)
 {
     valueLabel.setText (param->getCurrentValueAsText(), sendNotification);
-    this->setValue (param->convertTo0to1 (param->get()), dontSendNotification);
+    auto value01 = param->convertTo0to1 (param->get());
+    this->setValue (value01, dontSendNotification);
+}
+
+void ParamSlider::sliderValueChanged (Slider*)
+{
+    auto value01 = param->convertTo0to1 (param->get());
+    if (linkFlag.load() && isDragging)
+        node.setParameterListeners (param->paramID, value01);
 }
 
 void ParamSlider::resized()
@@ -65,9 +76,16 @@ void ParamSlider::resized()
     }
 }
 
+void ParamSlider::mouseDown (const MouseEvent& e)
+{
+    linkFlag.store (e.mods.isShiftDown());
+    Slider::mouseDown (e);
+}
+
 void ParamSlider::mouseDrag (const MouseEvent& e)
 {
     isDragging = true;
+    linkFlag.store (e.mods.isShiftDown());
     Slider::mouseDrag (e);
 }
 
@@ -85,4 +103,5 @@ void ParamSlider::mouseUp (const MouseEvent& e)
         showTextBox();
 
     isDragging = false;
+    linkFlag.store (false);
 }

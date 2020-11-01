@@ -17,6 +17,9 @@ public:
     float getPan() const noexcept { return pan->get(); }
     void setPan (float newPan) { ParamHelpers::setParameterValue (pan, newPan); }
 
+    void setParameterListeners (const String& paramID, float value01);
+    void setParameter (const String& paramID, float value01);
+
     void setDelayType (VariableDelay::DelayType type);
     void flushDelays();
     void prepare (double sampleRate, int samplesPerBlock) override;

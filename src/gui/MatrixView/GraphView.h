@@ -22,6 +22,7 @@ public:
     };
 
     void mouseDown (const MouseEvent& e) override;
+    void mouseDoubleClick (const MouseEvent& e) override;
     void paint (Graphics& g) override;
     void resized() override;
 
@@ -33,6 +34,7 @@ private:
     ChowMatrix& plugin;
     NodeCompManager manager;
     MatrixAurora aurora;
+    std::atomic_bool doubleClickFlag;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GraphView)
 };

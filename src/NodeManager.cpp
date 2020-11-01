@@ -37,8 +37,23 @@ void NodeManager::nodeRemoved (DelayNode* nodeToRemove)
         doForNodes (&node, [=] (DelayNode* n) { n->setIndex (nodeCount++); });
 }
 
+void NodeManager::setParameter (DelayNode* sourceNode, const String& paramID, float value01)
+{
+    for (auto& node : *nodes)
+    {
+        doForNodes (&node, [=] (DelayNode* n) {
+            if (n == sourceNode)
+                return;
+
+            n->setParameter (paramID, value01);
+        });
+    }
+}
+
 void NodeManager::setSelected (DelayNode* selectedNode)
 {
+    selectedNodePtr = selectedNode;
+
     for (auto& node : *nodes)
     {
         doForNodes (&node, [=] (DelayNode* n) {
@@ -50,4 +65,9 @@ void NodeManager::setSelected (DelayNode* selectedNode)
                 n->setSelected (true);
         });
     }
+}
+
+DelayNode* NodeManager::getSelected() const noexcept
+{
+    return selectedNodePtr;
 }

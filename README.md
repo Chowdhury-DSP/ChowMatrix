@@ -10,11 +10,16 @@ audio plugin.
 
 Features:
 - [ ] Presets
-- [ ] Delay line modes
-- [ ] Figure out best node creation/deletion methods
-- [ ] Delay line mixing
-- [ ] Delay line modes...
+- [x] Delay line modes
+- [x] Create nodes with double-click
+- [x] Linked controls
+- [ ] Randomise button
 - [ ] Auto-updating
+
+Maybe:
+- [ ] Change create nodes to ctrl-click or alt-click...
+- [ ] When node is deleted pass on children to parent
+- [ ] Delay line mixing
 
 ## Building
 
