@@ -53,6 +53,15 @@ void DelayNode::setParameter (const String& paramID, float value01)
     thisParam->setValueNotifyingHost (value01);
 }
 
+void DelayNode::randomiseParameters()
+{
+    for (auto& paramID : paramIDs)
+    {
+        auto* param = params.getParameter (paramID);
+        param->setValueNotifyingHost (rand.nextFloat());
+    }
+}
+
 void DelayNode::setDelayType (VariableDelay::DelayType type)
 {
     processors.get<delayIdx>().setDelayType (type);

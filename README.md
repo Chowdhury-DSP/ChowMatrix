@@ -13,7 +13,7 @@ Features:
 - [x] Delay line modes
 - [x] Create nodes with double-click
 - [x] Linked controls
-- [ ] Randomise button
+- [x] Randomise button
 - [ ] Auto-updating
 
 Maybe:

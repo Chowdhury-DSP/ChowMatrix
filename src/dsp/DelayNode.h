@@ -14,11 +14,11 @@ class DelayNode : public BaseNode<DelayNode>,
 public:
     DelayNode();
 
-    // Get/Set delay param
+    // Get/Set delay param [0,1]
     float getDelay() const noexcept { return delayMs->convertTo0to1 (delayMs->get()); }
     void setDelay (float newDelay) { ParamHelpers::setParameterValue (delayMs, delayMs->convertFrom0to1 (newDelay)); }
 
-    // Get/Set pan param
+    // Get/Set pan param [-1,1]
     float getPan() const noexcept { return pan->get(); }
     void setPan (float newPan) { ParamHelpers::setParameterValue (pan, newPan); }
 
@@ -27,6 +27,9 @@ public:
     
     /** Sets the parameter with given ID to a 0-1 normalized value */
     void setParameter (const String& paramID, float value01);
+
+    /** Randomise all the parameters of this delay node */
+    void randomiseParameters();
 
     /** Sets the delay interpolation type for this node */
     void setDelayType (VariableDelay::DelayType type);
@@ -64,6 +67,7 @@ private:
 
     AudioProcessorValueTreeState params;
     StringArray paramIDs;
+    Random rand;
 
     // parameter handles
     Parameter* delayMs = nullptr;

@@ -61,7 +61,7 @@ void GraphView::mouseDoubleClick (const MouseEvent& e)
     }
 
     bool mouseSide = e.getPosition().x > getWidth() / 2;
-    auto& inputNodes = plugin.getNodes()[(int) mouseSide];
+    auto& inputNodes = *(plugin.getNodes());
     addNode (&inputNodes[(int) mouseSide]);
 }
 
