@@ -15,8 +15,6 @@ GraphView::GraphView (ChowMatrix& plugin) :
         manager.createAndAddEditor (&node);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { manager.createAndAddEditor (child); });
-
-    doubleClickFlag = false;
 }
 
 GraphView::~GraphView()
@@ -29,40 +27,28 @@ GraphView::~GraphView()
 
 void GraphView::mouseDown (const MouseEvent& e)
 {
-    if (e.getNumberOfClicks() > 1)
-        return;
+    if (! e.mods.isAnyModifierKeyDown()) // deselect current node
+    {
+        setSelected (nullptr);
+        return;   
+    }
 
-    Timer::callAfterDelay (MouseEvent::getDoubleClickTimeout(), [=] {
-        if (doubleClickFlag.load())
+    if (e.mods.isShiftDown()) // create new node at mouse position
+    {
+        // lambda to add child to parent and move to mouse position
+        auto addNode = [&e] (DBaseNode* parent) { parent->addChild()->getEditor()->mouseDrag (e); };
+
+        // if a node is selected create child from that node
+        if (auto selectedNode = plugin.getManager().getSelected())
         {
-            doubleClickFlag = false;
+            addNode (selectedNode);
             return;
         }
 
-        setSelected (nullptr);
-    });
-}
-
-void GraphView::mouseDoubleClick (const MouseEvent& e)
-{
-    doubleClickFlag = true;
-
-    auto addNode = [=] (DBaseNode* parent) {
-        auto child = parent->addChild();
-        child->getEditor()->mouseDrag (e);
-    };
-
-    const auto selectedNode = plugin.getManager().getSelected();
-
-    if (selectedNode)
-    {
-        addNode (selectedNode);
-        return;
+        // otherwise create a node from whichever side the mouse is on
+        bool mouseSide = e.getPosition().x > getWidth() / 2;
+        addNode (&plugin.getNodes()->at ((size_t) mouseSide));
     }
-
-    bool mouseSide = e.getPosition().x > getWidth() / 2;
-    auto& inputNodes = *(plugin.getNodes());
-    addNode (&inputNodes[(int) mouseSide]);
 }
 
 void GraphView::paint (Graphics& g)

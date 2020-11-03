@@ -52,6 +52,9 @@ float stringToFreqVal (const String& s);
 String distValToString (float distVal);
 float stringToDistVal (const String& s);
 
+using StringToValFunc = float (*) (const String&);
+StringToValFunc getStringFuncForParam (const String& paramID);
+
 /** Creates a tooltip for a given paramID */
 String getTooltip (const String& paramID);
 

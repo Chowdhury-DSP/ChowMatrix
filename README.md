@@ -15,10 +15,12 @@ Features:
 - [x] Linked controls
 - [x] Randomise button
 - [ ] Auto-updating
+- [x] Default with 2 starter nodes
+- [x] Create nodes with shift-click
+- [x] Allow typing on lower sliders
+- [x] Allow -inf dB for dry/wet sliders
 
 Maybe:
-- [ ] Change create nodes to ctrl-click or alt-click...
-- [ ] When node is deleted pass on children to parent
 - [ ] Delay line mixing
 
 ## Building

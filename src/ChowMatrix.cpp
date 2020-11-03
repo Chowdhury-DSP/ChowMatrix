@@ -11,6 +11,7 @@ namespace
     const String wetTag = "wet_param";
 
     constexpr double gainFadeTime = 0.05;
+    constexpr float negInfDB = -60.0f;
 }
 
 ChowMatrix::ChowMatrix() :
@@ -24,13 +25,16 @@ ChowMatrix::ChowMatrix() :
 
     dryGain.setRampDurationSeconds (gainFadeTime);
     wetGain.setRampDurationSeconds (gainFadeTime);
+
+    for (auto& node : inputNodes)
+        node.addChild();
 }
 
 void ChowMatrix::addParameters (Parameters& params)
 {
-    NormalisableRange<float> gainRange (-60.0f, 12.0f);
+    NormalisableRange<float> gainRange (negInfDB, 12.0f);
 
-    auto gainToString = [] (float x) { return String (x, 1, false) + " dB"; };
+    auto gainToString = [] (float x) { return x <= negInfDB ? "-inf dB" : String (x, 1, false) + " dB"; };
     auto stringToGain = [] (const String& t) { return t.getFloatValue(); };
 
     params.push_back (std::make_unique<Parameter> (dryTag, "Dry", String(),
@@ -63,9 +67,16 @@ void ChowMatrix::releaseResources()
 
 void ChowMatrix::processBlock (AudioBuffer<float>& buffer)
 {
+    auto setGain = [] (auto& gainProc, float gainParamDB) {
+        if (gainParamDB <= negInfDB)
+            gainProc.setGainLinear (0.0f);
+        else
+            gainProc.setGainDecibels (gainParamDB);
+    };
+
     // get parameters
-    dryGain.setGainDecibels (*dryParamDB);
-    wetGain.setGainDecibels (*wetParamDB);
+    setGain (dryGain, dryParamDB->load());
+    setGain (wetGain, wetParamDB->load());
 
     // Keep dry signal
     dryBuffer.makeCopyOf (buffer, true);

@@ -31,6 +31,8 @@ void NodeManager::nodeAdded (DelayNode* newNode)
 void NodeManager::nodeRemoved (DelayNode* nodeToRemove)
 {
     nodeToRemove->removeNodeListener (this);
+    if (nodeToRemove->getSelected())
+        selectedNodePtr = nullptr;
 
     nodeCount = 0;
     for (auto& node : *nodes)

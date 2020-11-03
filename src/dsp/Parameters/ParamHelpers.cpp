@@ -80,7 +80,7 @@ String panValToString (float panVal)
     return panStr + panChar;
 }
 
-float stringToPanVal (const String& s) { return s.getFloatValue(); }
+float stringToPanVal (const String& s) { return s.getFloatValue() / 50.0f; }
 
 String fbValToString (float fbVal)
 {
@@ -123,6 +123,29 @@ String distValToString (float distVal)
 }
 
 float stringToDistVal (const String& s) { return s.getFloatValue() / 100.0f; }
+
+StringToValFunc getStringFuncForParam (const String& paramID)
+{
+    if (paramID == delayTag)
+        return stringToDelayVal;
+
+    if (paramID == panTag)
+        return stringToPanVal;
+
+    if (paramID == fbTag)
+        return stringToFbVal;
+
+    if (paramID == gainTag)
+        return stringToGainVal;
+
+    if (paramID == lpfTag || paramID == hpfTag)
+        return stringToFreqVal;
+
+    if (paramID == distTag)
+        return stringToDistVal;
+
+    return {};
+}
 
 String getTooltip (const String& paramID)
 {

@@ -28,7 +28,13 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) :
     {
         valueLabel.setFont (Font (16.0f));
         valueLabel.setColour (Label::textColourId, Colours::white);
+        valueLabel.setColour (Label::outlineWhenEditingColourId, Colours::transparentBlack);
         valueLabel.setJustificationType (Justification::centred);
+        valueLabel.onEditorHide = [=, &node] {
+            auto stringFunc = ParamHelpers::getStringFuncForParam (param->paramID);
+            auto unNormalisedValue = stringFunc (valueLabel.getText (true));
+            node.setParameter (param->paramID, param->convertTo0to1 (unNormalisedValue));
+        };
     }
 
     nameLabel.setText (param->paramID, sendNotification);
@@ -93,7 +99,7 @@ void ParamSlider::mouseDrag (const MouseEvent& e)
 
 void ParamSlider::mouseDoubleClick (const MouseEvent& e)
 {
-    hideTextBox (false);
+    valueLabel.hideEditor (true);
     Slider::mouseDoubleClick (e);
 }
 
@@ -101,8 +107,14 @@ void ParamSlider::mouseUp (const MouseEvent& e)
 {
     Slider::mouseUp (e);
 
-    if (! isDragging && ! e.mods.isAnyModifierKeyDown())
-        showTextBox();
+    bool dontShowLabel = isDragging || e.mods.isAnyModifierKeyDown()
+        || showLabel || e.getNumberOfClicks() > 1;
+    if (! dontShowLabel)
+    {
+        valueLabel.showEditor();
+        if (auto editor = valueLabel.getCurrentTextEditor())
+            editor->setJustification (Justification::centred);
+    }
 
     isDragging = false;
     linkFlag.store (false);

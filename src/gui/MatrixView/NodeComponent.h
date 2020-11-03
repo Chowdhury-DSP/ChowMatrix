@@ -12,8 +12,6 @@ public:
 
     void paint (Graphics& g) override;
 
-    void mouseDoubleClick (const MouseEvent& e) override;
-
     DBaseNode& getNode() { return node; }
 
     virtual void updatePosition() {};
