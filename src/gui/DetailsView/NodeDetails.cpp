@@ -30,6 +30,9 @@ NodeDetails::Button::Button (NodeDetails& nodeDetails) :
     nodeDetails (nodeDetails)
 {
     setWantsKeyboardFocus (true);
+
+    setName ("Node Details");
+    setTooltip ("Click to select this node, use \"Delete\" key to delete it");
 }
 
 void NodeDetails::Button::paint (Graphics& g)

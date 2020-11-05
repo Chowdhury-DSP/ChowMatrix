@@ -8,6 +8,7 @@
 #include "MatrixAurora.h"
 
 class GraphView : public Component,
+                  public SettableTooltipClient,
                   public DBaseNode::Listener
 {
 public:

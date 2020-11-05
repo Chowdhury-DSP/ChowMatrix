@@ -11,6 +11,8 @@ GraphView::GraphView (ChowMatrix& plugin) :
     setColour (nodeColour, Colours::pink);
     setColour (nodeSelectedColour, Colours::greenyellow);
 
+    setTooltip ("Graph view of all delay nodes, shift+click to create a new node");
+
     for (auto& node : *plugin.getNodes())
         manager.createAndAddEditor (&node);
 

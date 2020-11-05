@@ -12,6 +12,9 @@ DelayNodeComponent::DelayNodeComponent (DelayNode& node, GraphView* view) :
     view->addChildComponent (nodeInfo);
     node.getNodeParameter (delayTag)->addListener (this);
     node.getNodeParameter (panTag)->addListener (this);
+
+    setName ("Delay Node");
+    setTooltip ("Click to select node, drag to move the node, and ctrl+click to delete it");
 }
 
 DelayNodeComponent::~DelayNodeComponent()

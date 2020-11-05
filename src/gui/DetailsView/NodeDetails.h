@@ -20,7 +20,7 @@ public:
 
     void setSelected() { manager.setSelected (getNode()); }
 
-    struct Button : Component
+    struct Button : Component, SettableTooltipClient
     {
         Button (NodeDetails& nodeDetails);
         enum ColourIDs { nodeColour, selectedColour };

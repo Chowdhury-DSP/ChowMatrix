@@ -8,6 +8,7 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) :
 {
     setName (param->name);
     setTooltip (ParamHelpers::getTooltip (param->paramID));
+    nameLabel.setTooltip (getTooltip());
     linkFlag.store (false);
 
     addListener (this);

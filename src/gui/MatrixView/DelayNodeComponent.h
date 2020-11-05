@@ -5,6 +5,7 @@
 #include "../NodeInfo.h"
 
 class DelayNodeComponent : public NodeComponent,
+                           public SettableTooltipClient,
                            private AudioProcessorParameter::Listener
 {
 public:

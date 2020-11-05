@@ -124,27 +124,19 @@ String distValToString (float distVal)
 
 float stringToDistVal (const String& s) { return s.getFloatValue() / 100.0f; }
 
+// Map to connect paramIDs to stringToVal functions
+std::unordered_map<String, StringToValFunc> funcMap {
+    { delayTag, stringToDelayVal },
+    { panTag,   stringToPanVal },
+    { fbTag,    stringToFbVal },
+    { lpfTag,   stringToFreqVal },
+    { hpfTag,   stringToFreqVal },
+    { distTag,  stringToDistVal },
+};
+
 StringToValFunc getStringFuncForParam (const String& paramID)
 {
-    if (paramID == delayTag)
-        return stringToDelayVal;
-
-    if (paramID == panTag)
-        return stringToPanVal;
-
-    if (paramID == fbTag)
-        return stringToFbVal;
-
-    if (paramID == gainTag)
-        return stringToGainVal;
-
-    if (paramID == lpfTag || paramID == hpfTag)
-        return stringToFreqVal;
-
-    if (paramID == distTag)
-        return stringToDistVal;
-
-    return {};
+    return funcMap[paramID];
 }
 
 String getTooltip (const String& paramID)
