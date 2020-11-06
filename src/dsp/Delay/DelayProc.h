@@ -37,6 +37,8 @@ public:
     void setDelayType (VariableDelay::DelayType type) { delay.setDelayType (type); };
 
 private:
+    inline float processSample (float x, size_t ch);
+
     VariableDelay delay { 1 << 19 };
 
     float fs = 44100.0f;
@@ -53,8 +55,8 @@ private:
     };
 
     MyProcessorChain<
-        dsp::IIR::Filter<float>,
-        dsp::IIR::Filter<float>,
+        chowdsp::IIR::Filter<float, 1>,
+        chowdsp::IIR::Filter<float, 1>,
         Distortion
         > procs;
 

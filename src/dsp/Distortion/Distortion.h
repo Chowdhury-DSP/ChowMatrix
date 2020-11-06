@@ -15,8 +15,6 @@ class ADAA2
 public:
     ADAA2() = default;
 
-    using Func = std::function<double(double)>;
-    void initialise (Func nl, Func ad1, Func ad2, size_t N);
     void prepare();
 
     inline double process (double x) noexcept
@@ -87,6 +85,10 @@ public:
     inline float processSample (float x)
     {
         float curGain = gain.getNextValue();
+
+        if (curGain < 0.6f)
+            return x;
+
         return (float) adaa.process ((double) (curGain * x)) / curGain;
     }
 

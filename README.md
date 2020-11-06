@@ -3,25 +3,14 @@
 [![Build Status](https://travis-ci.com/Chowdhury-DSP/ChowMatrix.svg?token=Ub9niJrqG1Br1qaaxp7E&branch=main)](https://travis-ci.com/Chowdhury-DSP/ChowMatrix)
 [![License](https://img.shields.io/badge/License-BSD-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
-This repository contains template code for building a Chowdhury DSP
-audio plugin.
+CHOW Matrix is a delay effect, made up of an inifintely growable tree
+of delay lines, each with individual controls for feedback, panning, 
+distortion, and more.
 
 ## TODO
-
-Features:
 - [ ] Presets
-- [x] Delay line modes
-- [x] Create nodes with double-click
-- [x] Linked controls
-- [x] Randomise button
 - [ ] Auto-updating
-- [x] Default with 2 starter nodes
-- [x] Create nodes with shift-click
-- [x] Allow typing on lower sliders
-- [x] Allow -inf dB for dry/wet sliders
 
-Maybe:
-- [ ] Delay line mixing
 
 ## Building
 

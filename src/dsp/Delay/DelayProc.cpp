@@ -49,18 +49,35 @@ void DelayProc::process (const ProcessContext& context)
         auto* inputSamples = inputBlock.getChannelPointer (channel);
         auto* outputSamples = outputBlock.getChannelPointer (channel);
 
-        for (size_t i = 0; i < numSamples; ++i)
+        if (delaySmooth.isSmoothing())
         {
-            delay.setDelay (delaySmooth.getNextValue());
-            auto input = procs.processSample (inputSamples[i] + state[channel]);    // process input + feedback state
-            delay.pushSample ((int) channel, input);                                // push input to delay line
-            outputSamples[i] = delay.popSample ((int) channel);                     // pop output from delay line
-            state[channel] = outputSamples[i] * feedback.getNextValue();            // save feedback state
+            for (size_t i = 0; i < numSamples; ++i)
+            {
+                delay.setDelay (delaySmooth.getNextValue());
+                outputSamples[i] = processSample (inputSamples[i], channel);
+            }
+        }
+        else
+        {
+            for (size_t i = 0; i < numSamples; ++i)
+                outputSamples[i] = processSample (inputSamples[i], channel);
         }
     }
+
+    procs.get<lpfIdx>().snapToZero();
+    procs.get<hpfIdx>().snapToZero();
 }
 
-using IIRCoefs = dsp::IIR::Coefficients<float>;
+inline float DelayProc::processSample (float x, size_t ch)
+{
+    auto input = procs.processSample (x + state[ch]);   // process input + feedback state
+    delay.pushSample ((int) ch, input);                 // push input to delay line
+    float y = delay.popSample ((int) ch);               // pop output from delay line
+    state[ch] = y * feedback.getNextValue();            // save feedback state
+    return y;
+}
+
+using IIRCoefs = chowdsp::IIR::Coefficients<float, 1>;
 
 void DelayProc::setParameters (const Parameters& params)
 {
