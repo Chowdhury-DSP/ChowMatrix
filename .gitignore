@@ -4,3 +4,6 @@ bin/*[!.zip]
 
 # vscode settings
 .vscode/
+
+# Mac extras
+.DS_Store
