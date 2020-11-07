@@ -1,6 +1,6 @@
 # build artifacts
 build*/
-bin/
+bin/*[!.zip]
 
 # vscode settings
 .vscode/
