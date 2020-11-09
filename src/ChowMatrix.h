@@ -1,11 +1,10 @@
 #pragma once
 
-#include <JuceHeader.h>
+#include <pch.h>
 #include "NodeManager.h"
 #include "dsp/InputNode.h"
 #include "dsp/Parameters/InsanityControl.h"
 #include "dsp/Parameters/DelayTypeControl.h"
-#include "dsp/Distortion/LookupTables.h"
 
 /**
  * Main class for the Matrix plugin

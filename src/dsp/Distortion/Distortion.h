@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LookupTables.h"
+#include <pch.h>
 
 namespace ADAAConsts
 {

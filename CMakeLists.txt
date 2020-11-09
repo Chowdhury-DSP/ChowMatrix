@@ -14,8 +14,15 @@ juce_add_plugin(ChowMatrix
     FORMATS AU VST3 Standalone #VST
     ProductName "ChowMatrix")
 
+# create JUCE header
 juce_generate_juce_header(ChowMatrix)
+
+# create pre-compiled headers
+# target_precompile_headers(ChowMatrix PRIVATE src/pch.h)
+
+# add sources
 add_subdirectory(src)
+include_directories(src)
 add_subdirectory(res)
 
 target_compile_definitions(ChowMatrix

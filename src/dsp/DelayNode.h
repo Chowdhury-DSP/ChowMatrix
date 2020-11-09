@@ -2,7 +2,6 @@
 
 #include "BaseNode.h"
 #include "Delay/DelayProc.h"
-#include "ProcessorBase.h"
 #include "Parameters/ParamHelpers.h"
 
 /**

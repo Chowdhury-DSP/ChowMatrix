@@ -24,7 +24,7 @@ void BottomBarLNF::drawRotarySlider (Graphics& g, int x, int y, int, int height,
     g.setColour (Colours::white); // @TODO: make colour selectable
     g.setFont (Font ((float) height * heightFrac).boldened());
 
-    String text = slider.getName() + ":";
+    String text = slider.getName() + ": ";
     int width = getNameWidth (height, text);
     g.drawFittedText (text, 0, 0, width, height, Justification::centred, 1);
 }
@@ -34,7 +34,7 @@ Slider::SliderLayout BottomBarLNF::getSliderLayout (Slider& slider)
     auto layout = LookAndFeel_V4::getSliderLayout (slider);
     layout.textBoxBounds = slider.getLocalBounds()
         .removeFromRight (slider.getWidth()
-        - getNameWidth (slider.getHeight(), slider.getName()) + 5);
+        - getNameWidth (slider.getHeight(), slider.getName() + ":_") + 3);
     return layout;
 }
 
@@ -51,10 +51,10 @@ Label* BottomBarLNF::createSliderTextBox (Slider& slider)
     {
         if (auto editor = label->getCurrentTextEditor())
         {
-            editor->setBounds (label->getBoundsInParent());
+            editor->setBounds (label->getLocalBounds());
             editor->setColour (CaretComponent::caretColourId, Colour (0xFFC954D4));
             editor->setColour (TextEditor::backgroundColourId, Colours::transparentBlack);
-            editor->setJustification (Justification::left);
+            editor->setJustification (Justification::centred);
         }
     };
 
