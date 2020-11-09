@@ -54,7 +54,7 @@ Label* BottomBarLNF::createSliderTextBox (Slider& slider)
             editor->setBounds (label->getLocalBounds());
             editor->setColour (CaretComponent::caretColourId, Colour (0xFFC954D4));
             editor->setColour (TextEditor::backgroundColourId, Colours::transparentBlack);
-            editor->setJustification (Justification::centred);
+            editor->setJustification (Justification::left);
         }
     };
 

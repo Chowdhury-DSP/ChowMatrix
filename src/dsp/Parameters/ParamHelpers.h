@@ -19,8 +19,9 @@ namespace ParamHelpers
 {
 
 // parameter constants
-constexpr float maxDelay = 500.0f;
-constexpr float maxFeedback = 0.95f;
+constexpr float maxDelay = 1500.0f;
+constexpr float centreDelay = 200.0f;
+constexpr float maxFeedback = 0.99f;
 constexpr float maxGain = 12.0f;
 constexpr float minLPF = 200.0f;
 constexpr float maxLPF = 20000.0f;
