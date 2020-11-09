@@ -1,8 +1,7 @@
 #pragma once
 
-#include <JuceHeader.h>
+#include <pch.h>
 #include "../Distortion/Distortion.h"
-#include "../ProcessorChain.h"
 #include "VariableDelay.h"
 
 /**

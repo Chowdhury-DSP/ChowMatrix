@@ -1,4 +1,3 @@
-#include <unordered_map>
 #include "ParamHelpers.h"
 
 using namespace ParamTags;

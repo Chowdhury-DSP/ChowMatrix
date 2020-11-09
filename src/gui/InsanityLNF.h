@@ -1,6 +1,6 @@
 #pragma once
 
-#include <JuceHeader.h>
+#include <pch.h>
 
 /** Look and feel for the insanity slider */
 class InsanityLNF : public chowdsp::ChowLNF

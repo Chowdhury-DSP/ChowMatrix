@@ -1,6 +1,6 @@
 #pragma once
 
-#include <JuceHeader.h>
+#include <pch.h>
 #include "../dsp/DelayNode.h"
 
 /**
