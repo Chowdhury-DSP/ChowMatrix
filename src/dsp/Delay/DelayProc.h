@@ -44,6 +44,7 @@ private:
     
     SmoothedValue<float, ValueSmoothingTypes::Linear> delaySmooth;
     SmoothedValue<float, ValueSmoothingTypes::Linear> feedback;
+    SmoothedValue<float, ValueSmoothingTypes::Linear> inGain;
     std::vector<float> state;
 
     enum

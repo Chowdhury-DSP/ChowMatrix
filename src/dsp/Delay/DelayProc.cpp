@@ -1,4 +1,5 @@
 #include "DelayProc.h"
+#include "../Parameters/ParamHelpers.h"
 
 void DelayProc::prepare (const dsp::ProcessSpec& spec)
 {
@@ -6,6 +7,7 @@ void DelayProc::prepare (const dsp::ProcessSpec& spec)
     fs = (float) spec.sampleRate;
 
     feedback.reset (spec.sampleRate, 0.05 * spec.numChannels);
+    inGain.reset (spec.sampleRate, 0.05 * spec.numChannels);
     delaySmooth.reset (spec.sampleRate, 0.05 * spec.numChannels);
     state.resize (spec.numChannels, 0.0f);
 
@@ -70,7 +72,8 @@ void DelayProc::process (const ProcessContext& context)
 
 inline float DelayProc::processSample (float x, size_t ch)
 {
-    auto input = procs.processSample (x + state[ch]);   // process input + feedback state
+    auto input = inGain.getNextValue() * x;
+    input = procs.processSample (input + state[ch]);    // process input + feedback state
     delay.pushSample ((int) ch, input);                 // push input to delay line
     float y = delay.popSample ((int) ch);               // pop output from delay line
     state[ch] = y * feedback.getNextValue();            // save feedback state
@@ -82,7 +85,13 @@ using IIRCoefs = chowdsp::IIR::Coefficients<float, 1>;
 void DelayProc::setParameters (const Parameters& params)
 {
     delaySmooth.setTargetValue ((params.delayMs / 1000.0f) * fs);
-    feedback.setTargetValue (params.feedback);
+
+    using namespace ParamHelpers;
+    inGain.setTargetValue (params.feedback >= maxFeedback ? 0.0f : 1.0f);
+    auto fbVal = params.feedback >= maxFeedback ? 1.0f
+        : std::pow (jmin (params.feedback, 0.95f), 0.9f);
+    feedback.setTargetValue (fbVal);
+
     procs.get<lpfIdx>().coefficients = IIRCoefs::makeFirstOrderLowPass ((double) fs, params.lpfFreq);
     procs.get<hpfIdx>().coefficients = IIRCoefs::makeFirstOrderHighPass ((double) fs, params.hpfFreq);
     procs.get<distortionIdx>().setGain (19.5f * std::pow (params.distortion, 2) + 0.5f);

@@ -17,10 +17,10 @@ AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
 
     // set up delay line length
     NormalisableRange<float> delayRange { 0.0f, maxDelay };
-    delayRange.setSkewForCentre (50.0f);
+    delayRange.setSkewForCentre (centreDelay);
 
     params.push_back (std::make_unique<Parameter> (delayTag, "Delay", String(), delayRange,
-        50.0f, [] (float val) { return delayValToString (val); },
+        centreDelay, [] (float val) { return delayValToString (val); },
         [] (const String& s) { return stringToDelayVal (s); }));
 
     // set up panner
@@ -62,8 +62,10 @@ AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
 
 String delayValToString (float delayVal)
 {
-    String delayStr = String (delayVal, 2, false);
-    return delayStr + " ms";
+    if (delayVal > 1000.0f)
+        return String (delayVal / 1000.0f, 2, false) + " s";
+
+    return String (delayVal, 2, false) + " ms";
 }
 
 float stringToDelayVal (const String& s) { return s.getFloatValue(); }
@@ -84,6 +86,10 @@ float stringToPanVal (const String& s) { return s.getFloatValue() / 50.0f; }
 
 String fbValToString (float fbVal)
 {
+    if (fbVal >= maxFeedback)
+        return "FREEZE";
+
+    fbVal = jmin (fbVal, 0.95f);
     String fbStr = String (int (fbVal * 100.0f));
     return fbStr + "%";
 }
