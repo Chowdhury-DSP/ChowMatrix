@@ -9,9 +9,11 @@ target_sources(ChowMatrix PRIVATE
     dsp/Delay/VariableDelay.cpp
     dsp/Distortion/Distortion.cpp
     dsp/Distortion/LookupTables.cpp
+    dsp/Parameters/BaseController.cpp
     dsp/Parameters/DelayTypeControl.cpp
     dsp/Parameters/InsanityControl.cpp
     dsp/Parameters/ParamHelpers.cpp
+    dsp/Parameters/SyncControl.cpp
 
     gui/ParamSlider.cpp
     gui/BottomBar/BottomBarLNF.cpp

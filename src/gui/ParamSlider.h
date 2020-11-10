@@ -27,6 +27,8 @@ public:
     void mouseUp (const MouseEvent& e) override;
 
 private:
+    void setValueText (const String& paramID, float value01);
+
     DelayNode& node;
     AudioProcessorValueTreeState::Parameter* param;
     Label nameLabel;

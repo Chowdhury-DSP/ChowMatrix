@@ -1,5 +1,6 @@
 #include "ParamSlider.h"
 #include "../dsp/DelayNode.h"
+#include "../dsp/Delay/DelaySyncUtils.h"
 
 ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) :
     node (node),
@@ -55,10 +56,23 @@ ParamSlider::~ParamSlider()
     param->removeListener (this);
 }
 
+void ParamSlider::setValueText (const String& paramID, float value01)
+{
+    if (paramID != ParamTags::delayTag || ! node.getDelaySync())
+    {
+        valueLabel.setText (param->getCurrentValueAsText(), sendNotification);
+        return;
+    }
+
+    // special case: delay parameter in Sync mode
+    auto& rhythm = DelaySyncUtils::getRhythmForParam (value01);
+    valueLabel.setText (rhythm.label, sendNotification);
+}
+
 void ParamSlider::parameterValueChanged (int, float)
 {
-    valueLabel.setText (param->getCurrentValueAsText(), sendNotification);
     auto value01 = param->convertTo0to1 (param->get());
+    setValueText (param->paramID, value01);
     this->setValue (value01, dontSendNotification);
 }
 

@@ -1,33 +1,24 @@
 #pragma once
 
-#include <pch.h>
-#include "../InputNode.h"
+#include "BaseController.h"
 
 /**
  * Utility class to manage insanity controls
  */ 
-class InsanityControl : private AudioProcessorValueTreeState::Listener,
-                        private DBaseNode::Listener,
+class InsanityControl : private BaseController,
                         private Timer
 {
 public:
-    using Parameters = std::vector<std::unique_ptr<juce::RangedAudioParameter>>;
-
     InsanityControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes);
-    ~InsanityControl();
 
     static void addParameters (Parameters& params);
-    void nodeAdded (DelayNode* newNode) override;
-    void nodeRemoved (DelayNode* nodeToRemove) override;
+    void newNodeAdded (DelayNode* newNode) override;
 
     void timerCallback() override;
     void parameterChanged (const String&, float newValue) override;
     std::atomic<float>* getParameter() const noexcept { return insanityParam; }
 
 private:
-    AudioProcessorValueTreeState& vts;
-    std::array<InputNode, 2>* nodes;
-
     std::atomic<float>* insanityParam = nullptr;
     int timerFreq = 1;
 

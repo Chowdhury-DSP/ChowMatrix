@@ -148,10 +148,10 @@ StringToValFunc getStringFuncForParam (const String& paramID)
 String getTooltip (const String& paramID)
 {
     if (paramID == delayTag)
-        return "Sets the length of the delay between the previous delay node and this one.";
+        return "Sets the length of the delay between the previous delay node and this one";
 
     if (paramID == panTag)
-        return "Sets the stereo image for this delay node.";
+        return "Sets the stereo image for this delay node";
 
     if (paramID == fbTag)
         return "Sets the feedback gain for this delay line";

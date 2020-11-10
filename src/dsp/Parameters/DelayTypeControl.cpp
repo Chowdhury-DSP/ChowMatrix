@@ -6,33 +6,16 @@ namespace
     const String delayTypeTag = "delay_type";
 }
 
-inline VariableDelay::DelayType getDelayType (float param)
+static inline VariableDelay::DelayType getDelayType (float param)
 {
     return static_cast<VariableDelay::DelayType> (int (param));
 }
 
 DelayTypeControl::DelayTypeControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) :
-    vts (vts),
-    nodes (nodes)
+    BaseController (vts, nodes, { delayTypeTag })
 {
     delayTypeParam = vts.getRawParameterValue (delayTypeTag);
-    vts.addParameterListener (delayTypeTag, this);
-    
-    for (auto& node : *nodes)
-    {
-        node.addNodeListener (this);
-        NodeManager::doForNodes (&node, [=] (DelayNode* n) { n->addNodeListener (this); });
-    }
-
     parameterChanged (delayTypeTag, delayTypeParam->load());
-}
-
-DelayTypeControl::~DelayTypeControl()
-{
-    for (auto& node : *nodes)
-        NodeManager::doForNodes (&node, [=] (DelayNode* n) { n->removeNodeListener (this); });
-
-    vts.removeParameterListener (delayTypeTag, this);
 }
 
 void DelayTypeControl::addParameters (Parameters& params)
@@ -44,17 +27,10 @@ void DelayTypeControl::addParameters (Parameters& params)
 void DelayTypeControl::parameterChanged (const String&, float newValue)
 {
     auto type = getDelayType (newValue);
-    for (auto& node : *nodes)
-        NodeManager::doForNodes (&node, [=] (DelayNode* n) { n->setDelayType (type); });
+    doForNodes ([=] (DelayNode* n) { n->setDelayType (type); });
 }
 
-void DelayTypeControl::nodeAdded (DelayNode* newNode)
+void DelayTypeControl::newNodeAdded (DelayNode* newNode)
 {
-    newNode->addNodeListener (this);
     newNode->setDelayType (getDelayType (delayTypeParam->load()));
-}
-
-void DelayTypeControl::nodeRemoved (DelayNode* nodeToRemove)
-{
-    nodeToRemove->removeNodeListener (this);
 }
