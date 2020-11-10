@@ -5,6 +5,7 @@
 #include "dsp/InputNode.h"
 #include "dsp/Parameters/InsanityControl.h"
 #include "dsp/Parameters/DelayTypeControl.h"
+#include "dsp/Parameters/SyncControl.h"
 
 /**
  * Main class for the Matrix plugin
@@ -48,6 +49,7 @@ private:
 
     InsanityControl insanityControl;
     DelayTypeControl delayTypeControl;
+    SyncControl syncControl;
 
     // create this here so loading new nodes is always fast
     SharedResourcePointer<LookupTables> luts;

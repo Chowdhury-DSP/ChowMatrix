@@ -16,7 +16,8 @@ namespace
 
 ChowMatrix::ChowMatrix() :
     insanityControl (vts, &inputNodes),
-    delayTypeControl (vts, &inputNodes)
+    delayTypeControl (vts, &inputNodes),
+    syncControl (vts, &inputNodes)
 {
     manager.initialise (&inputNodes);
 
@@ -45,6 +46,7 @@ void ChowMatrix::addParameters (Parameters& params)
 
     InsanityControl::addParameters (params);
     DelayTypeControl::addParameters (params);
+    SyncControl::addParameters (params);
 }
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
@@ -77,6 +79,9 @@ void ChowMatrix::processBlock (AudioBuffer<float>& buffer)
     // get parameters
     setGain (dryGain, dryParamDB->load());
     setGain (wetGain, wetParamDB->load());
+
+    // update BPM
+    syncControl.setTempo (getPlayHead());
 
     // Keep dry signal
     dryBuffer.makeCopyOf (buffer, true);

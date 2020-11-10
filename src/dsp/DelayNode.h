@@ -17,6 +17,11 @@ public:
     float getDelay() const noexcept { return delayMs->convertTo0to1 (delayMs->get()); }
     void setDelay (float newDelay) { ParamHelpers::setParameterValue (delayMs, delayMs->convertFrom0to1 (newDelay)); }
 
+    // Sync parameter functions
+    void setDelaySync (bool shouldBeSynced);
+    bool getDelaySync() const noexcept { return syncDelay; }
+    void setTempo (double newTempoBPM) { tempoBPM = newTempoBPM; }
+
     // Get/Set pan param [-1,1]
     float getPan() const noexcept { return pan->get(); }
     void setPan (float newPan) { ParamHelpers::setParameterValue (pan, newPan); }
@@ -67,6 +72,9 @@ private:
     AudioProcessorValueTreeState params;
     StringArray paramIDs;
     Random rand;
+
+    bool syncDelay = false;
+    double tempoBPM = 120.0;
 
     // parameter handles
     Parameter* delayMs = nullptr;
