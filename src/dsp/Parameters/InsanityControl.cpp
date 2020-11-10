@@ -1,6 +1,8 @@
 #include "InsanityControl.h"
 #include "../../NodeManager.h"
 
+using namespace ParamTags;
+
 namespace
 {
     const String insanityTag = "insanity";
@@ -36,8 +38,11 @@ void InsanityControl::timerCallback()
         delay += n->delaySmoother.processSample (delay_dist (generator) * scale);
         pan   += n->panSmoother.processSample   (pan_dist   (generator) * scale);
 
-        n->setDelay (jlimit (0.0f, 1.0f, delay));
-        n->setPan (jlimit (-1.0f, 1.0f, pan));
+        if (! n->isParamLocked (delayTag))
+            n->setDelay (jlimit (0.0f, 1.0f, delay));
+        
+        if (! n->isParamLocked (panTag))
+            n->setPan (jlimit (-1.0f, 1.0f, pan));
     });
 }
 

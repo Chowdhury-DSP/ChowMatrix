@@ -19,7 +19,7 @@ public:
     void sliderValueChanged (Slider*) override;
 
     void resized() override;
-    void paint (Graphics&) override {}
+    void paint (Graphics&) override;
 
     void mouseDown (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
@@ -28,6 +28,7 @@ public:
 
 private:
     void setValueText (const String& paramID, float value01);
+    void toggleParamLock();
 
     DelayNode& node;
     AudioProcessorValueTreeState::Parameter* param;

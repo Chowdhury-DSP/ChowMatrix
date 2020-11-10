@@ -35,6 +35,10 @@ public:
     /** Randomise all the parameters of this delay node */
     void randomiseParameters();
 
+    // Manage parameter locking for Insanity Control
+    void toggleInsanityLock (const String& paramID);
+    bool isParamLocked (const String& paramID) const noexcept;
+
     /** Sets the delay interpolation type for this node */
     void setDelayType (VariableDelay::DelayType type);
     
@@ -76,6 +80,8 @@ private:
     bool syncDelay = false;
     double tempoBPM = 120.0;
 
+    StringArray lockedParams;
+
     // parameter handles
     Parameter* delayMs = nullptr;
     Parameter* pan = nullptr;
@@ -100,7 +106,7 @@ private:
     // needed for GUI
     int nodeIdx = 0;
     bool isSelected = false;
-    Component* nodeDetails;
+    Component* nodeDetails = nullptr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayNode)
 };

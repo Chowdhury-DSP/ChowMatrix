@@ -77,6 +77,26 @@ void DelayNode::randomiseParameters()
     }
 }
 
+void DelayNode::toggleInsanityLock (const String& paramID)
+{
+    if (lockedParams.contains (paramID))
+        lockedParams.removeString (paramID);
+    else
+        lockedParams.addIfNotAlreadyThere (paramID);
+
+    // repaint editors
+    if (auto edCast = dynamic_cast<DelayNodeComponent*> (editor))
+        edCast->repaint();
+
+    if (nodeDetails)
+        nodeDetails->repaint();
+}
+
+bool DelayNode::isParamLocked (const String& paramID) const noexcept
+{
+    return lockedParams.contains (paramID);
+}
+
 void DelayNode::setDelayType (VariableDelay::DelayType type)
 {
     processors.get<delayIdx>().setDelayType (type);
@@ -134,6 +154,7 @@ XmlElement* DelayNode::saveXml()
     auto state = params.copyState();
     std::unique_ptr<XmlElement> xml (state.createXml());
     xml->addChildElement (DBaseNode::saveXml());
+    xml->setAttribute ("locked", lockedParams.joinIntoString (",") + ",");
 
     return xml.release();
 }
@@ -147,7 +168,25 @@ void DelayNode::loadXml (XmlElement* xmlState)
     {
         params.replaceState (ValueTree::fromXml (*xmlState));
         DBaseNode::loadXml (xmlState->getChildByName ("children"));
+
+        lockedParams.clear();
+        auto lockedParamsString = xmlState->getStringAttribute ("locked", String());
+        while (lockedParamsString.isNotEmpty())
+        {
+            auto splitIdx = lockedParamsString.indexOfChar (',');
+            if (splitIdx <= 0)
+                break;
+
+            lockedParams.add (lockedParamsString.substring (0, splitIdx));
+            lockedParamsString = lockedParamsString.substring (splitIdx + 1);
+        }
     }
+
+    if (auto edCast = dynamic_cast<DelayNodeComponent*> (editor))
+        edCast->repaint();
+
+    if (nodeDetails)
+        nodeDetails->repaint();
 }
 
 void DelayNode::deleteNode()

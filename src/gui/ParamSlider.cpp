@@ -2,6 +2,8 @@
 #include "../dsp/DelayNode.h"
 #include "../dsp/Delay/DelaySyncUtils.h"
 
+using namespace ParamTags;
+
 ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) :
     node (node),
     param (param),
@@ -58,7 +60,7 @@ ParamSlider::~ParamSlider()
 
 void ParamSlider::setValueText (const String& paramID, float value01)
 {
-    if (paramID != ParamTags::delayTag || ! node.getDelaySync())
+    if (paramID != delayTag || ! node.getDelaySync())
     {
         valueLabel.setText (param->getCurrentValueAsText(), sendNotification);
         return;
@@ -99,8 +101,26 @@ void ParamSlider::resized()
     }
 }
 
+void ParamSlider::paint (Graphics&)
+{
+    auto textColour = node.isParamLocked (param->paramID) ? Colours::red : Colours::white;
+    valueLabel.setColour (Label::textColourId, textColour);
+}
+
+void ParamSlider::toggleParamLock()
+{
+    node.toggleInsanityLock (param->paramID);
+}
+
 void ParamSlider::mouseDown (const MouseEvent& e)
 {
+    if (e.mods.isCtrlDown())
+    {
+        if (param->paramID == delayTag || param->paramID == panTag)
+            toggleParamLock();
+        return;
+    }
+
     linkFlag.store (e.mods.isShiftDown());
     Slider::mouseDown (e);
 }
