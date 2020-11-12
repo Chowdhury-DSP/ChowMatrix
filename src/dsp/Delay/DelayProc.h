@@ -36,8 +36,11 @@ public:
     void setDelayType (VariableDelay::DelayType type) { delay.setDelayType (type); };
 
 private:
-    inline float processSample (float x, size_t ch);
-    inline float processSampleSmooth (float x, size_t ch);
+    template<typename SampleType>
+    inline SampleType processSample (SampleType x, size_t ch);
+
+    template<typename SampleType>
+    inline SampleType processSampleSmooth (SampleType x, size_t ch);
 
     VariableDelay delay { 1 << 19 };
 

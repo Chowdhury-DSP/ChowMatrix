@@ -39,11 +39,11 @@ public:
 
     std::vector<foleys::SettableProperty> getSettableProperties() const override
     {
-        std::vector<foleys::SettableProperty> properties;
+        std::vector<foleys::SettableProperty> itemProperties;
 
-        properties.push_back ({ configNode, foleys::IDs::parameter, foleys::SettableProperty::Choice, {}, magicBuilder.createParameterMenu() });
+        itemProperties.push_back ({ configNode, foleys::IDs::parameter, foleys::SettableProperty::Choice, {}, magicBuilder.createParameterMenu() });
 
-        return properties;
+        return itemProperties;
     }
 
     juce::Component* getWrappedComponent() override

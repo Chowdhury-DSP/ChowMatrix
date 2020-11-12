@@ -18,7 +18,7 @@ BottomBarLNF::BottomBarLNF()
     setColour (PopupMenu::highlightedTextColourId, Colours::white);
 }
 
-void BottomBarLNF::drawRotarySlider (Graphics& g, int x, int y, int, int height,
+void BottomBarLNF::drawRotarySlider (Graphics& g, int, int, int, int height,
                                           float, const float, const float, Slider& slider)
 {
     g.setColour (Colours::white); // @TODO: make colour selectable

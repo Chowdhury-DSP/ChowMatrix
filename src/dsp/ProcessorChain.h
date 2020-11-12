@@ -90,7 +90,7 @@ public:
     template <typename FloatType>
     inline FloatType processSample (FloatType x) noexcept
     {
-        procchain_detail::forEachInTuple ([&] (auto& proc, size_t index) noexcept
+        procchain_detail::forEachInTuple ([&] (auto& proc, size_t /*index*/) noexcept
         { 
             x = proc.processSample (x);
         }, processors);

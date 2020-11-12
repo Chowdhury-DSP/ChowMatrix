@@ -61,7 +61,7 @@ void NodeDetails::Button::paint (Graphics& g)
     g.drawFittedText (String (nodeIdx + 1), bounds.toNearestInt(), Justification::centred, 1);
 }
 
-void NodeDetails::Button::mouseDown (const MouseEvent& e)
+void NodeDetails::Button::mouseDown (const MouseEvent&)
 {
     nodeDetails.setSelected();
     grabKeyboardFocus();
