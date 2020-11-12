@@ -5,7 +5,7 @@
 
 namespace DetailsConsts
 {
-    constexpr int buttonHeight = 60;
+    constexpr int buttonHeight = 45;
     constexpr int circleRadius = 16;
 }
 

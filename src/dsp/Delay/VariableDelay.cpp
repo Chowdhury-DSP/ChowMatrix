@@ -8,13 +8,8 @@ VariableDelay::VariableDelay (size_t size) :
 {}
 
 void VariableDelay::setDelay (float newDelayInSamples)
-{ 
-    delays[type]->setDelay (newDelayInSamples);
-}
-
-float VariableDelay::getDelay() const
-{ 
-    return delays[type]->getDelay();
+{
+    delaySmooth.setTargetValue (newDelayInSamples);
 }
 
 void VariableDelay::setDelayType (DelayType newType)
@@ -31,6 +26,8 @@ void VariableDelay::setDelayType (DelayType newType)
 
 void VariableDelay::prepare (const juce::dsp::ProcessSpec& spec)
 {
+    delaySmooth.reset (spec.sampleRate, 0.025);
+
     for (auto* delay : delays)
         delay->prepare (spec);
 }
