@@ -18,7 +18,7 @@ public:
     static void addParameters (Parameters& params);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
-    void processBlock (AudioBuffer<float>& buffer) override;
+    void processAudioBlock (AudioBuffer<float>& buffer) override;
 
     AudioProcessorEditor* createEditor() override;
 

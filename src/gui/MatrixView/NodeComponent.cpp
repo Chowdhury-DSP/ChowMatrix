@@ -3,8 +3,8 @@
 #include "../../dsp/InputNode.h"
 
 NodeComponent::NodeComponent (DBaseNode& node, GraphView* view) :
-    node (node),
-    graphView (view)
+    graphView (view),
+    node (node)
 {
     setSize (32, 32);
 }

@@ -37,7 +37,7 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) :
         valueLabel.onEditorHide = [=, &node] {
             auto stringFunc = ParamHelpers::getStringFuncForParam (param->paramID);
             auto unNormalisedValue = stringFunc (valueLabel.getText (true));
-            node.setParameter (param->paramID, param->convertTo0to1 (unNormalisedValue));
+            node.setNodeParameter (param->paramID, param->convertTo0to1 (unNormalisedValue));
         };
     }
 

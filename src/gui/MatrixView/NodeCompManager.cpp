@@ -4,7 +4,7 @@
 template<typename Node, typename Editor>
 Editor* createAndAddEditorToList (Node* node, OwnedArray<Editor>& list, GraphView* view)
 { 
-    return list.add (dynamic_cast<Editor*> (node->createEditor (view).release()));
+    return list.add (dynamic_cast<Editor*> (node->createNodeEditor (view).release()));
 }
 
 void doForAllChildNodes (DBaseNode* root, NodeCompManager::NodeFunc funcToDo)

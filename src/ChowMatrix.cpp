@@ -51,7 +51,7 @@ void ChowMatrix::addParameters (Parameters& params)
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    for (int ch = 0; ch < 2; ++ch)
+    for (size_t ch = 0; ch < 2; ++ch)
     {
         inputNodes[ch].prepare (sampleRate, samplesPerBlock);
         chBuffers[ch].setSize (1, samplesPerBlock);
@@ -64,10 +64,9 @@ void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
 
 void ChowMatrix::releaseResources()
 {
-
 }
 
-void ChowMatrix::processBlock (AudioBuffer<float>& buffer)
+void ChowMatrix::processAudioBlock (AudioBuffer<float>& buffer)
 {
     auto setGain = [] (auto& gainProc, float gainParamDB) {
         if (gainParamDB <= negInfDB)
@@ -99,7 +98,7 @@ void ChowMatrix::processBlock (AudioBuffer<float>& buffer)
 
     // get wet signal
     buffer.clear();
-    for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
+    for (size_t ch = 0; ch < (size_t) buffer.getNumChannels(); ++ch)
         inputNodes[ch].process (chBuffers[ch], buffer, numSamples);
 
     dsp::AudioBlock<float> wetBlock (buffer);
@@ -170,7 +169,7 @@ void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
 
     vts.replaceState (ValueTree::fromXml (*vtsXml));
 
-    int count = 0;
+    size_t count = 0;
     forEachXmlChildElement (*childrenXml, childXml)
     {
         if (count > 2)

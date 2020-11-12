@@ -17,7 +17,7 @@ public:
     virtual ~BaseNode() {}
 
     /** Create a GUI editor for this node */
-    virtual std::unique_ptr<NodeComponent> createEditor (GraphView*) = 0;
+    virtual std::unique_ptr<NodeComponent> createNodeEditor (GraphView*) = 0;
 
     /** Access the editor for this node, or nullptr if editor does not exist */
     NodeComponent* getEditor();

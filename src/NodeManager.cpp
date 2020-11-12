@@ -47,7 +47,7 @@ void NodeManager::setParameter (DelayNode* sourceNode, const String& paramID, fl
             if (n == sourceNode)
                 return;
 
-            n->setParameter (paramID, value01);
+            n->setNodeParameter (paramID, value01);
         });
     }
 }

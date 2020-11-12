@@ -22,7 +22,6 @@ target_compile_definitions(juce_plugin_modules
         JUCE_REPORT_APP_USAGE=0
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
-        JUCE_STANDALONE_APPLICATION=0
         JucePlugin_Manufacturer="chowdsp"
         JucePlugin_VersionString="${CMAKE_PROJECT_VERSION}"
         JucePlugin_Name="${CMAKE_PROJECT_NAME}"

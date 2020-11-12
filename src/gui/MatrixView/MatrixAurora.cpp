@@ -105,7 +105,7 @@ void MatrixAurora::paint (Graphics& g)
 void MatrixAurora::resized()
 {
     const auto width = (float) getWidth();
-    points.resize (static_cast<int> (width * pixelMult));
+    points.resize (static_cast<size_t> (width * pixelMult));
 
     for (size_t i = 0; i < points.size(); ++i)
         points[i].x = (float) i / (float) points.size();
