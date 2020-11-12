@@ -21,7 +21,7 @@ matrix:
             - webkit2gtk-4.0
       env: run=bash
     - os: osx
-      osx_image: xcode10.3
+      osx_image: xcode12
       env: run=sh
     - os: windows
       env: run=sh
