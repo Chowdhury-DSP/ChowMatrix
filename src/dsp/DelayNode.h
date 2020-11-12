@@ -30,7 +30,7 @@ public:
     void setParameterListeners (const String& paramID, float value01);
     
     /** Sets the parameter with given ID to a 0-1 normalized value */
-    void setParameter (const String& paramID, float value01);
+    void setNodeParameter (const String& paramID, float value01);
 
     /** Randomise all the parameters of this delay node */
     void randomiseParameters();
@@ -47,7 +47,7 @@ public:
     void prepare (double sampleRate, int samplesPerBlock) override;
     void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples) override;
 
-    std::unique_ptr<NodeComponent> createEditor (GraphView*) override;
+    std::unique_ptr<NodeComponent> createNodeEditor (GraphView*) override;
 
     // Manage parameters
     int getNumParams() const noexcept { return paramIDs.size(); }

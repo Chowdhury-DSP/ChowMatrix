@@ -62,7 +62,7 @@ void DelayNode::setParameterListeners (const String& paramID, float value01)
     nodeListeners.call (&DBaseNode::Listener::setParameter, this, paramID, value01);
 }
 
-void DelayNode::setParameter (const String& paramID, float value01)
+void DelayNode::setNodeParameter (const String& paramID, float value01)
 {
     auto thisParam = params.getParameter (paramID);
     thisParam->setValueNotifyingHost (value01);
@@ -142,7 +142,7 @@ void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBu
         outBuffer.addFrom (ch, 0, panBuffer, ch, 0, numSamples);
 }
 
-std::unique_ptr<NodeComponent> DelayNode::createEditor (GraphView* view)
+std::unique_ptr<NodeComponent> DelayNode::createNodeEditor (GraphView* view)
 {
     auto editorPtr = std::make_unique<DelayNodeComponent> (*this, view);
     editor = editorPtr.get();
