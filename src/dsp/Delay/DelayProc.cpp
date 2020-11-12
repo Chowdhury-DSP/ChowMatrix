@@ -51,12 +51,12 @@ void DelayProc::process (const ProcessContext& context)
         auto* inputSamples = inputBlock.getChannelPointer (channel);
         auto* outputSamples = outputBlock.getChannelPointer (channel);
 
-        if (delaySmooth.isSmoothing())
+        if (delay.isDelaySmoothing() || delaySmooth.isSmoothing())
         {
             for (size_t i = 0; i < numSamples; ++i)
             {
                 delay.setDelay (delaySmooth.getNextValue());
-                outputSamples[i] = processSample (inputSamples[i], channel);
+                outputSamples[i] = processSampleSmooth (inputSamples[i], channel);
             }
         }
         else
@@ -75,6 +75,16 @@ inline float DelayProc::processSample (float x, size_t ch)
     auto input = inGain.getNextValue() * x;
     input = procs.processSample (input + state[ch]);    // process input + feedback state
     delay.pushSample ((int) ch, input);                 // push input to delay line
+    float y = delay.popSample ((int) ch);               // pop output from delay line
+    state[ch] = y * feedback.getNextValue();            // save feedback state
+    return y;
+}
+
+inline float DelayProc::processSampleSmooth (float x, size_t ch)
+{
+    auto input = inGain.getNextValue() * x;
+    input = procs.processSample (input + state[ch]);    // process input + feedback state
+    delay.pushSampleSmooth ((int) ch, input);           // push input to delay line
     float y = delay.popSample ((int) ch);               // pop output from delay line
     state[ch] = y * feedback.getNextValue();            // save feedback state
     return y;

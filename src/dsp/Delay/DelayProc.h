@@ -37,6 +37,7 @@ public:
 
 private:
     inline float processSample (float x, size_t ch);
+    inline float processSampleSmooth (float x, size_t ch);
 
     VariableDelay delay { 1 << 19 };
 

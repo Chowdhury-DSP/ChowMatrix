@@ -37,6 +37,7 @@ const static std::array<DelayRhythm, 12> rhythms {
     DelayRhythm ("Half Dot",          "1/2 D",  2.0 * 1.5 ),
 };
 
+/** Return delay in seconds for rhythm and tempo */
 static inline double getDelayForRythm (double tempoBPM, const DelayRhythm& rhythm)
 {
     const auto beatLength = 1.0 / (tempoBPM / 60.0);

@@ -42,7 +42,7 @@ void DelayNode::cookParameters()
     if (syncDelay)
     {
         auto& rhythm = getRhythmForParam (delayMs->convertTo0to1 (delayLenMs));
-        delayLenMs = (float) getDelayForRythm (tempoBPM, rhythm);
+        delayLenMs = 1000.0f * (float) getDelayForRythm (tempoBPM, rhythm);
     }
 
     processors.get<gainIdx>().setGainDecibels (*gainDB);
