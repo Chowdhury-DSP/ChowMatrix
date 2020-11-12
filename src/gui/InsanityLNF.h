@@ -11,7 +11,7 @@ public:
 
 protected:
     void drawLinearSlider (Graphics& g, int x, int y, int width, int height,
-        float sliderPos, float minSliderPos, float maxSliderPos,
+        float sliderPos, float /*minSliderPos*/, float /*maxSliderPos*/,
         const Slider::SliderStyle, Slider & slider) override
     {
         auto trackWidth = jmin (6.0f, slider.isHorizontal() ? (float) height * 0.25f : (float) width * 0.25f);

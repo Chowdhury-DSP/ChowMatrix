@@ -102,16 +102,16 @@ void DelayNode::setDelayType (VariableDelay::DelayType type)
     processors.get<delayIdx>().setDelayType (type);
 }
 
-void DelayNode::prepare (double sampleRate, int samplesPerBlock)
+void DelayNode::prepare (double newSampleRate, int newSamplesPerBlock)
 {
-    DBaseNode::prepare (sampleRate, samplesPerBlock);
+    DBaseNode::prepare (newSampleRate, newSamplesPerBlock);
 
     cookParameters();
-    processors.prepare ({ sampleRate, (uint32) samplesPerBlock, 1 });
-    panner.prepare ({ sampleRate, (uint32) samplesPerBlock, 2 });
+    processors.prepare ({ newSampleRate, (uint32) newSamplesPerBlock, 1 });
+    panner.prepare ({ newSampleRate, (uint32) newSamplesPerBlock, 2 });
     
-    childBuffer.setSize (1, samplesPerBlock);
-    panBuffer.setSize (2, samplesPerBlock);
+    childBuffer.setSize (1, newSamplesPerBlock);
+    panBuffer.setSize (2, newSamplesPerBlock);
 }
 
 void DelayNode::flushDelays()

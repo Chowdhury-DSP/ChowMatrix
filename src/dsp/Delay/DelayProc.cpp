@@ -70,22 +70,24 @@ void DelayProc::process (const ProcessContext& context)
     procs.get<hpfIdx>().snapToZero();
 }
 
-inline float DelayProc::processSample (float x, size_t ch)
+template<typename SampleType>
+inline SampleType DelayProc::processSample (SampleType x, size_t ch)
 {
     auto input = inGain.getNextValue() * x;
     input = procs.processSample (input + state[ch]);    // process input + feedback state
     delay.pushSample ((int) ch, input);                 // push input to delay line
-    float y = delay.popSample ((int) ch);               // pop output from delay line
+    auto y = delay.popSample ((int) ch);                // pop output from delay line
     state[ch] = y * feedback.getNextValue();            // save feedback state
     return y;
 }
 
-inline float DelayProc::processSampleSmooth (float x, size_t ch)
+template<typename SampleType>
+inline SampleType DelayProc::processSampleSmooth (SampleType x, size_t ch)
 {
     auto input = inGain.getNextValue() * x;
     input = procs.processSample (input + state[ch]);    // process input + feedback state
     delay.pushSampleSmooth ((int) ch, input);           // push input to delay line
-    float y = delay.popSample ((int) ch);               // pop output from delay line
+    auto y = delay.popSample ((int) ch);                // pop output from delay line
     state[ch] = y * feedback.getNextValue();            // save feedback state
     return y;
 }
@@ -109,7 +111,4 @@ void DelayProc::setParameters (const Parameters& params)
 
 //==================================================
 template void DelayProc::process<dsp::ProcessContextReplacing<float>> (const dsp::ProcessContextReplacing<float>&);
-template void DelayProc::process<dsp::ProcessContextReplacing<double>> (const dsp::ProcessContextReplacing<double>&);
-
 template void DelayProc::process<dsp::ProcessContextNonReplacing<float>> (const dsp::ProcessContextNonReplacing<float>&);
-template void DelayProc::process<dsp::ProcessContextNonReplacing<double>> (const dsp::ProcessContextNonReplacing<double>&);

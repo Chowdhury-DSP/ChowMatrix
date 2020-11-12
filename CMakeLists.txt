@@ -5,20 +5,18 @@ set(CMAKE_CXX_STANDARD 17)
 add_subdirectory(modules)
 include_directories(modules)
 
-# juce_set_vst2_sdk_path(C:/SDKs/VST_SDK/VST2_SDK/)
+juce_set_vst2_sdk_path(C:/SDKs/VST_SDK/VST2_SDK/)
 
 juce_add_plugin(ChowMatrix
     COMPANY_NAME chowdsp
     PLUGIN_MANUFACTURER_CODE Chow
     PLUGIN_CODE spg3
-    FORMATS AU VST3 Standalone #VST
+    FORMATS AU VST3 Standalone VST
     ProductName "ChowMatrix")
 
 # create JUCE header
 juce_generate_juce_header(ChowMatrix)
 
-# create pre-compiled headers
-# target_precompile_headers(ChowMatrix PRIVATE src/pch.h)
 
 # add sources
 add_subdirectory(src)
@@ -38,8 +36,5 @@ target_compile_definitions(ChowMatrix
 
 target_link_libraries(ChowMatrix PRIVATE
     BinaryData
-    juce::juce_audio_utils
-    foleys_gui_magic
-    chowdsp_utils
-    polylogarithm
+    juce_plugin_modules
 )

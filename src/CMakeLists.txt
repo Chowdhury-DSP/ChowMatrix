@@ -27,4 +27,5 @@ target_sources(ChowMatrix PRIVATE
     gui/MatrixView/NodeCompManager.cpp
     gui/MatrixView/NodeComponent.cpp
 )
-    
+
+target_precompile_headers(ChowMatrix PRIVATE pch.h)
