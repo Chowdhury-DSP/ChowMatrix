@@ -68,7 +68,7 @@ void ParamSlider::setValueText (const String& paramID, float value01)
 
     // special case: delay parameter in Sync mode
     auto& rhythm = DelaySyncUtils::getRhythmForParam (value01);
-    valueLabel.setText (rhythm.label, sendNotification);
+    valueLabel.setText (rhythm.getLabel(), sendNotification);
 }
 
 void ParamSlider::parameterValueChanged (int, float)

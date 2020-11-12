@@ -12,17 +12,19 @@ namespace DelaySyncUtils
 /** A simple struct containing a rhythmic delay length */
 struct DelayRhythm
 {
-    constexpr DelayRhythm (const String& name, const String& label, double tempoFactor) :
+    constexpr DelayRhythm (const std::string_view& name, const std::string_view& label, double tempoFactor) :
         name (name),
         label (label),
         tempoFactor (tempoFactor) {}
 
-    const String name;
-    const String label;
-    const double tempoFactor;
+    inline String getLabel() const { return String (static_cast<std::string> (label)); }
+
+    std::string_view name;
+    std::string_view label;
+    double tempoFactor;
 };
 
-const static std::array<DelayRhythm, 12> rhythms {
+static constexpr std::array<DelayRhythm, 12> rhythms {
     DelayRhythm ("Sixteenth Triplet", "1/16 T", 0.5 / 3.0 ),
     DelayRhythm ("Sixteenth",         "1/16",   0.25      ),
     DelayRhythm ("Sixteenth Dot",     "1/16 D", 0.25 * 1.5),
