@@ -13,7 +13,7 @@ class NodeDetails : public Component
 {
 public:
     NodeDetails (DelayNode& node, NodeManager& manager);
-    ~NodeDetails();
+    ~NodeDetails() override;
 
     void resized() override;
     DelayNode* getNode() { return nodeInfo.getNode(); }

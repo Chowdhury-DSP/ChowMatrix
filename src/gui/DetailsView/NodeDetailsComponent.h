@@ -8,7 +8,7 @@ class NodeDetailsComponent : public Component,
 {
 public:
     NodeDetailsComponent (ChowMatrix& plugin);
-    ~NodeDetailsComponent();
+    ~NodeDetailsComponent() override;
 
     void paint (Graphics& g) override;
     void resized() override;

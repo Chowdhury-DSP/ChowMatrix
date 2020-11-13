@@ -59,11 +59,26 @@ public:
     void loadXml (XmlElement*) override;
     void deleteNode();
 
+    // Manage node index
     void setIndex (int newIdx) { nodeIdx = newIdx; }
     int getIndex() const noexcept {  return nodeIdx; }
 
+    // Manage selection state
     bool getSelected() const noexcept { return isSelected; }
     void setSelected (bool shouldBeSelected);
+
+    // Manage solo state
+    enum SoloState
+    {
+        None,
+        Mute,
+        Solo,
+    };
+
+    SoloState getSoloed() const noexcept { return isSoloed.load(); }
+    void setSoloed (SoloState newSoloState);
+
+    /** Returns pointer to node details component for this node */
     void setNodeDetails (Component* detailsComp) { nodeDetails = detailsComp; }
 
     // Filters to smooth random param changes from Insanity
@@ -72,6 +87,8 @@ public:
 
 private:
     void cookParameters();
+    void repaintEditors (bool repaintWholeGraph = false);
+    void addToOutput (AudioBuffer<float>& outBuffer, const int numSamples);
 
     AudioProcessorValueTreeState params;
     StringArray paramIDs;
@@ -81,6 +98,8 @@ private:
     double tempoBPM = 120.0;
 
     StringArray lockedParams;
+    std::atomic<SoloState> isSoloed;
+    SoloState prevSoloState = None;
 
     // parameter handles
     Parameter* delayMs = nullptr;

@@ -12,7 +12,7 @@ class ParamSlider : public Slider,
 {
 public:
     ParamSlider (DelayNode& node, AudioProcessorValueTreeState::Parameter* param, bool showLabel = true);
-    ~ParamSlider();
+    ~ParamSlider() override;
 
     void parameterValueChanged (int, float) override;
     void parameterGestureChanged (int, bool) override {}

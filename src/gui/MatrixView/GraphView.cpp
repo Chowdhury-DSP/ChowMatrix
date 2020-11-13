@@ -32,6 +32,7 @@ void GraphView::mouseDown (const MouseEvent& e)
     if (! e.mods.isAnyModifierKeyDown()) // deselect current node
     {
         setSelected (nullptr);
+        setSoloed (nullptr);
         return;   
     }
 
@@ -57,11 +58,13 @@ void GraphView::paint (Graphics& g)
 {
     g.fillAll (findColour (backgroundColour));
 
-    g.setColour (findColour (nodeColour));
-    manager.doForAllNodes ([&g] (DBaseNode* root, DelayNode* childNode) {
+    manager.doForAllNodes ([=, &g] (DBaseNode* root, DelayNode* childNode) {
         auto* editor = childNode->getEditor();
         auto rootPos = root->getEditor()->getCentrePosition();
         auto childPos = editor->getCentrePosition();
+
+        const auto alphaMult = childNode->getSoloed() == DelayNode::SoloState::Mute ? 0.4f : 1.0f;
+        g.setColour (findColour (nodeColour).withMultipliedAlpha (alphaMult));
         g.drawLine (Line (rootPos, childPos).toFloat(), 2.0f);
     });
 }
@@ -83,6 +86,11 @@ void GraphView::resized()
 void GraphView::setSelected (DelayNode* node)
 {
     plugin.getManager().setSelected (node);
+}
+
+void GraphView::setSoloed (DelayNode* node)
+{
+    plugin.getManager().setSoloed (node);
 }
 
 void GraphView::nodeAdded (DelayNode* newNode)

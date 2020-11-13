@@ -32,7 +32,7 @@ private:
     std::vector<AuroraPt> points;
 
     float time = 0.0f;
-    std::atomic<float>* insanityParam = nullptr;    
+    std::atomic<float>* insanityParam = nullptr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MatrixAurora)
 };

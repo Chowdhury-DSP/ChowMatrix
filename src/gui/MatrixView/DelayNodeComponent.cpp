@@ -31,6 +31,9 @@ void DelayNodeComponent::mouseDown (const MouseEvent& e)
         return;
     }
 
+    if (e.mods.isAltDown())
+        graphView->setSoloed (&node);
+
     graphView->setSelected (&node);
     grabKeyboardFocus();
 }
@@ -57,20 +60,26 @@ bool DelayNodeComponent::keyPressed (const KeyPress& key)
 
 void DelayNodeComponent::paint (Graphics& g)
 {
+    // damp colours for muted nodes
+    const auto alphaMult = node.getSoloed() == DelayNode::SoloState::Mute ? 0.4f : 1.0f;
+
     if (node.getSelected())
     {
-        g.setColour (findColour (GraphView::nodeSelectedColour, true));
+        g.setColour (findColour (GraphView::nodeSelectedColour, true)
+            .withMultipliedAlpha (alphaMult));
         g.fillEllipse (getLocalBounds().toFloat());
 
-        g.setColour (Colours::white);
+        g.setColour (Colours::white.withMultipliedAlpha (alphaMult));
         g.drawEllipse (getLocalBounds().toFloat().reduced (1.0f), 2.0f);
     }
     else
     {
-        NodeComponent::paint (g);
+        g.setColour (findColour (GraphView::nodeColour, true)
+            .withMultipliedAlpha (alphaMult));
+        g.fillEllipse (getLocalBounds().toFloat());
     }
 
-    g.setColour (Colours::white);
+    g.setColour (Colours::white.withMultipliedAlpha (alphaMult));
     g.drawFittedText (String (node.getIndex() + 1), getLocalBounds(), Justification::centred, 1);
 }
 
@@ -131,5 +140,4 @@ void DelayNodeComponent::selectionChanged()
     bool isSelected = node.getSelected();
     nodeInfo.setVisible (isSelected);
     nodeInfo.toFront (true);
-    repaint();
 }

@@ -15,7 +15,7 @@ public:
     BaseController (AudioProcessorValueTreeState& vts,
                     std::array<InputNode, 2>* nodes,
                     StringArray paramsToListenFor);
-    virtual ~BaseController();
+    ~BaseController() override;
 
 protected:
     virtual void newNodeAdded (DelayNode*) {}

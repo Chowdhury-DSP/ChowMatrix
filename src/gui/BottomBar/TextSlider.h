@@ -11,7 +11,7 @@ public:
         setLookAndFeel (&lnf);
     }
 
-    virtual ~TextSlider()
+    ~TextSlider() override
     {
         setLookAndFeel (nullptr);
     }

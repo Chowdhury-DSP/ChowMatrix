@@ -28,6 +28,7 @@ DelayNode::DelayNode() :
 
     delaySmoother.reset();
     panSmoother.reset();
+    isSoloed = None;
 }
 
 void DelayNode::setDelaySync (bool shouldBeSynced)
@@ -84,12 +85,7 @@ void DelayNode::toggleInsanityLock (const String& paramID)
     else
         lockedParams.addIfNotAlreadyThere (paramID);
 
-    // repaint editors
-    if (auto edCast = dynamic_cast<DelayNodeComponent*> (editor))
-        edCast->repaint();
-
-    if (nodeDetails)
-        nodeDetails->repaint();
+    repaintEditors();
 }
 
 bool DelayNode::isParamLocked (const String& paramID) const noexcept
@@ -137,9 +133,39 @@ void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBu
     dsp::AudioBlock<float> panBlock { panBuffer };
     panner.process<dsp::ProcessContextNonReplacing<float>> ({ inBlock, panBlock });
 
-    // add to output
-    for (int ch = 0; ch < outBuffer.getNumChannels(); ++ch)
-        outBuffer.addFrom (ch, 0, panBuffer, ch, 0, numSamples);
+    addToOutput (outBuffer, numSamples);
+}
+
+void DelayNode::addToOutput (AudioBuffer<float>& outBuffer, const int numSamples)
+{
+    if (isSoloed == Mute && prevSoloState == Mute) // mute state
+        return;
+
+    if (isSoloed != Mute && prevSoloState != Mute) // normal state
+    {
+        for (int ch = 0; ch < outBuffer.getNumChannels(); ++ch)
+            outBuffer.addFrom (ch, 0, panBuffer, ch, 0, numSamples);
+        return;  
+    }
+
+    int fadeSamples = jmin (numSamples, 256);
+    if (isSoloed == Mute && prevSoloState != Mute) // fade-out state
+    {
+        for (int ch = 0; ch < outBuffer.getNumChannels(); ++ch)
+            outBuffer.addFromWithRamp (ch, 0, panBuffer.getWritePointer (ch), fadeSamples, 1.0f, 0.0f);
+    }
+    else if (isSoloed != Mute && prevSoloState == Mute) // fade-in state
+    {
+        for (int ch = 0; ch < outBuffer.getNumChannels(); ++ch)
+        {
+            outBuffer.addFromWithRamp (ch, 0, panBuffer.getWritePointer (ch), fadeSamples, 0.0f, 1.0f);
+
+            if (numSamples > fadeSamples)
+                outBuffer.addFrom (ch, fadeSamples, panBuffer, ch, fadeSamples, numSamples - fadeSamples);
+        }
+    }
+    
+    prevSoloState = isSoloed;
 }
 
 std::unique_ptr<NodeComponent> DelayNode::createNodeEditor (GraphView* view)
@@ -182,11 +208,7 @@ void DelayNode::loadXml (XmlElement* xmlState)
         }
     }
 
-    if (auto edCast = dynamic_cast<DelayNodeComponent*> (editor))
-        edCast->repaint();
-
-    if (nodeDetails)
-        nodeDetails->repaint();
+    repaintEditors();
 }
 
 void DelayNode::deleteNode()
@@ -202,6 +224,25 @@ void DelayNode::setSelected (bool shouldBeSelected)
 
     if (auto edCast = dynamic_cast<DelayNodeComponent*> (editor))
         edCast->selectionChanged();
+
+    repaintEditors();
+}
+
+void DelayNode::setSoloed (SoloState newSoloState)
+{
+    isSoloed = newSoloState;
+    repaintEditors (true);
+}
+
+void DelayNode::repaintEditors (bool repaintWholeGraph)
+{
+    if (auto edCast = dynamic_cast<DelayNodeComponent*> (editor))
+    {
+        edCast->repaint();
+
+        if (repaintWholeGraph)
+            edCast->getParentComponent()->repaint();
+    }
 
     if (nodeDetails)
         nodeDetails->repaint();

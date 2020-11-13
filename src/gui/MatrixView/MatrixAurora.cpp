@@ -9,6 +9,7 @@ namespace
     constexpr float lineWidth = 3.0f / pixelMult;
     constexpr float pixelWidth = 1.0f / pixelMult;
 
+    constexpr float insanityFloor = 0.15f;
     constexpr float timerFreq = 20.0f;
     constexpr float omega_t = MathConstants<float>::twoPi / timerFreq;
 }
@@ -71,6 +72,10 @@ MatrixAurora::MatrixAurora (std::atomic<float>* insanityParam) :
 
 void MatrixAurora::update()
 {
+    if (insanityParam->load() < insanityFloor)
+        setFramesPerSecond (1);
+    else
+        setFramesPerSecond (1 + (int) (std::pow (insanityParam->load(), 0.2f) * (timerFreq - 1.0f)));
     time += (float) getMillisecondsSinceLastUpdate() / 1000.0f;
 
     for (auto& pt : points)
@@ -83,6 +88,9 @@ void MatrixAurora::update()
 
 void MatrixAurora::paint (Graphics& g)
 {
+    if (insanityParam->load() < insanityFloor) // don't update if not needed
+        return;
+
     auto bounds = getLocalBounds().toFloat();
 
     for (auto& pt : points)

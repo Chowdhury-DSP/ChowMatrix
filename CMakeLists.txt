@@ -17,7 +17,6 @@ juce_add_plugin(ChowMatrix
 # create JUCE header
 juce_generate_juce_header(ChowMatrix)
 
-
 # add sources
 add_subdirectory(src)
 include_directories(src)
@@ -34,7 +33,6 @@ target_compile_definitions(ChowMatrix
     FOLEYS_ENABLE_BINARY_DATA=1
 )
 
-target_link_libraries(ChowMatrix PRIVATE
-    BinaryData
+target_link_libraries(ChowMatrix PUBLIC
     juce_plugin_modules
 )

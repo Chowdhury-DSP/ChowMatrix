@@ -8,13 +8,13 @@ class NodeComponent : public Component
 {
 public:
     NodeComponent (DBaseNode& node, GraphView* view);
-    virtual ~NodeComponent() {}
+    virtual ~NodeComponent() = default;
 
     void paint (Graphics& g) override;
 
     DBaseNode& getNode() { return node; }
 
-    virtual void updatePosition() {};
+    virtual void updatePosition() {}
     
     inline Point<int> getCentrePosition() const noexcept
     {

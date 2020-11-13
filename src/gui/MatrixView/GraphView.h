@@ -13,7 +13,7 @@ class GraphView : public Component,
 {
 public:
     GraphView (ChowMatrix& plugin);
-    ~GraphView();
+    ~GraphView() override;
 
     enum ColourIDs
     {
@@ -27,6 +27,7 @@ public:
     void resized() override;
 
     void setSelected (DelayNode* node);
+    void setSoloed (DelayNode* node);
     void nodeAdded (DelayNode* newNode) override;
     void nodeRemoved (DelayNode* nodeToRemove) override;
 

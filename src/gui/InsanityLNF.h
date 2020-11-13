@@ -7,7 +7,7 @@ class InsanityLNF : public chowdsp::ChowLNF
 {
 public:
     InsanityLNF() {}
-    virtual ~InsanityLNF() {}
+    virtual ~InsanityLNF() = default;
 
 protected:
     void drawLinearSlider (Graphics& g, int x, int y, int width, int height,

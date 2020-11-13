@@ -13,6 +13,7 @@ public:
     
     /** Iterate through node tree and perform nodeFunc for all nodes */
     static void doForNodes (DBaseNode* root, std::function<void(DelayNode*)> nodeFunc);
+    static void doForNodes (std::array<InputNode, 2>* nodes, std::function<void(DelayNode*)> nodeFunc);
     
     /** Initialise node manager with an array of root nodes */
     void initialise (std::array<InputNode, 2>* _nodes);
@@ -25,6 +26,9 @@ public:
     // Manage selected node
     void setSelected (DelayNode* node);
     DelayNode* getSelected() const noexcept;
+
+    // Manage soloed node
+    void setSoloed (DelayNode* node);
 
 private:
     std::array<InputNode, 2>* nodes = nullptr;
