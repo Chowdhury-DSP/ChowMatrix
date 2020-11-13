@@ -10,6 +10,12 @@ void NodeManager::doForNodes (DBaseNode* root, std::function<void(DelayNode*)> n
     }
 }
 
+void NodeManager::doForNodes (std::array<InputNode, 2>* nodes, std::function<void(DelayNode*)> nodeFunc)
+{
+    for (auto& node : *nodes)
+        NodeManager::doForNodes (&node, nodeFunc);
+}
+
 void NodeManager::initialise (std::array<InputNode, 2>* _nodes)
 {
     nodes = _nodes;
@@ -35,41 +41,57 @@ void NodeManager::nodeRemoved (DelayNode* nodeToRemove)
         selectedNodePtr = nullptr;
 
     nodeCount = 0;
-    for (auto& node : *nodes)
-        doForNodes (&node, [=] (DelayNode* n) { n->setIndex (nodeCount++); });
+    doForNodes (nodes, [=] (DelayNode* n) { n->setIndex (nodeCount++); });
 }
 
 void NodeManager::setParameter (DelayNode* sourceNode, const String& paramID, float value01)
 {
-    for (auto& node : *nodes)
-    {
-        doForNodes (&node, [=] (DelayNode* n) {
-            if (n == sourceNode)
-                return;
+    doForNodes (nodes, [=] (DelayNode* n) {
+        if (n == sourceNode)
+            return;
 
-            n->setNodeParameter (paramID, value01);
-        });
-    }
+        n->setNodeParameter (paramID, value01);
+    });
 }
 
 void NodeManager::setSelected (DelayNode* selectedNode)
 {
     selectedNodePtr = selectedNode;
 
-    for (auto& node : *nodes)
-    {
-        doForNodes (&node, [=] (DelayNode* n) {
-            if (n->getSelected() && selectedNode == n) // already selected!
-                return;
-            else if (n->getSelected()) // is currently selected, but no longer
-                n->setSelected (false);
-            else if (selectedNode == n) // should now be seleced
-                n->setSelected (true);
-        });
-    }
+    doForNodes (nodes, [=] (DelayNode* n) {
+        if (n->getSelected() && selectedNode == n) // already selected!
+            return;
+        else if (n->getSelected()) // is currently selected, but no longer
+            n->setSelected (false);
+        else if (selectedNode == n) // should now be seleced
+            n->setSelected (true);
+    });
 }
 
 DelayNode* NodeManager::getSelected() const noexcept
 {
     return selectedNodePtr;
+}
+
+void NodeManager::setSoloed (DelayNode* soloedNode)
+{
+    doForNodes (nodes, [=] (DelayNode* n) {
+        if (soloedNode == nullptr) // "un-solo" and currently soloed nodes
+        {
+            n->setSoloed (DelayNode::SoloState::None);
+            return;
+        }
+
+        if (n == soloedNode) // Node that has been selected for soloing
+        {
+            if (n->getSoloed() == DelayNode::SoloState::Solo) // already soloed
+                return;
+
+            n->setSoloed (DelayNode::SoloState::Solo); // should now be soloed
+            return;
+        }
+
+        // any other nodes should be muted
+        n->setSoloed (DelayNode::SoloState::Mute);
+    });
 }

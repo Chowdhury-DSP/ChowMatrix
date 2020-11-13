@@ -20,8 +20,7 @@ BaseController::BaseController (AudioProcessorValueTreeState& vts,
 
 BaseController::~BaseController()
 {
-    for (auto& node : *nodes)
-        NodeManager::doForNodes (&node, [=] (DelayNode* n) { n->removeNodeListener (this); });
+    NodeManager::doForNodes (nodes, [=] (DelayNode* n) { n->removeNodeListener (this); });
 
     for (const auto& param : paramsToListenFor)
         vts.removeParameterListener (param, this);
@@ -40,6 +39,5 @@ void BaseController::nodeRemoved (DelayNode* nodeToRemove)
 
 void BaseController::doForNodes (std::function<void(DelayNode*)> nodeFunc)
 {
-    for (auto& node : *nodes)
-        NodeManager::doForNodes (&node, nodeFunc);
+    NodeManager::doForNodes (nodes, nodeFunc);
 }

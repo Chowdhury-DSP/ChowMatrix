@@ -33,7 +33,7 @@ public:
     };
 
     void setParameters (const Parameters& params);
-    void setDelayType (VariableDelay::DelayType type) { delay.setDelayType (type); };
+    void setDelayType (VariableDelay::DelayType type) { delay.setDelayType (type); }
 
 private:
     template<typename SampleType>

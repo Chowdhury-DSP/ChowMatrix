@@ -7,7 +7,7 @@ class BottomBarLNF : public chowdsp::ChowLNF
 {
 public:
     BottomBarLNF();
-    virtual ~BottomBarLNF() {}
+    virtual ~BottomBarLNF() = default;
 
 protected:
     void drawRotarySlider (Graphics& g, int, int, int, int,

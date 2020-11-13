@@ -7,6 +7,7 @@ add_library(juce_plugin_modules STATIC)
 
 target_link_libraries(juce_plugin_modules
     PRIVATE
+        BinaryData
         juce::juce_audio_utils
         foleys_gui_magic
         chowdsp_utils
@@ -19,9 +20,13 @@ target_link_libraries(juce_plugin_modules
 
 target_compile_definitions(juce_plugin_modules
     PUBLIC
+        JUCE_DISPLAY_SPLASH_SCREEN=0
         JUCE_REPORT_APP_USAGE=0
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
+        JUCE_VST3_CAN_REPLACE_VST2=0
+        FOLEYS_SHOW_GUI_EDITOR_PALLETTE=0
+        FOLEYS_ENABLE_BINARY_DATA=1
         JucePlugin_Manufacturer="chowdsp"
         JucePlugin_VersionString="${CMAKE_PROJECT_VERSION}"
         JucePlugin_Name="${CMAKE_PROJECT_NAME}"
@@ -30,9 +35,7 @@ target_compile_definitions(juce_plugin_modules
 )
 
 if(MSVC)
-    target_compile_options(juce_plugin_modules PRIVATE
-        /wd4458
-    )
+    target_compile_options(juce_plugin_modules PRIVATE /wd4458) # supress "declaration hides class member" for Foley's
 endif()
 
 target_include_directories(juce_plugin_modules
