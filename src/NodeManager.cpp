@@ -32,6 +32,7 @@ void NodeManager::nodeAdded (DelayNode* newNode)
 {
     newNode->addNodeListener (this);
     newNode->setIndex (nodeCount++);
+    newNode->setSoloed (newNodeSoloState);
 }
 
 void NodeManager::nodeRemoved (DelayNode* nodeToRemove)
@@ -75,6 +76,9 @@ DelayNode* NodeManager::getSelected() const noexcept
 
 void NodeManager::setSoloed (DelayNode* soloedNode)
 {
+    newNodeSoloState = soloedNode == nullptr ?
+        DelayNode::SoloState::None : DelayNode::SoloState::Mute;
+
     doForNodes (nodes, [=] (DelayNode* n) {
         if (soloedNode == nullptr) // "un-solo" and currently soloed nodes
         {

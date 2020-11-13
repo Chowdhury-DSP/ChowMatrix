@@ -34,6 +34,7 @@ private:
     std::array<InputNode, 2>* nodes = nullptr;
     int nodeCount = 0;
     DelayNode* selectedNodePtr = nullptr;
+    DelayNode::SoloState newNodeSoloState = DelayNode::SoloState::None;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NodeManager)
 };
