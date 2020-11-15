@@ -19,6 +19,7 @@ public:
     DelayNode* getNode() { return nodeInfo.getNode(); }
 
     void setSelected() { manager.setSelected (getNode()); }
+    void setSoloed() { manager.setSoloed (getNode()); }
 
     struct Button : Component, SettableTooltipClient
     {

@@ -135,6 +135,7 @@ std::unordered_map<String, StringToValFunc> funcMap {
     { delayTag, stringToDelayVal },
     { panTag,   stringToPanVal },
     { fbTag,    stringToFbVal },
+    { gainTag,  stringToGainVal },
     { lpfTag,   stringToFreqVal },
     { hpfTag,   stringToFreqVal },
     { distTag,  stringToDistVal },

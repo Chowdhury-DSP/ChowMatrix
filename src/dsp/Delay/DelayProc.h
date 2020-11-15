@@ -32,7 +32,7 @@ public:
         float distortion;
     };
 
-    void setParameters (const Parameters& params);
+    void setParameters (const Parameters& params, bool force = false);
     void setDelayType (VariableDelay::DelayType type) { delay.setDelayType (type); }
 
 private:
