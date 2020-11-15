@@ -37,7 +37,7 @@ void DelayNode::setDelaySync (bool shouldBeSynced)
     delayMs->sendValueChangedMessageToListeners (*delayMs);
 }
 
-void DelayNode::cookParameters()
+void DelayNode::cookParameters (bool force)
 {
     float delayLenMs = *delayMs;
     if (syncDelay)
@@ -53,7 +53,7 @@ void DelayNode::cookParameters()
         *lpfHz,
         *hpfHz,
         *distortion
-    });
+    }, force);
 
     panner.setPan (*pan);
 }
@@ -102,9 +102,9 @@ void DelayNode::prepare (double newSampleRate, int newSamplesPerBlock)
 {
     DBaseNode::prepare (newSampleRate, newSamplesPerBlock);
 
-    cookParameters();
     processors.prepare ({ newSampleRate, (uint32) newSamplesPerBlock, 1 });
     panner.prepare ({ newSampleRate, (uint32) newSamplesPerBlock, 2 });
+    cookParameters (true);
     
     childBuffer.setSize (1, newSamplesPerBlock);
     panBuffer.setSize (2, newSamplesPerBlock);

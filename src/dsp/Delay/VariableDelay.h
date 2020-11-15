@@ -19,7 +19,12 @@ public:
     };
 
     // manage parameters
-    void setDelay (float newDelayInSamples);
+    inline void setDelay (float newDelayInSamples) noexcept
+    {
+        delaySmooth.setTargetValue (newDelayInSamples);
+    }
+
+    void setDelayForce (float newDelayInSamples) noexcept;
     void setDelayType (DelayType newType);
     bool isDelaySmoothing() const { return delaySmooth.isSmoothing(); }
 

@@ -7,9 +7,12 @@ VariableDelay::VariableDelay (size_t size) :
     l5Delay (static_cast<int> (size))
 {}
 
-void VariableDelay::setDelay (float newDelayInSamples)
+void VariableDelay::setDelayForce (float newDelayInSamples) noexcept
 {
-    delaySmooth.setTargetValue (newDelayInSamples);
+    delaySmooth.setCurrentAndTargetValue (newDelayInSamples);
+
+    for (auto* delay : delays)
+        delay->setDelay (newDelayInSamples);
 }
 
 void VariableDelay::setDelayType (DelayType newType)

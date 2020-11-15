@@ -14,7 +14,7 @@ DelayNodeComponent::DelayNodeComponent (DelayNode& node, GraphView* view) :
     node.getNodeParameter (panTag)->addListener (this);
 
     setName ("Delay Node");
-    setTooltip ("Click to select node, drag to move the node, and ctrl+click to delete it");
+    setTooltip ("Click to select node, drag to move, alt+click to solo, ctrl+click to delete");
 }
 
 DelayNodeComponent::~DelayNodeComponent()

@@ -12,6 +12,7 @@ public:
 
     void paint (Graphics& g) override;
     void resized() override;
+    void mouseDown (const MouseEvent& e) override;
 
     void nodeAdded (DelayNode* newNode) override;
     void nodeRemoved (DelayNode* nodeToRemove) override;

@@ -32,7 +32,7 @@ NodeDetails::Button::Button (NodeDetails& nodeDetails) :
     setWantsKeyboardFocus (true);
 
     setName ("Node Details");
-    setTooltip ("Click to select this node, use \"Delete\" key to delete it");
+    setTooltip ("Click to select this node, alt+click to solo, press \"Delete\" to delete");
 }
 
 void NodeDetails::Button::paint (Graphics& g)
@@ -40,29 +40,34 @@ void NodeDetails::Button::paint (Graphics& g)
     const int x = getWidth() / 2 - circleRadius;
     const int y = getHeight() / 2 - circleRadius;
     auto bounds = Rectangle<int> (x, y, 2 * circleRadius, 2 * circleRadius).toFloat();
+    auto* node = nodeDetails.getNode();
+    const auto alphaMult = node->getSoloed() == DelayNode::SoloState::Mute ? 0.4f : 1.0f;
 
-    bool isSelected = nodeDetails.getNode()->getSelected();
+    bool isSelected = node->getSelected();
     Colour cc = isSelected ?
         findColour (NodeDetailsGUI::nodeSelectedColour, true) :
         findColour (NodeDetailsGUI::nodeColour, true);
 
-    g.setColour (cc);
+    g.setColour (cc.withMultipliedAlpha (alphaMult));
     g.fillEllipse (bounds);
 
     if (isSelected)
     {
-        g.setColour (Colours::white);
+        g.setColour (Colours::white.withMultipliedAlpha (alphaMult));
         g.drawEllipse (bounds.reduced (1.0f), 2.0f);
     }
 
-    g.setColour (Colours::white);
-    int nodeIdx = nodeDetails.getNode()->getIndex();
+    g.setColour (Colours::white.withMultipliedAlpha (alphaMult));
+    int nodeIdx = node->getIndex();
     jassert (nodeIdx >= 0);
     g.drawFittedText (String (nodeIdx + 1), bounds.toNearestInt(), Justification::centred, 1);
 }
 
-void NodeDetails::Button::mouseDown (const MouseEvent&)
+void NodeDetails::Button::mouseDown (const MouseEvent& e)
 {
+    if (e.mods.isAltDown())
+        nodeDetails.setSoloed();
+
     nodeDetails.setSelected();
     grabKeyboardFocus();
 }

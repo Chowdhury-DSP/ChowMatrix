@@ -40,6 +40,16 @@ void NodeDetailsComponent::addNode (DelayNode* node)
     node->addNodeListener (this);
 }
 
+void NodeDetailsComponent::mouseDown (const MouseEvent& e)
+{
+    if (! e.mods.isAnyModifierKeyDown()) // deselect current node
+    {
+        auto& manager = plugin.getManager();
+        manager.setSelected (nullptr);
+        manager.setSoloed (nullptr);
+    }
+}
+
 void NodeDetailsComponent::paint (Graphics& g)
 {
     g.fillAll (Colours::transparentBlack);

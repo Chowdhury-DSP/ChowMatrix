@@ -94,15 +94,27 @@ inline SampleType DelayProc::processSampleSmooth (SampleType x, size_t ch)
 
 using IIRCoefs = chowdsp::IIR::Coefficients<float, 1>;
 
-void DelayProc::setParameters (const Parameters& params)
+void DelayProc::setParameters (const Parameters& params, bool force)
 {
-    delaySmooth.setTargetValue ((params.delayMs / 1000.0f) * fs);
-
     using namespace ParamHelpers;
-    inGain.setTargetValue (params.feedback >= maxFeedback ? 0.0f : 1.0f);
+    auto delayVal = (params.delayMs / 1000.0f) * fs;
+    auto gainVal = params.feedback >= maxFeedback ? 0.0f : 1.0f;
     auto fbVal = params.feedback >= maxFeedback ? 1.0f
         : std::pow (jmin (params.feedback, 0.95f), 0.9f);
-    feedback.setTargetValue (fbVal);
+
+    if (force)
+    {
+        delaySmooth.setCurrentAndTargetValue (delayVal);
+        inGain.setCurrentAndTargetValue (gainVal);
+        feedback.setCurrentAndTargetValue (fbVal);
+        delay.setDelayForce (delayVal);
+    }
+    else
+    {
+        delaySmooth.setTargetValue (delayVal);
+        inGain.setTargetValue (gainVal);
+        feedback.setTargetValue (fbVal);
+    }
 
     procs.get<lpfIdx>().coefficients = IIRCoefs::makeFirstOrderLowPass ((double) fs, params.lpfFreq);
     procs.get<hpfIdx>().coefficients = IIRCoefs::makeFirstOrderHighPass ((double) fs, params.hpfFreq);

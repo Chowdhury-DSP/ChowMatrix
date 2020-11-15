@@ -15,14 +15,17 @@ NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) :
     {
         String name = "Node";
         String text = "Node";
+        String param = "parameters";
         if (i > 0)
         {
             name = params[i-1]->getName(1024);
             text = name;
+            param = name;
         }
 
         auto* l = labels.add (std::make_unique<Label> (name, text));
         l->setFont (16.0f);
+        l->setTooltip ("Use shift+drag to change " + String (param) + " for all delay nodes in unison");
         addAndMakeVisible (l);
     }
 

@@ -86,7 +86,7 @@ public:
     dsp::IIR::Filter<float> panSmoother;
 
 private:
-    void cookParameters();
+    void cookParameters (bool force = false);
     void repaintEditors (bool repaintWholeGraph = false);
     void addToOutput (AudioBuffer<float>& outBuffer, const int numSamples);
 
