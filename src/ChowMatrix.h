@@ -6,6 +6,7 @@
 #include "dsp/Parameters/InsanityControl.h"
 #include "dsp/Parameters/DelayTypeControl.h"
 #include "dsp/Parameters/SyncControl.h"
+#include "gui/AutoUpdating.h"
 
 /**
  * Main class for the Matrix plugin
@@ -53,6 +54,8 @@ private:
 
     // create this here so loading new nodes is always fast
     SharedResourcePointer<LookupTables> luts;
+
+    AutoUpdater updater;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChowMatrix)
 };

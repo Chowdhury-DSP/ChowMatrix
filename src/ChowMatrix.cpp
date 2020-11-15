@@ -129,7 +129,9 @@ AudioProcessorEditor* ChowMatrix::createEditor()
         NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->randomiseParameters(); });
     });
 
-    return new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
+    auto editor =  new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
+    updater.showUpdaterScreen (editor);
+    return editor;
 }
 
 void ChowMatrix::getStateInformation (MemoryBlock& destData)

@@ -15,6 +15,7 @@ target_sources(ChowMatrix PRIVATE
     dsp/Parameters/ParamHelpers.cpp
     dsp/Parameters/SyncControl.cpp
 
+    gui/AutoUpdating.cpp
     gui/ParamSlider.cpp
     gui/BottomBar/BottomBarLNF.cpp
     gui/DetailsView/NodeDetails.cpp
