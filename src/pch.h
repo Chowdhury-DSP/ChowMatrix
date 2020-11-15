@@ -7,6 +7,7 @@
 // C++ STL
 #include <unordered_map>
 #include <random>
+#include <future>
 
 // JUCE modules
 #include <JuceHeader.h>
