@@ -25,7 +25,12 @@ NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) :
 
         auto* l = labels.add (std::make_unique<Label> (name, text));
         l->setFont (16.0f);
-        l->setTooltip ("Use shift+drag to change " + String (param) + " for all delay nodes in unison");
+
+        if (i < 3)
+            l->setTooltip ("Use shift+drag to change all nodes in unison, or ctrl+click for Insanity Lock");
+        else
+            l->setTooltip ("Use shift+drag to change " + String (param) + " for all nodes in unison");
+
         addAndMakeVisible (l);
     }
 
