@@ -4,6 +4,8 @@
 #include "gui/DetailsView/NodeDetailsGUI.h"
 #include "gui/InsanityLNF.h"
 #include "gui/MatrixView/GraphView.h"
+#include "presets/PresetCompItem.h"
+#include "presets/PresetsLNF.h"
 
 namespace
 {
@@ -17,7 +19,8 @@ namespace
 ChowMatrix::ChowMatrix() :
     insanityControl (vts, &inputNodes),
     delayTypeControl (vts, &inputNodes),
-    syncControl (vts, &inputNodes)
+    syncControl (vts, &inputNodes),
+    presetManager (this, vts)
 {
     manager.initialise (&inputNodes);
 
@@ -47,6 +50,7 @@ void ChowMatrix::addParameters (Parameters& params)
     InsanityControl::addParameters (params);
     DelayTypeControl::addParameters (params);
     SyncControl::addParameters (params);
+    PresetManager::addParameters (params);
 }
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
@@ -117,8 +121,10 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerFactory ("GraphView", &GraphViewItem::factory);
     builder->registerFactory ("NodeDetails", &NodeDetailsItem::factory);
     builder->registerFactory ("TextSlider", &TextSliderItem::factory);
+    builder->registerFactory ("PresetComp", &PresetCompItem::factory);
     builder->registerLookAndFeel ("InsanityLNF", std::make_unique<InsanityLNF>());
     builder->registerLookAndFeel ("BottomBarLNF", std::make_unique<BottomBarLNF>());
+    builder->registerLookAndFeel ("PresetsLNF", std::make_unique<PresetsLNF>());
 
     // GUI trigger functions
     magicState.addTrigger ("flush_delays", [=] {
@@ -134,7 +140,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     return editor;
 }
 
-void ChowMatrix::getStateInformation (MemoryBlock& destData)
+std::unique_ptr<XmlElement> ChowMatrix::stateToXml()
 {
     auto state = vts.copyState();
     std::unique_ptr<XmlElement> xml = std::make_unique<XmlElement> ("state");
@@ -145,14 +151,11 @@ void ChowMatrix::getStateInformation (MemoryBlock& destData)
         childrenXml->addChildElement (node.saveXml());
     
     xml->addChildElement (childrenXml.release());
-    
-    copyXmlToBinary (*xml, destData);
+    return std::move (xml);
 }
 
-void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
+void ChowMatrix::stateFromXml (XmlElement* xmlState)
 {
-    std::unique_ptr<XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
-
     if (xmlState == nullptr) // invalid XML
         return;
 
@@ -177,6 +180,18 @@ void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
 
         inputNodes[count++].loadXml (childXml);
     }
+}
+
+void ChowMatrix::getStateInformation (MemoryBlock& destData)
+{
+    auto xml = stateToXml();
+    copyXmlToBinary (*xml, destData);
+}
+
+void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
+{
+    auto xmlState = getXmlFromBinary (data, sizeInBytes);
+    stateFromXml (xmlState.get());
 }
 
 // This creates new instances of the plugin

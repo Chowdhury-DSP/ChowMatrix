@@ -7,6 +7,7 @@
 #include "dsp/Parameters/DelayTypeControl.h"
 #include "dsp/Parameters/SyncControl.h"
 #include "gui/AutoUpdating.h"
+#include "presets/PresetManager.h"
 
 /**
  * Main class for the Matrix plugin
@@ -32,8 +33,12 @@ public:
     /** Handle to read insanity parameter (used by MatrixAurora) */
     std::atomic<float>* getInsanityParam() const noexcept { return insanityControl.getParameter(); }
     
+    std::unique_ptr<XmlElement> stateToXml();
+    void stateFromXml (XmlElement* xml);
+
     /** Access to array of input nodes */
     std::array<InputNode, 2>* getNodes() { return &inputNodes; }
+    PresetManager& getPresetManager() { return presetManager; }
 
 private:
     std::array<InputNode, 2> inputNodes;
@@ -56,6 +61,7 @@ private:
     SharedResourcePointer<LookupTables> luts;
 
     AutoUpdater updater;
+    PresetManager presetManager;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChowMatrix)
 };
