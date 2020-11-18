@@ -72,6 +72,11 @@ void ChowMatrix::releaseResources()
 
 void ChowMatrix::processAudioBlock (AudioBuffer<float>& buffer)
 {
+    const SpinLock::ScopedTryLockType graphTryLock (graphLoadLock);
+
+    if (! graphTryLock.isLocked())
+        return;
+
     auto setGain = [] (auto& gainProc, float gainParamDB) {
         if (gainParamDB <= negInfDB)
             gainProc.setGainLinear (0.0f);
@@ -156,6 +161,8 @@ std::unique_ptr<XmlElement> ChowMatrix::stateToXml()
 
 void ChowMatrix::stateFromXml (XmlElement* xmlState)
 {
+    const SpinLock::ScopedLockType graphLock (graphLoadLock);
+
     if (xmlState == nullptr) // invalid XML
         return;
 

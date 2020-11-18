@@ -43,6 +43,7 @@ public:
 private:
     std::array<InputNode, 2> inputNodes;
     NodeManager manager;
+    SpinLock graphLoadLock;
 
     std::atomic<float>* dryParamDB = nullptr;
     std::atomic<float>* wetParamDB = nullptr;
