@@ -28,9 +28,25 @@ inline double func_AD2 (double x) noexcept
         + (std::pow (MathConstants<double>::pi, 2) / 24.0);
 }
 
+void LookupTables::prepare()
+{
+    for (auto& future : futures)
+    {
+        future.wait();
+    }
+
+    futures.clear();
+}
+
 LookupTables::LookupTables()
 {
-    lut.initialise ([=] (double x) { return func (x); }, minVal, maxVal, N);
-    lut_AD1.initialise ([=] (double x) { return func_AD1 (x); }, 2 * minVal, 2 * maxVal, 4 * N);
-    lut_AD2.initialise ([=] (double x) { return func_AD2 (x); }, 4 * minVal, 4 * maxVal, 16 * N);
+    // loading the lookup tables takes a while, so let's do it asynchronously
+    auto makeLUTAsync = [=] (auto lutInit)
+    {
+        futures.push_back (std::async (std::launch::async, lutInit));
+    };
+
+    makeLUTAsync ([=] { lut.initialise ([=] (double x) { return func (x); }, minVal, maxVal, N); });
+    makeLUTAsync ([=] { lut_AD1.initialise ([=] (double x) { return func_AD1 (x); }, 2 * minVal, 2 * maxVal, 4 * N); });
+    makeLUTAsync ([=] { lut_AD2.initialise ([=] (double x) { return func_AD2 (x); }, 4 * minVal, 4 * maxVal, 16 * N); });
 }

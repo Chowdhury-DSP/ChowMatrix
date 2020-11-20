@@ -29,7 +29,7 @@ void VariableDelay::setDelayType (DelayType newType)
 
 void VariableDelay::prepare (const juce::dsp::ProcessSpec& spec)
 {
-    delaySmooth.reset (spec.sampleRate, 0.025);
+    delaySmooth.reset (spec.sampleRate, 0.05);
 
     for (auto* delay : delays)
         delay->prepare (spec);

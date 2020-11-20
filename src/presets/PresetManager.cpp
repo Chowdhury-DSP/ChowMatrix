@@ -14,11 +14,13 @@ PresetManager::PresetManager (ChowMatrix* plugin, AudioProcessorValueTreeState& 
     presetParam = dynamic_cast<AudioParameterInt*> (vts.getParameter (presetTag));
     jassert (presetParam);
 
-    loadPresets();
+    loadingFuture = std::async (std::launch::async, &PresetManager::loadPresets, this);
 }
 
 StringArray PresetManager::getPresetChoices()
 {
+
+
     StringArray choices;
     for (auto p : presetMap)
         choices.add (p.second->name);

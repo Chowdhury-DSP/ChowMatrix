@@ -19,6 +19,8 @@ void Distortion::reset()
 
 void ADAA2::prepare()
 {
+    tables->prepare();
+
     x1 = 0.0;
     x2 = 0.0;
     ad2_x1 = 0.0;
