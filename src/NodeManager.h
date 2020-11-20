@@ -21,7 +21,7 @@ public:
     // Node listener overrides
     void nodeAdded (DelayNode* newNode) override;
     void nodeRemoved (DelayNode* nodeToRemove) override;
-    void setParameter (DelayNode* sourceNode, const String& paramID, float value01) override;
+    void setParameterDiff (DelayNode* sourceNode, const String& paramID, float diff01) override;
 
     // Manage selected node
     void setSelected (DelayNode* node);

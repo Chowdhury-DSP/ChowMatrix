@@ -41,7 +41,7 @@ public:
         virtual ~Listener() {}
         virtual void nodeAdded (Child* /*newNode*/) {}
         virtual void nodeRemoved (Child* /*nodeToRemove*/) {}
-        virtual void setParameter (Child* /*node*/, const String& /*paramID*/, float /*value01*/) {}
+        virtual void setParameterDiff (Child* /*node*/, const String& /*paramID*/, float /*diff01*/) {}
     };
 
     void addNodeListener (Listener* l) { nodeListeners.add (l); }

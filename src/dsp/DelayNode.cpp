@@ -58,15 +58,17 @@ void DelayNode::cookParameters (bool force)
     panner.setPan (*pan);
 }
 
-void DelayNode::setParameterListeners (const String& paramID, float value01)
+void DelayNode::setParameterDiffListeners (const String& paramID, float diff01)
 {
-    nodeListeners.call (&DBaseNode::Listener::setParameter, this, paramID, value01);
+    nodeListeners.call (&DBaseNode::Listener::setParameterDiff, this, paramID, diff01);
 }
 
-void DelayNode::setNodeParameter (const String& paramID, float value01)
+void DelayNode::setNodeParameterDiff (const String& paramID, float diff01)
 {
     auto thisParam = params.getParameter (paramID);
-    thisParam->setValueNotifyingHost (value01);
+    auto curValue = thisParam->getValue();
+    auto newValue = jlimit (0.0f, 1.0f, curValue + diff01);
+    thisParam->setValueNotifyingHost (newValue);
 }
 
 void DelayNode::randomiseParameters()
