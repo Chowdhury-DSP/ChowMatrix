@@ -17,7 +17,6 @@ public:
     bool setPreset (int idx);
     int getSelectedPresetIdx() const noexcept { return presetParam->get(); }
 
-    void registerPresetsComponent (foleys::MagicGUIBuilder&);
     void presetUpdated() { listeners.call (&Listener::presetUpdated); }
 
     File getUserPresetFolder() { return userPresetFolder; }
@@ -51,6 +50,7 @@ private:
     OwnedArray<Preset> presets;
     int maxIdx;
 
+    std::future<void> loadingFuture;
     ListenerList<Listener> listeners;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PresetManager)
