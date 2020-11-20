@@ -45,13 +45,13 @@ void NodeManager::nodeRemoved (DelayNode* nodeToRemove)
     doForNodes (nodes, [=] (DelayNode* n) { n->setIndex (nodeCount++); });
 }
 
-void NodeManager::setParameter (DelayNode* sourceNode, const String& paramID, float value01)
+void NodeManager::setParameterDiff (DelayNode* sourceNode, const String& paramID, float diff01)
 {
     doForNodes (nodes, [=] (DelayNode* n) {
         if (n == sourceNode)
             return;
 
-        n->setNodeParameter (paramID, value01);
+        n->setNodeParameterDiff (paramID, diff01);
     });
 }
 

@@ -37,7 +37,7 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) :
         valueLabel.onEditorHide = [=, &node] {
             auto stringFunc = ParamHelpers::getStringFuncForParam (param->paramID);
             auto unNormalisedValue = stringFunc (valueLabel.getText (true));
-            node.setNodeParameter (param->paramID, param->convertTo0to1 (unNormalisedValue));
+            ParamHelpers::setParameterValue (param, unNormalisedValue);
         };
     }
 
@@ -48,9 +48,6 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) :
     setRange (0.0, 1.0);
     setSliderStyle (SliderStyle::RotaryVerticalDrag);
     setDoubleClickReturnValue (true, param->getDefaultValue());
-    onValueChange = [=] {
-        ParamHelpers::setParameterValue (param, param->convertFrom0to1 ((float) this->getValue()));
-    };
 }
 
 ParamSlider::~ParamSlider()
@@ -80,11 +77,14 @@ void ParamSlider::parameterValueChanged (int, float)
 
 void ParamSlider::sliderValueChanged (Slider*)
 {
-    auto value01 = param->convertTo0to1 (param->get());
+    auto value01 = (float) this->getValue();
+    auto diff01 = value01 - param->convertTo0to1 (param->get());
+
+    ParamHelpers::setParameterValue (param, param->convertFrom0to1 (value01));
 
     // if slider is linked, set parameter for all nodes
     if (linkFlag.load() && isDragging)
-        node.setParameterListeners (param->paramID, value01);
+        node.setParameterDiffListeners (param->paramID, diff01);
 }
 
 void ParamSlider::resized()

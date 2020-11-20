@@ -26,11 +26,11 @@ public:
     float getPan() const noexcept { return pan->get(); }
     void setPan (float newPan) { ParamHelpers::setParameterValue (pan, newPan); }
 
-    /** Call node listeners to set parameter */
-    void setParameterListeners (const String& paramID, float value01);
+    /** Call node listeners to set parameter by a diff value */
+    void setParameterDiffListeners (const String& paramID, float diff01);
     
-    /** Sets the parameter with given ID to a 0-1 normalized value */
-    void setNodeParameter (const String& paramID, float value01);
+    /** Sets the parameter with given ID by diff to a 0-1 normalized value */
+    void setNodeParameterDiff (const String& paramID, float diff01);
 
     /** Randomise all the parameters of this delay node */
     void randomiseParameters();
