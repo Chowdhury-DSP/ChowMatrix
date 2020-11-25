@@ -4,10 +4,10 @@
   <state>
     <Parameters>
       <PARAM id="delay_type" value="2.0"/>
-      <PARAM id="dry_param" value="0.0"/>
+      <PARAM id="dry_param" value="-12.0"/>
       <PARAM id="insanity" value="0.0"/>
       <PARAM id="snyc" value="0.0"/>
-      <PARAM id="wet_param" value="0.0"/>
+      <PARAM id="wet_param" value="-12.0"/>
       <PARAM id="preset" value="0"/>
     </Parameters>
     <children>
@@ -21,12 +21,6 @@
           <PARAM id="LPF" value="20000.0"/>
           <PARAM id="PAN" value="0.0"/>
           <children/>
-          <children/>
-          <children/>
-          <children/>
-          <children/>
-          <children/>
-          <children/>
         </Parameters>
       </children>
       <children>
@@ -38,33 +32,6 @@
           <PARAM id="HPF" value="20.0"/>
           <PARAM id="LPF" value="20000.0"/>
           <PARAM id="PAN" value="0.0"/>
-          <children/>
-          <children/>
-          <children>
-            <Parameters locked=",">
-              <PARAM id="DIST" value="0.0"/>
-              <PARAM id="DLY" value="642.4651489257813"/>
-              <PARAM id="FDBK" value="0.0"/>
-              <PARAM id="GAIN" value="0.0"/>
-              <PARAM id="HPF" value="20.0"/>
-              <PARAM id="LPF" value="20000.0"/>
-              <PARAM id="PAN" value="-0.1223031282424927"/>
-              <children/>
-            </Parameters>
-            <Parameters locked=",">
-              <PARAM id="DIST" value="0.0"/>
-              <PARAM id="DLY" value="131.7386474609375"/>
-              <PARAM id="FDBK" value="0.0"/>
-              <PARAM id="GAIN" value="0.0"/>
-              <PARAM id="HPF" value="20.0"/>
-              <PARAM id="LPF" value="20000.0"/>
-              <PARAM id="PAN" value="0.3221685886383057"/>
-              <children/>
-            </Parameters>
-          </children>
-          <children/>
-          <children/>
-          <children/>
           <children/>
         </Parameters>
       </children>

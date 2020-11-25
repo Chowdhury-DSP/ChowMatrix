@@ -21,7 +21,7 @@ public:
 
     File getUserPresetFolder() { return userPresetFolder; }
     void chooseUserPresetFolder();
-    bool saveUserPreset (const String& name);
+    bool saveUserPreset (const String& name, int& newPresetIdx);
     const PopupMenu& getUserPresetMenu() const { return userPresetMenu; }
 
     struct Listener
