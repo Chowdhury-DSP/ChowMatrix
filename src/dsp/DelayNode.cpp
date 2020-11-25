@@ -179,28 +179,25 @@ std::unique_ptr<NodeComponent> DelayNode::createNodeEditor (GraphView* view)
 
 XmlElement* DelayNode::saveXml()
 {
+    std::unique_ptr<XmlElement> xml = std::make_unique<XmlElement> ("delay_node");
+
     auto state = params.copyState();
-    std::unique_ptr<XmlElement> xml (state.createXml());
+    std::unique_ptr<XmlElement> xmlState (state.createXml());
+    xmlState->setAttribute ("locked", lockedParams.joinIntoString (",") + ",");
+    xml->addChildElement (xmlState.release());
     xml->addChildElement (DBaseNode::saveXml());
-    xml->setAttribute ("locked", lockedParams.joinIntoString (",") + ",");
 
     return xml.release();
 }
 
-void DelayNode::loadXml (XmlElement* xmlState)
+void DelayNode::loadXml (XmlElement* xml)
 {
-    if (xmlState == nullptr)
+    if (xml == nullptr)
         return;
 
-    if (xmlState->hasTagName (params.state.getType()))
+    if (auto* xmlState = xml->getChildByName (params.state.getType()))
     {
         params.replaceState (ValueTree::fromXml (*xmlState));
-
-        forEachXmlChildElementWithTagName (*xmlState, child, "children")
-        {
-            if (child->getNumChildElements() > 0)
-                DBaseNode::loadXml (child);
-        }
 
         lockedParams.clear();
         auto lockedParamsString = xmlState->getStringAttribute ("locked", String());
@@ -214,6 +211,9 @@ void DelayNode::loadXml (XmlElement* xmlState)
             lockedParamsString = lockedParamsString.substring (splitIdx + 1);
         }
     }
+
+    if (auto* childrenXml = xml->getChildByName ("children"))
+            DBaseNode::loadXml (childrenXml);
 
     repaintEditors();
 }

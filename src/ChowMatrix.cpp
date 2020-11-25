@@ -151,7 +151,7 @@ std::unique_ptr<XmlElement> ChowMatrix::stateToXml()
     std::unique_ptr<XmlElement> xml = std::make_unique<XmlElement> ("state");
     xml->addChildElement (state.createXml().release());
 
-    std::unique_ptr<XmlElement> childrenXml = std::make_unique<XmlElement> ("children");
+    std::unique_ptr<XmlElement> childrenXml = std::make_unique<XmlElement> ("nodes");
     for (auto& node : inputNodes)
         childrenXml->addChildElement (node.saveXml());
     
@@ -170,7 +170,7 @@ void ChowMatrix::stateFromXml (XmlElement* xmlState)
     if (vtsXml == nullptr) // invalid ValueTreeState
         return;
 
-    auto childrenXml = xmlState->getChildByName ("children");
+    auto childrenXml = xmlState->getChildByName ("nodes");
     if (childrenXml == nullptr) // invalid children XML
         return;
 

@@ -10,31 +10,39 @@
       <PARAM id="wet_param" value="-12.0"/>
       <PARAM id="preset" value="0"/>
     </Parameters>
-    <children>
-      <children>
-        <Parameters locked=",">
-          <PARAM id="DIST" value="0.0"/>
-          <PARAM id="DLY" value="199.9999847412109"/>
-          <PARAM id="FDBK" value="0.0"/>
-          <PARAM id="GAIN" value="0.0"/>
-          <PARAM id="HPF" value="20.0"/>
-          <PARAM id="LPF" value="20000.0"/>
-          <PARAM id="PAN" value="0.0"/>
-          <children/>
-        </Parameters>
-      </children>
-      <children>
-        <Parameters locked=",">
-          <PARAM id="DIST" value="0.0"/>
-          <PARAM id="DLY" value="199.9999847412109"/>
-          <PARAM id="FDBK" value="0.0"/>
-          <PARAM id="GAIN" value="4.654685974121094"/>
-          <PARAM id="HPF" value="20.0"/>
-          <PARAM id="LPF" value="20000.0"/>
-          <PARAM id="PAN" value="0.0"/>
-          <children/>
-        </Parameters>
-      </children>
-    </children>
+    <nodes>
+      <input_node>
+        <children>
+          <delay_node>
+            <Parameters locked=",">
+              <PARAM id="DIST" value="0.0"/>
+              <PARAM id="DLY" value="199.9999847412109"/>
+              <PARAM id="FDBK" value="0.0"/>
+              <PARAM id="GAIN" value="0.0"/>
+              <PARAM id="HPF" value="20.0"/>
+              <PARAM id="LPF" value="20000.0"/>
+              <PARAM id="PAN" value="0.0"/>
+            </Parameters>
+            <no_children/>
+          </delay_node>
+        </children>
+      </input_node>
+      <input_node>
+        <children>
+          <delay_node>
+            <Parameters locked=",">
+              <PARAM id="DIST" value="0.0"/>
+              <PARAM id="DLY" value="199.9999847412109"/>
+              <PARAM id="FDBK" value="0.0"/>
+              <PARAM id="GAIN" value="4.654685974121094"/>
+              <PARAM id="HPF" value="20.0"/>
+              <PARAM id="LPF" value="20000.0"/>
+              <PARAM id="PAN" value="0.0"/>
+            </Parameters>
+            <no_children/>
+          </delay_node>
+        </children>
+      </input_node>
+    </nodes>
   </state>
 </Preset>
