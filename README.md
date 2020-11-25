@@ -13,13 +13,15 @@ VST3, AU, and Standalone Application.
 
 ## Installing
 
-ChowMatrix is currently in pre-release. The latest builds (potentially
-unstable) can be downloaded from the [`bin/` directory](https://github.com/Chowdhury-DSP/ChowMatrix/tree/main/bin).
+To download the latest release, visit the
+[Releases page](https://github.com/Chowdhury-DSP/ChowMatrix/releases/latest).
+If you would like to try the most recent builds (potentially
+unstable) see the [`bin/` directory](https://github.com/Chowdhury-DSP/ChowMatrix/tree/main/bin).
 
 
 ## Building
 
-To build from scratch, you must have CMake installed.
+To build from source, you must have CMake installed.
 
 ```bash
 # Clone the repository
