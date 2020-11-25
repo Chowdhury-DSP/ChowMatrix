@@ -31,6 +31,9 @@ StringArray PresetManager::getPresetChoices()
 void PresetManager::loadPresets()
 {
     presets.add (std::make_unique<Preset> ("Default.chowpreset"));
+    presets.add (std::make_unique<Preset> ("Lush.chowpreset"));
+    presets.add (std::make_unique<Preset> ("Rhythmic.chowpreset"));
+    presets.add (std::make_unique<Preset> ("Crazy.chowpreset"));
     numFactoryPresets = presets.size();
 
     for (auto* p : presets)
@@ -78,7 +81,7 @@ bool PresetManager::setPreset (int idx)
     return true;
 }
 
-bool PresetManager::saveUserPreset (const String& name)
+bool PresetManager::saveUserPreset (const String& name, int& newPresetIdx)
 {
     auto xmlState = plugin->stateToXml();
 
@@ -98,11 +101,24 @@ bool PresetManager::saveUserPreset (const String& name)
 
     // create preset XML
     auto presetXml = std::make_unique<XmlElement> ("Preset");
-    presetXml->setAttribute ("name", "User_" + name);
+    const auto presetName = "User_" + name;
+    presetXml->setAttribute ("name", presetName);
+
+    if (auto paramsXml = xmlState->getChildByName ("Parameters"))
+    {
+        if (auto presetParamXml = paramsXml->getChildByAttribute ("id", "preset"))
+            paramsXml->removeChildElement (presetParamXml, true);
+    }
+
     presetXml->addChildElement (xmlState.release());
 
     saveFile.replaceWithText (presetXml->toString());
     updateUserPresets();
+
+    for (auto& p : presetMap)
+        if (p.second->name == presetName)
+            newPresetIdx = p.first;
+
     return true;
 }
 

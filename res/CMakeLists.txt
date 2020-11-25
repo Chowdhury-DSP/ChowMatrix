@@ -3,7 +3,10 @@ juce_add_binary_data(BinaryData SOURCES
     Diceroll.png
     Panic.png
 
+    presets/Crazy.chowpreset
     presets/Default.chowpreset
+    presets/Lush.chowpreset
+    presets/Rhythmic.chowpreset
 )
 
 # Need to build BinaryData with -fPIC flag on Linux

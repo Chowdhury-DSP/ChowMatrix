@@ -32,7 +32,7 @@ PresetComp::PresetComp (PresetManager& manager) :
         if (selectedId >= 1000 || selectedId <= 0)
             return;
 
-        manager.setPreset (presetBox.getSelectedId() - 1);
+        manager.setPreset (selectedId - 1);
     };
 }
 
@@ -66,11 +66,10 @@ void PresetComp::loadPresetChoices()
 {
     presetBox.getRootMenu()->clear();
 
-    const auto& presetChoices = manager.getPresetChoices();
     std::map<String, PopupMenu> presetChoicesMap;
-    for (int i = 0; i < presetChoices.size(); ++i)
+    for (int i = 0; i < manager.getNumPresets(); ++i)
     {
-        const String& choice = presetChoices[i];
+        const String& choice = manager.getPresetName (i);
         String category = choice.upToFirstOccurrenceOf ("_", false, false);
         if (category == "User") // user presets are treated specially
             continue;
@@ -82,7 +81,6 @@ void PresetComp::loadPresetChoices()
 
         PopupMenu::Item presetItem { presetName };
         presetItem.itemID = i+1;
-        presetItem.action = [=] { presetBox.onChange(); };
         presetChoicesMap[category].addItem (presetItem);
     }
 
@@ -136,10 +134,11 @@ void PresetComp::saveUserPreset()
         auto presetName = presetNameEditor.getText();
         presetNameEditor.setVisible (false);
         
-        if (manager.saveUserPreset (presetName))
+        int pIdx = 0;
+        if (manager.saveUserPreset (presetName, pIdx))
         {
             loadPresetChoices();
-            manager.setPreset (manager.getNumPresets() - 1);
+            manager.setPreset (pIdx);
         }
         else
         {

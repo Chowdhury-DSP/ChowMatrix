@@ -195,7 +195,12 @@ void DelayNode::loadXml (XmlElement* xmlState)
     if (xmlState->hasTagName (params.state.getType()))
     {
         params.replaceState (ValueTree::fromXml (*xmlState));
-        DBaseNode::loadXml (xmlState->getChildByName ("children"));
+
+        forEachXmlChildElementWithTagName (*xmlState, child, "children")
+        {
+            if (child->getNumChildElements() > 0)
+                DBaseNode::loadXml (child);
+        }
 
         lockedParams.clear();
         auto lockedParamsString = xmlState->getStringAttribute ("locked", String());
