@@ -8,7 +8,7 @@ void DelayProc::prepare (const dsp::ProcessSpec& spec)
 
     feedback.reset (spec.sampleRate, 0.05 * spec.numChannels);
     inGain.reset (spec.sampleRate, 0.05 * spec.numChannels);
-    delaySmooth.reset (spec.sampleRate, 0.05 * spec.numChannels);
+    delaySmooth.reset (spec.sampleRate, 0.15 * spec.numChannels);
     state.resize (spec.numChannels, 0.0f);
 
     reset();

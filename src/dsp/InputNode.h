@@ -10,6 +10,9 @@ class InputNode : public DBaseNode
 public:
     InputNode() = default;
 
+    XmlElement* saveXml() override;
+    void loadXml (XmlElement*) override;
+
     std::unique_ptr<NodeComponent> createNodeEditor (GraphView*) override;
 
 private:

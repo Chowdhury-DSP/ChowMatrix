@@ -80,6 +80,9 @@ void BaseNode<Child>::setParent (BaseNode* newParent)
 template<typename Child>
 XmlElement* BaseNode<Child>::saveXml()
 {
+    if (children.isEmpty())
+        return new XmlElement ("no_children");
+
     std::unique_ptr<XmlElement> xml = std::make_unique<XmlElement> ("children");
     for (auto* child : children)
         xml->addChildElement (child->saveXml());
