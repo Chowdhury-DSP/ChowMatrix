@@ -42,10 +42,10 @@ void ChowMatrix::addParameters (Parameters& params)
     auto stringToGain = [] (const String& t) { return t.getFloatValue(); };
 
     params.push_back (std::make_unique<Parameter> (dryTag, "Dry", String(),
-        gainRange, 0.0f, gainToString, stringToGain));
+        gainRange, -12.0f, gainToString, stringToGain));
 
     params.push_back (std::make_unique<Parameter> (wetTag, "Wet", String(),
-        gainRange, 0.0f, gainToString, stringToGain));
+        gainRange, -12.0f, gainToString, stringToGain));
 
     InsanityControl::addParameters (params);
     DelayTypeControl::addParameters (params);
