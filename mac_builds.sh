@@ -30,5 +30,6 @@ git restore CMakeLists.txt
 VERSION=$(cut -f 2 -d '=' <<< "$(grep 'CMAKE_PROJECT_VERSION:STATIC' build/CMakeCache.txt)")
 (
     cd bin
+    rm -f "ChowMatrix-Mac-${VERSION}.zip"
     zip -r "ChowMatrix-Mac-${VERSION}.zip" Mac
 )
