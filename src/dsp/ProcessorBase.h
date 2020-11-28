@@ -19,7 +19,7 @@ public:
     bool acceptsMidi() const override { return false; }
     bool producesMidi() const override { return false; }
 
-    AudioProcessorEditor* createEditor() override { return nullptr; };
+    AudioProcessorEditor* createEditor() override { return nullptr; }
     bool hasEditor() const override { return false; }
 
     int getNumPrograms() override { return 0; }
