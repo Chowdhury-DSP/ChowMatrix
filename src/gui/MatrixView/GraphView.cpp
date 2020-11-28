@@ -65,7 +65,7 @@ void GraphView::paint (Graphics& g)
 
         const auto alphaMult = childNode->getSoloed() == DelayNode::SoloState::Mute ? 0.4f : 1.0f;
         g.setColour (findColour (nodeColour).withMultipliedAlpha (alphaMult));
-        g.drawLine (Line (rootPos, childPos).toFloat(), 2.0f);
+        g.drawLine (Line<int> (rootPos, childPos).toFloat(), 2.0f);
     });
 }
 

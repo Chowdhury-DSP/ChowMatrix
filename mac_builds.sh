@@ -6,8 +6,8 @@ rm -Rf bin/Mac/
 
 # set up build VST
 VST_PATH=~/Developer/AnalogTapeModel/Plugin/Juce/VST2_SDK/
-sed -i '' "8s~.*~juce_set_vst2_sdk_path(${VST_PATH})~" CMakeLists.txt
-sed -i '' '14s/#//' CMakeLists.txt
+sed -i '' "9s~.*~juce_set_vst2_sdk_path(${VST_PATH})~" CMakeLists.txt
+sed -i '' '15s/#//' CMakeLists.txt
 
 # cmake new builds
 cmake -Bbuild -GXcode
@@ -25,3 +25,10 @@ done
 
 # reset CMakeLists.txt
 git restore CMakeLists.txt
+
+# zip builds
+VERSION=$(cut -f 2 -d '=' <<< "$(grep 'CMAKE_PROJECT_VERSION:STATIC' build/CMakeCache.txt)")
+(
+    cd bin
+    zip -r "ChowMatrix-Mac-${VERSION}.zip" Mac
+)
