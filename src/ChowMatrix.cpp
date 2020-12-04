@@ -3,6 +3,7 @@
 #include "gui/BottomBar/TextSliderItem.h"
 #include "gui/DetailsView/NodeDetailsGUI.h"
 #include "gui/InsanityLNF.h"
+#include "gui/ScreenshotHelper.h"
 #include "gui/MatrixView/GraphView.h"
 #include "presets/PresetCompItem.h"
 #include "presets/PresetsLNF.h"
@@ -204,5 +205,9 @@ void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
 // This creates new instances of the plugin
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
+#ifdef TAKE_SCREENSHOTS
+    ScreenshotHelper::takeScreenshots (std::make_unique<ChowMatrix>());
+#endif // TAKE_SCREENSHOTS
+
     return new ChowMatrix();
 }
