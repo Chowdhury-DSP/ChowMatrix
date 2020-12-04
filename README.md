@@ -8,7 +8,9 @@ tree of delay lines, each with individual controls for feedback,
 panning, distortion, and more. ChowMatrix is available as a VST,
 VST3, AU, and Standalone Application.
 
-<img src="./res/Screenshot.png" alt="Pic" height="400">
+<img src="./manual/screenshots/full_gui.png" alt="Pic" height="400">
+
+For more information on using ChowMatrix, see the [user manual](https://ccrma.stanford.edu/~jatin/chowdsp/Products/ChowMatrixManual.pdf).
 
 
 ## Installing
