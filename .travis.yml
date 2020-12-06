@@ -5,7 +5,7 @@ language: cpp
 
 # if pull request: always build
 # if push: only build for master branch
-if: (type != push) OR (type = push AND branch = main)
+if: (type != push) OR (type = push AND (branch = main OR branch = develop))
 
 matrix:
   include:
