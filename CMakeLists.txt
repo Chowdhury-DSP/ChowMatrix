@@ -12,7 +12,7 @@ juce_add_plugin(ChowMatrix
     COMPANY_NAME chowdsp
     PLUGIN_MANUFACTURER_CODE Chow
     PLUGIN_CODE spg3
-    FORMATS AU VST3 Standalone #VST
+    FORMATS AU VST3 Standalone LV2 #VST
     ProductName "ChowMatrix")
 
 # create JUCE header
@@ -30,6 +30,7 @@ target_compile_definitions(ChowMatrix
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
     JUCE_VST3_CAN_REPLACE_VST2=0
+    JUCE_LV2_URI="https://github.com/Chowdhury-DSP/ChowMatrix"
     FOLEYS_SHOW_GUI_EDITOR_PALLETTE=0
     FOLEYS_ENABLE_BINARY_DATA=1
 )
