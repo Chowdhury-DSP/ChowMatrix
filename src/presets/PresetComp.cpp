@@ -27,13 +27,6 @@ PresetComp::PresetComp (PresetManager& manager) :
     presetNameEditor.setJustification (Justification::centred);
 
     presetUpdated();
-    presetBox.onChange  = [=, &manager] { 
-        const auto selectedId = presetBox.getSelectedId();
-        if (selectedId >= 1000 || selectedId <= 0)
-            return;
-
-        manager.setPreset (selectedId - 1);
-    };
 }
 
 PresetComp::~PresetComp()
@@ -81,6 +74,15 @@ void PresetComp::loadPresetChoices()
 
         PopupMenu::Item presetItem { presetName };
         presetItem.itemID = i+1;
+
+        presetItem.action = [=] { 
+            const auto selectedId = presetBox.getSelectedId();
+            if (selectedId >= 1000 || selectedId <= 0)
+                return;
+
+            manager.setPreset (selectedId - 1);
+        };
+        
         presetChoicesMap[category].addItem (presetItem);
     }
 
