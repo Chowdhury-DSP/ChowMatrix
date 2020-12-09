@@ -41,7 +41,7 @@ public:
     {
         std::vector<foleys::SettableProperty> itemProperties;
 
-        itemProperties.push_back ({ configNode, foleys::IDs::parameter, foleys::SettableProperty::Choice, {}, magicBuilder.createParameterMenu() });
+        itemProperties.push_back ({ configNode, foleys::IDs::parameter, foleys::SettableProperty::Choice, {}, magicBuilder.createParameterMenuLambda() });
 
         return itemProperties;
     }

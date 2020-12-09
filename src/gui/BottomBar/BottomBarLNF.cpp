@@ -2,7 +2,7 @@
 
 namespace
 {
-    constexpr float heightFrac = 0.6f;
+    constexpr float heightFrac = 0.5f;
 }
 
 int getNameWidth (int height, const String& text)
@@ -55,6 +55,7 @@ Label* BottomBarLNF::createSliderTextBox (Slider& slider)
             editor->setColour (CaretComponent::caretColourId, Colour (0xFFC954D4));
             editor->setColour (TextEditor::backgroundColourId, Colours::transparentBlack);
             editor->setJustification (Justification::left);
+            editor->applyFontToAllText (Font (14.0f).boldened());
         }
     };
 
