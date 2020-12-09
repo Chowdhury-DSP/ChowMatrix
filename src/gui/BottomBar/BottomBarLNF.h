@@ -24,7 +24,7 @@ protected:
 
     Font getTextButtonFont (TextButton&, int buttonHeight) override
     {
-        float fontHeight = jmin (18.0f, (float) buttonHeight * 0.75f);
+        float fontHeight = jmin (17.0f, (float) buttonHeight * 0.85f);
         return Font { fontHeight, Font::bold };
     }
 

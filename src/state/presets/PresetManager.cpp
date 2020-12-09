@@ -1,5 +1,5 @@
 #include "PresetManager.h"
-#include "../ChowMatrix.h"
+#include "../StateManager.h"
 
 namespace
 {
@@ -7,8 +7,8 @@ namespace
     static String presetTag = "preset";
 }
 
-PresetManager::PresetManager (ChowMatrix* plugin, AudioProcessorValueTreeState& vts) :
-    plugin (plugin),
+PresetManager::PresetManager (StateManager* stateManager, AudioProcessorValueTreeState& vts) :
+    stateManager (stateManager),
     vts (vts)
 {
     presetParam = dynamic_cast<AudioParameterInt*> (vts.getParameter (presetTag));
@@ -73,7 +73,7 @@ bool PresetManager::setPreset (int idx)
     }
 
     if (auto xmlState = presetMap[idx]->state->getChildByName ("state"))
-        plugin->stateFromXml (xmlState);
+        stateManager->loadState (xmlState);
 
     presetParam->setValueNotifyingHost (presetParam->convertTo0to1 ((float) idx));
     listeners.call (&Listener::presetUpdated);
@@ -83,7 +83,7 @@ bool PresetManager::setPreset (int idx)
 
 bool PresetManager::saveUserPreset (const String& name, int& newPresetIdx)
 {
-    auto xmlState = plugin->stateToXml();
+    auto xmlState = stateManager->saveState();
 
     if (! userPresetFolder.isDirectory()) // if not set, choose preset folder
         chooseUserPresetFolder();

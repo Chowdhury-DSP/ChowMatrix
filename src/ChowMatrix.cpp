@@ -5,8 +5,8 @@
 #include "gui/InsanityLNF.h"
 #include "gui/ScreenshotHelper.h"
 #include "gui/MatrixView/GraphView.h"
-#include "presets/PresetCompItem.h"
-#include "presets/PresetsLNF.h"
+#include "state/presets/PresetCompItem.h"
+#include "state/presets/PresetsLNF.h"
 
 namespace
 {
@@ -21,7 +21,7 @@ ChowMatrix::ChowMatrix() :
     insanityControl (vts, &inputNodes),
     delayTypeControl (vts, &inputNodes),
     syncControl (vts, &inputNodes),
-    presetManager (this, vts)
+    stateManager (vts, inputNodes)
 {
     manager.initialise (&inputNodes);
 
@@ -33,6 +33,8 @@ ChowMatrix::ChowMatrix() :
 
     for (auto& node : inputNodes)
         node.addChild();
+
+    stateManager.loadDefaultABStates();
 }
 
 void ChowMatrix::addParameters (Parameters& params)
@@ -73,9 +75,8 @@ void ChowMatrix::releaseResources()
 
 void ChowMatrix::processAudioBlock (AudioBuffer<float>& buffer)
 {
-    const SpinLock::ScopedTryLockType graphTryLock (graphLoadLock);
-
-    if (! graphTryLock.isLocked())
+    const SpinLock::ScopedTryLockType stateLoadTryLock (stateManager.getStateLoadLock());
+    if (! stateLoadTryLock.isLocked())
         return;
 
     auto setGain = [] (auto& gainProc, float gainParamDB) {
@@ -141,65 +142,25 @@ AudioProcessorEditor* ChowMatrix::createEditor()
         NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->randomiseParameters(); });
     });
 
+    magicState.addTrigger ("ab_toggle", [=] {
+        stateManager.toggleABState();
+    });
+
     auto editor =  new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
     updater.showUpdaterScreen (editor);
     return editor;
 }
 
-std::unique_ptr<XmlElement> ChowMatrix::stateToXml()
-{
-    auto state = vts.copyState();
-    std::unique_ptr<XmlElement> xml = std::make_unique<XmlElement> ("state");
-    xml->addChildElement (state.createXml().release());
-
-    std::unique_ptr<XmlElement> childrenXml = std::make_unique<XmlElement> ("nodes");
-    for (auto& node : inputNodes)
-        childrenXml->addChildElement (node.saveXml());
-    
-    xml->addChildElement (childrenXml.release());
-    return std::move (xml);
-}
-
-void ChowMatrix::stateFromXml (XmlElement* xmlState)
-{
-    const SpinLock::ScopedLockType graphLock (graphLoadLock);
-
-    if (xmlState == nullptr) // invalid XML
-        return;
-
-    auto vtsXml = xmlState->getChildByName (vts.state.getType());
-    if (vtsXml == nullptr) // invalid ValueTreeState
-        return;
-
-    auto childrenXml = xmlState->getChildByName ("nodes");
-    if (childrenXml == nullptr) // invalid children XML
-        return;
-
-    for (auto& node : inputNodes)
-        node.clearChildren();
-
-    vts.replaceState (ValueTree::fromXml (*vtsXml));
-
-    size_t count = 0;
-    forEachXmlChildElement (*childrenXml, childXml)
-    {
-        if (count > 2)
-            break;
-
-        inputNodes[count++].loadXml (childXml);
-    }
-}
-
 void ChowMatrix::getStateInformation (MemoryBlock& destData)
 {
-    auto xml = stateToXml();
+    auto xml = stateManager.saveState();
     copyXmlToBinary (*xml, destData);
 }
 
 void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
 {
     auto xmlState = getXmlFromBinary (data, sizeInBytes);
-    stateFromXml (xmlState.get());
+    stateManager.loadState (xmlState.get());
 }
 
 // This creates new instances of the plugin

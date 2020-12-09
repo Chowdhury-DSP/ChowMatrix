@@ -2,11 +2,11 @@
 
 #include "Preset.h"
 
-class ChowMatrix;
+class StateManager;
 class PresetManager
 {
 public:
-    PresetManager (ChowMatrix* plugin, AudioProcessorValueTreeState& vts);
+    PresetManager (StateManager* stateManager, AudioProcessorValueTreeState& vts);
 
     StringArray getPresetChoices();
     void loadPresets();
@@ -42,7 +42,7 @@ private:
     int numFactoryPresets = 0;
     PopupMenu userPresetMenu;
 
-    ChowMatrix* plugin;
+    StateManager* stateManager;
     AudioProcessorValueTreeState& vts;
     AudioParameterInt* presetParam = nullptr;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ChowMatrix.h"
+#include "../../ChowMatrix.h"
 #include "PresetComp.h"
 
 class PresetCompItem : public foleys::GuiItem
@@ -18,7 +18,7 @@ public:
 
         if (auto* proc = dynamic_cast<ChowMatrix*> (builder.getMagicState().getProcessor()))
         {
-            presetComp = std::make_unique<PresetComp> (proc->getPresetManager());
+            presetComp = std::make_unique<PresetComp> (proc->getStateManager().getPresetManager());
             addAndMakeVisible (presetComp.get());
         }
     }
