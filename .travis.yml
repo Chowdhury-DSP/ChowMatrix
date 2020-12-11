@@ -42,7 +42,7 @@ install:
 
 script:
   - cmake -Bbuild
-  - cmake --build build --config Release
+  - cmake --build build --config Release --parallel
 
   # Validate
   - cd ${TRAVIS_BUILD_DIR}

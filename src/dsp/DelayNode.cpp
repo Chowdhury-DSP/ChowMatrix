@@ -108,7 +108,6 @@ void DelayNode::prepare (double newSampleRate, int newSamplesPerBlock)
     panner.prepare ({ newSampleRate, (uint32) newSamplesPerBlock, 2 });
     cookParameters (true);
     
-    childBuffer.setSize (1, newSamplesPerBlock);
     panBuffer.setSize (2, newSamplesPerBlock);
 }
 
@@ -125,11 +124,7 @@ void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBu
     processors.process<dsp::ProcessContextReplacing<float>> ({ inBlock });
 
     // process through children
-    for (auto* child : children)
-    {
-        childBuffer.makeCopyOf (inBuffer, true);
-        child->process (childBuffer, outBuffer, numSamples);
-    }
+    DBaseNode::process (inBuffer, outBuffer, numSamples);
 
     // apply pan
     dsp::AudioBlock<float> panBlock { panBuffer };
