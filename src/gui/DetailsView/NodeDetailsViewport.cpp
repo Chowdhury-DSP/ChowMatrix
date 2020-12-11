@@ -3,7 +3,7 @@
 
 namespace
 {
-    constexpr int scrollThickness = 4;
+    constexpr int scrollThickness = 6;
 }
 
 NodeDetailsViewport::NodeDetailsViewport (ChowMatrix& chowMatrix) :
