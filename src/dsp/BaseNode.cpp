@@ -14,6 +14,7 @@ void BaseNode<Child>::prepare (double newSampleRate, int newSamplesPerBlock)
 {
     sampleRate = newSampleRate;
     samplesPerBlock = newSamplesPerBlock;
+    childBuffer.setSize (1, newSamplesPerBlock);
 
     for (auto* child : children)
         child->prepare (sampleRate, samplesPerBlock);
@@ -23,7 +24,10 @@ template<typename Child>
 void BaseNode<Child>::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples)
 {
     for (auto* child : children)
-        child->process (inBuffer, outBuffer, numSamples);
+    {
+        childBuffer.makeCopyOf (inBuffer, true);
+        child->process (childBuffer, outBuffer, numSamples);
+    }
 }
 
 template<typename Child>

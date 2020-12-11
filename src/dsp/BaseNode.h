@@ -60,6 +60,8 @@ protected:
 private:
     std::unique_ptr<Child> nodeBeingDeleted;
 
+    AudioBuffer<float> childBuffer;
+
     double sampleRate = 44100.0;
     int samplesPerBlock = 256;
 

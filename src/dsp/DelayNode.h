@@ -117,8 +117,6 @@ private:
     };
 
     dsp::ProcessorChain<dsp::Gain<float>, DelayProc> processors;
-
-    AudioBuffer<float> childBuffer;
     AudioBuffer<float> panBuffer;
     dsp::Panner<float> panner;
 
