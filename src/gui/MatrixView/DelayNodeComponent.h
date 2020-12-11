@@ -6,6 +6,7 @@
 
 class DelayNodeComponent : public NodeComponent,
                            public SettableTooltipClient,
+                           private Timer,
                            private AudioProcessorParameter::Listener
 {
 public:
@@ -21,10 +22,12 @@ public:
     void selectionChanged();
     void parameterValueChanged (int, float) override;
     void parameterGestureChanged (int, bool) override {}
+    void timerCallback() override;
 
 private:
     void updateParams();
     float getMaxDist() const noexcept;
+    void updateTimerFreq (float modFrequency);
 
     DelayNode& node;
     NodeInfo nodeInfo;

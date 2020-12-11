@@ -11,6 +11,9 @@ namespace ParamTags
     const String lpfTag   = "LPF";
     const String hpfTag   = "HPF";
     const String distTag  = "DIST";
+    const String modFreqTag   = "MOD_FREQ";
+    const String delayModTag  = "MOD_DELAY";
+    const String panModTag    = "MOD_PAN";
 }
 
 using Parameter = AudioProcessorValueTreeState::Parameter;
@@ -27,7 +30,9 @@ constexpr float minLPF = 200.0f;
 constexpr float maxLPF = 20000.0f;
 constexpr float minHPF = 20.0f;
 constexpr float maxHPF = 2000.0f;
-constexpr int numParams = 7;
+constexpr float minModFreq = 0.0f;
+constexpr float maxModFreq = 5.0f;
+constexpr int numParams = 10;
 
 /** Sets a parameter value */
 void setParameterValue (Parameter* param, float newVal);
@@ -50,8 +55,8 @@ float stringToGainVal (const String& s);
 String freqValToString (float freqVal);
 float stringToFreqVal (const String& s);
 
-String distValToString (float distVal);
-float stringToDistVal (const String& s);
+String percentValToString (float percentVal);
+float stringToPercentVal (const String& s);
 
 using StringToValFunc = float (*) (const String&);
 StringToValFunc getStringFuncForParam (const String& paramID);

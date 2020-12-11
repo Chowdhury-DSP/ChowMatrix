@@ -30,10 +30,13 @@ public:
         float lpfFreq;
         float hpfFreq;
         float distortion;
+        float modFreq;
+        float modDepth;
     };
 
     void setParameters (const Parameters& params, bool force = false);
     void setDelayType (VariableDelay::DelayType type) { delay.setDelayType (type); }
+    float getModDepth() const noexcept { return 1000.0f * delayModValue / fs; }
 
 private:
     template<typename SampleType>
@@ -63,6 +66,11 @@ private:
         chowdsp::IIR::Filter<float, 1>,
         Distortion
         > procs;
+
+    chowdsp::SineWave<float> modSine;
+    float delayModValue = 0.0f;
+    float modDepth = 0.0f;
+    float modDepthFactor = 1.0f;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayProc)
 };

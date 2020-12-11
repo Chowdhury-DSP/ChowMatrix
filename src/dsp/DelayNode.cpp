@@ -22,9 +22,12 @@ DelayNode::DelayNode() :
     lpfHz      = loadParam (lpfTag);
     hpfHz      = loadParam (hpfTag);
     distortion = loadParam (distTag);
+    modFreq    = loadParam (modFreqTag);
+    delayMod   = loadParam (delayModTag);
+    panMod     = loadParam (panModTag);
 
     processors.get<gainIdx>().setRampDurationSeconds (0.05);
-    panner.setRule (dsp::PannerRule::squareRoot3dB);
+    panner.setRule (chowdsp::PannerRule::squareRoot3dB);
 
     delaySmoother.reset();
     panSmoother.reset();
@@ -52,9 +55,12 @@ void DelayNode::cookParameters (bool force)
         *feedback,
         *lpfHz,
         *hpfHz,
-        *distortion
+        *distortion,
+        *modFreq,
+        *delayMod
     }, force);
 
+    modSine.setFrequency (*modFreq);
     panner.setPan (*pan);
 }
 
@@ -106,6 +112,7 @@ void DelayNode::prepare (double newSampleRate, int newSamplesPerBlock)
 
     processors.prepare ({ newSampleRate, (uint32) newSamplesPerBlock, 1 });
     panner.prepare ({ newSampleRate, (uint32) newSamplesPerBlock, 2 });
+    modSine.prepare ({ newSampleRate, (uint32) newSamplesPerBlock, 1 });
     cookParameters (true);
     
     panBuffer.setSize (2, newSamplesPerBlock);
@@ -116,6 +123,11 @@ void DelayNode::flushDelays()
     processors.get<delayIdx>().flushDelay();
 }
 
+float DelayNode::getDelayWithMod() const noexcept
+{
+    return delayMs->convertTo0to1 (delayMs->get() + processors.get<delayIdx>().getModDepth());
+}
+
 void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples)
 {
     // process through node delay processors
@@ -123,14 +135,33 @@ void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBu
     cookParameters();
     processors.process<dsp::ProcessContextReplacing<float>> ({ inBlock });
 
-    // process through children
-    DBaseNode::process (inBuffer, outBuffer, numSamples);
-
-    // apply pan
-    dsp::AudioBlock<float> panBlock { panBuffer };
-    panner.process<dsp::ProcessContextNonReplacing<float>> ({ inBlock, panBlock });
-
+    DBaseNode::process (inBuffer, outBuffer, numSamples); // process through children
+    processPanner (inBlock, numSamples); // apply pan
     addToOutput (outBuffer, numSamples);
+}
+
+void DelayNode::processPanner (dsp::AudioBlock<float>& inputBlock, int numSamples)
+{
+    if (*panMod == 0.0f || *modFreq == 0.0f) // no modulation needed
+    {
+        modSine.reset();
+        panModValue = 0.0f;
+        dsp::AudioBlock<float> panBlock { panBuffer };
+        panner.process<dsp::ProcessContextNonReplacing<float>> ({ inputBlock, panBlock });
+    }
+    else
+    {
+        auto* x = inputBlock.getChannelPointer (0);
+        auto* left = panBuffer.getWritePointer (0);
+        auto* right = panBuffer.getWritePointer (1);
+
+        for (int i = 0; i < numSamples; ++i)
+        {
+            panModValue = 0.33f * *panMod * modSine.processSample(); // max pan mod = 33%
+            panner.setPan (jlimit (-1.0f, 1.0f, *pan + panModValue));
+            std::tie (left[i], right[i]) = panner.processSample (x[i]);
+        }
+    }
 }
 
 void DelayNode::addToOutput (AudioBuffer<float>& outBuffer, const int numSamples)
