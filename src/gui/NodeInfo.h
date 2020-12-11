@@ -20,9 +20,15 @@ public:
         showLabel (showLabel)
     {
         for (int i = 0; i < node.getNumParams(); ++i)
+        {
+            // in matrix view, don't show mod params
+            if (showLabel && node.getNodeParameter (i)->paramID.contains ("MOD"))
+                continue;
+
             addAndMakeVisible (sliders.add (std::make_unique<ParamSlider>
                 (node, dynamic_cast<AudioProcessorValueTreeState::Parameter*>
                     (node.getNodeParameter (i)), showLabel)));
+        }
 
         const int width = showLabel ? NodeInfoConsts::InfoWidth : NodeInfoConsts::InfoWidthNoLabel;
         const int height = showLabel ? NodeInfoConsts::InfoHeight : NodeInfoConsts::InfoHeightNoLabel;

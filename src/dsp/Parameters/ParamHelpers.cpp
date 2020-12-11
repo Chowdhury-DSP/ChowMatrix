@@ -19,43 +19,56 @@ AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
     NormalisableRange<float> delayRange { 0.0f, maxDelay };
     delayRange.setSkewForCentre (centreDelay);
 
-    params.push_back (std::make_unique<Parameter> (delayTag, "Delay", String(), delayRange,
-        centreDelay, [] (float val) { return delayValToString (val); },
-        [] (const String& s) { return stringToDelayVal (s); }));
+    params.push_back (std::make_unique<Parameter> (delayTag, "Delay", String(),
+        delayRange, centreDelay, &delayValToString, &stringToDelayVal));
 
     // set up panner
     NormalisableRange<float> panRange { -1.0f, 1.0f };
-    params.push_back (std::make_unique<Parameter> (panTag, "Pan", String(), panRange,
-        0.0f, [] (float val) { return panValToString (val); },
-        [] (const String& s) { return stringToPanVal (s); }));
+    params.push_back (std::make_unique<Parameter> (panTag, "Pan", String(),
+        panRange, 0.0f, &panValToString, &stringToPanVal));
 
     // set up feedback amount
     NormalisableRange<float> fbRange { 0.0f, maxFeedback };
-    params.push_back (std::make_unique<Parameter> (fbTag, "Feedback", String(), fbRange,
-        0.0f, [] (float val) { return fbValToString (val); },
-        [] (const String& s) { return stringToFbVal (s); }));
+    params.push_back (std::make_unique<Parameter> (fbTag, "Feedback", String(),
+        fbRange, 0.0f, &fbValToString, &stringToFbVal));
 
     // set up gain
     NormalisableRange<float> gainRange { -maxGain, maxGain };
-    params.push_back (std::make_unique<Parameter> (gainTag, "Gain", String(), gainRange,
-        0.0f, &gainValToString, &stringToGainVal));
+    params.push_back (std::make_unique<Parameter> (gainTag, "Gain", String(),
+        gainRange, 0.0f, &gainValToString, &stringToGainVal));
 
     // set up LPF
     NormalisableRange<float> lpfRange { minLPF, maxLPF };
     lpfRange.setSkewForCentre (std::sqrt (minLPF * maxLPF));
-    params.push_back (std::make_unique<Parameter> (lpfTag, "LPF", String(), lpfRange,
-        maxLPF, &freqValToString, &stringToFreqVal));
+    params.push_back (std::make_unique<Parameter> (lpfTag, "LPF", String(),
+        lpfRange, maxLPF, &freqValToString, &stringToFreqVal));
 
     // set up HPF
     NormalisableRange<float> hpfRange { minHPF, maxHPF };
     hpfRange.setSkewForCentre (std::sqrt (minHPF * maxHPF));
-    params.push_back (std::make_unique<Parameter> (hpfTag, "HPF", String(), hpfRange,
-        minHPF, &freqValToString, &stringToFreqVal));
+    params.push_back (std::make_unique<Parameter> (hpfTag, "HPF", String(),
+        hpfRange, minHPF, &freqValToString, &stringToFreqVal));
 
     // set up distortion
     NormalisableRange<float> distRange { 0.0f, 1.0f };
-    params.push_back (std::make_unique<Parameter> (distTag, "Distortion", String(), distRange,
-        0.0f, &distValToString, &stringToDistVal));
+    params.push_back (std::make_unique<Parameter> (distTag, "Distortion", String(),
+        distRange, 0.0f, &percentValToString, &stringToPercentVal));
+
+    // set up mod frequency
+    NormalisableRange<float> modFreqRange { minModFreq, maxModFreq };
+    modFreqRange.setSkewForCentre (2.0f);
+    params.push_back (std::make_unique<Parameter> (modFreqTag, "Mod Freq", String(),
+        modFreqRange, 0.0f, &freqValToString, &stringToFreqVal));
+
+    // set up delay mod depth
+    NormalisableRange<float> delayModRange { 0.0f, 1.0f };
+    params.push_back (std::make_unique<Parameter> (delayModTag, "Delay Mod", String(),
+        delayModRange, 0.0f, &percentValToString, &stringToPercentVal));
+
+    // set up pan mod depth
+    NormalisableRange<float> panModRange { -1.0f, 1.0f };
+    params.push_back (std::make_unique<Parameter> (panModTag, "Pan Mod", String(),
+        panModRange, 0.0f, &percentValToString, &stringToPercentVal));
 
     return { params.begin(), params.end() };
 }
@@ -122,23 +135,32 @@ float stringToFreqVal (const String& s)
     return freqVal;
 }
 
-String distValToString (float distVal)
+String percentValToString (float percentVal)
 {
-    String distStr = String (int (distVal * 100.0f));
-    return distStr + "%";
+    String percentStr = String (int (percentVal * 100.0f));
+    return percentStr + "%";
 }
 
-float stringToDistVal (const String& s) { return s.getFloatValue() / 100.0f; }
+float stringToPercentVal (const String& s) { return s.getFloatValue() / 100.0f; }
+
+String delayModValToString (float delayModVal);
+float stringToDelayModVal (const String& s);
+
+String panModValToString (float panModVal);
+float stringToPanModVal (const String& s);
 
 // Map to connect paramIDs to stringToVal functions
 std::unordered_map<String, StringToValFunc> funcMap {
-    { delayTag, stringToDelayVal },
-    { panTag,   stringToPanVal },
-    { fbTag,    stringToFbVal },
-    { gainTag,  stringToGainVal },
-    { lpfTag,   stringToFreqVal },
-    { hpfTag,   stringToFreqVal },
-    { distTag,  stringToDistVal },
+    { delayTag,     stringToDelayVal   },
+    { panTag,       stringToPanVal     },
+    { fbTag,        stringToFbVal      },
+    { gainTag,      stringToGainVal    },
+    { lpfTag,       stringToFreqVal    },
+    { hpfTag,       stringToFreqVal    },
+    { distTag,      stringToPercentVal },
+    { modFreqTag,   stringToFreqVal    },
+    { delayModTag,  stringToPercentVal },
+    { panModTag,    stringToPercentVal },
 };
 
 StringToValFunc getStringFuncForParam (const String& paramID)
@@ -168,6 +190,15 @@ String getTooltip (const String& paramID)
 
     if (paramID == distTag)
         return "Sets the amount of distortion on this delay node";
+
+    if (paramID == modFreqTag)
+        return "Sets the modulation frequency for this delay node";
+
+    if (paramID == delayModTag)
+        return "Sets the depth of delay modulation for this delay node";
+
+    if (paramID == panModTag)
+        return "Sets the depth of pan modulation for this delay node";
 
     return {};
 }

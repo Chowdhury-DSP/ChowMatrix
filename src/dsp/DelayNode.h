@@ -15,6 +15,7 @@ public:
 
     // Get/Set delay param [0,1]
     float getDelay() const noexcept { return delayMs->convertTo0to1 (delayMs->get()); }
+    float getDelayWithMod() const noexcept;
     void setDelay (float newDelay) { ParamHelpers::setParameterValue (delayMs, delayMs->convertFrom0to1 (newDelay)); }
 
     // Sync parameter functions
@@ -24,6 +25,7 @@ public:
 
     // Get/Set pan param [-1,1]
     float getPan() const noexcept { return pan->get(); }
+    float getPanWithMod() const noexcept { return pan->get() + panModValue; }
     void setPan (float newPan) { ParamHelpers::setParameterValue (pan, newPan); }
 
     /** Call node listeners to set parameter by a diff value */
@@ -88,6 +90,7 @@ public:
 private:
     void cookParameters (bool force = false);
     void repaintEditors (bool repaintWholeGraph = false);
+    void processPanner (dsp::AudioBlock<float>& inputBlock, int numSamples);
     void addToOutput (AudioBuffer<float>& outBuffer, const int numSamples);
 
     AudioProcessorValueTreeState params;
@@ -102,13 +105,16 @@ private:
     SoloState prevSoloState = None;
 
     // parameter handles
-    Parameter* delayMs = nullptr;
-    Parameter* pan = nullptr;
-    Parameter* feedback = nullptr;
-    Parameter* gainDB = nullptr;
-    Parameter* lpfHz = nullptr;
-    Parameter* hpfHz = nullptr;
+    Parameter* delayMs    = nullptr;
+    Parameter* pan        = nullptr;
+    Parameter* feedback   = nullptr;
+    Parameter* gainDB     = nullptr;
+    Parameter* lpfHz      = nullptr;
+    Parameter* hpfHz      = nullptr;
     Parameter* distortion = nullptr;
+    Parameter* modFreq    = nullptr;
+    Parameter* delayMod   = nullptr;
+    Parameter* panMod     = nullptr;
 
     enum
     {
@@ -118,7 +124,10 @@ private:
 
     dsp::ProcessorChain<dsp::Gain<float>, DelayProc> processors;
     AudioBuffer<float> panBuffer;
-    dsp::Panner<float> panner;
+    chowdsp::Panner<float> panner;
+    
+    chowdsp::SineWave<float> modSine;
+    float panModValue = 0.0f;
 
     // needed for GUI
     int nodeIdx = 0;

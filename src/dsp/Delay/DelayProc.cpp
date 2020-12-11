@@ -14,12 +14,15 @@ void DelayProc::prepare (const dsp::ProcessSpec& spec)
     reset();
 
     procs.prepare (spec);
+    modSine.prepare (spec);
+    modDepthFactor = 0.5f * (float) spec.sampleRate; // max mod depth = 0.5 seconds
 }
 
 void DelayProc::reset()
 {
     delay.reset();
     procs.reset();
+    modSine.reset();
 }
 
 void DelayProc::flushDelay()
@@ -51,16 +54,19 @@ void DelayProc::process (const ProcessContext& context)
         auto* inputSamples = inputBlock.getChannelPointer (channel);
         auto* outputSamples = outputBlock.getChannelPointer (channel);
 
-        if (delay.isDelaySmoothing() || delaySmooth.isSmoothing())
+        if (delay.isDelaySmoothing() || delaySmooth.isSmoothing() || modSine.getFrequency() > 0.0f)
         {
             for (size_t i = 0; i < numSamples; ++i)
             {
-                delay.setDelay (delaySmooth.getNextValue());
+                delayModValue = modDepth * modDepthFactor * modSine.processSample();
+                delay.setDelay (jmax (0.0f, delaySmooth.getNextValue() + delayModValue));
                 outputSamples[i] = processSampleSmooth (inputSamples[i], channel);
             }
         }
         else
         {
+            modSine.reset();
+            delayModValue = 0.0f;
             for (size_t i = 0; i < numSamples; ++i)
                 outputSamples[i] = processSample (inputSamples[i], channel);
         }
@@ -101,6 +107,9 @@ void DelayProc::setParameters (const Parameters& params, bool force)
     auto gainVal = params.feedback >= maxFeedback ? 0.0f : 1.0f;
     auto fbVal = params.feedback >= maxFeedback ? 1.0f
         : std::pow (jmin (params.feedback, 0.95f), 0.9f);
+
+    modDepth = params.modDepth;
+    modSine.setFrequency (params.modFreq);
 
     if (force)
     {

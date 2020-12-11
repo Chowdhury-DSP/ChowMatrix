@@ -12,6 +12,12 @@ DelayNodeComponent::DelayNodeComponent (DelayNode& node, GraphView* view) :
     view->addChildComponent (nodeInfo);
     node.getNodeParameter (delayTag)->addListener (this);
     node.getNodeParameter (panTag)->addListener (this);
+    node.getNodeParameter (modFreqTag)->addListener (this);
+
+    // set initial timer frequency
+    auto* modFreqParam = node.getNodeParameter (modFreqTag);
+    auto modFreqValue = modFreqParam->convertFrom0to1 (modFreqParam->getValue());
+    updateTimerFreq (modFreqValue);
 
     setName ("Delay Node");
     setTooltip ("Click to select node, drag to move, alt+click to solo, ctrl+click to delete");
@@ -21,6 +27,7 @@ DelayNodeComponent::~DelayNodeComponent()
 {
     node.getNodeParameter (delayTag)->removeListener (this);
     node.getNodeParameter (panTag)->removeListener (this);
+    node.getNodeParameter (modFreqTag)->removeListener (this);
 }
 
 void DelayNodeComponent::mouseDown (const MouseEvent& e)
@@ -106,8 +113,8 @@ void DelayNodeComponent::updatePosition()
     auto parentEditor = node.getParent()->getEditor();
     auto parentPos = parentEditor->getCentrePosition().toFloat();
 
-    float delay = node.getDelay();
-    float pan = node.getPan();
+    float delay = node.getDelayWithMod();
+    float pan = node.getPanWithMod();
 
     float radius = delay * getMaxDist();
     float angle = (pan - 1.0f) * MathConstants<float>::halfPi;
@@ -130,7 +137,23 @@ void DelayNodeComponent::updatePosition()
     graphView->repaint();
 }
 
-void DelayNodeComponent::parameterValueChanged (int, float)
+void DelayNodeComponent::updateTimerFreq (float modFrequency)
+{
+    if (modFrequency == 0.0f)
+        stopTimer();
+    else
+        startTimerHz (jmax (24, (int) std::ceil (modFrequency * 5)));
+}
+
+void DelayNodeComponent::parameterValueChanged (int idx, float value)
+{
+    updatePosition();
+
+    if (node.getParamID (idx) == modFreqTag)
+        updateTimerFreq (value);
+}
+
+void DelayNodeComponent::timerCallback()
 {
     updatePosition();
 }
