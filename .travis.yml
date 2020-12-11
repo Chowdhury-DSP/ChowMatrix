@@ -26,6 +26,10 @@ matrix:
     - os: windows
       env: run=sh
 
+cache:
+  directories:
+  - $TRAVIS_BUILD_DIR/build/modules/JUCE/tools
+
 install:
   # upgrade cmake to 3.18
   - |
