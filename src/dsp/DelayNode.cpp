@@ -27,7 +27,7 @@ DelayNode::DelayNode() :
     panMod     = loadParam (panModTag);
 
     processors.get<gainIdx>().setRampDurationSeconds (0.05);
-    panner.setRule (chowdsp::PannerRule::squareRoot3dB);
+    panner.setRule (chowdsp::Panner<float>::Rule::squareRoot3dB);
 
     delaySmoother.reset();
     panSmoother.reset();
