@@ -1,7 +1,7 @@
 # CHOW Matrix
 
 [![Download Latest](https://img.shields.io/badge/download-latest-blue.svg)](https://github.com/Chowdhury-DSP/ChowMatrix/releases/latest)
-[![Build Status](https://travis-ci.com/Chowdhury-DSP/ChowMatrix.svg?token=Ub9niJrqG1Br1qaaxp7E&branch=main)](https://travis-ci.com/Chowdhury-DSP/ChowMatrix)
+![CI](https://github.com/Chowdhury-DSP/ChowMatrix/workflows/CI/badge.svg)
 [![License](https://img.shields.io/badge/License-BSD-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Downloads](https://img.shields.io/github/downloads/Chowdhury-DSP/ChowMatrix/total)](https://somsubhra.com/github-release-stats/?username=Chowdhury-DSP&repository=ChowMatrix&page=1&per_page=30)
 
