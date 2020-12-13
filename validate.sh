@@ -35,7 +35,8 @@ echo "Pluginval installed at ${pluginval}"
 
 plugin="build/ChowMatrix_artefacts/Release/VST3/ChowMatrix.vst3"
 echo "Validating ${plugin}"
-result=$($pluginval --strictness-level 8 --validate-in-process --validate $plugin)
+$pluginval --strictness-level 8 --validate-in-process --validate $plugin
+result=$?
 
 # clean up
 rm -Rf pluginval*
