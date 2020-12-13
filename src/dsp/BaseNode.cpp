@@ -21,12 +21,12 @@ void BaseNode<Child>::prepare (double newSampleRate, int newSamplesPerBlock)
 }
 
 template<typename Child>
-void BaseNode<Child>::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples)
+void BaseNode<Child>::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer)
 {
     for (auto* child : children)
     {
         childBuffer.makeCopyOf (inBuffer, true);
-        child->process (childBuffer, outBuffer, numSamples);
+        child->process (childBuffer, outBuffer);
     }
 }
 

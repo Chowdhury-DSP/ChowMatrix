@@ -47,7 +47,7 @@ public:
     /** Flushes delay buffers for this node */
     void flushDelays();
     void prepare (double sampleRate, int samplesPerBlock) override;
-    void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples) override;
+    void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer) override;
 
     std::unique_ptr<NodeComponent> createNodeEditor (GraphView*) override;
 
@@ -90,8 +90,8 @@ public:
 private:
     void cookParameters (bool force = false);
     void repaintEditors (bool repaintWholeGraph = false);
-    void processPanner (dsp::AudioBlock<float>& inputBlock, int numSamples);
-    void addToOutput (AudioBuffer<float>& outBuffer, const int numSamples);
+    void processPanner (dsp::AudioBlock<float>& inputBlock);
+    void addToOutput (AudioBuffer<float>& outBuffer);
 
     AudioProcessorValueTreeState params;
     StringArray paramIDs;

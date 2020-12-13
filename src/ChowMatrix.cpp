@@ -103,14 +103,14 @@ void ChowMatrix::processAudioBlock (AudioBuffer<float>& buffer)
     const int numSamples = buffer.getNumSamples();
     for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
     {
-        chBuffers[ch].clear();
+        chBuffers[ch].setSize (1, numSamples, false, false, true);
         chBuffers[ch].copyFrom (0, 0, buffer, ch, 0, numSamples);
     }
 
     // get wet signal
     buffer.clear();
     for (size_t ch = 0; ch < (size_t) buffer.getNumChannels(); ++ch)
-        inputNodes[ch].process (chBuffers[ch], buffer, numSamples);
+        inputNodes[ch].process (chBuffers[ch], buffer);
 
     dsp::AudioBlock<float> wetBlock (buffer);
     dsp::ProcessContextReplacing<float> wetContext (wetBlock);

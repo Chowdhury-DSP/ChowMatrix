@@ -23,7 +23,7 @@ public:
     NodeComponent* getEditor();
 
     virtual void prepare (double sampleRate, int samplesPerBlock);
-    virtual void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples);
+    virtual void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer);
 
     // Adding/removing children
     Child* addChild();
