@@ -24,24 +24,20 @@ install_pluginval_win()
 
 # install
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    exit 0
-    # pluginval=$(install_pluginval_linux)
-    # declare -a plugins=()
+    pluginval=$(install_pluginval_linux)
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     pluginval=$(install_pluginval_mac)
-    declare -a plugins=("build/ChowMatrix_artefacts/VST3/ChowMatrix.vst3")
 else
     pluginval=$(install_pluginval_win)
-    declare -a plugins=("build/ChowMatrix_artefacts/Release/VST3/ChowMatrix.vst3")
 fi
 
 echo "Pluginval installed at ${pluginval}"
 
-# run
-for plugin in "${plugins[@]}"; do
-    echo "Validating ${plugin}"
-    $pluginval --strictness-level 8 --validate-in-process --validate $plugin
-done
+plugin="build/ChowMatrix_artefacts/**/VST3/ChowMatrix.vst3"
+echo "Validating ${plugin}"
+$pluginval --strictness-level 8 --validate-in-process --validate $plugin
+result=$?
 
 # clean up
 rm -Rf pluginval*
+exit $result
