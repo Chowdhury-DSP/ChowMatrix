@@ -24,6 +24,7 @@ private:
     String getUpdateFileVersion (const File& updateFile);
     bool getUpdateFileYesNo (const File& updateFile);
     void editUpdateCheckFile (String version, bool wantsUpdate);
+    void parentSizeChanged() override;
 
     String newVersion = String (JucePlugin_VersionString);
 

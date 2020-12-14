@@ -37,7 +37,7 @@ DelayNode::DelayNode() :
 void DelayNode::setDelaySync (bool shouldBeSynced)
 {
     syncDelay = shouldBeSynced;
-    MessageManager::callAsync ([&] { delayMs->sendValueChangedMessageToListeners (*delayMs); });
+    delayMs->sendValueChangedMessageToListeners (*delayMs);
 }
 
 void DelayNode::cookParameters (bool force)
