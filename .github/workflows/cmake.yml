@@ -39,6 +39,9 @@ jobs:
       with:
         submodules: true
 
+    - name: Setup debug session
+      uses: mxschmitt/action-tmate@v3
+
     - name: Configure
       shell: bash
       run: cmake -Bbuild
