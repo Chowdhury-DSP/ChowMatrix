@@ -15,7 +15,9 @@ int main (int argc, char* argv[])
 {
     std::cout << "Running ChowMatrix in headless mode..." << std::endl;
 
+#if JUCE_MAC
     Process::setDockIconVisible (false);    // hide dock icon
+#endif
     ScopedJuceInitialiser_GUI scopedJuce;   // creates MessageManager
 
     ConsoleApplication app;

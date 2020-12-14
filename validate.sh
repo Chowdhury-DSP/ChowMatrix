@@ -28,7 +28,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     plugin="build/ChowMatrix_artefacts/Release/VST3/ChowMatrix.vst3"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     pluginval=$(install_pluginval_mac)
-    plugin="build/ChowMatrix_artefacts/AU/ChowMatrix.component"
+    plugin="build/ChowMatrix_artefacts/Release/AU/ChowMatrix.component"
 else
     pluginval=$(install_pluginval_win)
     plugin="build/ChowMatrix_artefacts/Release/VST3/ChowMatrix.vst3"
