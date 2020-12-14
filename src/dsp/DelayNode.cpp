@@ -37,7 +37,7 @@ DelayNode::DelayNode() :
 void DelayNode::setDelaySync (bool shouldBeSynced)
 {
     syncDelay = shouldBeSynced;
-    delayMs->sendValueChangedMessageToListeners (*delayMs);
+    MessageManager::callAsync ([&] { delayMs->sendValueChangedMessageToListeners (*delayMs); });
 }
 
 void DelayNode::cookParameters (bool force)
@@ -128,24 +128,25 @@ float DelayNode::getDelayWithMod() const noexcept
     return delayMs->convertTo0to1 (delayMs->get() + processors.get<delayIdx>().getModDepth());
 }
 
-void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer, const int numSamples)
+void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer)
 {
     // process through node delay processors
     dsp::AudioBlock<float> inBlock { inBuffer };
     cookParameters();
     processors.process<dsp::ProcessContextReplacing<float>> ({ inBlock });
 
-    DBaseNode::process (inBuffer, outBuffer, numSamples); // process through children
-    processPanner (inBlock, numSamples); // apply pan
-    addToOutput (outBuffer, numSamples);
+    DBaseNode::process (inBuffer, outBuffer); // process through children
+    processPanner (inBlock); // apply pan
+    addToOutput (outBuffer);
 }
 
-void DelayNode::processPanner (dsp::AudioBlock<float>& inputBlock, int numSamples)
+void DelayNode::processPanner (dsp::AudioBlock<float>& inputBlock)
 {
     if (*panMod == 0.0f || *modFreq == 0.0f) // no modulation needed
     {
         modSine.reset();
         panModValue = 0.0f;
+        panBuffer.setSize (2, (int) inputBlock.getNumSamples(), false, false, true);
         dsp::AudioBlock<float> panBlock { panBuffer };
         panner.process<dsp::ProcessContextNonReplacing<float>> ({ inputBlock, panBlock });
     }
@@ -155,7 +156,7 @@ void DelayNode::processPanner (dsp::AudioBlock<float>& inputBlock, int numSample
         auto* left = panBuffer.getWritePointer (0);
         auto* right = panBuffer.getWritePointer (1);
 
-        for (int i = 0; i < numSamples; ++i)
+        for (size_t i = 0; i < inputBlock.getNumSamples(); ++i)
         {
             panModValue = 0.33f * *panMod * modSine.processSample(); // max pan mod = 33%
             panner.setPan (jlimit (-1.0f, 1.0f, *pan + panModValue));
@@ -164,8 +165,10 @@ void DelayNode::processPanner (dsp::AudioBlock<float>& inputBlock, int numSample
     }
 }
 
-void DelayNode::addToOutput (AudioBuffer<float>& outBuffer, const int numSamples)
+void DelayNode::addToOutput (AudioBuffer<float>& outBuffer)
 {
+    const int numSamples = outBuffer.getNumSamples();
+
     if (isSoloed == Mute && prevSoloState == Mute) // mute state
         return;
 
@@ -269,6 +272,7 @@ void DelayNode::setSoloed (SoloState newSoloState)
 
 void DelayNode::repaintEditors (bool repaintWholeGraph)
 {
+    MessageManagerLock mml;
     if (auto edCast = dynamic_cast<DelayNodeComponent*> (editor))
     {
         edCast->repaint();

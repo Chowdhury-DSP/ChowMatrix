@@ -33,7 +33,7 @@ fi
 
 echo "Pluginval installed at ${pluginval}"
 
-plugin="build/ChowMatrix_artefacts/**/VST3/ChowMatrix.vst3"
+plugin="build/ChowMatrix_artefacts/Release/VST3/ChowMatrix.vst3"
 echo "Validating ${plugin}"
 $pluginval --strictness-level 8 --validate-in-process --validate $plugin
 result=$?

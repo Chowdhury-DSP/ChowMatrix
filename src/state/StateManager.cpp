@@ -43,7 +43,8 @@ std::unique_ptr<XmlElement> StateManager::saveState()
 
 void StateManager::loadState (XmlElement* xmlState)
 {
-    const SpinLock::ScopedLockType stateLoadingScopedLock (stateLoadingLock);
+    MessageManagerLock mml; // lock MessageManager so other parameter changes won't happen while we're loading new state
+    const SpinLock::ScopedLockType stateLoadingScopedLock (stateLoadingLock); // Lock our SpinLock so the processor won't try to run while we're loading new state
 
     if (xmlState == nullptr) // invalid XML
         return;
