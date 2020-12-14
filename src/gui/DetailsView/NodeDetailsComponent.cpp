@@ -66,9 +66,9 @@ void NodeDetailsComponent::resized()
 
 void NodeDetailsComponent::nodeAdded (DelayNode* newNode)
 {
+    MessageManagerLock mml;
     addNode (newNode);
 
-    MessageManagerLock mml;
     setSize (calcWidth(), calcHeight());
     resized();
     repaint();
@@ -80,6 +80,7 @@ void NodeDetailsComponent::nodeRemoved (DelayNode* nodeToRemove)
     {
         if (node->getNode() == nodeToRemove)
         {
+            MessageManagerLock mml;
             nodes.removeObject (node);
             break;
         }

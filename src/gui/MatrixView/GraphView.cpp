@@ -60,6 +60,9 @@ void GraphView::paint (Graphics& g)
 
     manager.doForAllNodes ([=, &g] (DBaseNode* root, DelayNode* childNode) {
         auto* editor = childNode->getEditor();
+        if (editor == nullptr) // editor has not been created yet!
+            return;
+
         auto rootPos = root->getEditor()->getCentrePosition();
         auto childPos = editor->getCentrePosition();
 
@@ -95,18 +98,18 @@ void GraphView::setSoloed (DelayNode* node)
 
 void GraphView::nodeAdded (DelayNode* newNode)
 {
+    MessageManagerLock mml;
     manager.createAndAddEditor (newNode);
 
-    MessageManagerLock mml;
     resized();
     repaint();
 }
 
 void GraphView::nodeRemoved (DelayNode* newNode)
 {
+    MessageManagerLock mml;
     manager.removeEditor (newNode);
 
-    MessageManagerLock mml;
     resized();
     repaint();
 }

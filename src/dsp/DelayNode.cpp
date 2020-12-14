@@ -272,6 +272,7 @@ void DelayNode::setSoloed (SoloState newSoloState)
 
 void DelayNode::repaintEditors (bool repaintWholeGraph)
 {
+    MessageManagerLock mml;
     if (auto edCast = dynamic_cast<DelayNodeComponent*> (editor))
     {
         edCast->repaint();
