@@ -57,6 +57,7 @@ ParamSlider::~ParamSlider()
 
 void ParamSlider::setValueText (const String& paramID, float value01)
 {
+    MessageManagerLock mml;
     if (paramID != delayTag || ! node.getDelaySync())
     {
         valueLabel.setText (param->getCurrentValueAsText(), sendNotification);

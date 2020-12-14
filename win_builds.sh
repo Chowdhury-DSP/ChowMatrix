@@ -13,8 +13,8 @@ build32(){
 # clean up old builds
 rm -Rf build/
 rm -Rf build32/
-rm -Rf bin/Win64/
-rm -Rf bin/Win32/
+rm -Rf bin/*Win64*
+rm -Rf bin/*Win32*
 
 # set up VST and ASIO paths
 sed -i -e "9s/#//" CMakeLists.txt

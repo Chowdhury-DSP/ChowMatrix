@@ -20,7 +20,7 @@ public:
 
 private:
     std::atomic<float>* insanityParam = nullptr;
-    int timerFreq = 1;
+    int timerFreq = 10;
 
     std::default_random_engine generator;
     std::uniform_real_distribution<float> delay_dist { -0.05f, 0.05f };

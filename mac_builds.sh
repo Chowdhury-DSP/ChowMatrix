@@ -2,7 +2,7 @@
 
 # clean up old builds
 rm -Rf build/
-rm -Rf bin/Mac/
+rm -Rf bin/*Mac*
 
 # set up build VST
 VST_PATH=~/Developer/AnalogTapeModel/Plugin/Juce/VST2_SDK/

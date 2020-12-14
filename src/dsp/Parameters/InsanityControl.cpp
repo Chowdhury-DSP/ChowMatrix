@@ -14,6 +14,7 @@ InsanityControl::InsanityControl (AudioProcessorValueTreeState& vts, std::array<
 {
     insanityParam = vts.getRawParameterValue (insanityTag);
     parameterChanged (insanityTag, insanityParam->load());
+    startTimerHz (timerFreq);
 }
 
 void InsanityControl::addParameters (Parameters& params)
@@ -44,6 +45,8 @@ void InsanityControl::timerCallback()
         if (! n->isParamLocked (panTag))
             n->setPan (jlimit (-1.0f, 1.0f, pan));
     });
+
+    startTimerHz (timerFreq); // update timer callback rate
 }
 
 void InsanityControl::parameterChanged (const String&, float newValue)
@@ -56,11 +59,10 @@ void InsanityControl::parameterChanged (const String&, float newValue)
             n->panSmoother.reset();
         });
     }
-
-    // update timer callback rate
-    timerFreq = int (std::pow (10, 1.0f + std::sqrt (newValue)));
-    startTimerHz (timerFreq);
-
+    
+    // calc new timer callback rate
+    timerFreq = int (std::pow (10, 1.0f + 0.65f * std::sqrt (newValue)));
+    
     // update smoothing filters
     auto smoothCoefs = dsp::IIR::Coefficients<float>::makeFirstOrderLowPass ((double) timerFreq, smoothFreq);
     doForNodes ([=] (DelayNode* n) {
