@@ -1,0 +1,23 @@
+juce_add_console_app(ChowMatrix_headless
+    PRODUCT_NAME "ChowMatrix"
+    COMPANY_NAME chowdsp
+)
+
+juce_generate_juce_header(ChowMatrix_headless)
+message(INFO "${PROJECT_BINARY_DIR}")
+add_custom_command(TARGET ChowMatrix_headless
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ChowMatrix_headless> ${PROJECT_BINARY_DIR}/ChowMatrix)
+
+target_sources(ChowMatrix_headless PRIVATE
+    main.cpp
+    ScreenshotGenerator.cpp
+)
+
+target_precompile_headers(ChowMatrix_headless PRIVATE ../pch.h)
+target_include_directories(ChowMatrix_headless PRIVATE ../)
+
+target_link_libraries(ChowMatrix_headless PUBLIC
+    BinaryData
+    ChowMatrix
+)
