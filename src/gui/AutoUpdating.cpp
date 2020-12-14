@@ -116,6 +116,12 @@ void AutoUpdater::showUpdaterScreen (Component* parent)
     }
 }
 
+void AutoUpdater::parentSizeChanged()
+{
+    if (auto parent = getParentComponent())
+        setBounds (0, 0, parent->getWidth(), parent->getHeight());
+}
+
 bool AutoUpdater::runAutoUpdateCheck()
 {
     auto updateFile = getUpdateCheckFile();
