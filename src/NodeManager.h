@@ -22,26 +22,29 @@ public:
     void nodeAdded (DelayNode* newNode) override;
     void nodeRemoved (DelayNode* nodeToRemove) override;
     void setParameterDiff (DelayNode* sourceNode, const String& paramID, float diff01) override;
+    void nodeParamLockChanged (DelayNode* node) override { listeners.call (&Listener::nodeParamLockChanged, node); }
 
-    // Manage selected node
     /** Sources that can trigger node selection */
-    enum class SelectionSource
+    enum class ActionSource
     {
         GraphView,
         DetailsView
     };
 
-    void setSelected (DelayNode* node, SelectionSource source);
+    // Manage selected node
+    void setSelected (DelayNode* node, ActionSource source);
     DelayNode* getSelected() const noexcept;
 
     // Manage soloed node
-    void setSoloed (DelayNode* node);
+    void setSoloed (DelayNode* node, ActionSource source);
 
     class Listener
     {
     public:
         virtual ~Listener() {}
-        virtual void nodeSelected (DelayNode* /*selectedNode*/, SelectionSource /*source*/) {}
+        virtual void nodeSelected (DelayNode* /*selectedNode*/, ActionSource /*source*/) {}
+        virtual void nodeSoloed (DelayNode* /*soloedNode*/, ActionSource /*source*/) {}
+        virtual void nodeParamLockChanged (DelayNode* /*node*/) {}
     };
 
     void addListener (Listener* l) { listeners.add (l); }

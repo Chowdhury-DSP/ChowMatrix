@@ -7,7 +7,8 @@
 class StateManager
 {
 public:
-    StateManager (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>& nodes);
+    StateManager (AudioProcessorValueTreeState& vts,
+                  std::array<InputNode, 2>& nodes);
 
     /** Call this from the main plugin once the default states have been
      *  loaded, so that the initial A/B states will be the default state.

@@ -45,8 +45,8 @@ void NodeDetailsComponent::mouseDown (const MouseEvent& e)
     if (! e.mods.isAnyModifierKeyDown()) // deselect current node
     {
         auto& manager = plugin.getManager();
-        manager.setSelected (nullptr, NodeManager::SelectionSource::DetailsView);
-        manager.setSoloed (nullptr);
+        manager.setSelected (nullptr, NodeManager::ActionSource::DetailsView);
+        manager.setSoloed (nullptr, NodeManager::ActionSource::DetailsView);
     }
 }
 
@@ -104,6 +104,16 @@ int NodeDetailsComponent::calcWidth() const
 {
     int width = 2 * xOffset + (xPad + NodeInfoConsts::InfoWidthNoLabel) * nodes.size();
     return jmax (width, minWidth);
+}
+
+NodeDetails* NodeDetailsComponent::getNodeDetails (DelayNode* node)
+{
+    for (auto* nd : nodes)
+        if (nd->getNode() == node)
+            return nd;
+
+    jassertfalse; // If this function is being called every node should be linked to a details component
+    return nullptr;
 }
 
 Point<int> NodeDetailsComponent::getNodeDetailsPosition (DelayNode* node)

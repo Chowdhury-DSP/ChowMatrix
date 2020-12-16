@@ -80,16 +80,12 @@ public:
     SoloState getSoloed() const noexcept { return isSoloed.load(); }
     void setSoloed (SoloState newSoloState);
 
-    /** Returns pointer to node details component for this node */
-    void setNodeDetails (Component* detailsComp) { nodeDetails = detailsComp; }
-
     // Filters to smooth random param changes from Insanity
     dsp::IIR::Filter<float> delaySmoother;
     dsp::IIR::Filter<float> panSmoother;
 
 private:
     void cookParameters (bool force = false);
-    void repaintEditors (bool repaintWholeGraph = false);
     void processPanner (dsp::AudioBlock<float>& inputBlock);
     void addToOutput (AudioBuffer<float>& outBuffer);
 
@@ -132,7 +128,6 @@ private:
     // needed for GUI
     int nodeIdx = 0;
     bool isSelected = false;
-    Component* nodeDetails = nullptr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayNode)
 };

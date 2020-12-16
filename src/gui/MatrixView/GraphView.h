@@ -9,7 +9,8 @@
 
 class GraphView : public Component,
                   public SettableTooltipClient,
-                  public DBaseNode::Listener
+                  public DBaseNode::Listener,
+                  private NodeManager::Listener
 {
 public:
     GraphView (ChowMatrix& plugin);
@@ -30,6 +31,10 @@ public:
     void setSoloed (DelayNode* node);
     void nodeAdded (DelayNode* newNode) override;
     void nodeRemoved (DelayNode* nodeToRemove) override;
+
+    void nodeSelected (DelayNode* selectedNode, NodeManager::ActionSource source) override;
+    void nodeSoloed (DelayNode* soloedNode, NodeManager::ActionSource source) override;
+    void nodeParamLockChanged (DelayNode* node) override;
 
 private:
     ChowMatrix& plugin;

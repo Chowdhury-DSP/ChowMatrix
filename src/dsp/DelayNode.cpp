@@ -93,7 +93,7 @@ void DelayNode::toggleInsanityLock (const String& paramID)
     else
         lockedParams.addIfNotAlreadyThere (paramID);
 
-    repaintEditors();
+    nodeListeners.call (&Listener::nodeParamLockChanged, this);
 }
 
 bool DelayNode::isParamLocked (const String& paramID) const noexcept
@@ -243,8 +243,6 @@ void DelayNode::loadXml (XmlElement* xml)
 
     if (auto* childrenXml = xml->getChildByName ("children"))
             DBaseNode::loadXml (childrenXml);
-
-    repaintEditors();
 }
 
 void DelayNode::deleteNode()
@@ -257,30 +255,9 @@ void DelayNode::deleteNode()
 void DelayNode::setSelected (bool shouldBeSelected)
 { 
     isSelected = shouldBeSelected;
-
-    if (auto edCast = dynamic_cast<DelayNodeComponent*> (editor))
-        edCast->selectionChanged();
-
-    repaintEditors();
 }
 
 void DelayNode::setSoloed (SoloState newSoloState)
 {
     isSoloed = newSoloState;
-    repaintEditors (true);
-}
-
-void DelayNode::repaintEditors (bool repaintWholeGraph)
-{
-    MessageManagerLock mml;
-    if (auto edCast = dynamic_cast<DelayNodeComponent*> (editor))
-    {
-        edCast->repaint();
-
-        if (repaintWholeGraph)
-            edCast->getParentComponent()->repaint();
-    }
-
-    if (nodeDetails)
-        nodeDetails->repaint();
 }

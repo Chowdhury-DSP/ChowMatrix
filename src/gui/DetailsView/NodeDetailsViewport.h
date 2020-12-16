@@ -13,7 +13,9 @@ public:
     void paint (Graphics&) override;
     void visibleAreaChanged (const Rectangle<int>&) override;
 
-    void nodeSelected (DelayNode* selectedNode, NodeManager::SelectionSource source) override;
+    void nodeSelected (DelayNode* selectedNode, NodeManager::ActionSource source) override;
+    void nodeSoloed (DelayNode* soloedNode, NodeManager::ActionSource source) override;
+    void nodeParamLockChanged (DelayNode* node) override;
 
 private:
     NodeManager& manager;

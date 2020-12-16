@@ -17,6 +17,8 @@ GraphView::GraphView (ChowMatrix& plugin) :
         manager.createAndAddEditor (&node);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { manager.createAndAddEditor (child); });
+
+    plugin.getManager().addListener (this);
 }
 
 GraphView::~GraphView()
@@ -25,6 +27,8 @@ GraphView::~GraphView()
         node.removeNodeListener (this);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { child->removeNodeListener (this); });
+
+    plugin.getManager().removeListener (this);
 }
 
 void GraphView::mouseDown (const MouseEvent& e)
@@ -88,12 +92,12 @@ void GraphView::resized()
 
 void GraphView::setSelected (DelayNode* node)
 {
-    plugin.getManager().setSelected (node, NodeManager::SelectionSource::GraphView);
+    plugin.getManager().setSelected (node, NodeManager::ActionSource::GraphView);
 }
 
 void GraphView::setSoloed (DelayNode* node)
 {
-    plugin.getManager().setSoloed (node);
+    plugin.getManager().setSoloed (node, NodeManager::ActionSource::GraphView);
 }
 
 void GraphView::nodeAdded (DelayNode* newNode)
@@ -112,4 +116,24 @@ void GraphView::nodeRemoved (DelayNode* newNode)
 
     resized();
     repaint();
+}
+
+void GraphView::nodeSelected (DelayNode* /*selectedNode*/, NodeManager::ActionSource /*source*/)
+{
+    repaint();
+
+    for (auto* comp : manager.delayNodeComponents)
+        comp->selectionChanged();
+}
+
+void GraphView::nodeSoloed (DelayNode* /*soloedNode*/, NodeManager::ActionSource /*source*/)
+{
+    repaint();
+}
+
+void GraphView::nodeParamLockChanged (DelayNode* node)
+{
+    for (auto* comp : manager.delayNodeComponents)
+        if (&comp->getNode() == node)
+            comp->getNodeInfo().repaint();
 }

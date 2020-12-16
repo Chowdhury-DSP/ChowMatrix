@@ -9,15 +9,12 @@ NodeDetails::NodeDetails (DelayNode& node, NodeManager& manager) :
     nodeInfo (node, false),
     button (*this)
 {
-    node.setNodeDetails (this);
-
     addAndMakeVisible (nodeInfo);
     addAndMakeVisible (button);
 }
 
 NodeDetails::~NodeDetails()
 {
-    getNode()->setNodeDetails (nullptr);
 }
 
 void NodeDetails::resized()

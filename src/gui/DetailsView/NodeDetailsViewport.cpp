@@ -48,15 +48,26 @@ void NodeDetailsViewport::visibleAreaChanged (const Rectangle<int>&)
 }
 
 // We use this function to center the details view on the selected node
-void NodeDetailsViewport::nodeSelected (DelayNode* selectedNode, NodeManager::SelectionSource source)
+void NodeDetailsViewport::nodeSelected (DelayNode* selectedNode, NodeManager::ActionSource source)
 {
-    
+    detailsComp.repaint();
+
     if (selectedNode == nullptr                                 // No node selected!
-     || source == NodeManager::SelectionSource::DetailsView)    // Selection came from here!
+     || source == NodeManager::ActionSource::DetailsView)       // Selection came from here!
         return;
 
     int xOffset = (NodeInfoConsts::InfoWidthNoLabel - getWidth()) / 2 + scrollThickness; // offset for center of component
     auto position = detailsComp.getNodeDetailsPosition (selectedNode);
     position.addXY (xOffset, 0);
     setViewPosition (position);
+}
+
+void NodeDetailsViewport::nodeSoloed (DelayNode* /*soloedNode*/, NodeManager::ActionSource /*source*/)
+{
+    detailsComp.repaint();
+}
+
+void NodeDetailsViewport::nodeParamLockChanged (DelayNode* node)
+{
+    detailsComp.getNodeDetails (node)->repaint();
 }
