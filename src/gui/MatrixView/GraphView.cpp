@@ -1,24 +1,18 @@
 #include "GraphView.h"
+#include "GraphViewItem.h"
 
-GraphView::GraphView (ChowMatrix& plugin) :
+GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) :
     plugin (plugin),
     manager (this),
-    aurora (plugin.getInsanityParam())
+    parent (parentView)
 {
-    addAndMakeVisible (aurora);
-
-    setColour (backgroundColour, Colours::darkgrey);
-    setColour (nodeColour, Colours::pink);
-    setColour (nodeSelectedColour, Colours::greenyellow);
-
+    setName ("Graph View");
     setTooltip ("Graph view of all delay nodes, shift+click to create a new node");
 
     for (auto& node : *plugin.getNodes())
         manager.createAndAddEditor (&node);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { manager.createAndAddEditor (child); });
-
-    plugin.getManager().addListener (this);
 }
 
 GraphView::~GraphView()
@@ -27,8 +21,6 @@ GraphView::~GraphView()
         node.removeNodeListener (this);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { child->removeNodeListener (this); });
-
-    plugin.getManager().removeListener (this);
 }
 
 void GraphView::mouseDown (const MouseEvent& e)
@@ -58,9 +50,15 @@ void GraphView::mouseDown (const MouseEvent& e)
     }
 }
 
+void GraphView::mouseDrag (const MouseEvent& e)
+{
+    Component::beginDragAutoRepeat (10);
+    parent.mouseDrag (e);
+}
+
 void GraphView::paint (Graphics& g)
 {
-    g.fillAll (findColour (backgroundColour));
+    g.fillAll (findColour (backgroundColour, true));
 
     manager.doForAllNodes ([=, &g] (DBaseNode* root, DelayNode* childNode) {
         auto* editor = childNode->getEditor();
@@ -71,19 +69,20 @@ void GraphView::paint (Graphics& g)
         auto childPos = editor->getCentrePosition();
 
         const auto alphaMult = childNode->getSoloed() == DelayNode::SoloState::Mute ? 0.4f : 1.0f;
-        g.setColour (findColour (nodeColour).withMultipliedAlpha (alphaMult));
+        g.setColour (findColour (nodeColour, true).withMultipliedAlpha (alphaMult));
         g.drawLine (Line<int> (rootPos, childPos).toFloat(), 2.0f);
     });
 }
 
-void GraphView::resized()
+void GraphView::parentSizeChanged (int parentWidth, int parentHeight)
 {
-    aurora.setBounds (getLocalBounds());
+    int xOffset = (getWidth() - parentWidth) / 2;
+    visibleHeight = parentHeight;
 
     int idx = 1;
     for (auto* nodeComp : manager.inputNodeComponents)
     {
-        nodeComp->setCentrePosition (idx * getWidth() / 3, getHeight());
+        nodeComp->setCentrePosition (xOffset + idx * parentWidth / 3, getHeight());
         idx++;
     }
 
@@ -116,24 +115,4 @@ void GraphView::nodeRemoved (DelayNode* newNode)
 
     resized();
     repaint();
-}
-
-void GraphView::nodeSelected (DelayNode* /*selectedNode*/, NodeManager::ActionSource /*source*/)
-{
-    repaint();
-
-    for (auto* comp : manager.delayNodeComponents)
-        comp->selectionChanged();
-}
-
-void GraphView::nodeSoloed (DelayNode* /*soloedNode*/, NodeManager::ActionSource /*source*/)
-{
-    repaint();
-}
-
-void GraphView::nodeParamLockChanged (DelayNode* node)
-{
-    for (auto* comp : manager.delayNodeComponents)
-        if (&comp->getNode() == node)
-            comp->getNodeInfo().repaint();
 }
