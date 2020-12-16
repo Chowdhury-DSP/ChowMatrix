@@ -24,17 +24,36 @@ public:
     void setParameterDiff (DelayNode* sourceNode, const String& paramID, float diff01) override;
 
     // Manage selected node
-    void setSelected (DelayNode* node);
+    /** Sources that can trigger node selection */
+    enum class SelectionSource
+    {
+        GraphView,
+        DetailsView
+    };
+
+    void setSelected (DelayNode* node, SelectionSource source);
     DelayNode* getSelected() const noexcept;
 
     // Manage soloed node
     void setSoloed (DelayNode* node);
+
+    class Listener
+    {
+    public:
+        virtual ~Listener() {}
+        virtual void nodeSelected (DelayNode* /*selectedNode*/, SelectionSource /*source*/) {}
+    };
+
+    void addListener (Listener* l) { listeners.add (l); }
+    void removeListener (Listener* l) { listeners.remove (l); }
 
 private:
     std::array<InputNode, 2>* nodes = nullptr;
     int nodeCount = 0;
     DelayNode* selectedNodePtr = nullptr;
     DelayNode::SoloState newNodeSoloState = DelayNode::SoloState::None;
+
+    ListenerList<Listener> listeners;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NodeManager)
 };

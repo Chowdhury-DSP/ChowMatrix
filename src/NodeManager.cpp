@@ -55,7 +55,7 @@ void NodeManager::setParameterDiff (DelayNode* sourceNode, const String& paramID
     });
 }
 
-void NodeManager::setSelected (DelayNode* selectedNode)
+void NodeManager::setSelected (DelayNode* selectedNode, SelectionSource source)
 {
     selectedNodePtr = selectedNode;
 
@@ -67,6 +67,8 @@ void NodeManager::setSelected (DelayNode* selectedNode)
         else if (selectedNode == n) // should now be seleced
             n->setSelected (true);
     });
+
+    listeners.call (&Listener::nodeSelected, selectedNode, source);
 }
 
 DelayNode* NodeManager::getSelected() const noexcept

@@ -88,7 +88,7 @@ void GraphView::resized()
 
 void GraphView::setSelected (DelayNode* node)
 {
-    plugin.getManager().setSelected (node);
+    plugin.getManager().setSelected (node, NodeManager::SelectionSource::GraphView);
 }
 
 void GraphView::setSoloed (DelayNode* node)

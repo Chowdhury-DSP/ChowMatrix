@@ -18,7 +18,7 @@ public:
     void resized() override;
     DelayNode* getNode() { return nodeInfo.getNode(); }
 
-    void setSelected() { manager.setSelected (getNode()); }
+    void setSelected() { manager.setSelected (getNode(), NodeManager::SelectionSource::DetailsView); }
     void setSoloed() { manager.setSoloed (getNode()); }
 
     struct Button : Component, SettableTooltipClient

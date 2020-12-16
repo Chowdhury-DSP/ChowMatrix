@@ -7,11 +7,19 @@ namespace
 }
 
 NodeDetailsViewport::NodeDetailsViewport (ChowMatrix& chowMatrix) :
+    manager (chowMatrix.getManager()),
     detailsComp (chowMatrix)
 {
     setViewedComponent (&detailsComp, false);
     setScrollBarsShown (true, true);
     setScrollBarThickness (scrollThickness);
+
+    manager.addListener (this);
+}
+
+NodeDetailsViewport::~NodeDetailsViewport()
+{
+    manager.removeListener (this);
 }
 
 void NodeDetailsViewport::resized()
@@ -37,4 +45,18 @@ void NodeDetailsViewport::paint (Graphics&)
 void NodeDetailsViewport::visibleAreaChanged (const Rectangle<int>&)
 {
     getParentComponent()->resized();
+}
+
+// We use this function to center the details view on the selected node
+void NodeDetailsViewport::nodeSelected (DelayNode* selectedNode, NodeManager::SelectionSource source)
+{
+    
+    if (selectedNode == nullptr                                 // No node selected!
+     || source == NodeManager::SelectionSource::DetailsView)    // Selection came from here!
+        return;
+
+    int xOffset = (NodeInfoConsts::InfoWidthNoLabel - getWidth()) / 2 + scrollThickness; // offset for center of component
+    auto position = detailsComp.getNodeDetailsPosition (selectedNode);
+    position.addXY (xOffset, 0);
+    setViewPosition (position);
 }
