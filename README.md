@@ -46,6 +46,7 @@ $ cmake --build build --config Release
 - GUI Design - [Margus Mets](mailto:hello@mmcreative.eu)
 - GUI Framework - [Plugin GUI Magic](https://github.com/ffAudio/PluginGUIMagic)
 - Dilogarithm function - [Polylogarithm](https://github.com/Expander/polylogarithm)
+- Extra Icons - [FontAwesome](https://fontawesome.com/)
 
 
 ## License

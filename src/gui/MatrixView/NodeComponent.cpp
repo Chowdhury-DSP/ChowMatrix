@@ -1,5 +1,5 @@
 #include "NodeComponent.h"
-#include "GraphView.h"
+#include "GraphViewItem.h"
 #include "../../dsp/InputNode.h"
 
 NodeComponent::NodeComponent (DBaseNode& node, GraphView* view) :

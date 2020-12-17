@@ -2,6 +2,7 @@ juce_add_binary_data(BinaryData SOURCES
     gui.xml
     Diceroll.png
     Panic.png
+    home.svg
 
     presets/Crazy.chowpreset
     presets/Default.chowpreset

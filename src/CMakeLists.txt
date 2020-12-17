@@ -26,6 +26,7 @@ target_sources(ChowMatrix PRIVATE
     gui/DetailsView/NodeDetailsViewport.cpp
     gui/MatrixView/DelayNodeComponent.cpp
     gui/MatrixView/GraphView.cpp
+    gui/MatrixView/GraphViewport.cpp
     gui/MatrixView/MatrixAurora.cpp
     gui/MatrixView/NodeCompManager.cpp
     gui/MatrixView/NodeComponent.cpp

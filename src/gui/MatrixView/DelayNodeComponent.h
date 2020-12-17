@@ -18,6 +18,7 @@ public:
     bool keyPressed (const KeyPress& key) override;
     void paint (Graphics& g) override;
     void updatePosition() override;
+    NodeInfo& getNodeInfo() { return nodeInfo; }
 
     void selectionChanged();
     void parameterValueChanged (int, float) override;

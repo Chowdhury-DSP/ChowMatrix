@@ -55,7 +55,7 @@ void NodeManager::setParameterDiff (DelayNode* sourceNode, const String& paramID
     });
 }
 
-void NodeManager::setSelected (DelayNode* selectedNode)
+void NodeManager::setSelected (DelayNode* selectedNode, ActionSource source)
 {
     selectedNodePtr = selectedNode;
 
@@ -67,6 +67,8 @@ void NodeManager::setSelected (DelayNode* selectedNode)
         else if (selectedNode == n) // should now be seleced
             n->setSelected (true);
     });
+
+    listeners.call (&Listener::nodeSelected, selectedNode, source);
 }
 
 DelayNode* NodeManager::getSelected() const noexcept
@@ -74,7 +76,7 @@ DelayNode* NodeManager::getSelected() const noexcept
     return selectedNodePtr;
 }
 
-void NodeManager::setSoloed (DelayNode* soloedNode)
+void NodeManager::setSoloed (DelayNode* soloedNode, ActionSource source)
 {
     newNodeSoloState = soloedNode == nullptr ?
         DelayNode::SoloState::None : DelayNode::SoloState::Mute;
@@ -98,4 +100,6 @@ void NodeManager::setSoloed (DelayNode* soloedNode)
         // any other nodes should be muted
         n->setSoloed (DelayNode::SoloState::Mute);
     });
+
+    listeners.call (&Listener::nodeSoloed, soloedNode, source);
 }
