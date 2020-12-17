@@ -52,8 +52,9 @@ void GraphView::mouseDown (const MouseEvent& e)
 
 void GraphView::mouseDrag (const MouseEvent& e)
 {
+    auto compE = e.withNewPosition (e.originalComponent->getPosition());
     Component::beginDragAutoRepeat (10);
-    parent.mouseDrag (e);
+    parent.mouseDrag (compE);
 }
 
 void GraphView::paint (Graphics& g)

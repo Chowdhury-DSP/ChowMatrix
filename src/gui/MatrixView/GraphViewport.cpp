@@ -2,7 +2,17 @@
 
 namespace
 {
-    constexpr int maxDim = 1500;
+    /** Max dimensions for the GraphView internal component */
+    constexpr int maxDimX = 1000;
+    constexpr int maxDimY = 500;
+
+    /** Will stop scrolling when node is this distance from edge */
+    constexpr int scrollDistanceFromEdge = 30;
+
+    /** Speed of autoscrolling */
+    constexpr int scrollSpeed = 3;
+
+    /** Dmensions for the "home" button */
     constexpr int buttonDim = 20;
 }
 
@@ -15,7 +25,7 @@ GraphViewport::GraphViewport (ChowMatrix& plugin) :
     setViewedComponent (&graphView, false);
     addAndMakeVisible (aurora);
 
-    graphView.setBounds (0, 0, maxDim, maxDim);
+    graphView.setBounds (0, 0, maxDimX, maxDimY);
     setScrollBarsShown (false, false, true, true);
 
     manager.addListener (this);
@@ -56,7 +66,7 @@ void GraphViewport::resized()
 void GraphViewport::mouseDrag (const MouseEvent& e)
 {
     const auto myE = e.getEventRelativeTo (this);
-    autoScroll (e.x - getViewPositionX(), e.y - getViewPositionY(), 50, 5);
+    autoScroll (e.x - getViewPositionX(), e.y - getViewPositionY(), scrollDistanceFromEdge, scrollSpeed);
     graphView.repaint();
 }
 
@@ -74,8 +84,8 @@ void GraphViewport::centerView()
     }
 
     // no node selected
-    int x = (maxDim - getWidth()) / 2;
-    int y = maxDim - getHeight();
+    int x = (maxDimX - getWidth()) / 2;
+    int y = maxDimY - getHeight();
     setViewPosition (x, y);
 }
 
