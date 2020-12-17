@@ -1,5 +1,5 @@
 #include "DelayNodeComponent.h"
-#include "GraphView.h"
+#include "GraphViewItem.h"
 
 using namespace ParamTags;
 
@@ -47,9 +47,11 @@ void DelayNodeComponent::mouseDown (const MouseEvent& e)
 
 void DelayNodeComponent::mouseDrag (const MouseEvent& e)
 {
-    setCentrePosition (e.getEventRelativeTo (graphView).getPosition());
+    const auto relE = e.getEventRelativeTo (graphView);
+    setCentrePosition (relE.getPosition());
     updateParams();
     updatePosition();
+    graphView->mouseDrag (relE);
 }
 
 bool DelayNodeComponent::keyPressed (const KeyPress& key)
@@ -92,7 +94,7 @@ void DelayNodeComponent::paint (Graphics& g)
 
 float DelayNodeComponent::getMaxDist() const noexcept
 {
-    return (float) graphView->getHeight() / 2.0f;
+    return (float) graphView->getVisibleHeight() / 2.0f;
 }
 
 void DelayNodeComponent::updateParams()

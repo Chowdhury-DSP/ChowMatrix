@@ -4,9 +4,9 @@ juce_add_console_app(ChowMatrix_headless
 )
 
 juce_generate_juce_header(ChowMatrix_headless)
-message(INFO "${PROJECT_BINARY_DIR}")
 add_custom_command(TARGET ChowMatrix_headless
                    POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E echo "copying $<TARGET_FILE:ChowMatrix_headless> to ${PROJECT_BINARY_DIR}/ChowMatrix"
                    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ChowMatrix_headless> ${PROJECT_BINARY_DIR}/ChowMatrix)
 
 target_sources(ChowMatrix_headless PRIVATE

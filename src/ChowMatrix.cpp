@@ -3,7 +3,7 @@
 #include "gui/BottomBar/TextSliderItem.h"
 #include "gui/DetailsView/NodeDetailsGUI.h"
 #include "gui/InsanityLNF.h"
-#include "gui/MatrixView/GraphView.h"
+#include "gui/MatrixView/GraphViewItem.h"
 #include "state/presets/PresetCompItem.h"
 #include "state/presets/PresetsLNF.h"
 

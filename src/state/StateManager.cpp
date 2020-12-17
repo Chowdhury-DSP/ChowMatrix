@@ -1,6 +1,7 @@
 #include "StateManager.h"
 
-StateManager::StateManager (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>& nodes) :
+StateManager::StateManager (AudioProcessorValueTreeState& vts,
+                            std::array<InputNode, 2>& nodes) :
     vts (vts),
     inputNodes (nodes),
     presetManager (this, vts)

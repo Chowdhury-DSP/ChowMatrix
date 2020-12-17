@@ -20,6 +20,9 @@ public:
     void setMinWidth (int newMinWidth);
     int calcWidth() const;
 
+    NodeDetails* getNodeDetails (DelayNode* node);
+    Point<int> getNodeDetailsPosition (DelayNode* node);
+
 private:
     void addNode (DelayNode* node);
 

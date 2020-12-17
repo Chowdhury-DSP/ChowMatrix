@@ -1,16 +1,12 @@
 #include "GraphView.h"
+#include "GraphViewItem.h"
 
-GraphView::GraphView (ChowMatrix& plugin) :
+GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) :
     plugin (plugin),
     manager (this),
-    aurora (plugin.getInsanityParam())
+    parent (parentView)
 {
-    addAndMakeVisible (aurora);
-
-    setColour (backgroundColour, Colours::darkgrey);
-    setColour (nodeColour, Colours::pink);
-    setColour (nodeSelectedColour, Colours::greenyellow);
-
+    setName ("Graph View");
     setTooltip ("Graph view of all delay nodes, shift+click to create a new node");
 
     for (auto& node : *plugin.getNodes())
@@ -54,9 +50,16 @@ void GraphView::mouseDown (const MouseEvent& e)
     }
 }
 
+void GraphView::mouseDrag (const MouseEvent& e)
+{
+    auto compE = e.withNewPosition (e.originalComponent->getPosition());
+    Component::beginDragAutoRepeat (10);
+    parent.mouseDrag (compE);
+}
+
 void GraphView::paint (Graphics& g)
 {
-    g.fillAll (findColour (backgroundColour));
+    g.fillAll (findColour (backgroundColour, true));
 
     manager.doForAllNodes ([=, &g] (DBaseNode* root, DelayNode* childNode) {
         auto* editor = childNode->getEditor();
@@ -67,19 +70,20 @@ void GraphView::paint (Graphics& g)
         auto childPos = editor->getCentrePosition();
 
         const auto alphaMult = childNode->getSoloed() == DelayNode::SoloState::Mute ? 0.4f : 1.0f;
-        g.setColour (findColour (nodeColour).withMultipliedAlpha (alphaMult));
+        g.setColour (findColour (nodeColour, true).withMultipliedAlpha (alphaMult));
         g.drawLine (Line<int> (rootPos, childPos).toFloat(), 2.0f);
     });
 }
 
-void GraphView::resized()
+void GraphView::parentSizeChanged (int parentWidth, int parentHeight)
 {
-    aurora.setBounds (getLocalBounds());
+    int xOffset = (getWidth() - parentWidth) / 2;
+    visibleHeight = parentHeight;
 
     int idx = 1;
     for (auto* nodeComp : manager.inputNodeComponents)
     {
-        nodeComp->setCentrePosition (idx * getWidth() / 3, getHeight());
+        nodeComp->setCentrePosition (xOffset + idx * parentWidth / 3, getHeight());
         idx++;
     }
 
@@ -88,12 +92,12 @@ void GraphView::resized()
 
 void GraphView::setSelected (DelayNode* node)
 {
-    plugin.getManager().setSelected (node);
+    plugin.getManager().setSelected (node, NodeManager::ActionSource::GraphView);
 }
 
 void GraphView::setSoloed (DelayNode* node)
 {
-    plugin.getManager().setSoloed (node);
+    plugin.getManager().setSoloed (node, NodeManager::ActionSource::GraphView);
 }
 
 void GraphView::nodeAdded (DelayNode* newNode)
