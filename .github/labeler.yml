@@ -1,0 +1,15 @@
+# labeler.yml:
+# Assign labels to pull requests that change various files
+# For more information, see https://github.com/actions/labeler
+
+dsp:
+  - src/dsp/**/*
+
+gui:
+  - src/gui/**/*
+
+presets:
+  - any: ['src/state/presets/*', 'res/presets/*']
+
+documentation:
+  - manual/**/*
