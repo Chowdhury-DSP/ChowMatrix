@@ -1,4 +1,5 @@
 #include "NodeDetailsComponent.h"
+#include "NodeDetailsGUI.h"
 #include "../../NodeManager.h"
 
 namespace
@@ -53,6 +54,17 @@ void NodeDetailsComponent::mouseDown (const MouseEvent& e)
 void NodeDetailsComponent::paint (Graphics& g)
 {
     g.fillAll (Colours::transparentBlack);
+    constexpr float rectOffset = xPad / 2.0f;
+
+    for (auto* nd : nodes)
+    {
+        if (nd->getNode()->getSelected())
+        {
+            g.setColour (findColour (NodeDetailsGUI::nodeColour, true));
+            g.drawRect (nd->getBounds().toFloat().expanded (rectOffset, 0.0f), rectOffset);
+            break;
+        }
+    }
 }
 
 void NodeDetailsComponent::resized()
