@@ -54,6 +54,11 @@ AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
     params.push_back (std::make_unique<Parameter> (distTag, "Distortion", String(),
         distRange, 0.0f, &percentValToString, &stringToPercentVal));
 
+    // set up pitch shift
+    NormalisableRange<float> pitchRange { -maxPitch, maxPitch };
+    params.push_back (std::make_unique<Parameter> (pitchTag, "Pitch", String(),
+        pitchRange, 0.0f, &pitchValToString, &stringToPitchVal));
+
     // set up mod frequency
     NormalisableRange<float> modFreqRange { minModFreq, maxModFreq };
     modFreqRange.setSkewForCentre (2.0f);
@@ -109,6 +114,18 @@ String fbValToString (float fbVal)
 
 float stringToFbVal (const String& s) { return s.getFloatValue() / 100.0f; }
 
+String pitchValToString (float pitchVal)
+{
+    String pitchStr = String (pitchVal, 2, false);
+
+    if (pitchVal> 0.0f)
+        pitchStr = "+ " + pitchStr;
+
+    return pitchStr + " st";
+}
+
+float stringToPitchVal (const String& s) { return s.getFloatValue(); }
+
 String gainValToString (float gainVal)
 {
     String gainStr = String (gainVal, 2, false);
@@ -158,6 +175,7 @@ std::unordered_map<String, StringToValFunc> funcMap {
     { lpfTag,       stringToFreqVal    },
     { hpfTag,       stringToFreqVal    },
     { distTag,      stringToPercentVal },
+    { pitchTag,     stringToPitchVal   },
     { modFreqTag,   stringToFreqVal    },
     { delayModTag,  stringToPercentVal },
     { panModTag,    stringToPercentVal },
@@ -190,6 +208,9 @@ String getTooltip (const String& paramID)
 
     if (paramID == distTag)
         return "Sets the amount of distortion on this delay node";
+
+    if (paramID == pitchTag)
+        return "Sets the amount of pitch shifting on this delay node in semitones";
 
     if (paramID == modFreqTag)
         return "Sets the modulation frequency for this delay node";
