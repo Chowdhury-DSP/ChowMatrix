@@ -57,6 +57,7 @@ void DelayNode::cookParameters (bool force)
         *lpfHz,
         *hpfHz,
         *distortion,
+        *pitchSt,
         *modFreq,
         *delayMod
     }, force);

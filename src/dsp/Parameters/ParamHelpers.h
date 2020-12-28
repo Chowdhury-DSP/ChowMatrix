@@ -34,7 +34,7 @@ constexpr float maxHPF = 2000.0f;
 constexpr float maxPitch = 12.0f;
 constexpr float minModFreq = 0.0f;
 constexpr float maxModFreq = 5.0f;
-constexpr int numParams = 10;
+constexpr int numParams = 11;
 
 /** Sets a parameter value */
 void setParameterValue (Parameter* param, float newVal);
