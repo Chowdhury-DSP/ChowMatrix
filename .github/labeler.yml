@@ -12,4 +12,4 @@ presets:
   - any: ['src/state/presets/*', 'res/presets/*']
 
 documentation:
-  - manual/**/*
+  - any: ['manual/**/*', 'README.md']
