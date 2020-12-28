@@ -119,7 +119,7 @@ String pitchValToString (float pitchVal)
     String pitchStr = String (pitchVal, 2, false);
 
     if (pitchVal> 0.0f)
-        pitchStr = "+ " + pitchStr;
+        pitchStr = "+" + pitchStr;
 
     return pitchStr + " st";
 }
