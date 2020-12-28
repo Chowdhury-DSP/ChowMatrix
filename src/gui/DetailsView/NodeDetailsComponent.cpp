@@ -1,10 +1,11 @@
 #include "NodeDetailsComponent.h"
+#include "NodeDetailsGUI.h"
 #include "../../NodeManager.h"
 
 namespace
 {
-    constexpr int xOffset = 0;
     constexpr int xPad = 3;
+    constexpr int xOffset = xPad;
     constexpr int scrollOffset = 4;
 }
 
@@ -53,6 +54,19 @@ void NodeDetailsComponent::mouseDown (const MouseEvent& e)
 void NodeDetailsComponent::paint (Graphics& g)
 {
     g.fillAll (Colours::transparentBlack);
+    constexpr float rectOffset = xPad / 2.0f;
+
+    for (auto* nd : nodes)
+    {
+        if (nd->getNode()->getSelected())
+        {
+            g.setColour (findColour (NodeDetailsGUI::nodeColour, true));
+            g.drawRect (nd->getBounds().toFloat()
+                .expanded (rectOffset, 0.0f)
+                .withHeight ((float) getHeight()), rectOffset);
+            break;
+        }
+    }
 }
 
 void NodeDetailsComponent::resized()
@@ -60,7 +74,7 @@ void NodeDetailsComponent::resized()
     for (int i = 0; i < nodes.size(); ++i)
     {
         nodes[i]->setBounds (xOffset + (NodeInfoConsts::InfoWidthNoLabel + xPad) * i, 0,
-            NodeInfoConsts::InfoWidthNoLabel, getHeight());
+            NodeInfoConsts::InfoWidthNoLabel, getHeight() - xPad);
     }
 }
 
