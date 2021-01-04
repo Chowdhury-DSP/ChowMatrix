@@ -5,7 +5,7 @@ Distortion::Distortion()
     gain.setCurrentAndTargetValue (1.0f);
 }
 
-void Distortion::prepare (dsp::ProcessSpec spec)
+void Distortion::prepare (const dsp::ProcessSpec& spec)
 {
     adaa.prepare();
     gain.reset (spec.sampleRate, 0.05);

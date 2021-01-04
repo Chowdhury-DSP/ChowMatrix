@@ -79,7 +79,7 @@ public:
     Distortion();
 
     void setGain (float newGain) { gain.setTargetValue (newGain); }
-    void prepare (dsp::ProcessSpec spec);
+    void prepare (const dsp::ProcessSpec& spec);
     void reset();
 
     inline float processSample (float x)
