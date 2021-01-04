@@ -9,8 +9,8 @@ void PitchShiftWrapper::prepare (const dsp::ProcessSpec& spec)
 {
     jassert (spec.numChannels == 1);
     shifter.prepare (spec);
-    pitchStSmooth.reset (spec.sampleRate, 0.01);
-    crossfade.reset (spec.sampleRate, 0.01);
+    pitchStSmooth.reset (spec.sampleRate, 0.05);
+    crossfade.reset (spec.sampleRate, 0.05);
 }
 
 void PitchShiftWrapper::reset()
