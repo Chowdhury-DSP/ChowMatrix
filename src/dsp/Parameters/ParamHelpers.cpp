@@ -59,6 +59,20 @@ AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
     params.push_back (std::make_unique<Parameter> (pitchTag, "Pitch", String(),
         pitchRange, 0.0f, &pitchValToString, &stringToPitchVal));
 
+    // set up diffusion amount
+    NormalisableRange<float> diffRange { 0.0f, 1.0f };
+    params.push_back (std::make_unique<Parameter> (diffTag, "Diffusion", String(),
+        diffRange, 0.0f, &percentValToString, &stringToPercentVal));
+
+#if DIFFUSE_FREQ
+    // set up diffusion freq
+    NormalisableRange<float> diffFreqRange { minDiffFreq, maxDiffFreq };
+    const float centreDiffFreq = std::sqrt (minDiffFreq * maxDiffFreq);
+    diffFreqRange.setSkewForCentre (centreDiffFreq);
+    params.push_back (std::make_unique<Parameter> (diffFreqTag, "Diffusion Freq.", String(),
+        diffFreqRange, centreDiffFreq, &freqValToString, &stringToFreqVal));
+#endif
+
     // set up mod frequency
     NormalisableRange<float> modFreqRange { minModFreq, maxModFreq };
     modFreqRange.setSkewForCentre (2.0f);
@@ -136,7 +150,7 @@ float stringToGainVal (const String& s) { return s.getFloatValue(); }
 
 String freqValToString (float freqVal)
 {
-    if (freqVal < 1000.0f)
+    if (freqVal <= 1000.0f)
         return String (freqVal, 2, false) + " Hz";
 
     return String (freqVal / 1000.0f, 2, false) + " kHz";
@@ -176,6 +190,10 @@ std::unordered_map<String, StringToValFunc> funcMap {
     { hpfTag,       stringToFreqVal    },
     { distTag,      stringToPercentVal },
     { pitchTag,     stringToPitchVal   },
+    { diffTag,      stringToPercentVal },
+#if DIFFUSE_FREQ
+    { diffFreqTag,  stringToFreqVal    },
+#endif
     { modFreqTag,   stringToFreqVal    },
     { delayModTag,  stringToPercentVal },
     { panModTag,    stringToPercentVal },

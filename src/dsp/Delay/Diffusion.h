@@ -14,9 +14,12 @@ public:
     void prepare (const dsp::ProcessSpec& spec);
     void reset();
 
+    void setDepth (float depth, bool force);
+    void setFreq (float freq, bool force);
+
     inline float processSample (float x)
     {
-        const auto numStages = depthSmooth.getNextValue() * 50.0f;
+        auto numStages = depthSmooth.getNextValue() * maxNumStages;
         const auto numStagesInt = static_cast<size_t> (numStages);
 
         // process integer stages
@@ -41,12 +44,11 @@ public:
 private:
     void calcCoefs (float fc);
 
-    static constexpr size_t maxNumStages = 52;
-    static constexpr float fc = 1000.0f;
+    static constexpr size_t maxNumStages = 50;
 
     float a[2] = {1.0f, 0.0f};
     float b[2] = {1.0f, 0.0f};
-    float z[maxNumStages];
+    float z[maxNumStages+1];
 
     float fs = 44100.0f;
     SmoothedValue<float, ValueSmoothingTypes::Linear> depthSmooth;

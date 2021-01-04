@@ -23,6 +23,10 @@ DelayNode::DelayNode() :
     hpfHz      = loadParam (hpfTag);
     distortion = loadParam (distTag);
     pitchSt    = loadParam (pitchTag);
+    diffAmt    = loadParam (diffTag);
+#if DIFFUSE_FREQ
+    diffFreq   = loadParam (diffFreqTag);
+#endif
     modFreq    = loadParam (modFreqTag);
     delayMod   = loadParam (delayModTag);
     panMod     = loadParam (panModTag);
@@ -58,6 +62,10 @@ void DelayNode::cookParameters (bool force)
         *hpfHz,
         *distortion,
         *pitchSt,
+        *diffAmt,
+#if DIFFUSE_FREQ
+        *diffFreq,
+#endif
         *modFreq,
         *delayMod
     }, force);
