@@ -11,6 +11,7 @@ namespace ParamTags
     const String lpfTag   = "LPF";
     const String hpfTag   = "HPF";
     const String distTag  = "DIST";
+    const String pitchTag = "PITCH";
     const String modFreqTag   = "MOD_FREQ";
     const String delayModTag  = "MOD_DELAY";
     const String panModTag    = "MOD_PAN";
@@ -30,9 +31,10 @@ constexpr float minLPF = 200.0f;
 constexpr float maxLPF = 20000.0f;
 constexpr float minHPF = 20.0f;
 constexpr float maxHPF = 2000.0f;
+constexpr float maxPitch = 12.0f;
 constexpr float minModFreq = 0.0f;
 constexpr float maxModFreq = 5.0f;
-constexpr int numParams = 10;
+constexpr int numParams = 11;
 
 /** Sets a parameter value */
 void setParameterValue (Parameter* param, float newVal);
@@ -51,6 +53,9 @@ float stringToFbVal (const String& s);
 
 String gainValToString (float gainVal);
 float stringToGainVal (const String& s);
+
+String pitchValToString (float pitchVal);
+float stringToPitchVal (const String& s);
 
 String freqValToString (float freqVal);
 float stringToFreqVal (const String& s);

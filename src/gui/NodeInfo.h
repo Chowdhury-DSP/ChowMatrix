@@ -9,6 +9,8 @@ namespace NodeInfoConsts
     constexpr int InfoWidthNoLabel = 80;
     constexpr int InfoHeight = 18;
     constexpr int InfoHeightNoLabel = 22;
+
+    static StringArray skipParams { ParamTags::pitchTag, ParamTags::modFreqTag, ParamTags::delayModTag, ParamTags::panModTag };
 }
 
 /** Node info component containing a column of ParamSliders */
@@ -21,8 +23,8 @@ public:
     {
         for (int i = 0; i < node.getNumParams(); ++i)
         {
-            // in matrix view, don't show mod params
-            if (showLabel && node.getNodeParameter (i)->paramID.contains ("MOD"))
+            // in matrix view, don't show skip params
+            if (showLabel && NodeInfoConsts::skipParams.contains (node.getNodeParameter (i)->paramID))
                 continue;
 
             addAndMakeVisible (sliders.add (std::make_unique<ParamSlider>

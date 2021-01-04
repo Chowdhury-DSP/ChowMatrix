@@ -108,6 +108,7 @@ private:
     Parameter* lpfHz      = nullptr;
     Parameter* hpfHz      = nullptr;
     Parameter* distortion = nullptr;
+    Parameter* pitchSt    = nullptr;
     Parameter* modFreq    = nullptr;
     Parameter* delayMod   = nullptr;
     Parameter* panMod     = nullptr;
