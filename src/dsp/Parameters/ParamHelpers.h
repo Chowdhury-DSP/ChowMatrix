@@ -12,6 +12,7 @@ namespace ParamTags
     const String hpfTag   = "HPF";
     const String distTag  = "DIST";
     const String pitchTag = "PITCH";
+    const String diffTag  = "DIFF";
     const String modFreqTag   = "MOD_FREQ";
     const String delayModTag  = "MOD_DELAY";
     const String panModTag    = "MOD_PAN";
@@ -34,7 +35,7 @@ constexpr float maxHPF = 2000.0f;
 constexpr float maxPitch = 12.0f;
 constexpr float minModFreq = 0.0f;
 constexpr float maxModFreq = 5.0f;
-constexpr int numParams = 11;
+constexpr int numParams = 12;
 
 /** Sets a parameter value */
 void setParameterValue (Parameter* param, float newVal);
