@@ -51,7 +51,7 @@ The way in which ChowMatrix processes audio may not
 be immediately obvious, especially compared with more
 ``traditionally'' designed audio plugins. ChowMatrix is
 made up a ``tree'' of delay ``nodes'', where each node has
-a ``parent'' node and possibly one or more ``child'' nodes.
+a ``parent'' node and potentially one or more ``child'' nodes.
 The tree has two ``root'' nodes, representing the left and right
 input channels to the plugin. Each node accepts a mono input
 from its parent node, passes a mono signal on to its children,
@@ -59,9 +59,10 @@ and outputs a stereo signal to the main plugin output.
 
 \subsubsection{Delay Nodes}
 Each delay node consists of a delay line, as well as a gain,
-highpass filter, lowpass filter, distortion, a global feedback
-path, and panner. The full processing architecture for a single
-delay node is shown in \cref{fig:delay_dsp}.
+highpass filter, lowpass filter, diffusion filter, distortion,
+pitch-shifter, a global feedback path, and panner. The full
+processing architecture for a single delay node is shown in
+\cref{fig:delay_dsp}.
 \newpar
 %
 \begin{figure*}
@@ -78,8 +79,10 @@ delay node is shown in \cref{fig:delay_dsp}.
     \node (sum) [draw, fill=white, circle, line width=0.8pt, right of=gain] {+};
     \node (lpf) [mynode, right of=sum] {LPF};
     \node (hpf) [mynode, right of=lpf] {HPF};
-    \node (dist) [mynode, right of=hpf, xshift=0.5cm] {Distortion};
-    \node (delay) [mynode, right of=dist, xshift=0.5cm] {Delay};
+    \node (diff) [mynode, right of=hpf, xshift=0.4cm] {Diffusion};
+    \node (dist) [mynode, right of=diff, xshift=0.7cm] {Distortion};
+    \node (pitch) [mynode, right of=dist, xshift=0.4cm] {Pitch};
+    \node (delay) [mynode, right of=pitch, xshift=0.1cm] {Delay};
     \node (split) [circle, fill, inner sep=1.25pt, right of=delay, xshift=-0.5cm] {};
     \node (pan) [mynode, right of=split, xshift=-0.5cm] {Pan};
     \node (output) [right of=pan, xshift=0.25cm] {Output};
@@ -88,14 +91,16 @@ delay node is shown in \cref{fig:delay_dsp}.
     \draw [arrow] (gain) -- (sum);
     \draw [arrow] (sum) -- (lpf);
     \draw [arrow] (lpf) -- (hpf);
-    \draw [arrow] (hpf) -- (dist);
-    \draw [arrow] (dist) -- (delay);
+    \draw [arrow] (hpf) -- (diff);
+    \draw [arrow] (diff) -- (dist);
+    \draw [arrow] (dist) -- (pitch);
+    \draw [arrow] (pitch) -- (delay);
     \draw [thick] (delay) -- (split);
     \draw [arrow] (split) -- (pan);
     \draw [arrow] (pan) -- (output);
 
     \coordinate[above of=split, yshift=-0.25cm] (up);
-    \node (fb) [mynode, left of=up, xshift=-2.5cm] {Feedback Gain};
+    \node (fb) [mynode, left of=up, xshift=-4cm] {Feedback Gain};
     \coordinate[above of=sum, yshift=-0.25cm] (over);
     \draw [thick] (split) -- (up);
     \draw [arrow] (up) -- (fb);
@@ -121,11 +126,21 @@ Note that since the filters are in the feedback loop,
 the filtering process will be applied recursively to every
 ``echo'' of the signal through the feedback loop.
 \newpar
+The \boldtheme{Diffusion} filter is a multi-stage allpass
+filter, that ``smears'' out the signal across the delay line.
+Using diffusion in combination with feedback for rhythmic
+and percussive sounds, can be a cool effect.
+\newpar
 \boldtheme{Distortion} applies an anti-aliased waveshaping
 distortion\footnote{Anti-aliasing is done without oversampling using anti-derivative anti-aliasing. For more information, see: \href{http://dafx16.vutbr.cz/dafxpapers/20-DAFx-16_paper_41-PN.pdf}{Parker et. al., 2016}.}
 to the the signal. As with the filters, note that this
 distortion will be applied recursively to the echos created
 by the feedback path.
+\newpar
+The \boldtheme{Pitch} processor uses a simple real-time
+pitch processing algorithm to pitch the signal up or down,
+by a given number of semitones. This effect can be useful for
+obtaining interesting and creative soundscapes.
 \newpar
 The \boldtheme{Delay} line has a length that can be
 controlled either as a ``free'' parameter, with units
@@ -142,6 +157,19 @@ panner to the mono signal processed by the delay node,
 turning it into a stereo signal that is then fed to the
 plugin output.
 
+\subsubsection{Modulation}
+Each delay node also contains modulations controls for the
+delay time and panning. The modulation section has three
+controls:
+\newpar
+\boldtheme{Mod Freq} determines the modulation frequency,
+and ranges from 0 to 5 Hz.
+\boldtheme{Delay Mod} controls the amount the delay length
+is modulated for this node.
+\boldtheme{Pan Mod} controls the amount the panning for
+this node is modulated. Note that this control can be
+set to negative values to invert the modulation signal.
+
 \subsection{Controls}
 The ChowMatrix interface is made up of four main sections:
 the ``Graph View'', ``Details View'', ``Bottom Bar''
@@ -155,7 +183,9 @@ and ``Insanity Control''.
 
 \subsubsection{Graph View}
 The \boldtheme{Graph View} is the main interface for interacting
-with the delay nodes and managing the connections between nodes.
+with the delay nodes and managing the connections between nodes,
+as well as providing an informative and inspiring visualization
+of the delay processing being performed by the plugin.
 \newpar
 At the bottom of the graph view are two \boldtheme{Input Nodes},
 represented by half-circles. The Input Node on the left represents
@@ -182,7 +212,13 @@ To \boldtheme{delete} a node, \texttt{CMD+Click} on the node,
 or press the \texttt{Delete} key when the node is selected.
 \newpar
 To \boldtheme{solo} the audio from a specific node,
-\texttt{ALT+Click} on the node.
+\texttt{ALT+Click} on the node. TO un-solo the node,
+click on the background of the Graph View.
+\newpar
+The mouse can be used to explore the far reaches of the
+Graph View by scrolling, or clicking and dragging. Click
+the \boldtheme{Home} icon in the bottom left corner, to
+return to the default view position.
 
 \begin{figure}[ht]
     \center
