@@ -9,8 +9,14 @@ GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) :
     setName ("Graph View");
     setTooltip ("Graph view of all delay nodes, shift+click to create a new node");
 
-    for (auto& node : *plugin.getNodes())
-        manager.createAndAddEditor (&node);
+    setColour (backgroundColour, Colour (0xFF162947));
+    setColour (nodeColour, Colour (0xFFC954D4));
+    setColour (nodeColour2, Colour (0xFFE0B500));
+    setColour (nodeSelectedColour, Colour (0xFF21CCA5));
+
+    auto& inputNodes = *plugin.getNodes();
+    manager.createAndAddEditor (&inputNodes[0], findColour (nodeColour),  -0.025f);
+    manager.createAndAddEditor (&inputNodes[1], findColour (nodeColour2), -0.010f);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { manager.createAndAddEditor (child); });
 }
