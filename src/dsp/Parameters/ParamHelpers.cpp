@@ -64,15 +64,6 @@ AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
     params.push_back (std::make_unique<Parameter> (diffTag, "Diffusion", String(),
         diffRange, 0.0f, &percentValToString, &stringToPercentVal));
 
-#if DIFFUSE_FREQ
-    // set up diffusion freq
-    NormalisableRange<float> diffFreqRange { minDiffFreq, maxDiffFreq };
-    const float centreDiffFreq = std::sqrt (minDiffFreq * maxDiffFreq);
-    diffFreqRange.setSkewForCentre (centreDiffFreq);
-    params.push_back (std::make_unique<Parameter> (diffFreqTag, "Diffusion Freq.", String(),
-        diffFreqRange, centreDiffFreq, &freqValToString, &stringToFreqVal));
-#endif
-
     // set up mod frequency
     NormalisableRange<float> modFreqRange { minModFreq, maxModFreq };
     modFreqRange.setSkewForCentre (2.0f);
@@ -191,9 +182,6 @@ std::unordered_map<String, StringToValFunc> funcMap {
     { distTag,      stringToPercentVal },
     { pitchTag,     stringToPitchVal   },
     { diffTag,      stringToPercentVal },
-#if DIFFUSE_FREQ
-    { diffFreqTag,  stringToFreqVal    },
-#endif
     { modFreqTag,   stringToFreqVal    },
     { delayModTag,  stringToPercentVal },
     { panModTag,    stringToPercentVal },
@@ -229,6 +217,9 @@ String getTooltip (const String& paramID)
 
     if (paramID == pitchTag)
         return "Sets the amount of pitch shifting on this delay node in semitones";
+
+    if (paramID == diffTag)
+        return "Sets the amount of diffusion on this delay node";
 
     if (paramID == modFreqTag)
         return "Sets the modulation frequency for this delay node";

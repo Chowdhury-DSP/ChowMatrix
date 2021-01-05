@@ -12,6 +12,14 @@ Diffusion::Diffusion()
     reset();
 }
 
+void Diffusion::setDepth (float depth, bool force)
+{
+    if (force)
+        depthSmooth.setCurrentAndTargetValue (depth);
+    else
+        depthSmooth.setTargetValue (depth);
+}
+
 void Diffusion::prepare (const dsp::ProcessSpec& spec)
 {
     fs = (float) spec.sampleRate;
@@ -24,20 +32,6 @@ void Diffusion::prepare (const dsp::ProcessSpec& spec)
 void Diffusion::reset()
 {
     std::fill (z, &z[maxNumStages+1], 0.0f);
-}
-
-void Diffusion::setDepth (float depth, bool force)
-{
-    if (force)
-        depthSmooth.setCurrentAndTargetValue (depth);
-    else
-        depthSmooth.setTargetValue (depth);
-}
-
-void Diffusion::setFreq (float freq, bool force)
-{
-    ignoreUnused (force);
-    calcCoefs (freq);
 }
 
 void Diffusion::calcCoefs (float freq)

@@ -34,9 +34,6 @@ public:
         float distortion;
         float pitchSt;
         float diffAmt;
-#if DIFFUSE_FREQ
-        float diffFreq;
-#endif
         float modFreq;
         float modDepth;
     };

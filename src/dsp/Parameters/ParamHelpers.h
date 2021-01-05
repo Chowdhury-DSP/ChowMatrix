@@ -2,8 +2,6 @@
 
 #include <pch.h>
 
-#define DIFFUSE_FREQ 0
-
 namespace ParamTags
 {
     const String delayTag = "DLY";
@@ -15,9 +13,6 @@ namespace ParamTags
     const String distTag  = "DIST";
     const String pitchTag = "PITCH";
     const String diffTag  = "DIFF";
-#if DIFFUSE_FREQ
-    const String diffFreqTag = "DIFF_FREQ";
-#endif
     const String modFreqTag   = "MOD_FREQ";
     const String delayModTag  = "MOD_DELAY";
     const String panModTag    = "MOD_PAN";
@@ -37,18 +32,10 @@ constexpr float minLPF = 200.0f;
 constexpr float maxLPF = 20000.0f;
 constexpr float minHPF = 20.0f;
 constexpr float maxHPF = 2000.0f;
-#if DIFFUSE_FREQ
-constexpr float minDiffFreq = 10.0f;
-constexpr float maxDiffFreq = 1000.0f;
-#endif
 constexpr float maxPitch = 12.0f;
 constexpr float minModFreq = 0.0f;
 constexpr float maxModFreq = 5.0f;
-#if DIFFUSE_FREQ
-constexpr int numParams = 13;
-#else
 constexpr int numParams = 12;
-#endif
 
 /** Sets a parameter value */
 void setParameterValue (Parameter* param, float newVal);

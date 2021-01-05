@@ -10,11 +10,8 @@ namespace NodeInfoConsts
     constexpr int InfoHeight = 18;
     constexpr int InfoHeightNoLabel = 22;
 
-    static StringArray skipParams { ParamTags::pitchTag, ParamTags::diffTag,
-                                  #if DIFFUSE_FREQ
-                                    ParamTags::diffFreqTag,
-                                  #endif
-                                    ParamTags::modFreqTag, ParamTags::delayModTag, ParamTags::panModTag };
+    static StringArray skipParams { ParamTags::pitchTag, ParamTags::diffTag, ParamTags::modFreqTag,
+                                    ParamTags::delayModTag, ParamTags::panModTag };
 }
 
 /** Node info component containing a column of ParamSliders */

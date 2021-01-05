@@ -11,11 +11,9 @@ class Diffusion
 public:
     Diffusion();
 
+    void setDepth (float depth, bool force);
     void prepare (const dsp::ProcessSpec& spec);
     void reset();
-
-    void setDepth (float depth, bool force);
-    void setFreq (float freq, bool force);
 
     inline float processSample (float x)
     {
@@ -37,14 +35,13 @@ public:
     {
         float y = z[stage] + x * b[0];
         z[stage] = x * b[1] - y * a[1];
-
         return y;
     }
 
 private:
     void calcCoefs (float fc);
 
-    static constexpr size_t maxNumStages = 50;
+    static constexpr size_t maxNumStages = 100;
 
     float a[2] = {1.0f, 0.0f};
     float b[2] = {1.0f, 0.0f};
