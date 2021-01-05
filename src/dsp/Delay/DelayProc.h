@@ -4,6 +4,7 @@
 #include "../Distortion/Distortion.h"
 #include "VariableDelay.h"
 #include "PitchShiftWrapper.h"
+#include "Diffusion.h"
 
 /**
  * Audio processor that implements delay line with feedback,
@@ -32,6 +33,7 @@ public:
         float hpfFreq;
         float distortion;
         float pitchSt;
+        float diffAmt;
         float modFreq;
         float modDepth;
     };
@@ -60,6 +62,7 @@ private:
     {
         lpfIdx,
         hpfIdx,
+        diffusionIdx,
         distortionIdx,
         pitchIdx,
     };
@@ -67,6 +70,7 @@ private:
     MyProcessorChain<
         chowdsp::IIR::Filter<float, 1>,
         chowdsp::IIR::Filter<float, 1>,
+        Diffusion,
         Distortion,
         PitchShiftWrapper
         > procs;

@@ -8,6 +8,7 @@ target_sources(ChowMatrix PRIVATE
     dsp/DelayNode.cpp
     dsp/InputNode.cpp
     dsp/Delay/DelayProc.cpp
+    dsp/Delay/Diffusion.cpp
     dsp/Delay/PitchShiftWrapper.cpp
     dsp/Delay/VariableDelay.cpp
     dsp/Distortion/Distortion.cpp
