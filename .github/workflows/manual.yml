@@ -38,3 +38,4 @@ jobs:
         password: ${{ secrets.CCRMA_PASS }}
         source: "manual/ChowMatrixManual.pdf"
         target: "~/Library/Web/chowdsp/Products"
+        strip_components: 1
