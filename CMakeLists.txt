@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.15)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "Minimum OS X deployment target")
-project(ChowMatrix VERSION 1.0.1)
+project(ChowMatrix VERSION 1.0.2)
 
 set(CMAKE_CXX_STANDARD 17)
 add_subdirectory(modules)
 include_directories(modules)
 
 # juce_set_vst2_sdk_path(C:/SDKs/VST_SDK/VST2_SDK/)
+# include_directories(C:/SDKs/asiosdk2.3/common)
 
 juce_add_plugin(ChowMatrix
     COMPANY_NAME chowdsp
