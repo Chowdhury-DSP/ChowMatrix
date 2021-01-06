@@ -12,5 +12,5 @@ presets:
   - any: ['src/state/presets/*', 'res/presets/*']
 
 documentation:
-  - manual/**/*
-  - README.md
+  - manual/*
+  - manual/screenshots/*
