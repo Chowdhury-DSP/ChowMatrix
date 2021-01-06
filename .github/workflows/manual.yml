@@ -23,7 +23,6 @@ jobs:
 
     - name: Build manual
       working-directory: ${{github.workspace}}/manual
-      shell: bash
       run: |
         pwd
         ls
