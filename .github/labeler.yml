@@ -13,3 +13,4 @@ presets:
 
 documentation:
   - manual/**/*
+  - README.md
