@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Added LV2 compilation for Linux.
 - Made Graph View scrollable.
 - Added A/B toggle for switching plugin state.
+- Added individual node colouring.
 - Fixed node distortion bug in Logic/Garageband.
 - Fixed bug with incorrect delay times between sibling nodes.
 - Fixed preset menu not returning to currently selected preset.
