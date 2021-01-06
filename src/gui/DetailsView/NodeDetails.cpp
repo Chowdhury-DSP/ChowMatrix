@@ -40,18 +40,22 @@ void NodeDetails::Button::paint (Graphics& g)
     auto* node = nodeDetails.getNode();
     const auto alphaMult = node->getSoloed() == DelayNode::SoloState::Mute ? 0.4f : 1.0f;
 
-    bool isSelected = node->getSelected();
-    Colour cc = isSelected ?
-        findColour (NodeDetailsGUI::nodeSelectedColour, true) :
-        findColour (NodeDetailsGUI::nodeColour, true);
-
-    g.setColour (cc.withMultipliedAlpha (alphaMult));
-    g.fillEllipse (bounds);
-
-    if (isSelected)
+    if (node->getSelected())
     {
-        g.setColour (Colours::white.withMultipliedAlpha (alphaMult));
+        g.setColour (findColour (NodeDetailsGUI::nodeSelectedColour, true));
+        g.fillEllipse (bounds);
+
+        g.setColour (Colours::white);
         g.drawEllipse (bounds.reduced (1.0f), 2.0f);
+    }
+    else
+    {
+        const auto* editor = nodeDetails.getNode()->getEditor();
+        if (editor != nullptr)
+        {
+            g.setColour (editor->getColour().withMultipliedAlpha (alphaMult));
+            g.fillEllipse (bounds);
+        }
     }
 
     g.setColour (Colours::white.withMultipliedAlpha (alphaMult));

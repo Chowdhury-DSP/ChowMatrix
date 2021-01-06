@@ -14,6 +14,12 @@ public:
 
     DBaseNode& getNode() { return node; }
 
+    // functions for managing node colour
+    void setColour (const Colour& colour) { nodeColour = colour; }
+    const Colour& getColour() const noexcept { return nodeColour; }
+    void setHueIncrement (float newInc) { hueIncrement = newInc; }
+    float getHueIncrement() const noexcept { return hueIncrement; }
+
     virtual void updatePosition() {}
     
     inline Point<int> getCentrePosition() const noexcept
@@ -23,9 +29,11 @@ public:
 
 protected:
     GraphView* graphView;
+    Colour nodeColour;
 
 private:
     DBaseNode& node;
+    float hueIncrement = 0.0f;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NodeComponent)
 };

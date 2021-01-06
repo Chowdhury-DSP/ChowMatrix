@@ -10,7 +10,7 @@ class NodeCompManager
 public:
     NodeCompManager (GraphView* parent);
 
-    void createAndAddEditor (InputNode*);
+    void createAndAddEditor (InputNode*, const Colour& colour, float hueIncrement);
     void createAndAddEditor (DelayNode*);
     void removeEditor (DelayNode*);
 

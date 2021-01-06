@@ -11,6 +11,6 @@ NodeComponent::NodeComponent (DBaseNode& node, GraphView* view) :
 
 void NodeComponent::paint (Graphics& g)
 {
-    g.setColour (findColour (GraphView::nodeColour, true));
+    g.setColour (nodeColour);
     g.fillEllipse (getLocalBounds().toFloat());
 }
