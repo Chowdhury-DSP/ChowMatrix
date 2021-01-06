@@ -10,7 +10,10 @@ sed -i '' "9s~.*~juce_set_vst2_sdk_path(${VST_PATH})~" CMakeLists.txt
 sed -i '' '16s/#//' CMakeLists.txt
 
 # cmake new builds
-cmake -Bbuild -GXcode
+TEAM_ID=$(more ~/Developer/mac_id)
+cmake -Bbuild -GXcode -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY="Apple Distribution" \
+    -DCMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM=$TEAM_ID \
+    -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_STYLE="Manual"
 cmake --build build --config Release -j8
 
 # copy builds to bin
