@@ -20,18 +20,17 @@ jobs:
     steps:
     - name: Install Linux Deps
       run: sudo apt install texlive-xetex
-  
+
     - name: Build manual
       working-directory: manual
       shell: bash
       run: make
-  
+
     - name: Deploy manual
-      working-directory: manual
       uses: appleboy/scp-action@master
       with:
         host: ccrma-gate.stanford.edu
         username: jatin
         password: ${{ secrets.CCRMA_PASS }}
-        source: "ChowMatrixManual.pdf"
+        source: "manual/ChowMatrixManual.pdf"
         target: "~/Library/Web/chowdsp/Products"
