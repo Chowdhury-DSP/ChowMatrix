@@ -26,6 +26,7 @@ void ScreenshotGenerator::takeScreenshots (const ArgumentList& args)
     screenshotForBounds (editor.get(),           editor->getLocalBounds() , outputDir, "full_gui.png");
     screenshotForBounds (editor.get(), { 0, 35,  editor->getWidth(), 325 }, outputDir, "GraphView.png");
     screenshotForBounds (editor.get(), { 0, 400, editor->getWidth(), 230 }, outputDir, "DetailsView.png");
+    screenshotForBounds (editor.get(), { 0, 660, editor->getWidth(),  40 }, outputDir, "BottomBar.png");
 
     plugin->editorBeingDeleted (editor.get());
 }

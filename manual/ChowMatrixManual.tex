@@ -129,7 +129,7 @@ the filtering process will be applied recursively to every
 The \boldtheme{Diffusion} filter is a multi-stage allpass
 filter, that ``smears'' out the signal across the delay line.
 Using diffusion in combination with feedback for rhythmic
-and percussive sounds, can be a cool effect.
+and percussive sounds, can create an interesting effect.
 \newpar
 \boldtheme{Distortion} applies an anti-aliased waveshaping
 distortion\footnote{Anti-aliasing is done without oversampling using anti-derivative anti-aliasing. For more information, see: \href{http://dafx16.vutbr.cz/dafxpapers/20-DAFx-16_paper_41-PN.pdf}{Parker et. al., 2016}.}
@@ -137,10 +137,9 @@ to the the signal. As with the filters, note that this
 distortion will be applied recursively to the echos created
 by the feedback path.
 \newpar
-The \boldtheme{Pitch} processor uses a simple real-time
-pitch processing algorithm to pitch the signal up or down,
-by a given number of semitones. This effect can be useful for
-obtaining interesting and creative soundscapes.
+The \boldtheme{Pitch} processor re-pitches the signal up
+or down by a given number of semitones. This effect can be
+useful for obtaining interesting and creative soundscapes.
 \newpar
 The \boldtheme{Delay} line has a length that can be
 controlled either as a ``free'' parameter, with units
@@ -166,9 +165,9 @@ controls:
 and ranges from 0 to 5 Hz.
 \boldtheme{Delay Mod} controls the amount the delay length
 is modulated for this node.
-\boldtheme{Pan Mod} controls the amount the panning for
-this node is modulated. Note that this control can be
-set to negative values to invert the modulation signal.
+\boldtheme{Pan Mod} controls the modulation amount for
+the node pan control. Note that this control can be
+set to negative values to reverse the modulation.
 
 \subsection{Controls}
 The ChowMatrix interface is made up of four main sections:
@@ -177,7 +176,7 @@ and ``Insanity Control''.
 
 \begin{figure}[ht]
     \center
-    \includegraphics[width=0.75\columnwidth]{screenshots/GraphView.png}
+    \includegraphics[width=0.8\columnwidth]{screenshots/GraphView.png}
     \caption{\label{fig:graph_view}{\it ChowMatrix Graph View}}
 \end{figure}
 
@@ -222,7 +221,7 @@ return to the default view position.
 
 \begin{figure}[ht]
     \center
-    \includegraphics[width=0.75\columnwidth]{screenshots/DetailsView.png}
+    \includegraphics[width=0.8\columnwidth]{screenshots/DetailsView.png}
     \caption{\label{fig:details_view}{\it ChowMatrix Details View}}
 \end{figure}
 
@@ -249,6 +248,12 @@ nodes to ``wander'' randomly, with a speed and intensity
 determined by the parameter value. Insanity is useful for
 finding new delay node configurations, or for adding a source
 of chaotic modulation.
+
+\begin{figure}[ht]
+    \center
+    \includegraphics[width=0.95\columnwidth]{screenshots/BottomBar.png}
+    \caption{\label{fig:details_view}{\it ChowMatrix Bottom Bar}}
+\end{figure}
 
 \subsubsection{Bottom Bar}
 The ``Bottom Bar'' section includes several auxiliary controls,
@@ -279,6 +284,10 @@ the feedback to echo until silence.
 \boldtheme{Sync/Free} toggles whether the delay times are synced
 to the tempo of the song, or ``free'' to be any length.
 \newpar
+The \boldtheme{A/B} control allows the user to toggle
+between two plugin states. This can be useful for using
+insanity mode without losing your current settings.
+\newpar
 The \boldtheme{Randomise} button will randomise the parameters
 for all the delay nodes. This can be useful for quickly
 dicovering new delay node configurations.
@@ -299,6 +308,7 @@ and when the plugin opens, it will search this folder, as
 well as any subfolders, to load new user presets.
 Presets located in subfolders will be placed in their
 own groups in the preset menu.
+\newline\newline
 
 \subsection{Open Source}
 ChowMatrix is open-source software that is free (as in ``free
