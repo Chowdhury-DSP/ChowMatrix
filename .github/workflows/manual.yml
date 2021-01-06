@@ -1,0 +1,37 @@
+name: manual
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - 'manual/**'
+  pull_request:
+    branches:
+    - develop
+
+  workflow_dispatch:
+
+jobs:
+  build_and_test:
+    name: Build and deploy manual
+    runs-on: ubuntu-latest
+  
+  steps:
+  - name: Install Linux Deps
+    run: sudo apt install texlive-xetex
+
+  - name: Build manual
+    working-directory: manual
+    shell: bash
+    run: make
+
+  - name: Deploy manual
+    working-directory: manual
+    uses: appleboy/scp-action@master
+    with:
+      host: ccrma-gate.stanford.edu
+      username: jatin
+      password: ${{ secrets.CCRMA_PASS }}
+      source: "ChowMatrixManual.pdf"
+      target: "~/Library/Web/chowdsp/Products"
