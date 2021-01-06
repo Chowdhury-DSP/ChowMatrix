@@ -24,7 +24,10 @@ jobs:
     - name: Build manual
       working-directory: manual
       shell: bash
-      run: make
+      run: |
+        pwd
+        ls
+        make
 
     - name: Deploy manual
       uses: appleboy/scp-action@master
