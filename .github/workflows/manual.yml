@@ -22,7 +22,7 @@ jobs:
       run: sudo apt install texlive-xetex
 
     - name: Build manual
-      working-directory: manual
+      working-directory: ${{github.workspace}}/manual
       shell: bash
       run: |
         pwd
