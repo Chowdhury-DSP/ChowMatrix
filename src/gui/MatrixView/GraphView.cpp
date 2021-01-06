@@ -15,8 +15,8 @@ GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) :
     setColour (nodeSelectedColour, Colour (0xFF21CCA5));
 
     auto& inputNodes = *plugin.getNodes();
-    manager.createAndAddEditor (&inputNodes[0], findColour (nodeColour),  -0.025f);
-    manager.createAndAddEditor (&inputNodes[1], findColour (nodeColour2), -0.010f);
+    manager.createAndAddEditor (&inputNodes[0], findColour (nodeColour),  -0.04f);
+    manager.createAndAddEditor (&inputNodes[1], findColour (nodeColour2), -0.02f);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { manager.createAndAddEditor (child); });
 }
