@@ -83,8 +83,7 @@ void DelayNodeComponent::paint (Graphics& g)
     }
     else
     {
-        g.setColour (findColour (GraphView::nodeColour, true)
-            .withMultipliedAlpha (alphaMult));
+        g.setColour (nodeColour.withMultipliedAlpha (alphaMult));
         g.fillEllipse (getLocalBounds().toFloat());
     }
 

@@ -17,6 +17,7 @@ public:
         setColourTranslation ({
             { "background",    GraphView::backgroundColour },
             { "node",          GraphView::nodeColour },
+            { "node2",         GraphView::nodeColour2 },
             { "node-selected", GraphView::nodeSelectedColour },
         });
 

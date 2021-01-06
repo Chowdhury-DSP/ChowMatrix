@@ -25,16 +25,26 @@ NodeCompManager::NodeCompManager (GraphView* parent) :
     parent (parent)
 {}
 
-void NodeCompManager::createAndAddEditor (InputNode* node)
+void NodeCompManager::createAndAddEditor (InputNode* node, const Colour& colour, float hueIncrement)
 {
-    parent->addAndMakeVisible (createAndAddEditorToList (node, inputNodeComponents, parent));
+    auto editor = createAndAddEditorToList (node, inputNodeComponents, parent);
+    parent->addAndMakeVisible (editor);
     node->addNodeListener (parent);
+
+    editor->setColour (colour);
+    editor->setHueIncrement (hueIncrement);
 }
 
 void NodeCompManager::createAndAddEditor (DelayNode* node)
 {
-    parent->addAndMakeVisible (createAndAddEditorToList (node, delayNodeComponents, parent));
+    auto editor = createAndAddEditorToList (node, delayNodeComponents, parent);
+    parent->addAndMakeVisible (editor);
     node->addNodeListener (parent);
+
+    const auto* parentEditor = node->getParent()->getEditor();
+    const auto& parentColour = parentEditor->getColour();
+    editor->setColour (parentColour.withRotatedHue (parentEditor->getHueIncrement()));
+    editor->setHueIncrement (parentEditor->getHueIncrement());
 }
 
 void NodeCompManager::removeEditor (DelayNode* nodeToRemove)

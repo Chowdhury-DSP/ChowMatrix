@@ -18,6 +18,7 @@ public:
     {
         backgroundColour,
         nodeColour,
+        nodeColour2,
         nodeSelectedColour,
     };
 
