@@ -25,7 +25,7 @@ public:
     void mouseDown (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
     void paint (Graphics& g) override;
-    void parentSizeChanged (int parentWidth, int parentHeight);
+    void updateParentSize (int parentWidth, int parentHeight);
     int getVisibleHeight() const noexcept { return visibleHeight; }
 
     void setSelected (DelayNode* node);

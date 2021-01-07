@@ -57,7 +57,7 @@ void GraphViewport::setupHomeButton()
 void GraphViewport::resized()
 {
     aurora.setBounds (getLocalBounds());
-    graphView.parentSizeChanged (getWidth(), getHeight());
+    graphView.updateParentSize (getWidth(), getHeight());
     centerView();
 
     homeButton.setBounds (0, getHeight() - buttonDim, buttonDim, buttonDim);

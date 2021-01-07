@@ -16,11 +16,11 @@ void StateManager::loadDefaultABStates()
 void StateManager::toggleABState()
 {
     // save current state
-    int saveABState = (int) currentState;
+    const auto saveABState = static_cast<size_t> (currentState);
     abStates[saveABState] = saveState();
 
     // load new state
-    int loadABState = (int) ! currentState;
+    const auto loadABState = static_cast<size_t> (! currentState);
     loadState (abStates[loadABState].get());
 
     currentState = ! currentState; // swap!
