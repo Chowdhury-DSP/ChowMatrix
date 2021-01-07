@@ -81,7 +81,7 @@ void GraphView::paint (Graphics& g)
     });
 }
 
-void GraphView::parentSizeChanged (int parentWidth, int parentHeight)
+void GraphView::updateParentSize (int parentWidth, int parentHeight)
 {
     int xOffset = (getWidth() - parentWidth) / 2;
     visibleHeight = parentHeight;
