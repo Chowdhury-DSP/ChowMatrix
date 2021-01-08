@@ -146,10 +146,13 @@ controlled either as a ``free'' parameter, with units
 of milliseconds, or synced to the tempo of the song.
 \newpar
 The \boldtheme{Feedback} gain controls how much of the
-delayed signal is fed back to the input. At its maximum
-value, the feedback control turns on ``Freeze'' mode, which
-freezes the current signal in the delay line, and mutes
-any incoming input signal.
+delayed signal is fed back to the input. Higher feedback
+values will cause the delay node to "echo" more times.
+\newpar
+By setting the feedback to control to its maximum value,
+the node enters \boldtheme{Freeze} mode, which freezes the
+current signal in the delay line, and mutes any incoming
+input signal.
 \newpar
 The \boldtheme{Pan} processor applies a constant-power
 panner to the mono signal processed by the delay node,
@@ -191,11 +194,12 @@ represented by half-circles. The Input Node on the left represents
 the left input channel, and the right Input Node represents the right
 input channel.
 \newpar
-To \boldtheme{create} a new node, \texttt{SHIFT+Click} on the
-background of the Graph View. If a node is selected, the new
-node will be created as a ``child`` of the selected node. If
-no node is selected, the new node will be created as a child
-of the nearest Input Node.
+\hypertarget{goto:add-node}{To \boldtheme{create}} a new
+node, \texttt{SHIFT+Click} on the background of the Graph
+View. If a node is selected, the new node will be created
+as a ``child`` of the selected node. If no node is selected,
+the new node will be created as a child of the nearest Input
+Node.
 \newpar
 To \boldtheme{select} a node, simply click on the node. A menu
 will appear showing the parameter controls for the selected node.
@@ -207,11 +211,12 @@ The panning is controlled by the node's angle relative to its
 ``parent'' node, and the delay line is controlled by the distance
 from the node to its parent.
 \newpar
-To \boldtheme{delete} a node, \texttt{CMD+Click} on the node,
-or press the \texttt{Delete} key when the node is selected.
+\hypertarget{goto:delete-node}{To \boldtheme{delete}} a node,
+\texttt{CMD+Click} on the node, or press the \texttt{Delete}
+key when the node is selected.
 \newpar
 To \boldtheme{solo} the audio from a specific node,
-\texttt{ALT+Click} on the node. TO un-solo the node,
+\texttt{ALT+Click} on the node. To un-solo the node,
 click on the background of the Graph View.
 \newpar
 The mouse can be used to explore the far reaches of the
@@ -236,10 +241,10 @@ value. Alteratively, single-clicking on the value allows
 you to type in a value for the parameter. Double-clicking
 will reset the parameter to its default value.
 \newpar
-Using \texttt{SHIFT+Click+Drag} will change the same parameter
-for all the delay nodes in unison. \texttt{CMD+Click} on a value
-to ``lock'' the parameter so that it will not be affected by the
-``Insanity'' control.
+\hypertarget{goto:unison}{Using \texttt{SHIFT+Click+Drag}}
+will change the same parameter for all the delay nodes in
+unison. \texttt{CMD+Click} on a value to ``lock'' the parameter
+so that it will not be affected by the ``Insanity'' control.
 
 \subsubsection{Insanity Control}
 ChowMatrix also features an \boldtheme{Insanity} parameter.
@@ -327,11 +332,19 @@ to \href{mailto:chowdsp@gmail.com}{email me directly},
 or \href{https://github.com/Chowdhury-DSP/ChowMatrix/issues}{create an issue ticket}
 on GitHub. GitHub issues are preferred, since they are publicly
 visible.
-\newpar
+
+\subsection{Quick Links}
+\begin{itemize}
+    \item \hyperlink{goto:add-node}{Add a node}
+    \item \hyperlink{goto:delete-node}{Delete a node}
+    \item \hyperlink{goto:unison}{Change parameters for all nodes}
+\end{itemize}
+
 Enjoy!
 \newpar
 Jatin Chowdhury
 \newpar
 \href{https://github.com/Chowdhury-DSP/ChowMatrix}{https://github.com/Chowdhury-DSP/ChowMatrix}
+
 
 \end{document}
