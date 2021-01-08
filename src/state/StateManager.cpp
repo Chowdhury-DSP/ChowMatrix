@@ -26,6 +26,12 @@ void StateManager::toggleABState()
     currentState = ! currentState; // swap!
 }
 
+void StateManager::copyABStates()
+{
+    for (auto& state : abStates)
+        state = saveState();
+}
+
 std::unique_ptr<XmlElement> StateManager::saveState()
 {
     // save parameters

@@ -150,8 +150,9 @@ AudioProcessorEditor* ChowMatrix::createEditor()
             static BottomBarLNF lnf;
             menu.setLookAndFeel (&lnf);
 
-            menu.addItem ("Copy A -> B", [=] { stateManager.toggleABState(); });
-            menu.showMenuAsync (PopupMenu::Options());
+            menu.addItem ("Copy A -> B", [=] { stateManager.copyABStates(); });
+            menu.showMenuAsync (PopupMenu::Options()
+                .withPreferredPopupDirection (PopupMenu::Options::PopupDirection::downwards));
 
             return;
         }
