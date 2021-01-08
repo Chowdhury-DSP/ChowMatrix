@@ -6,7 +6,7 @@
  * Utils for converting delay parameters
  * to tempo-synced delay times.
  */ 
-namespace DelaySyncUtils
+namespace TempoSyncUtils
 {
 
 /** A simple struct containing a rhythmic delay length */
@@ -46,8 +46,8 @@ static constexpr std::array<DelayRhythm, 19> rhythms {
     DelayRhythm ("Two Whole",         "2/1",    8.0         ),
 };
 
-/** Return delay in seconds for rhythm and tempo */
-static inline double getDelayForRythm (double tempoBPM, const DelayRhythm& rhythm)
+/** Return time in seconds for rhythm and tempo */
+static inline double getTimeForRythm (double tempoBPM, const DelayRhythm& rhythm)
 {
     const auto beatLength = 1.0 / (tempoBPM / 60.0);
     return beatLength * rhythm.tempoFactor;
@@ -59,4 +59,4 @@ static inline const DelayRhythm& getRhythmForParam (float param01)
     return rhythms[idx];
 }
 
-}
+} // namespace TempoSyncUtils

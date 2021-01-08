@@ -1,10 +1,10 @@
 #include "DelayNode.h"
 #include "../gui/MatrixView/DelayNodeComponent.h"
 #include "Parameters/ParamHelpers.h"
-#include "Delay/DelaySyncUtils.h"
+#include "Delay/TempoSyncUtils.h"
 
 using namespace ParamTags;
-using namespace DelaySyncUtils;
+using namespace TempoSyncUtils;
 
 DelayNode::DelayNode() :
     params (*this, nullptr, Identifier ("Parameters"), ParamHelpers::createParameterLayout())
@@ -48,7 +48,7 @@ void DelayNode::cookParameters (bool force)
     if (syncDelay)
     {
         auto& rhythm = getRhythmForParam (delayMs->convertTo0to1 (delayLenMs));
-        delayLenMs = 1000.0f * (float) getDelayForRythm (tempoBPM, rhythm);
+        delayLenMs = 1000.0f * (float) getTimeForRythm (tempoBPM, rhythm);
     }
 
     processors.get<gainIdx>().setGainDecibels (*gainDB);

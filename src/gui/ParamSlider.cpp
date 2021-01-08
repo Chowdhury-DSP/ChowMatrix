@@ -1,6 +1,6 @@
 #include "ParamSlider.h"
 #include "../dsp/DelayNode.h"
-#include "../dsp/Delay/DelaySyncUtils.h"
+#include "../dsp/Delay/TempoSyncUtils.h"
 
 using namespace ParamTags;
 
@@ -65,7 +65,7 @@ void ParamSlider::setValueText (const String& paramID, float value01)
     }
 
     // special case: delay parameter in Sync mode
-    auto& rhythm = DelaySyncUtils::getRhythmForParam (value01);
+    auto& rhythm = TempoSyncUtils::getRhythmForParam (value01);
     valueLabel.setText (rhythm.getLabel(), sendNotification);
 }
 
