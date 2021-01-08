@@ -142,6 +142,20 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     });
 
     magicState.addTrigger ("ab_toggle", [=] {
+        if (Desktop::getInstance().getMainMouseSource()
+            .getCurrentModifiers().isCommandDown())
+        {
+            PopupMenu menu;
+
+            static BottomBarLNF lnf;
+            menu.setLookAndFeel (&lnf);
+
+            menu.addItem ("Copy A -> B", [=] { stateManager.toggleABState(); });
+            menu.showMenuAsync (PopupMenu::Options());
+
+            return;
+        }
+
         stateManager.toggleABState();
     });
 

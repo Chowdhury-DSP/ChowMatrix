@@ -18,6 +18,9 @@ public:
     /** Toggle between the A and B states */
     void toggleABState();
 
+    /** Copies the current processor state to both A and B states */
+    void copyABStates();
+
     /** Save the current plugin state as an Xml object */
     std::unique_ptr<XmlElement> saveState();
 
