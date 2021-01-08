@@ -12,6 +12,8 @@
 \definecolor{themered}{HTML}{284b81}
 \colorlet{theme}{themered}
 
+\renewcommand{\arraystretch}{1.5}
+
 \pluginname{ChowMatrix}
 
 \def\pluginfolder{\href{https://help.uaudio.com/hc/en-us/articles/210216306-Default-Install-Locations-for-UAD-Plug-Ins}{plugin folder}}
@@ -146,11 +148,9 @@ controlled either as a ``free'' parameter, with units
 of milliseconds, or synced to the tempo of the song.
 \newpar
 The \boldtheme{Feedback} gain controls how much of the
-delayed signal is fed back to the input. Higher feedback
-values will cause the delay node to "echo" more times.
-\newpar
-By setting the feedback to control to its maximum value,
-the node enters \boldtheme{Freeze} mode, which freezes the
+delayed signal is fed back to the input.
+Setting the feedback to control to its maximum value
+enables \boldtheme{Freeze} mode, which freezes the
 current signal in the delay line, and mutes any incoming
 input signal.
 \newpar
@@ -332,19 +332,30 @@ to \href{mailto:chowdsp@gmail.com}{email me directly},
 or \href{https://github.com/Chowdhury-DSP/ChowMatrix/issues}{create an issue ticket}
 on GitHub. GitHub issues are preferred, since they are publicly
 visible.
-
-\subsection{Quick Links}
-\begin{itemize}
-    \item \hyperlink{goto:add-node}{Add a node}
-    \item \hyperlink{goto:delete-node}{Delete a node}
-    \item \hyperlink{goto:unison}{Change parameters for all nodes}
-\end{itemize}
-
+\newpar
 Enjoy!
 \newpar
 Jatin Chowdhury
 \newpar
 \href{https://github.com/Chowdhury-DSP/ChowMatrix}{https://github.com/Chowdhury-DSP/ChowMatrix}
 
+\newpage
+\subsection{Shortcuts}
+\begin{center}
+    \begin{tabular}{| c || c | c |} 
+    \hline
+    \boldtheme{Action} & \boldtheme{Shortcut} & \boldtheme{Item} \\
+    \hline
+    Add Node & \texttt{SHIFT+Click} & Graph View \\
+    Delete Node & \texttt{CMD+Click} & Graph View \\
+    Solo Node & \texttt{ALT+Click} & Graph View \\
+    \hline
+    Unison Change & \texttt{SHIFT+Drag} & Param Slider \\
+    Insanity Lock & \texttt{CMD+Click} & Param Slider \\
+    Set to default & \texttt{Double-Click} & Param Slider \\
+    Freeze Mode & $>95\%$ & Feedback Slider \\
+    \hline
+   \end{tabular}
+\end{center}
 
 \end{document}
