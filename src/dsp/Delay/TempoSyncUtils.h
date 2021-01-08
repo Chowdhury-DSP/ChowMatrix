@@ -1,6 +1,6 @@
 #pragma once
 
-#include <pch.h>
+#include "../Parameters/ParamHelpers.h"
 
 /**
  * Utils for converting delay parameters
@@ -58,5 +58,22 @@ static inline const DelayRhythm& getRhythmForParam (float param01)
     auto idx = static_cast<size_t> ((rhythms.size() - 1) * param01);
     return rhythms[idx];
 }
+
+class SyncedLFO : public chowdsp::SineWave<float>
+{
+public:
+    SyncedLFO() {}
+    virtual ~SyncedLFO() {}
+
+    void setFreqSynced (const Parameter* freqParam, float tempoBPM)
+    {
+        const auto& rhythm = getRhythmForParam (freqParam->convertTo0to1 (*freqParam));
+        float freqValue = 1.0f / (float) getTimeForRythm ((double) tempoBPM, rhythm);
+        setFrequency (freqValue);
+    }
+
+private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SyncedLFO)
+};
 
 } // namespace TempoSyncUtils

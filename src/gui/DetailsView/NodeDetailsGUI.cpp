@@ -28,6 +28,8 @@ NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) :
 
         if (i < 3)
             l->setTooltip ("Use shift+drag to change all nodes in unison, or ctrl+click for Insanity Lock");
+        else if (i == 10)
+            l->setTooltip ("Use shift+drag to change all nodes in unison, or ctrl+click for Tempo Sync");
         else
             l->setTooltip ("Use shift+drag to change " + String (param) + " for all nodes in unison");
 

@@ -110,7 +110,10 @@ void DelayProc::setParameters (const Parameters& params, bool force)
         : std::pow (jmin (params.feedback, 0.95f), 0.9f);
 
     modDepth = params.modDepth;
-    modSine.setFrequency (params.modFreq);
+    if (params.lfoSynced)
+        modSine.setFreqSynced (params.modFreq, params.tempoBPM);
+    else
+        modSine.setFrequency (*params.modFreq);
 
     if (force)
     {

@@ -60,11 +60,16 @@ void DelayNode::cookParameters (bool force)
         *distortion,
         *pitchSt,
         *diffAmt,
-        *modFreq,
-        *delayMod
+        modFreq,
+        *delayMod,
+        (float) tempoBPM,
+        tempoSyncedLFO
     }, force);
 
-    modSine.setFrequency (*modFreq);
+    if (tempoSyncedLFO)
+        modSine.setFreqSynced (modFreq, (float) tempoBPM);
+    else
+        modSine.setFrequency (*modFreq);
     panner.setPan (*pan);
 }
 
@@ -103,6 +108,12 @@ void DelayNode::toggleInsanityLock (const String& paramID)
 bool DelayNode::isParamLocked (const String& paramID) const noexcept
 {
     return lockedParams.contains (paramID);
+}
+
+void DelayNode::toggleLFOSync()
+{
+    tempoSyncedLFO = ! tempoSyncedLFO;
+    modFreq->sendValueChangedMessageToListeners (*modFreq);
 }
 
 void DelayNode::setDelayType (VariableDelay::DelayType type)
