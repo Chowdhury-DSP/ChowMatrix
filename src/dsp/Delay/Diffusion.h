@@ -41,7 +41,7 @@ public:
 private:
     void calcCoefs (float fc);
 
-    static constexpr size_t maxNumStages = 100;
+    static constexpr size_t maxNumStages = 200;
 
     float a[2] = {1.0f, 0.0f};
     float b[2] = {1.0f, 0.0f};
