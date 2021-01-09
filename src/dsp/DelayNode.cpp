@@ -63,7 +63,8 @@ void DelayNode::cookParameters (bool force)
         modFreq,
         *delayMod,
         (float) tempoBPM,
-        tempoSyncedLFO
+        tempoSyncedLFO,
+        getPlayHead()
     }, force);
 
     if (tempoSyncedLFO)
@@ -170,6 +171,7 @@ void DelayNode::processPanner (dsp::AudioBlock<float>& inputBlock)
         auto* x = inputBlock.getChannelPointer (0);
         auto* left = panBuffer.getWritePointer (0);
         auto* right = panBuffer.getWritePointer (1);
+        modSine.setPlayHead (getPlayHead());
 
         for (size_t i = 0; i < inputBlock.getNumSamples(); ++i)
         {
@@ -228,6 +230,7 @@ XmlElement* DelayNode::saveXml()
     auto state = params.copyState();
     std::unique_ptr<XmlElement> xmlState (state.createXml());
     xmlState->setAttribute ("locked", lockedParams.joinIntoString (",") + ",");
+    xmlState->setAttribute ("lfo_sync", tempoSyncedLFO);
     xml->addChildElement (xmlState.release());
     xml->addChildElement (DBaseNode::saveXml());
 
@@ -254,6 +257,8 @@ void DelayNode::loadXml (XmlElement* xml)
             lockedParams.add (lockedParamsString.substring (0, splitIdx));
             lockedParamsString = lockedParamsString.substring (splitIdx + 1);
         }
+
+        tempoSyncedLFO = xmlState->getBoolAttribute ("lfo_sync");
     }
 
     if (auto* childrenXml = xml->getChildByName ("children"))

@@ -114,6 +114,7 @@ void DelayProc::setParameters (const Parameters& params, bool force)
         modSine.setFreqSynced (params.modFreq, params.tempoBPM);
     else
         modSine.setFrequency (*params.modFreq);
+    modSine.setPlayHead (params.playhead);
 
     if (force)
     {

@@ -39,6 +39,7 @@ public:
         float modDepth;
         float tempoBPM;
         bool lfoSynced;
+        AudioPlayHead* playhead;
     };
 
     void setParameters (const Parameters& params, bool force = false);

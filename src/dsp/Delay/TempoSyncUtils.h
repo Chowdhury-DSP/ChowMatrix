@@ -72,7 +72,23 @@ public:
         setFrequency (freqValue);
     }
 
+    void setPlayHead (AudioPlayHead* playhead)
+    {
+        if (playhead == nullptr)
+            return;
+
+        AudioPlayHead::CurrentPositionInfo info;
+        playhead->getCurrentPosition (info);
+        
+        if (info.isPlaying && ! wasPlaying)
+            reset();
+
+        wasPlaying = info.isPlaying;
+    }
+
 private:
+    bool wasPlaying = false;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SyncedLFO)
 };
 
