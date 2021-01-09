@@ -21,9 +21,9 @@ DelayNode::DelayNode() :
     gainDB     = loadParam (gainTag);
     lpfHz      = loadParam (lpfTag);
     hpfHz      = loadParam (hpfTag);
-    distortion = loadParam (distTag);
     pitchSt    = loadParam (pitchTag);
     diffAmt    = loadParam (diffTag);
+    distortion = loadParam (distTag);
     modFreq    = loadParam (modFreqTag);
     delayMod   = loadParam (delayModTag);
     panMod     = loadParam (panModTag);
