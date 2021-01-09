@@ -261,6 +261,11 @@ void DelayNode::loadXml (XmlElement* xml)
         tempoSyncedLFO = xmlState->getBoolAttribute ("lfo_sync");
     }
 
+    // refresh gui
+    delayMs->sendValueChangedMessageToListeners (*delayMs);
+    pan->sendValueChangedMessageToListeners (*pan);
+    modFreq->sendValueChangedMessageToListeners (*modFreq);
+
     if (auto* childrenXml = xml->getChildByName ("children"))
             DBaseNode::loadXml (childrenXml);
 }
