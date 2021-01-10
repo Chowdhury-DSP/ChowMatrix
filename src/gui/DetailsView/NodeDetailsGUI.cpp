@@ -26,8 +26,10 @@ NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) :
         auto* l = labels.add (std::make_unique<Label> (name, text));
         l->setFont (16.0f);
 
-        if (i < 3)
+        if (i < 3)  // Delay time and pan have "Insanity Lock" option
             l->setTooltip ("Use shift+drag to change all nodes in unison, or ctrl+click for Insanity Lock");
+        else if (i == 10)   // Mod. Freq. has "Tempo Sync" option
+            l->setTooltip ("Use shift+drag to change all nodes in unison, or ctrl+click for Tempo Sync");
         else
             l->setTooltip ("Use shift+drag to change " + String (param) + " for all nodes in unison");
 

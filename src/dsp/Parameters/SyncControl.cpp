@@ -36,6 +36,8 @@ void SyncControl::setTempo (AudioPlayHead* playhead)
         tempo.store (newTempo);
         doForNodes ([=] (DelayNode* n) { n->setTempo (newTempo); });
     }
+
+    doForNodes ([=] (DelayNode* n) { n->setPlayHead (playhead); });
 }
 
 void SyncControl::newNodeAdded (DelayNode* newNode)

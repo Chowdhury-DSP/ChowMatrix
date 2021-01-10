@@ -49,11 +49,6 @@ AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
     params.push_back (std::make_unique<Parameter> (hpfTag, "HPF", String(),
         hpfRange, minHPF, &freqValToString, &stringToFreqVal));
 
-    // set up distortion
-    NormalisableRange<float> distRange { 0.0f, 1.0f };
-    params.push_back (std::make_unique<Parameter> (distTag, "Distortion", String(),
-        distRange, 0.0f, &percentValToString, &stringToPercentVal));
-
     // set up pitch shift
     NormalisableRange<float> pitchRange { -maxPitch, maxPitch };
     params.push_back (std::make_unique<Parameter> (pitchTag, "Pitch", String(),
@@ -63,6 +58,11 @@ AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
     NormalisableRange<float> diffRange { 0.0f, 1.0f };
     params.push_back (std::make_unique<Parameter> (diffTag, "Diffusion", String(),
         diffRange, 0.0f, &percentValToString, &stringToPercentVal));
+
+    // set up distortion
+    NormalisableRange<float> distRange { 0.0f, 1.0f };
+    params.push_back (std::make_unique<Parameter> (distTag, "Distortion", String(),
+        distRange, 0.0f, &percentValToString, &stringToPercentVal));
 
     // set up mod frequency
     NormalisableRange<float> modFreqRange { minModFreq, maxModFreq };

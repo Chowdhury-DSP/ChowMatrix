@@ -15,7 +15,7 @@ void DelayProc::prepare (const dsp::ProcessSpec& spec)
 
     procs.prepare (spec);
     modSine.prepare (spec);
-    modDepthFactor = 0.5f * (float) spec.sampleRate; // max mod depth = 0.5 seconds
+    modDepthFactor = 0.25f * (float) spec.sampleRate; // max mod depth = 0.25 seconds
 }
 
 void DelayProc::reset()
@@ -109,8 +109,12 @@ void DelayProc::setParameters (const Parameters& params, bool force)
     auto fbVal = params.feedback >= maxFeedback ? 1.0f
         : std::pow (jmin (params.feedback, 0.95f), 0.9f);
 
-    modDepth = params.modDepth;
-    modSine.setFrequency (params.modFreq);
+    modDepth = std::pow (params.modDepth, 2.5f);
+    if (params.lfoSynced)
+        modSine.setFreqSynced (params.modFreq, params.tempoBPM);
+    else
+        modSine.setFrequency (*params.modFreq);
+    modSine.setPlayHead (params.playhead);
 
     if (force)
     {

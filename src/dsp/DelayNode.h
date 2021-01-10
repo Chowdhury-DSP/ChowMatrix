@@ -41,6 +41,9 @@ public:
     void toggleInsanityLock (const String& paramID);
     bool isParamLocked (const String& paramID) const noexcept;
 
+    void toggleLFOSync();
+    bool isLFOSynced() const noexcept { return tempoSyncedLFO; }
+
     /** Sets the delay interpolation type for this node */
     void setDelayType (VariableDelay::DelayType type);
     
@@ -124,8 +127,9 @@ private:
     AudioBuffer<float> panBuffer;
     chowdsp::Panner<float> panner;
     
-    chowdsp::SineWave<float> modSine;
+    TempoSyncUtils::SyncedLFO modSine;
     float panModValue = 0.0f;
+    bool tempoSyncedLFO = false;
 
     // needed for GUI
     int nodeIdx = 0;

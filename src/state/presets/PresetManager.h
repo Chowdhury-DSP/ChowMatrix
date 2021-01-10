@@ -12,7 +12,8 @@ public:
     void loadPresets();
     static void addParameters (std::vector<std::unique_ptr<juce::RangedAudioParameter>>& params);
 
-    int getNumPresets() const { return presets.size(); }
+    int getNumPresets() const noexcept { return presets.size(); }
+    int getNumFactoryPresets() const noexcept { return numFactoryPresets; }
     String getPresetName (int idx);
     bool setPreset (int idx);
     int getSelectedPresetIdx() const noexcept { return presetParam->get(); }

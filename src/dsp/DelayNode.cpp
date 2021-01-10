@@ -1,10 +1,10 @@
 #include "DelayNode.h"
 #include "../gui/MatrixView/DelayNodeComponent.h"
 #include "Parameters/ParamHelpers.h"
-#include "Delay/DelaySyncUtils.h"
+#include "Delay/TempoSyncUtils.h"
 
 using namespace ParamTags;
-using namespace DelaySyncUtils;
+using namespace TempoSyncUtils;
 
 DelayNode::DelayNode() :
     params (*this, nullptr, Identifier ("Parameters"), ParamHelpers::createParameterLayout())
@@ -21,9 +21,9 @@ DelayNode::DelayNode() :
     gainDB     = loadParam (gainTag);
     lpfHz      = loadParam (lpfTag);
     hpfHz      = loadParam (hpfTag);
-    distortion = loadParam (distTag);
     pitchSt    = loadParam (pitchTag);
     diffAmt    = loadParam (diffTag);
+    distortion = loadParam (distTag);
     modFreq    = loadParam (modFreqTag);
     delayMod   = loadParam (delayModTag);
     panMod     = loadParam (panModTag);
@@ -48,7 +48,7 @@ void DelayNode::cookParameters (bool force)
     if (syncDelay)
     {
         auto& rhythm = getRhythmForParam (delayMs->convertTo0to1 (delayLenMs));
-        delayLenMs = 1000.0f * (float) getDelayForRythm (tempoBPM, rhythm);
+        delayLenMs = 1000.0f * (float) getTimeForRythm (tempoBPM, rhythm);
     }
 
     processors.get<gainIdx>().setGainDecibels (*gainDB);
@@ -60,11 +60,17 @@ void DelayNode::cookParameters (bool force)
         *distortion,
         *pitchSt,
         *diffAmt,
-        *modFreq,
-        *delayMod
+        modFreq,
+        *delayMod,
+        (float) tempoBPM,
+        tempoSyncedLFO,
+        getPlayHead()
     }, force);
 
-    modSine.setFrequency (*modFreq);
+    if (tempoSyncedLFO)
+        modSine.setFreqSynced (modFreq, (float) tempoBPM);
+    else
+        modSine.setFrequency (*modFreq);
     panner.setPan (*pan);
 }
 
@@ -103,6 +109,12 @@ void DelayNode::toggleInsanityLock (const String& paramID)
 bool DelayNode::isParamLocked (const String& paramID) const noexcept
 {
     return lockedParams.contains (paramID);
+}
+
+void DelayNode::toggleLFOSync()
+{
+    tempoSyncedLFO = ! tempoSyncedLFO;
+    modFreq->sendValueChangedMessageToListeners (*modFreq);
 }
 
 void DelayNode::setDelayType (VariableDelay::DelayType type)
@@ -159,6 +171,7 @@ void DelayNode::processPanner (dsp::AudioBlock<float>& inputBlock)
         auto* x = inputBlock.getChannelPointer (0);
         auto* left = panBuffer.getWritePointer (0);
         auto* right = panBuffer.getWritePointer (1);
+        modSine.setPlayHead (getPlayHead());
 
         for (size_t i = 0; i < inputBlock.getNumSamples(); ++i)
         {
@@ -217,6 +230,7 @@ XmlElement* DelayNode::saveXml()
     auto state = params.copyState();
     std::unique_ptr<XmlElement> xmlState (state.createXml());
     xmlState->setAttribute ("locked", lockedParams.joinIntoString (",") + ",");
+    xmlState->setAttribute ("lfo_sync", tempoSyncedLFO);
     xml->addChildElement (xmlState.release());
     xml->addChildElement (DBaseNode::saveXml());
 
@@ -243,7 +257,14 @@ void DelayNode::loadXml (XmlElement* xml)
             lockedParams.add (lockedParamsString.substring (0, splitIdx));
             lockedParamsString = lockedParamsString.substring (splitIdx + 1);
         }
+
+        tempoSyncedLFO = xmlState->getBoolAttribute ("lfo_sync");
     }
+
+    // refresh gui
+    delayMs->sendValueChangedMessageToListeners (*delayMs);
+    pan->sendValueChangedMessageToListeners (*pan);
+    modFreq->sendValueChangedMessageToListeners (*modFreq);
 
     if (auto* childrenXml = xml->getChildByName ("children"))
             DBaseNode::loadXml (childrenXml);
