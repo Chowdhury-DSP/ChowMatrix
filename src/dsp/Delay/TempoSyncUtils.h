@@ -53,18 +53,21 @@ static inline double getTimeForRythm (double tempoBPM, const DelayRhythm& rhythm
     return beatLength * rhythm.tempoFactor;
 }
 
+/** Returns the corresponding rhythm for a 0-1 param value */
 static inline const DelayRhythm& getRhythmForParam (float param01)
 {
     auto idx = static_cast<size_t> ((rhythms.size() - 1) * std::pow (param01, 1.5f));
     return rhythms[idx];
 }
 
+/** Sine-wave oscillator synced to the song tempo */
 class SyncedLFO : public chowdsp::SineWave<float>
 {
 public:
     SyncedLFO() {}
     virtual ~SyncedLFO() {}
 
+    // Sets the correct oscillator frequency for a given tempo
     void setFreqSynced (const Parameter* freqParam, float tempoBPM)
     {
         const auto& rhythm = getRhythmForParam (freqParam->convertTo0to1 (*freqParam));
@@ -72,6 +75,7 @@ public:
         setFrequency (freqValue);
     }
 
+    // resets the LFO when the DAW starts playing
     void setPlayHead (AudioPlayHead* playhead)
     {
         if (playhead == nullptr)
