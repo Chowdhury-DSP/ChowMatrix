@@ -27,6 +27,15 @@ PresetComp::PresetComp (PresetManager& manager) :
     presetNameEditor.setJustification (Justification::centred);
 
     presetUpdated();
+    presetBox.onChange  = [=, &manager] { 
+        const auto selectedId = presetBox.getSelectedId();
+
+        // return if not a user preset!
+        if (selectedId > manager.getNumPresets() || selectedId <= manager.getNumFactoryPresets())
+            return;
+
+        manager.setPreset (selectedId - 1);
+    };
 }
 
 PresetComp::~PresetComp()
