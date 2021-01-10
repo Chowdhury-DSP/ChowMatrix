@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Made Graph View scrollable.
 - Added A/B toggle for switching plugin state.
 - Added individual node colouring.
+- Extended range for tempo-synced delay times.
 - Fixed node distortion bug in Logic/Garageband.
 - Fixed bug with incorrect delay times between sibling nodes.
 - Fixed preset menu not returning to currently selected preset.

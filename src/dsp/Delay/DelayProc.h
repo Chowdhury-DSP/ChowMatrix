@@ -5,6 +5,7 @@
 #include "VariableDelay.h"
 #include "PitchShiftWrapper.h"
 #include "Diffusion.h"
+#include "TempoSyncUtils.h"
 
 /**
  * Audio processor that implements delay line with feedback,
@@ -34,8 +35,11 @@ public:
         float distortion;
         float pitchSt;
         float diffAmt;
-        float modFreq;
+        const AudioProcessorValueTreeState::Parameter* modFreq;
         float modDepth;
+        float tempoBPM;
+        bool lfoSynced;
+        AudioPlayHead* playhead;
     };
 
     void setParameters (const Parameters& params, bool force = false);
@@ -75,7 +79,7 @@ private:
         PitchShiftWrapper
         > procs;
 
-    chowdsp::SineWave<float> modSine;
+    TempoSyncUtils::SyncedLFO modSine;
     float delayModValue = 0.0f;
     float modDepth = 0.0f;
     float modDepthFactor = 1.0f;

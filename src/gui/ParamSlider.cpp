@@ -1,6 +1,6 @@
 #include "ParamSlider.h"
 #include "../dsp/DelayNode.h"
-#include "../dsp/Delay/DelaySyncUtils.h"
+#include "../dsp/Delay/TempoSyncUtils.h"
 
 using namespace ParamTags;
 
@@ -58,15 +58,24 @@ ParamSlider::~ParamSlider()
 void ParamSlider::setValueText (const String& paramID, float value01)
 {
     MessageManagerLock mml;
-    if (paramID != delayTag || ! node.getDelaySync())
+
+    // special case: delay parameter in Sync mode
+    if (paramID == delayTag && node.getDelaySync())
     {
-        valueLabel.setText (param->getCurrentValueAsText(), sendNotification);
+        auto& rhythm = TempoSyncUtils::getRhythmForParam (value01);
+        valueLabel.setText (rhythm.getLabel(), sendNotification);
         return;
     }
 
-    // special case: delay parameter in Sync mode
-    auto& rhythm = DelaySyncUtils::getRhythmForParam (value01);
-    valueLabel.setText (rhythm.getLabel(), sendNotification);
+    // special case: mod freq. parameter in Sync mode
+    if (paramID == modFreqTag && node.isLFOSynced())
+    {
+        auto& rhythm = TempoSyncUtils::getRhythmForParam (value01);
+        valueLabel.setText (rhythm.getLabel(), sendNotification);
+        return;
+    }
+
+    valueLabel.setText (param->getCurrentValueAsText(), sendNotification);
 }
 
 void ParamSlider::parameterValueChanged (int, float)
@@ -119,6 +128,9 @@ void ParamSlider::mouseDown (const MouseEvent& e)
     {
         if (param->paramID == delayTag || param->paramID == panTag)
             toggleParamLock();
+        else if (param->paramID == modFreqTag)
+            node.toggleLFOSync();
+        
         return;
     }
 
