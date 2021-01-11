@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 - Added pitch-shifting and diffusion for each delay node.
 - Added LV2 compilation for Linux.
 - Made Graph View scrollable.
-- Added A/B toggle for switching plugin state.
+- Added A/B buttons for switching plugin state.
 - Added individual node colouring.
 - Extended range for tempo-synced delay times.
 - Fixed node distortion bug in Logic/Garageband.
