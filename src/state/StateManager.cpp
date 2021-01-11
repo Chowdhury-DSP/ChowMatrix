@@ -25,6 +25,7 @@ void StateManager::setCurrentABState (int newState)
         return;
 
     currentState = newState;
+    copyABState();
     loadState (abStates[(size_t) currentState].get());
 }
 
