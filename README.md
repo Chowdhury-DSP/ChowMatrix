@@ -20,7 +20,7 @@ For more information on using ChowMatrix, see the [user manual](https://ccrma.st
 To download the latest release, visit the
 [Releases page](https://github.com/Chowdhury-DSP/ChowMatrix/releases/latest).
 If you would like to try the most recent builds (potentially
-unstable) see the [`bin/` directory](https://github.com/Chowdhury-DSP/ChowMatrix/tree/main/bin).
+unstable) see the [`bin/` directory](https://github.com/Chowdhury-DSP/ChowMatrix/tree/develop/bin).
 
 
 ## Building
