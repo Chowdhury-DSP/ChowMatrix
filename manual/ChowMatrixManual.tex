@@ -243,11 +243,10 @@ return to the default view position.
 The \boldtheme{Details View} is below the Insanity Slider
 on the interface, and allows the user to view and edit the
 parameters for each node without having to select the node
-in the Graph View.
-\newpar
-To select a node in the Details View, click the corresponding
-node circle. Note that selecting a node in the Details
-View will select the same node in the Graph View.
+in the Graph View. To select a node in the Details View,
+click the corresponding node circle. Note that selecting
+a node in the Details View will select the same node in
+the Graph View.
 \newpar
 To edit a parameter, \shortcut{Click+Drag} on the parameter
 value. Alteratively, single-clicking on the value allows
@@ -293,16 +292,19 @@ when the delay length is changed, as well as attenuating high
 frequencies passing through the delay. Zero-order interpolation
 will make the delay nodes sound  ``glitchy'' when the delay length
 is changed. The differences between the delay modes are most noticeable
-when moving the delay nodes quickly, particularly in ``Insane'' mode,
-and are further accentuated when lots of feedback is used.
+when moving or modulating the delay nodes quickly, particularly
+in ``Insane'' mode, and are further accentuated when lots of
+feedback is used.
 \newpar
 \boldtheme{Clear} will flush all signal from the delay nodes.
 This can be useful if you have delay nodes with lots of feedback,
 and wish to clear the delay lines without having to wait for
 the feedback to echo until silence.
 \newpar
-\boldtheme{Sync/Free} toggles whether the delay times are synced
-to the tempo of the song, or ``free'' to be any length.
+\boldtheme{Sync/Free} toggles whether the delay times are
+synced to the tempo of the song, or ``free'' to be any length.
+For plugin hosts that do not supply tempo information to plugins,
+ChowMatrix will default to 120 BPM.
 \newpar
 The \boldtheme{A/B} control allows the user to toggle
 between two plugin states. This can be useful for using
