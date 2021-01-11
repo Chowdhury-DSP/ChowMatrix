@@ -14,7 +14,8 @@
 
 \renewcommand{\arraystretch}{1.5}
 
-\newcommand\shortcut[1]{\colorbox{lightgray}{\texttt{#1}}}
+\definecolor{highlightcolour}{HTML}{DEE6EF}
+\newcommand\shortcut[1]{\colorbox{highlightcolour}{\texttt{#1}}}
 
 \pluginname{ChowMatrix}
 
@@ -144,7 +145,7 @@ by the feedback path.
 The \boldtheme{Pitch} processor re-pitches the signal up
 or down by a given number of semitones. This effect can be
 useful for obtaining interesting and creative soundscapes.
-\newpar
+\newline
 The \boldtheme{Delay} line has a length that can be
 controlled either as a ``free'' parameter, with units
 of milliseconds, or synced to the tempo of the song.
@@ -166,10 +167,16 @@ Each delay node also contains modulations controls for the
 delay time and panning. The modulation section has three
 controls:
 \newpar
-\boldtheme{Mod Freq} determines the modulation frequency,
-and ranges from 0 to 5 Hz.
+\boldtheme{Mod Freq} determines the modulation frequency.
+Similar to the delay length, the modulation frequency can
+be controlled as either a free parameter (0 - 5 Hz), or
+synced to the tempo of the song.
+\newpar
 \boldtheme{Delay Mod} controls the amount the delay length
-is modulated for this node.
+is modulated for this node. Note that changing the
+\hyperlink{goto:interp-mode}{delay interpolation mode}
+will change how this modulation sounds.
+\newpar
 \boldtheme{Pan Mod} controls the modulation amount for
 the node pan control. Note that this control can be
 set to negative values to reverse the modulation.
@@ -196,7 +203,7 @@ represented by half-circles. The Input Node on the left represents
 the left input channel, and the right Input Node represents the right
 input channel.
 \newpar
-\hypertarget{goto:add-node}{To \boldtheme{create}} a new
+To \boldtheme{create} a new
 node, \shortcut{SHIFT+Click} on the background of the Graph
 View. If a node is selected, the new node will be created
 as a ``child`` of the selected node. If no node is selected,
@@ -213,7 +220,7 @@ The panning is controlled by the node's angle relative to its
 ``parent'' node, and the delay line is controlled by the distance
 from the node to its parent.
 \newpar
-\hypertarget{goto:delete-node}{To \boldtheme{delete}} a node,
+To \boldtheme{delete} a node,
 \shortcut{CMD+Click} on the node, or press the \shortcut{Delete}
 key when the node is selected.
 \newpar
@@ -228,7 +235,7 @@ return to the default view position.
 
 \begin{figure}[ht]
     \center
-    \includegraphics[width=0.8\columnwidth]{screenshots/DetailsView.png}
+    \includegraphics[width=0.9\columnwidth]{screenshots/DetailsView.png}
     \caption{\label{fig:details_view}{\it ChowMatrix Details View}}
 \end{figure}
 
@@ -238,12 +245,16 @@ on the interface, and allows the user to view and edit the
 parameters for each node without having to select the node
 in the Graph View.
 \newpar
+To select a node in the Details View, click the corresponding
+node circle. Note that selecting a node in the Details
+View will select the same node in the Graph View.
+\newpar
 To edit a parameter, \shortcut{Click+Drag} on the parameter
 value. Alteratively, single-clicking on the value allows
 you to type in a value for the parameter. Double-clicking
 will reset the parameter to its default value.
-\newpar
-\hypertarget{goto:unison}{Using \shortcut{SHIFT+Click+Drag}}
+\newline
+Using \shortcut{SHIFT+Click+Drag}
 will change the same parameter for all the delay nodes in
 unison. \shortcut{CMD+Click} on a value to ``lock'' the
 parameter so that it will not be affected by the ``Insanity''
@@ -271,8 +282,9 @@ The \boldtheme{Dry/Wet} sliders control the level of the dry
 and wet signals coming out of the plugin. To use ChowMatrix as
 a ``send'', turn the Dry level all the way down to \texttt{-inf}.
 \newpar
-\boldtheme{Mode} controls the delay interpolation
-mode\footnote{For more information on delay-line interpolation, see \href{https://ccrma.stanford.edu/~jos/pasp/Delay_Line_Signal_Interpolation.html}{Smith III, 2010}.}
+\hypertarget{goto:interp-mode}{\boldtheme{Mode}} controls
+the delay interpolation mode\footnote{For more information on
+delay-line interpolation, see \href{https://ccrma.stanford.edu/~jos/pasp/Delay_Line_Signal_Interpolation.html}{Smith III, 2010}.}
 used by the delay nodes. Using higher-order interpolation modes
 will make the delay nodes sound more ``smooth'' when the delay
 length is changed, at the cost of slightly higher CPU usage.
@@ -294,7 +306,10 @@ to the tempo of the song, or ``free'' to be any length.
 \newpar
 The \boldtheme{A/B} control allows the user to toggle
 between two plugin states. This can be useful for using
-insanity mode without losing your current settings.
+insanity mode without losing your current settings. Use
+the ``A'' or ``B'' buttons to load one of the saved states
+as the current active state. Use the ``arrow'' button to
+save the current state as either the A or B state.
 \newpar
 The \boldtheme{Randomise} button will randomise the parameters
 for all the delay nodes. This can be useful for quickly
@@ -316,12 +331,13 @@ and when the plugin opens, it will search this folder, as
 well as any subfolders, to load new user presets.
 Presets located in subfolders will be placed in their
 own groups in the preset menu.
-\newline\newline
 
 \subsection{Open Source}
 ChowMatrix is open-source software that is free (as in ``free
 beer''), and free (as in ``free speech''), under the
-3-clause BSD license. As an open-source project, ChowMatrix is
+3-clause BSD license.
+\newpar
+As an open-source project, ChowMatrix is
 open to outside contributors. If you would like to contribute
 to the development of ChowMatrix, please visit the
 \href{https://github.com/Chowdhury-DSP/ChowMatrix/issues}{issues page}
@@ -357,6 +373,7 @@ Jatin Chowdhury
     Insanity Lock & \texttt{CMD+Click} & Param Slider \\
     Set to default & \texttt{Double-Click} & Param Slider \\
     Freeze Mode & $>95\%$ & Feedback Slider \\
+    Tempo-sync LFO & \texttt{CMD+Click} & Mod. Freq. Slider \\
     \hline
    \end{tabular}
 \end{center}
