@@ -15,11 +15,14 @@ public:
      */
     void loadDefaultABStates();
 
-    /** Toggle between the A and B states */
-    void toggleABState();
+    /** Copies the current processor state to the non-active state */
+    void copyABState();
 
-    /** Copies the current processor state to both A and B states */
-    void copyABStates();
+    /** Returns 0 for A state, 1 for B state */
+    int getCurrentABState() const noexcept { return static_cast<int> (currentState); }
+
+    /** Loads a new state */
+    void setCurrentABState (int newState);
 
     /** Save the current plugin state as an Xml object */
     std::unique_ptr<XmlElement> saveState();
