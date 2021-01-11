@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../ChowMatrix.h"
-#include "StateManager.h"
-#include "../gui/BottomBar/BottomBarLNF.h"
+#include "../../ChowMatrix.h"
+#include "../../state/StateManager.h"
+#include "BottomBarLNF.h"
 
 /** GUI component to manage A/B states */
 class ABComp : public Component

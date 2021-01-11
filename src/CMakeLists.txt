@@ -21,6 +21,7 @@ target_sources(ChowMatrix PRIVATE
 
     gui/AutoUpdating.cpp
     gui/ParamSlider.cpp
+    gui/BottomBar/ABComp.cpp
     gui/BottomBar/BottomBarLNF.cpp
     gui/DetailsView/NodeDetails.cpp
     gui/DetailsView/NodeDetailsComponent.cpp
@@ -33,7 +34,6 @@ target_sources(ChowMatrix PRIVATE
     gui/MatrixView/NodeCompManager.cpp
     gui/MatrixView/NodeComponent.cpp
 
-    state/ABComp.cpp
     state/StateManager.cpp
     state/presets/PresetComp.cpp
     state/presets/PresetManager.cpp
