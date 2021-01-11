@@ -13,17 +13,20 @@ void StateManager::loadDefaultABStates()
         state = saveState();
 }
 
-void StateManager::toggleABState()
+void StateManager::copyABState()
 {
-    // save current state
-    const auto saveABState = static_cast<size_t> (currentState);
+    const auto saveABState = static_cast<size_t> (! currentState);
     abStates[saveABState] = saveState();
+}
 
-    // load new state
-    const auto loadABState = static_cast<size_t> (! currentState);
-    loadState (abStates[loadABState].get());
+void StateManager::setCurrentABState (int newState)
+{
+    if ((bool) newState == currentState)
+        return;
 
-    currentState = ! currentState; // swap!
+    currentState = newState;
+    copyABState();
+    loadState (abStates[(size_t) currentState].get());
 }
 
 std::unique_ptr<XmlElement> StateManager::saveState()

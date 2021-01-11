@@ -1,4 +1,5 @@
 #include "ChowMatrix.h"
+#include "gui/BottomBar/ABComp.h"
 #include "gui/BottomBar/BottomBarLNF.h"
 #include "gui/BottomBar/TextSliderItem.h"
 #include "gui/DetailsView/NodeDetailsGUI.h"
@@ -128,6 +129,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerFactory ("NodeDetails", &NodeDetailsItem::factory);
     builder->registerFactory ("TextSlider", &TextSliderItem::factory);
     builder->registerFactory ("PresetComp", &PresetCompItem::factory);
+    builder->registerFactory ("ABComp", &ABCompItem::factory);
     builder->registerLookAndFeel ("InsanityLNF", std::make_unique<InsanityLNF>());
     builder->registerLookAndFeel ("BottomBarLNF", std::make_unique<BottomBarLNF>());
     builder->registerLookAndFeel ("PresetsLNF", std::make_unique<PresetsLNF>());
@@ -139,24 +141,6 @@ AudioProcessorEditor* ChowMatrix::createEditor()
 
     magicState.addTrigger ("randomise", [=] {
         NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->randomiseParameters(); });
-    });
-
-    magicState.addTrigger ("ab_toggle", [=] {
-        if (Desktop::getInstance().getMainMouseSource()
-            .getCurrentModifiers().isCommandDown())
-        {
-            PopupMenu menu;
-
-            static BottomBarLNF lnf;
-            menu.setLookAndFeel (&lnf);
-
-            menu.addItem ("Copy A -> B", [=] { stateManager.toggleABState(); });
-            menu.showMenuAsync (PopupMenu::Options());
-
-            return;
-        }
-
-        stateManager.toggleABState();
     });
 
     auto editor =  new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
