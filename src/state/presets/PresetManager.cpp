@@ -20,8 +20,6 @@ PresetManager::PresetManager (StateManager* stateManager, AudioProcessorValueTre
 
 StringArray PresetManager::getPresetChoices()
 {
-
-
     StringArray choices;
     for (auto p : presetMap)
         choices.add (p.second->name);
@@ -35,6 +33,9 @@ void PresetManager::loadPresets()
     presets.add (std::make_unique<Preset> ("Lush.chowpreset"));
     presets.add (std::make_unique<Preset> ("Rhythmic.chowpreset"));
     presets.add (std::make_unique<Preset> ("Crazy.chowpreset"));
+    presets.add (std::make_unique<Preset> ("Chord.chowpreset"));
+    presets.add (std::make_unique<Preset> ("Wobble.chowpreset"));
+    presets.add (std::make_unique<Preset> ("Wonky.chowpreset"));
     numFactoryPresets = presets.size();
 
     for (auto* p : presets)
