@@ -27,15 +27,6 @@ PresetComp::PresetComp (PresetManager& manager) :
     presetNameEditor.setJustification (Justification::centred);
 
     presetUpdated();
-    presetBox.onChange  = [=, &manager] { 
-        const auto selectedId = presetBox.getSelectedId();
-
-        // return if not a user preset!
-        if (selectedId > manager.getNumPresets() || selectedId <= manager.getNumFactoryPresets())
-            return;
-
-        manager.setPreset (selectedId - 1);
-    };
 }
 
 PresetComp::~PresetComp()
@@ -64,6 +55,15 @@ void PresetComp::presetUpdated()
     presetBox.setSelectedId (manager.getSelectedPresetIdx() + 1, dontSendNotification);
 }
 
+void PresetComp::menuItemAction() const
+{
+    const auto selectedId = presetBox.getSelectedId();
+    if (selectedId >= 1000 || selectedId <= 0)
+        return;
+
+    manager.setPreset (selectedId - 1);
+}
+
 void PresetComp::loadPresetChoices()
 {
     presetBox.getRootMenu()->clear();
@@ -83,14 +83,7 @@ void PresetComp::loadPresetChoices()
 
         PopupMenu::Item presetItem { presetName };
         presetItem.itemID = i+1;
-
-        presetItem.action = [=] { 
-            const auto selectedId = presetBox.getSelectedId();
-            if (selectedId >= 1000 || selectedId <= 0)
-                return;
-
-            manager.setPreset (selectedId - 1);
-        };
+        presetItem.action = std::bind (&PresetComp::menuItemAction, this);
         
         presetChoicesMap[category].addItem (presetItem);
     }
@@ -99,7 +92,7 @@ void PresetComp::loadPresetChoices()
         presetBox.getRootMenu()->addSubMenu (presetGroup.first, presetGroup.second);
 
     // add user presets
-    auto& userPresetMenu = manager.getUserPresetMenu();
+    auto& userPresetMenu = manager.getUserPresetMenu (this);
     if (userPresetMenu.containsAnyActiveItems())
         presetBox.getRootMenu()->addSubMenu ("User", userPresetMenu);
 

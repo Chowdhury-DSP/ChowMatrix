@@ -3,6 +3,7 @@
 #include "Preset.h"
 
 class StateManager;
+class PresetComp;
 class PresetManager
 {
 public:
@@ -23,7 +24,7 @@ public:
     File getUserPresetFolder() { return userPresetFolder; }
     void chooseUserPresetFolder();
     bool saveUserPreset (const String& name, int& newPresetIdx);
-    const PopupMenu& getUserPresetMenu() const { return userPresetMenu; }
+    const PopupMenu& getUserPresetMenu (const PresetComp* comp) const;
 
     struct Listener
     {

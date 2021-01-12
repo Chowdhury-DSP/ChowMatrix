@@ -19,6 +19,8 @@ public:
     void resized() override;
     void presetUpdated() override;
 
+    void menuItemAction() const;
+
 private:
     void loadPresetChoices();
     void addPresetOptions();
