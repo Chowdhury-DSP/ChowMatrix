@@ -28,7 +28,7 @@ public:
     void updateParentSize (int parentWidth, int parentHeight);
     int getVisibleHeight() const noexcept { return visibleHeight; }
 
-    void setSelected (DelayNode* node);
+    void setSelected (DelayNode* node, bool justCreated = false);
     void setSoloed (DelayNode* node);
     void nodeAdded (DelayNode* newNode) override;
     void nodeRemoved (DelayNode* nodeToRemove) override;

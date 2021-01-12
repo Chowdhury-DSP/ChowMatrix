@@ -41,18 +41,26 @@ void GraphView::mouseDown (const MouseEvent& e)
     if (e.mods.isShiftDown()) // create new node at mouse position
     {
         // lambda to add child to parent and move to mouse position
-        auto addNode = [&e] (DBaseNode* parent) { parent->addChild()->getEditor()->mouseDrag (e); };
+        auto addNode = [&e] (DBaseNode* parent) -> DelayNode* {
+            auto newNode = parent->addChild();
+            newNode->getEditor()->mouseDrag (e);
+            return newNode;
+        };
 
         // if a node is selected create child from that node
+        DelayNode* newNode = nullptr;
         if (auto selectedNode = plugin.getManager().getSelected())
         {
-            addNode (selectedNode);
-            return;
+            newNode = addNode (selectedNode);
+        }
+        else // otherwise create a node from whichever side the mouse is on
+        {
+            bool mouseSide = e.getPosition().x > getWidth() / 2;
+            newNode = addNode (&plugin.getNodes()->at ((size_t) mouseSide));
         }
 
-        // otherwise create a node from whichever side the mouse is on
-        bool mouseSide = e.getPosition().x > getWidth() / 2;
-        addNode (&plugin.getNodes()->at ((size_t) mouseSide));
+        if (newNode)
+            setSelected (newNode, true);
     }
 }
 
@@ -96,8 +104,14 @@ void GraphView::updateParentSize (int parentWidth, int parentHeight)
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* childNode) { childNode->getEditor()->updatePosition(); });
 }
 
-void GraphView::setSelected (DelayNode* node)
+void GraphView::setSelected (DelayNode* node, bool justCreated)
 {
+    if (justCreated) // if the node was just created, we want to alert the DetailsView too!
+    {
+        plugin.getManager().setSelected (node, NodeManager::ActionSource::DetailsView);
+        return;
+    }
+    
     plugin.getManager().setSelected (node, NodeManager::ActionSource::GraphView);
 }
 
