@@ -9,7 +9,8 @@ gui:
   - src/gui/**/*
 
 presets:
-  - any: ['src/state/presets/*', 'res/presets/*']
+  - src/state/presets/*
+  - res/presets/*
 
 documentation:
   - manual/**/*

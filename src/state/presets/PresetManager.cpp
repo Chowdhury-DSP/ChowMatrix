@@ -1,4 +1,5 @@
 #include "PresetManager.h"
+#include "PresetComp.h"
 #include "../StateManager.h"
 
 namespace
@@ -170,6 +171,15 @@ void PresetManager::loadPresetFolder (PopupMenu& menu, File& directory)
         menu.addItem (newPreset->index + 1, newPreset->name.fromFirstOccurrenceOf ("User_", false, false));
         maxIdx++;
     }
+}
+
+const PopupMenu& PresetManager::getUserPresetMenu (const PresetComp* comp) const
+{
+    PopupMenu::MenuItemIterator iter (userPresetMenu, true);
+    while (iter.next())
+        iter.getItem().action = std::bind (&PresetComp::menuItemAction, comp);
+
+    return userPresetMenu;
 }
 
 void PresetManager::updateUserPresets()
