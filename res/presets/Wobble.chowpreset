@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Preset name="Wobble">
+  <state>
+    <Parameters>
+      <PARAM id="delay_type" value="2.0"/>
+      <PARAM id="dry_param" value="-60.0"/>
+      <PARAM id="insanity" value="0.0"/>
+      <PARAM id="snyc" value="0.0"/>
+      <PARAM id="wet_param" value="-12.0"/>
+      <PARAM id="preset" value="4"/>
+    </Parameters>
+    <nodes>
+      <input_node>
+        <children>
+          <delay_node>
+            <Parameters locked="," lfo_sync="0">
+              <PARAM id="DIFF" value="0.2000000029802322"/>
+              <PARAM id="DIST" value="0.0"/>
+              <PARAM id="DLY" value="199.9999847412109"/>
+              <PARAM id="FDBK" value="0.0"/>
+              <PARAM id="GAIN" value="0.0"/>
+              <PARAM id="HPF" value="20.0"/>
+              <PARAM id="LPF" value="20000.0"/>
+              <PARAM id="MOD_DELAY" value="0.1000000014901161"/>
+              <PARAM id="MOD_FREQ" value="1.99999988079071"/>
+              <PARAM id="MOD_PAN" value="0.2000000476837158"/>
+              <PARAM id="PAN" value="0.0"/>
+              <PARAM id="PITCH" value="0.0"/>
+            </Parameters>
+            <children>
+              <delay_node>
+                <Parameters locked="," lfo_sync="0">
+                  <PARAM id="DIFF" value="0.0"/>
+                  <PARAM id="DIST" value="0.0"/>
+                  <PARAM id="DLY" value="299.9998779296875"/>
+                  <PARAM id="FDBK" value="0.0"/>
+                  <PARAM id="GAIN" value="0.0"/>
+                  <PARAM id="HPF" value="20.0"/>
+                  <PARAM id="LPF" value="20000.0"/>
+                  <PARAM id="MOD_DELAY" value="0.0"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN" value="0.0"/>
+                  <PARAM id="PAN" value="-0.7150999307632446"/>
+                  <PARAM id="PITCH" value="0.0"/>
+                </Parameters>
+                <no_children/>
+              </delay_node>
+              <delay_node>
+                <Parameters locked="," lfo_sync="0">
+                  <PARAM id="DIFF" value="0.0"/>
+                  <PARAM id="DIST" value="0.0"/>
+                  <PARAM id="DLY" value="400.0000610351563"/>
+                  <PARAM id="FDBK" value="0.4078800082206726"/>
+                  <PARAM id="GAIN" value="0.0"/>
+                  <PARAM id="HPF" value="20.0"/>
+                  <PARAM id="LPF" value="20000.0"/>
+                  <PARAM id="MOD_DELAY" value="0.0"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN" value="0.0"/>
+                  <PARAM id="PAN" value="0.01248109340667725"/>
+                  <PARAM id="PITCH" value="0.0"/>
+                </Parameters>
+                <no_children/>
+              </delay_node>
+              <delay_node>
+                <Parameters locked="," lfo_sync="0">
+                  <PARAM id="DIFF" value="0.0"/>
+                  <PARAM id="DIST" value="0.0"/>
+                  <PARAM id="DLY" value="349.9999694824219"/>
+                  <PARAM id="FDBK" value="0.0"/>
+                  <PARAM id="GAIN" value="0.0"/>
+                  <PARAM id="HPF" value="20.0"/>
+                  <PARAM id="LPF" value="20000.0"/>
+                  <PARAM id="MOD_DELAY" value="0.0"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN" value="0.0"/>
+                  <PARAM id="PAN" value="0.7048327922821045"/>
+                  <PARAM id="PITCH" value="0.0"/>
+                </Parameters>
+                <no_children/>
+              </delay_node>
+            </children>
+          </delay_node>
+        </children>
+      </input_node>
+      <input_node>
+        <children>
+          <delay_node>
+            <Parameters locked="," lfo_sync="0">
+              <PARAM id="DIFF" value="0.0"/>
+              <PARAM id="DIST" value="0.0"/>
+              <PARAM id="DLY" value="199.9999847412109"/>
+              <PARAM id="FDBK" value="0.0"/>
+              <PARAM id="GAIN" value="0.0"/>
+              <PARAM id="HPF" value="20.0"/>
+              <PARAM id="LPF" value="20000.0"/>
+              <PARAM id="MOD_DELAY" value="0.2000000029802322"/>
+              <PARAM id="MOD_FREQ" value="1.99999988079071"/>
+              <PARAM id="MOD_PAN" value="-0.300000011920929"/>
+              <PARAM id="PAN" value="0.0"/>
+              <PARAM id="PITCH" value="0.0"/>
+            </Parameters>
+            <children>
+              <delay_node>
+                <Parameters locked="," lfo_sync="0">
+                  <PARAM id="DIFF" value="0.0"/>
+                  <PARAM id="DIST" value="0.0"/>
+                  <PARAM id="DLY" value="380.0"/>
+                  <PARAM id="FDBK" value="0.0"/>
+                  <PARAM id="GAIN" value="0.0"/>
+                  <PARAM id="HPF" value="20.0"/>
+                  <PARAM id="LPF" value="20000.0"/>
+                  <PARAM id="MOD_DELAY" value="0.0"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN" value="0.0"/>
+                  <PARAM id="PAN" value="-0.36"/>
+                  <PARAM id="PITCH" value="0.0"/>
+                </Parameters>
+                <no_children/>
+              </delay_node>
+              <delay_node>
+                <Parameters locked="," lfo_sync="0">
+                  <PARAM id="DIFF" value="0.0"/>
+                  <PARAM id="DIST" value="0.0"/>
+                  <PARAM id="DLY" value="270.0"/>
+                  <PARAM id="FDBK" value="0.0"/>
+                  <PARAM id="GAIN" value="0.0"/>
+                  <PARAM id="HPF" value="20.0"/>
+                  <PARAM id="LPF" value="20000.0"/>
+                  <PARAM id="MOD_DELAY" value="0.0"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN" value="0.0"/>
+                  <PARAM id="PAN" value="0.36"/>
+                  <PARAM id="PITCH" value="0.0"/>
+                </Parameters>
+                <no_children/>
+              </delay_node>
+            </children>
+          </delay_node>
+        </children>
+      </input_node>
+    </nodes>
+  </state>
+</Preset>
