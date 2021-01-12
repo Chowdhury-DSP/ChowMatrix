@@ -14,7 +14,7 @@ TEAM_ID=$(more ~/Developer/mac_id)
 cmake -Bbuild -GXcode -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY="Apple Distribution" \
     -DCMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM=$TEAM_ID \
     -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_STYLE="Manual"
-cmake --build build --config Release -j8
+cmake --build build --config Release -j8 | xcpretty
 
 # copy builds to bin
 mkdir -p bin/Mac
