@@ -23,12 +23,14 @@ void DelayProc::reset()
     delay.reset();
     procs.reset();
     modSine.reset();
+    std::fill (state.begin(), state.end(), 0.0f);
 }
 
 void DelayProc::flushDelay()
 {
     delay.reset();
-    procs.get<diffusionIdx>().reset();
+    std::fill (state.begin(), state.end(), 0.0f);
+    procs.reset();
 }
 
 template<typename ProcessContext>
