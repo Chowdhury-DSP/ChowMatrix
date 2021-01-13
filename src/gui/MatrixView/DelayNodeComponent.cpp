@@ -20,7 +20,11 @@ DelayNodeComponent::DelayNodeComponent (DelayNode& node, GraphView* view) :
     updateTimerFreq (modFreqValue);
 
     setName ("Delay Node");
-    setTooltip ("Click to select node, drag to move, alt+click to solo, ctrl+click to delete");
+#if JUCE_MAC
+    setTooltip ("Click to select node, drag to move, alt+click to solo, CMD+click to delete");
+#else
+    setTooltip ("Click to select node, drag to move, alt+click to solo, CTRL+click to delete");
+#endif
 }
 
 DelayNodeComponent::~DelayNodeComponent()
