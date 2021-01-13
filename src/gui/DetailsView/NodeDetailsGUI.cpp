@@ -27,9 +27,17 @@ NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) :
         l->setFont (16.0f);
 
         if (i < 3)  // Delay time and pan have "Insanity Lock" option
-            l->setTooltip ("Use shift+drag to change all nodes in unison, or ctrl+click for Insanity Lock");
+          #if JUCE_MAC
+            l->setTooltip ("Use shift+drag to change all nodes in unison, or CMD+click for Insanity Lock");
+          #else
+            l->setTooltip ("Use shift+drag to change all nodes in unison, or CTRL+click for Insanity Lock");
+          #endif
         else if (i == 10)   // Mod. Freq. has "Tempo Sync" option
-            l->setTooltip ("Use shift+drag to change all nodes in unison, or ctrl+click for Tempo Sync");
+          #if JUCE_MAC
+            l->setTooltip ("Use shift+drag to change all nodes in unison, or CMD+click for Tempo Sync");
+          #else
+            l->setTooltip ("Use shift+drag to change all nodes in unison, or CTRL+click for Tempo Sync");
+          #endif
         else
             l->setTooltip ("Use shift+drag to change " + String (param) + " for all nodes in unison");
 

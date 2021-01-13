@@ -124,7 +124,7 @@ void ParamSlider::toggleParamLock()
 
 void ParamSlider::mouseDown (const MouseEvent& e)
 {
-    if (e.mods.isCtrlDown())
+    if (e.mods.isCommandDown())
     {
         if (param->paramID == delayTag || param->paramID == panTag)
             toggleParamLock();
