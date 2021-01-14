@@ -30,11 +30,11 @@
 \boldtheme{ChowMatrix} is an infintely growable delay
 matrixing effect. The fundamental idea of the effect is
 to create a ``tree'' of delay lines, each with it's own
-proprties, such as delay-time, feedback, paning, etc.
+properties, such as delay-time, feedback, paning, etc.
 This flexibility allows musicians and producers to create
 a wide array of delay-based effects, from simple multi-tap
 echoes, to lush reverberant spaces.The plugin is currently
-available as VST/VST3/AU/LV2 for Windows, Linux, and Mac.
+available as a VST/VST3/AU/LV2 for Windows, Linux, and Mac.
 
 \subsection{Installation}
 To install ChowMatrix for Mac or Windows, download the
@@ -54,19 +54,20 @@ Linux users may
 \subsection{Processing}
 The way in which ChowMatrix processes audio may not
 be immediately obvious, especially compared with more
-``traditionally'' designed audio plugins. ChowMatrix is
-made up a ``tree'' of delay ``nodes'', where each node has
-a ``parent'' node and potentially one or more ``child'' nodes.
-The tree has two ``root'' nodes, representing the left and right
-input channels to the plugin. Each node accepts a mono input
+traditionally designed audio plugins. ChowMatrix is made
+up a ``tree'' of delay nodes, where each node has a ``parent''
+node and potentially one or more ``child'' nodes. The tree has
+two ``root'' nodes, representing the left and right input
+channels to the plugin. Each node accepts a mono input
 from its parent node, passes a mono signal on to its children,
 and outputs a stereo signal to the main plugin output.
 
 \subsubsection{Delay Nodes}
-Each delay node consists of a delay line, as well as a gain,
-highpass filter, lowpass filter, diffusion filter, distortion,
-pitch-shifter, a global feedback path, and panner. The full
-processing architecture for a single delay node is shown in
+The signal processing in each delay node consists of a
+delay line, as well as a gain, highpass filter, lowpass
+filter, diffusion filter, distortion, pitch-shifter, a
+global feedback path, and panner. The full processing
+architecture for a single delay node is shown in
 \cref{fig:delay_dsp}.
 \newpar
 %
@@ -124,7 +125,7 @@ The input \boldtheme{Gain} applies a simple gain
 to the signal before being processed by the delay
 node. Adjusting the gain can be useful for making
 certain delay nodes louder/quieter in the mix.
-\newpar
+\newline
 The \boldtheme{Lowpass/Highpass} filters are simple
 first-order filters with adjustable cutoff frequencies.
 Note that since the filters are in the feedback loop,
@@ -212,7 +213,7 @@ Node.
 \newpar
 To \boldtheme{select} a node, simply click on the node. A menu
 will appear showing the parameter controls for the selected node.
-To un-select, simply click the background of the Graph View.
+To un-select, click the background of the Graph View.
 \newpar
 When you \shortcut{Click+Drag} to \boldtheme{move} a node,
 the panning and delay time of that node will change accordingly.
@@ -255,9 +256,11 @@ will reset the parameter to its default value.
 \newline
 Using \shortcut{SHIFT+Click+Drag}
 will change the same parameter for all the delay nodes in
-unison. \shortcut{CMD+Click} on a value to ``lock'' the
-parameter so that it will not be affected by the ``Insanity''
-control.
+unison. \shortcut{CMD+Click} on the delay or pan value to
+``lock'' the parameter so that it will not be affected by
+the ``Insanity'' control. \shortcut{CMD+Click} on the mod
+freq. parameter to toggle between a free and tempo-synced
+LFO.
 
 \subsubsection{Insanity Control}
 ChowMatrix also features an \boldtheme{Insanity} parameter.
