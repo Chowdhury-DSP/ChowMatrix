@@ -1,4 +1,4 @@
-name: auto-format
+name: Auto-formatter
 
 on:
   pull_request:
@@ -40,5 +40,5 @@ jobs:
       uses: actions-js/push@master
       with:
         message: "Apply clang-format"
-        branch: $GITHUB_HEAD_REF
+        branch: ${{ github.head_ref }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
