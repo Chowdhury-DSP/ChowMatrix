@@ -18,14 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Setup debug session
-      uses: mxschmitt/action-tmate@v3
-
-    # - name: Install Linux Deps
-    #   run: |
-    #     sudo apt-get update
-    #     sudo apt-get install clang-format
-    #     clang-format --version
+    - name: Install Linux Deps
+      run: |
+        wget https://apt.llvm.org/llvm.sh
+        chmod +x llvm.sh
+        sudo ./llvm.sh 12
+        sudo apt-get install clang-format-12
+        clang-format-12 --version
 
     - name: Checkout code
       uses: actions/checkout@v2
@@ -35,11 +34,11 @@ jobs:
 
     - name: Run clang-format
       shell: bash
-      run: find src/ -iname *.h -o -iname *.cpp | xargs clang-format -style=file -verbose -i
+      run: find src/ -iname *.h -o -iname *.cpp | xargs clang-format-12 -style=file -verbose -i
 
-    # - name: Commit & Push changes
-    #   uses: actions-js/push@master
-    #   with:
-    #     message: "Apply clang-format"
-    #     branch: "$GITHUB_HEAD_REF"
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Commit & Push changes
+      uses: actions-js/push@master
+      with:
+        message: "Apply clang-format"
+        branch: "$GITHUB_HEAD_REF"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
