@@ -3,12 +3,11 @@
 
 namespace
 {
-    constexpr int scrollThickness = 6;
+constexpr int scrollThickness = 6;
 }
 
-NodeDetailsViewport::NodeDetailsViewport (ChowMatrix& chowMatrix) :
-    manager (chowMatrix.getManager()),
-    detailsComp (chowMatrix)
+NodeDetailsViewport::NodeDetailsViewport (ChowMatrix& chowMatrix) : manager (chowMatrix.getManager()),
+                                                                    detailsComp (chowMatrix)
 {
     setViewedComponent (&detailsComp, false);
     setScrollBarsShown (true, true);
@@ -32,10 +31,10 @@ void NodeDetailsViewport::paint (Graphics&)
 {
     auto setScrollBarColours = [=] (ScrollBar& scrollbar) {
         scrollbar.setColour (ScrollBar::thumbColourId,
-            findColour (NodeDetailsGUI::scrollThumbColour, true));
+                             findColour (NodeDetailsGUI::scrollThumbColour, true));
 
         scrollbar.setColour (ScrollBar::trackColourId,
-            findColour (NodeDetailsGUI::scrollTrackColour, true));
+                             findColour (NodeDetailsGUI::scrollTrackColour, true));
     };
 
     setScrollBarColours (getHorizontalScrollBar());
@@ -52,8 +51,8 @@ void NodeDetailsViewport::nodeSelected (DelayNode* selectedNode, NodeManager::Ac
 {
     detailsComp.repaint();
 
-    if (selectedNode == nullptr                                 // No node selected!
-     || source == NodeManager::ActionSource::DetailsView)       // Selection came from here!
+    if (selectedNode == nullptr // No node selected!
+        || source == NodeManager::ActionSource::DetailsView) // Selection came from here!
         return;
 
     int xOffset = (NodeInfoConsts::InfoWidthNoLabel - getWidth()) / 2 + scrollThickness; // offset for center of component

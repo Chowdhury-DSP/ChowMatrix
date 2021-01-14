@@ -3,7 +3,7 @@
 
 namespace
 {
-    const String delayTypeTag = "delay_type";
+const String delayTypeTag = "delay_type";
 }
 
 static inline VariableDelay::DelayType getDelayType (float param)
@@ -11,8 +11,7 @@ static inline VariableDelay::DelayType getDelayType (float param)
     return static_cast<VariableDelay::DelayType> (int (param));
 }
 
-DelayTypeControl::DelayTypeControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) :
-    BaseController (vts, nodes, { delayTypeTag })
+DelayTypeControl::DelayTypeControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) : BaseController (vts, nodes, { delayTypeTag })
 {
     delayTypeParam = vts.getRawParameterValue (delayTypeTag);
     parameterChanged (delayTypeTag, delayTypeParam->load());
@@ -21,7 +20,9 @@ DelayTypeControl::DelayTypeControl (AudioProcessorValueTreeState& vts, std::arra
 void DelayTypeControl::addParameters (Parameters& params)
 {
     params.push_back (std::make_unique<AudioParameterChoice> (delayTypeTag,
-        "Delay Type", StringArray ({ "Glitch", "Rough", "Smooth", "Ultra Smooth" }), 2));
+                                                              "Delay Type",
+                                                              StringArray ({ "Glitch", "Rough", "Smooth", "Ultra Smooth" }),
+                                                              2));
 }
 
 void DelayTypeControl::parameterChanged (const String&, float newValue)

@@ -33,17 +33,17 @@ void DelayProc::flushDelay()
     procs.reset();
 }
 
-template<typename ProcessContext>
+template <typename ProcessContext>
 void DelayProc::process (const ProcessContext& context)
 {
     // manage audio context
     const auto& inputBlock = context.getInputBlock();
-    auto& outputBlock      = context.getOutputBlock();
+    auto& outputBlock = context.getOutputBlock();
     const auto numChannels = outputBlock.getNumChannels();
-    const auto numSamples  = outputBlock.getNumSamples();
+    const auto numSamples = outputBlock.getNumSamples();
 
     jassert (inputBlock.getNumChannels() == numChannels);
-    jassert (inputBlock.getNumSamples()  == numSamples);
+    jassert (inputBlock.getNumSamples() == numSamples);
 
     if (context.isBypassed)
     {
@@ -79,25 +79,25 @@ void DelayProc::process (const ProcessContext& context)
     procs.get<hpfIdx>().snapToZero();
 }
 
-template<typename SampleType>
+template <typename SampleType>
 inline SampleType DelayProc::processSample (SampleType x, size_t ch)
 {
     auto input = inGain.getNextValue() * x;
-    input = procs.processSample (input + state[ch]);    // process input + feedback state
-    delay.pushSample ((int) ch, input);                 // push input to delay line
-    auto y = delay.popSample ((int) ch);                // pop output from delay line
-    state[ch] = y * feedback.getNextValue();            // save feedback state
+    input = procs.processSample (input + state[ch]); // process input + feedback state
+    delay.pushSample ((int) ch, input); // push input to delay line
+    auto y = delay.popSample ((int) ch); // pop output from delay line
+    state[ch] = y * feedback.getNextValue(); // save feedback state
     return y;
 }
 
-template<typename SampleType>
+template <typename SampleType>
 inline SampleType DelayProc::processSampleSmooth (SampleType x, size_t ch)
 {
     auto input = inGain.getNextValue() * x;
-    input = procs.processSample (input + state[ch]);    // process input + feedback state
-    delay.pushSampleSmooth ((int) ch, input);           // push input to delay line
-    auto y = delay.popSample ((int) ch);                // pop output from delay line
-    state[ch] = y * feedback.getNextValue();            // save feedback state
+    input = procs.processSample (input + state[ch]); // process input + feedback state
+    delay.pushSampleSmooth ((int) ch, input); // push input to delay line
+    auto y = delay.popSample ((int) ch); // pop output from delay line
+    state[ch] = y * feedback.getNextValue(); // save feedback state
     return y;
 }
 
@@ -109,7 +109,7 @@ void DelayProc::setParameters (const Parameters& params, bool force)
     auto delayVal = (params.delayMs / 1000.0f) * fs;
     auto gainVal = params.feedback >= maxFeedback ? 0.0f : 1.0f;
     auto fbVal = params.feedback >= maxFeedback ? 1.0f
-        : std::pow (jmin (params.feedback, 0.95f), 0.9f);
+                                                : std::pow (jmin (params.feedback, 0.95f), 0.9f);
 
     modDepth = std::pow (params.modDepth, 2.5f);
     if (params.lfoSynced)

@@ -7,17 +7,16 @@ class GraphViewItem : public foleys::GuiItem
 public:
     FOLEYS_DECLARE_GUI_FACTORY (GraphViewItem)
 
-    GraphViewItem (foleys::MagicGUIBuilder& builder, const ValueTree& node) :
-        foleys::GuiItem (builder, node)
+    GraphViewItem (foleys::MagicGUIBuilder& builder, const ValueTree& node) : foleys::GuiItem (builder, node)
     {
         auto* plugin = dynamic_cast<ChowMatrix*> (builder.getMagicState().getProcessor());
         jassert (plugin);
         graphView = std::make_unique<GraphViewport> (*plugin);
 
         setColourTranslation ({
-            { "background",    GraphView::backgroundColour },
-            { "node",          GraphView::nodeColour },
-            { "node2",         GraphView::nodeColour2 },
+            { "background", GraphView::backgroundColour },
+            { "node", GraphView::nodeColour },
+            { "node2", GraphView::nodeColour2 },
             { "node-selected", GraphView::nodeSelectedColour },
         });
 

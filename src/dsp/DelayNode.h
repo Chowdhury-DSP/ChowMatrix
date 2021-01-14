@@ -6,7 +6,7 @@
 
 /**
  * Class for delay processing node
- */ 
+ */
 class DelayNode : public BaseNode<DelayNode>,
                   public ProcessorBase
 {
@@ -30,7 +30,7 @@ public:
 
     /** Call node listeners to set parameter by a diff value */
     void setParameterDiffListeners (const String& paramID, float diff01);
-    
+
     /** Sets the parameter with given ID by diff to a 0-1 normalized value */
     void setNodeParameterDiff (const String& paramID, float diff01);
 
@@ -46,7 +46,7 @@ public:
 
     /** Sets the delay interpolation type for this node */
     void setDelayType (VariableDelay::DelayType type);
-    
+
     /** Flushes delay buffers for this node */
     void flushDelays();
     void prepare (double sampleRate, int samplesPerBlock) override;
@@ -66,7 +66,7 @@ public:
 
     // Manage node index
     void setIndex (int newIdx) { nodeIdx = newIdx; }
-    int getIndex() const noexcept {  return nodeIdx; }
+    int getIndex() const noexcept { return nodeIdx; }
 
     // Manage selection state
     bool getSelected() const noexcept { return isSelected; }
@@ -104,18 +104,18 @@ private:
     SoloState prevSoloState = None;
 
     // parameter handles
-    Parameter* delayMs    = nullptr;
-    Parameter* pan        = nullptr;
-    Parameter* feedback   = nullptr;
-    Parameter* gainDB     = nullptr;
-    Parameter* lpfHz      = nullptr;
-    Parameter* hpfHz      = nullptr;
+    Parameter* delayMs = nullptr;
+    Parameter* pan = nullptr;
+    Parameter* feedback = nullptr;
+    Parameter* gainDB = nullptr;
+    Parameter* lpfHz = nullptr;
+    Parameter* hpfHz = nullptr;
     Parameter* distortion = nullptr;
-    Parameter* pitchSt    = nullptr;
-    Parameter* diffAmt    = nullptr;
-    Parameter* modFreq    = nullptr;
-    Parameter* delayMod   = nullptr;
-    Parameter* panMod     = nullptr;
+    Parameter* pitchSt = nullptr;
+    Parameter* diffAmt = nullptr;
+    Parameter* modFreq = nullptr;
+    Parameter* delayMod = nullptr;
+    Parameter* panMod = nullptr;
 
     enum
     {
@@ -126,7 +126,7 @@ private:
     dsp::ProcessorChain<dsp::Gain<float>, DelayProc> processors;
     AudioBuffer<float> panBuffer;
     chowdsp::Panner<float> panner;
-    
+
     TempoSyncUtils::SyncedLFO modSine;
     float panModValue = 0.0f;
     bool tempoSyncedLFO = false;

@@ -5,14 +5,14 @@
  */
 
 // C++ STL
-#include <unordered_map>
-#include <random>
 #include <future>
+#include <random>
+#include <unordered_map>
 
 // JUCE modules
 #include <JuceHeader.h>
 
 // Things I don't plan on touching
-#include "dsp/ProcessorChain.h"
-#include "dsp/ProcessorBase.h"
 #include "dsp/Distortion/LookupTables.h"
+#include "dsp/ProcessorBase.h"
+#include "dsp/ProcessorChain.h"

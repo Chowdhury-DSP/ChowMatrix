@@ -1,10 +1,9 @@
 #include "NodeComponent.h"
-#include "GraphViewItem.h"
 #include "../../dsp/InputNode.h"
+#include "GraphViewItem.h"
 
-NodeComponent::NodeComponent (DBaseNode& node, GraphView* view) :
-    graphView (view),
-    node (node)
+NodeComponent::NodeComponent (DBaseNode& node, GraphView* view) : graphView (view),
+                                                                  node (node)
 {
     setSize (32, 32);
 }

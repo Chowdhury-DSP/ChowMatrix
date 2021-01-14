@@ -5,7 +5,7 @@
  * 
  * The DSP is made up of many stages of first-order allpass
  * filters, with linear fading between stages.
- */ 
+ */
 class Diffusion
 {
 public:
@@ -43,9 +43,9 @@ private:
 
     static constexpr size_t maxNumStages = 100;
 
-    float a[2] = {1.0f, 0.0f};
-    float b[2] = {1.0f, 0.0f};
-    float z[maxNumStages+1];
+    float a[2] = { 1.0f, 0.0f };
+    float b[2] = { 1.0f, 0.0f };
+    float z[maxNumStages + 1];
 
     float fs = 44100.0f;
     SmoothedValue<float, ValueSmoothingTypes::Linear> depthSmooth;

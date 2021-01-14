@@ -1,7 +1,6 @@
 #include "PresetComp.h"
 
-PresetComp::PresetComp (PresetManager& manager) :
-    manager (manager)
+PresetComp::PresetComp (PresetManager& manager) : manager (manager)
 {
     manager.addListener (this);
 
@@ -36,7 +35,7 @@ PresetComp::~PresetComp()
 
 void PresetComp::paint (Graphics& g)
 {
-    constexpr auto cornerSize = 5.0f;   
+    constexpr auto cornerSize = 5.0f;
 
     presetBox.setColour (PopupMenu::ColourIds::backgroundColourId, findColour (backgroundColourId));
     g.setColour (findColour (backgroundColourId));
@@ -77,14 +76,14 @@ void PresetComp::loadPresetChoices()
             continue;
         category = (category == choice) ? "CHOW" : category;
         String presetName = choice.fromLastOccurrenceOf ("_", false, false);
-        
+
         if (presetChoicesMap.find (category) == presetChoicesMap.end())
             presetChoicesMap[category] = PopupMenu();
 
         PopupMenu::Item presetItem { presetName };
-        presetItem.itemID = i+1;
+        presetItem.itemID = i + 1;
         presetItem.action = std::bind (&PresetComp::menuItemAction, this);
-        
+
         presetChoicesMap[category].addItem (presetItem);
     }
 
@@ -137,7 +136,7 @@ void PresetComp::saveUserPreset()
     presetNameEditor.onReturnKey = [=] {
         auto presetName = presetNameEditor.getText();
         presetNameEditor.setVisible (false);
-        
+
         int pIdx = 0;
         if (manager.saveUserPreset (presetName, pIdx))
         {

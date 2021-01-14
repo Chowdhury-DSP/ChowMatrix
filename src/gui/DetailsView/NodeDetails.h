@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../NodeInfo.h"
 #include "../../NodeManager.h"
+#include "../NodeInfo.h"
 
 namespace DetailsConsts
 {
-    constexpr int buttonHeight = 45;
-    constexpr int circleRadius = 16;
-}
+constexpr int buttonHeight = 45;
+constexpr int circleRadius = 16;
+} // namespace DetailsConsts
 
 class NodeDetails : public Component
 {
@@ -24,7 +24,11 @@ public:
     struct Button : Component, SettableTooltipClient
     {
         Button (NodeDetails& nodeDetails);
-        enum ColourIDs { nodeColour, selectedColour };
+        enum ColourIDs
+        {
+            nodeColour,
+            selectedColour
+        };
         void mouseDown (const MouseEvent& e) override;
         bool keyPressed (const KeyPress& key) override;
         void paint (Graphics& g) override;

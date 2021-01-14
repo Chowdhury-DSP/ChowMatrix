@@ -2,13 +2,13 @@
 
 namespace
 {
-    const String updateFilePath = "ChowdhuryDSP/ChowMatrix/UpdateManage.txt";
-    const String currentVersion = "v" + String (JucePlugin_VersionString);
-    const String versionURL = "https://api.github.com/repos/Chowdhury-DSP/ChowMatrix/releases/latest";
-    const String updateURL = "https://github.com/Chowdhury-DSP/ChowMatrix/releases/latest";
-    const Colour backgroundColour = Colour (0xFF31323A).withAlpha (0.9f);
-    const Colour textColour = Colour (0xFFC954D4);
-}
+const String updateFilePath = "ChowdhuryDSP/ChowMatrix/UpdateManage.txt";
+const String currentVersion = "v" + String (JucePlugin_VersionString);
+const String versionURL = "https://api.github.com/repos/Chowdhury-DSP/ChowMatrix/releases/latest";
+const String updateURL = "https://github.com/Chowdhury-DSP/ChowMatrix/releases/latest";
+const Colour backgroundColour = Colour (0xFF31323A).withAlpha (0.9f);
+const Colour textColour = Colour (0xFFC954D4);
+} // namespace
 
 struct UpdateButtonLNF : public chowdsp::ChowLNF
 {
@@ -32,8 +32,7 @@ AutoUpdater::AutoUpdater()
 {
     ubLNF = std::make_unique<UpdateButtonLNF>();
 
-    auto setupButton = [=] (TextButton& button)
-    {
+    auto setupButton = [=] (TextButton& button) {
         addAndMakeVisible (button);
         button.setColour (TextButton::buttonColourId, backgroundColour);
         button.setColour (TextButton::textColourOffId, textColour);
@@ -135,7 +134,7 @@ bool AutoUpdater::runAutoUpdateCheck()
 
     String updateVersion = getUpdateFileVersion (updateFile);
     bool lastYesNo = getUpdateFileYesNo (updateFile);
-    
+
     // you've already said you don't want to update to this version
     if ((updateVersion == latestVersion) && (lastYesNo == false))
         return false;

@@ -1,10 +1,8 @@
 #include "ABComp.h"
 
-ABComp::ABComp (StateManager& manager) :
-    manager (manager)
+ABComp::ABComp (StateManager& manager) : manager (manager)
 {
-    auto setupButton = [=, &manager] (TextButton& button, String name, String text,
-                            String tooltip, int index) {
+    auto setupButton = [=, &manager] (TextButton& button, String name, String text, String tooltip, int index) {
         button.setColour (TextButton::buttonColourId, Colours::transparentBlack);
         button.setColour (TextButton::buttonOnColourId, Colour (0xFFC954D4).brighter (0.2f));
 
@@ -66,7 +64,7 @@ void ABComp::paint (Graphics&)
 void ABComp::resized()
 {
     const auto thirdWidth = getWidth() / 3;
-    aButton.setBounds     (0 * thirdWidth, 0, thirdWidth, getHeight());
+    aButton.setBounds (0 * thirdWidth, 0, thirdWidth, getHeight());
     arrowButton.setBounds (1 * thirdWidth, 0, thirdWidth, getHeight());
-    bButton.setBounds     (2 * thirdWidth, 0, thirdWidth, getHeight());
+    bButton.setBounds (2 * thirdWidth, 0, thirdWidth, getHeight());
 }

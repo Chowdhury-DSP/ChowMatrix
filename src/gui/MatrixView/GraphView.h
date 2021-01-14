@@ -1,10 +1,10 @@
 #pragma once
 
-#include <pch.h>
 #include "../../ChowMatrix.h"
 #include "DelayNodeComponent.h"
 #include "InputNodeComponent.h"
 #include "NodeCompManager.h"
+#include <pch.h>
 
 class GraphView : public Component,
                   public SettableTooltipClient,

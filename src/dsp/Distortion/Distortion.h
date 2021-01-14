@@ -4,12 +4,12 @@
 
 namespace ADAAConsts
 {
-    constexpr double TOL = 1.0e-4;
+constexpr double TOL = 1.0e-4;
 }
 
 /**
  *  Class to implement 2nd-order anti-derivative anti-aliasing
- */ 
+ */
 class ADAA2
 {
 public:
@@ -22,15 +22,13 @@ public:
         bool illCondition = std::abs (x - x2) < ADAAConsts::TOL;
         double d1 = calcD1 (x);
 
-        double y = illCondition ?
-            fallback (x) :
-            (2.0 / (x - x2)) * (d1 - d2);
+        double y = illCondition ? fallback (x) : (2.0 / (x - x2)) * (d1 - d2);
 
         // update state
         d2 = d1;
         x2 = x1;
         x1 = x;
-        
+
         return y;
     }
 
@@ -40,9 +38,7 @@ private:
         bool illCondition = std::abs (x0 - x1) < ADAAConsts::TOL;
         double ad2_x0 = tables->lut_AD2.processSample (x0);
 
-        double y = illCondition ?
-            tables->lut_AD1.processSample (0.5 * (x0 + x1)) :
-            (ad2_x0 - ad2_x1) / (x0 - x1);
+        double y = illCondition ? tables->lut_AD1.processSample (0.5 * (x0 + x1)) : (ad2_x0 - ad2_x1) / (x0 - x1);
 
         ad2_x1 = ad2_x0;
         return y;
@@ -54,10 +50,7 @@ private:
         double delta = xBar - x;
 
         bool illCondition = std::abs (delta) < ADAAConsts::TOL;
-        return illCondition ?
-            tables->lut.processSample (0.5 * (xBar + x)) :
-            (2.0 / delta) * (tables->lut_AD1.processSample (xBar)
-                + (tables->lut_AD2.processSample (x) - tables->lut_AD2.processSample (xBar)) / delta);
+        return illCondition ? tables->lut.processSample (0.5 * (xBar + x)) : (2.0 / delta) * (tables->lut_AD1.processSample (xBar) + (tables->lut_AD2.processSample (x) - tables->lut_AD2.processSample (xBar)) / delta);
     }
 
     double x1 = 0.0;
