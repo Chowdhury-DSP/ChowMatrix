@@ -17,24 +17,23 @@ void ScreenshotGenerator::takeScreenshots (const ArgumentList& args)
         outputDir = args.getExistingFolderForOption ("--out");
 
     std::cout << "Generating screenshots... Saving to " << outputDir.getFullPathName() << std::endl;
-    
+
     auto plugin = std::make_unique<ChowMatrix>();
     plugin->getStateManager().getPresetManager().setPreset (3); // set to "crazy" preset
     std::unique_ptr<AudioProcessorEditor> editor (plugin->createEditorIfNeeded());
-    
+
     editor->setSize (700, 700); // make editor larger
-    screenshotForBounds (editor.get(),           editor->getLocalBounds() , outputDir, "full_gui.png");
+    screenshotForBounds (editor.get(), editor->getLocalBounds(), outputDir, "full_gui.png");
     screenshotForBounds (editor.get(), { 0, 370, editor->getWidth(), 260 }, outputDir, "DetailsView.png");
 
     editor->setSize (700, 850);
-    screenshotForBounds (editor.get(), { 0, 45,  editor->getWidth(), 352 }, outputDir, "GraphView.png");
-    screenshotForBounds (editor.get(), { 0, 810, editor->getWidth(),  40 }, outputDir, "BottomBar.png");
+    screenshotForBounds (editor.get(), { 0, 45, editor->getWidth(), 352 }, outputDir, "GraphView.png");
+    screenshotForBounds (editor.get(), { 0, 810, editor->getWidth(), 40 }, outputDir, "BottomBar.png");
 
     plugin->editorBeingDeleted (editor.get());
 }
 
-void ScreenshotGenerator::screenshotForBounds (Component* editor, Rectangle<int> bounds,
-                                               const File& dir, const String& filename)
+void ScreenshotGenerator::screenshotForBounds (Component* editor, Rectangle<int> bounds, const File& dir, const String& filename)
 {
     auto screenshot = editor->createComponentSnapshot (bounds);
 

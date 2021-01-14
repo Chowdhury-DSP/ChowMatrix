@@ -1,32 +1,30 @@
 #include "DelayNode.h"
 #include "../gui/MatrixView/DelayNodeComponent.h"
-#include "Parameters/ParamHelpers.h"
 #include "Delay/TempoSyncUtils.h"
+#include "Parameters/ParamHelpers.h"
 
 using namespace ParamTags;
 using namespace TempoSyncUtils;
 
-DelayNode::DelayNode() :
-    params (*this, nullptr, Identifier ("Parameters"), ParamHelpers::createParameterLayout())
+DelayNode::DelayNode() : params (*this, nullptr, Identifier ("Parameters"), ParamHelpers::createParameterLayout())
 {
-    auto loadParam = [=] (String paramID) -> Parameter*
-    {
+    auto loadParam = [=] (String paramID) -> Parameter* {
         paramIDs.add (paramID);
         return dynamic_cast<Parameter*> (params.getParameter (paramID));
     };
 
-    delayMs    = loadParam (delayTag);
-    pan        = loadParam (panTag);
-    feedback   = loadParam (fbTag);
-    gainDB     = loadParam (gainTag);
-    lpfHz      = loadParam (lpfTag);
-    hpfHz      = loadParam (hpfTag);
-    pitchSt    = loadParam (pitchTag);
-    diffAmt    = loadParam (diffTag);
+    delayMs = loadParam (delayTag);
+    pan = loadParam (panTag);
+    feedback = loadParam (fbTag);
+    gainDB = loadParam (gainTag);
+    lpfHz = loadParam (lpfTag);
+    hpfHz = loadParam (hpfTag);
+    pitchSt = loadParam (pitchTag);
+    diffAmt = loadParam (diffTag);
     distortion = loadParam (distTag);
-    modFreq    = loadParam (modFreqTag);
-    delayMod   = loadParam (delayModTag);
-    panMod     = loadParam (panModTag);
+    modFreq = loadParam (modFreqTag);
+    delayMod = loadParam (delayModTag);
+    panMod = loadParam (panModTag);
 
     processors.get<gainIdx>().setRampDurationSeconds (0.05);
     panner.setRule (chowdsp::Panner<float>::Rule::squareRoot3dB);
@@ -52,20 +50,19 @@ void DelayNode::cookParameters (bool force)
     }
 
     processors.get<gainIdx>().setGainDecibels (*gainDB);
-    processors.get<delayIdx>().setParameters ({
-        delayLenMs,
-        *feedback,
-        *lpfHz,
-        *hpfHz,
-        *distortion,
-        *pitchSt,
-        *diffAmt,
-        modFreq,
-        *delayMod,
-        (float) tempoBPM,
-        tempoSyncedLFO,
-        getPlayHead()
-    }, force);
+    processors.get<delayIdx>().setParameters ({ delayLenMs,
+                                                *feedback,
+                                                *lpfHz,
+                                                *hpfHz,
+                                                *distortion,
+                                                *pitchSt,
+                                                *diffAmt,
+                                                modFreq,
+                                                *delayMod,
+                                                (float) tempoBPM,
+                                                tempoSyncedLFO,
+                                                getPlayHead() },
+                                              force);
 
     if (tempoSyncedLFO)
         modSine.setFreqSynced (modFreq, (float) tempoBPM);
@@ -130,7 +127,7 @@ void DelayNode::prepare (double newSampleRate, int newSamplesPerBlock)
     panner.prepare ({ newSampleRate, (uint32) newSamplesPerBlock, 2 });
     modSine.prepare ({ newSampleRate, (uint32) newSamplesPerBlock, 1 });
     cookParameters (true);
-    
+
     panBuffer.setSize (2, newSamplesPerBlock);
 }
 
@@ -193,7 +190,7 @@ void DelayNode::addToOutput (AudioBuffer<float>& outBuffer)
     {
         for (int ch = 0; ch < outBuffer.getNumChannels(); ++ch)
             outBuffer.addFrom (ch, 0, panBuffer, ch, 0, numSamples);
-        return;  
+        return;
     }
 
     int fadeSamples = jmin (numSamples, 256);
@@ -212,7 +209,7 @@ void DelayNode::addToOutput (AudioBuffer<float>& outBuffer)
                 outBuffer.addFrom (ch, fadeSamples, panBuffer, ch, fadeSamples, numSamples - fadeSamples);
         }
     }
-    
+
     prevSoloState = isSoloed;
 }
 
@@ -267,7 +264,7 @@ void DelayNode::loadXml (XmlElement* xml)
     modFreq->sendValueChangedMessageToListeners (*modFreq);
 
     if (auto* childrenXml = xml->getChildByName ("children"))
-            DBaseNode::loadXml (childrenXml);
+        DBaseNode::loadXml (childrenXml);
 }
 
 void DelayNode::deleteNode()
@@ -278,7 +275,7 @@ void DelayNode::deleteNode()
 }
 
 void DelayNode::setSelected (bool shouldBeSelected)
-{ 
+{
     isSelected = shouldBeSelected;
 }
 

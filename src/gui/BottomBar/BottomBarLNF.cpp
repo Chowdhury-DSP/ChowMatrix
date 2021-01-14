@@ -2,7 +2,7 @@
 
 namespace
 {
-    constexpr float heightFrac = 0.5f;
+constexpr float heightFrac = 0.5f;
 }
 
 int getNameWidth (int height, const String& text)
@@ -18,8 +18,7 @@ BottomBarLNF::BottomBarLNF()
     setColour (PopupMenu::highlightedTextColourId, Colours::white);
 }
 
-void BottomBarLNF::drawRotarySlider (Graphics& g, int, int, int, int height,
-                                          float, const float, const float, Slider& slider)
+void BottomBarLNF::drawRotarySlider (Graphics& g, int, int, int, int height, float, const float, const float, Slider& slider)
 {
     g.setColour (Colours::white); // @TODO: make colour selectable
     g.setFont (Font ((float) height * heightFrac).boldened());
@@ -33,8 +32,8 @@ Slider::SliderLayout BottomBarLNF::getSliderLayout (Slider& slider)
 {
     auto layout = LookAndFeel_V4::getSliderLayout (slider);
     layout.textBoxBounds = slider.getLocalBounds()
-        .removeFromRight (slider.getWidth()
-        - getNameWidth (slider.getHeight(), slider.getName() + ":_") + 3);
+                               .removeFromRight (slider.getWidth()
+                                                 - getNameWidth (slider.getHeight(), slider.getName() + ":_") + 3);
     return layout;
 }
 
@@ -47,8 +46,7 @@ Label* BottomBarLNF::createSliderTextBox (Slider& slider)
     label->setJustificationType (Justification::centred);
     label->setFont (Font (16.0f).boldened());
 
-    label->onEditorShow = [label]
-    {
+    label->onEditorShow = [label] {
         if (auto editor = label->getCurrentTextEditor())
         {
             editor->setBounds (label->getLocalBounds());
@@ -104,7 +102,7 @@ void BottomBarLNF::drawButtonBackground (Graphics& g,
     auto bounds = button.getLocalBounds().toFloat().reduced (0.5f, 0.5f);
 
     auto baseColour = backgroundColour.withMultipliedSaturation (button.hasKeyboardFocus (true) ? 1.3f : 0.9f)
-                                      .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f);
+                          .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f);
 
     if (shouldDrawButtonAsDown || shouldDrawButtonAsHighlighted)
         baseColour = baseColour.contrasting (shouldDrawButtonAsDown ? 0.2f : 0.05f);

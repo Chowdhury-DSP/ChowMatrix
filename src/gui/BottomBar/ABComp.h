@@ -27,17 +27,21 @@ private:
             g.setFont (font);
             g.setColour (button.findColour (button.getToggleState() ? TextButton::textColourOnId
                                                                     : TextButton::textColourOffId)
-                               .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f));
+                             .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f));
 
             const int yIndent = jmin (4, button.proportionOfHeight (0.3f));
-            const int leftIndent  = 2;
+            const int leftIndent = 2;
             const int rightIndent = 2;
             const int textWidth = button.getWidth() - leftIndent - rightIndent;
 
             if (textWidth > 0)
                 g.drawFittedText (button.getButtonText(),
-                                  leftIndent, yIndent, textWidth, button.getHeight() - yIndent * 2,
-                                  Justification::centred, 2);
+                                  leftIndent,
+                                  yIndent,
+                                  textWidth,
+                                  button.getHeight() - yIndent * 2,
+                                  Justification::centred,
+                                  2);
         }
     };
     ABLNF lnf;
@@ -56,8 +60,7 @@ class ABCompItem : public foleys::GuiItem
 public:
     FOLEYS_DECLARE_GUI_FACTORY (ABCompItem)
 
-    ABCompItem (foleys::MagicGUIBuilder& builder, const ValueTree& node) :
-        foleys::GuiItem (builder, node)
+    ABCompItem (foleys::MagicGUIBuilder& builder, const ValueTree& node) : foleys::GuiItem (builder, node)
     {
         if (auto* proc = dynamic_cast<ChowMatrix*> (builder.getMagicState().getProcessor()))
         {

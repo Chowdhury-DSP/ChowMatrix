@@ -1,16 +1,15 @@
 #include "PresetManager.h"
-#include "PresetComp.h"
 #include "../StateManager.h"
+#include "PresetComp.h"
 
 namespace
 {
-    static String userPresetPath = "ChowdhuryDSP/ChowMatrix/UserPresets.txt";
-    static String presetTag = "preset";
-}
+static String userPresetPath = "ChowdhuryDSP/ChowMatrix/UserPresets.txt";
+static String presetTag = "preset";
+} // namespace
 
-PresetManager::PresetManager (StateManager* stateManager, AudioProcessorValueTreeState& vts) :
-    stateManager (stateManager),
-    vts (vts)
+PresetManager::PresetManager (StateManager* stateManager, AudioProcessorValueTreeState& vts) : stateManager (stateManager),
+                                                                                               vts (vts)
 {
     presetParam = dynamic_cast<AudioParameterInt*> (vts.getParameter (presetTag));
     jassert (presetParam);

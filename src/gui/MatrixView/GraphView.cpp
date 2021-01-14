@@ -1,10 +1,9 @@
 #include "GraphView.h"
 #include "GraphViewItem.h"
 
-GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) :
-    plugin (plugin),
-    manager (this),
-    parent (parentView)
+GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) : plugin (plugin),
+                                                                  manager (this),
+                                                                  parent (parentView)
 {
     setName ("Graph View");
     setTooltip ("Graph view of all delay nodes, shift+click to create a new node");
@@ -15,7 +14,7 @@ GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) :
     setColour (nodeSelectedColour, Colour (0xFF21CCA5));
 
     auto& inputNodes = *plugin.getNodes();
-    manager.createAndAddEditor (&inputNodes[0], findColour (nodeColour),  -0.04f);
+    manager.createAndAddEditor (&inputNodes[0], findColour (nodeColour), -0.04f);
     manager.createAndAddEditor (&inputNodes[1], findColour (nodeColour2), -0.02f);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { manager.createAndAddEditor (child); });
@@ -35,7 +34,7 @@ void GraphView::mouseDown (const MouseEvent& e)
     {
         setSelected (nullptr);
         setSoloed (nullptr);
-        return;   
+        return;
     }
 
     if (e.mods.isShiftDown()) // create new node at mouse position
@@ -111,7 +110,7 @@ void GraphView::setSelected (DelayNode* node, bool justCreated)
         plugin.getManager().setSelected (node, NodeManager::ActionSource::DetailsView);
         return;
     }
-    
+
     plugin.getManager().setSelected (node, NodeManager::ActionSource::GraphView);
 }
 

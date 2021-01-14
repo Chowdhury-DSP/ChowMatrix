@@ -34,7 +34,7 @@ public:
      *  It is not thread-safe to process audio while the state change is occuring.
      */
     SpinLock& getStateLoadLock() noexcept { return stateLoadingLock; }
-    
+
     PresetManager& getPresetManager() { return presetManager; }
 
 private:
