@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# exit on failure
+set -e
+
 # clean up old builds
 rm -Rf build/
 rm -Rf bin/*Mac*
@@ -13,7 +16,8 @@ sed -i '' '16s/#//' CMakeLists.txt
 TEAM_ID=$(more ~/Developer/mac_id)
 cmake -Bbuild -GXcode -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY="Apple Distribution" \
     -DCMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM=$TEAM_ID \
-    -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_STYLE="Manual"
+    -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_STYLE="Manual" \
+    -D"CMAKE_OSX_ARCHITECTURES=arm64;x86_64"
 cmake --build build --config Release -j8 | xcpretty
 
 # copy builds to bin
