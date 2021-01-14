@@ -1,8 +1,8 @@
 #pragma once
 
-#include "NodeComponent.h"
 #include "../../dsp/DelayNode.h"
 #include "../NodeInfo.h"
+#include "NodeComponent.h"
 
 class DelayNodeComponent : public NodeComponent,
                            public SettableTooltipClient,

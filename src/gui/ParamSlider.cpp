@@ -1,13 +1,12 @@
 #include "ParamSlider.h"
-#include "../dsp/DelayNode.h"
 #include "../dsp/Delay/TempoSyncUtils.h"
+#include "../dsp/DelayNode.h"
 
 using namespace ParamTags;
 
-ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) :
-    node (node),
-    param (param),
-    showLabel (showLabel)
+ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) : node (node),
+                                                                               param (param),
+                                                                               showLabel (showLabel)
 {
     setName (param->name);
     setTooltip (ParamHelpers::getTooltip (param->paramID));
@@ -130,7 +129,7 @@ void ParamSlider::mouseDown (const MouseEvent& e)
             toggleParamLock();
         else if (param->paramID == modFreqTag)
             node.toggleLFOSync();
-        
+
         return;
     }
 
@@ -156,7 +155,7 @@ void ParamSlider::mouseUp (const MouseEvent& e)
     Slider::mouseUp (e);
 
     bool dontShowLabel = isDragging || e.mods.isAnyModifierKeyDown()
-        || showLabel || e.getNumberOfClicks() > 1;
+                         || showLabel || e.getNumberOfClicks() > 1;
     if (! dontShowLabel)
     {
         valueLabel.showEditor();

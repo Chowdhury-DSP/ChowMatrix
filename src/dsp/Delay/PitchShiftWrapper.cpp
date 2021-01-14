@@ -29,10 +29,10 @@ void PitchShiftWrapper::setPitchSemitones (float pitch, bool force)
     {
         pitchStSmooth.setTargetValue (pitch);
     }
-        
+
     const auto current = pitchStSmooth.getCurrentValue();
     const auto target = pitchStSmooth.getTargetValue();
-    if (target == 0.0f && current == 0.0f)      // bypass
+    if (target == 0.0f && current == 0.0f) // bypass
     {
         shifter.reset();
         crossfade.setCurrentAndTargetValue (0.0f);
@@ -48,12 +48,12 @@ void PitchShiftWrapper::setPitchSemitones (float pitch, bool force)
         crossfade.setTargetValue (1.0f);
         processFunc = &PitchShiftWrapper::processSampleInternalFade;
     }
-    else if (pitchStSmooth.isSmoothing())       // smooth pitch change
+    else if (pitchStSmooth.isSmoothing()) // smooth pitch change
     {
         crossfade.setCurrentAndTargetValue (1.0f);
         processFunc = &PitchShiftWrapper::processSampleInternalSmooth;
     }
-    else                                        // normal processing!
+    else // normal processing!
     {
         crossfade.setCurrentAndTargetValue (1.0f);
         processFunc = &PitchShiftWrapper::processSampleInternal;

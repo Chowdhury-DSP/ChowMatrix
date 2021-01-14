@@ -2,25 +2,24 @@
 
 namespace
 {
-    /** Max dimensions for the GraphView internal component */
-    constexpr int maxDimX = 1000;
-    constexpr int maxDimY = 500;
+/** Max dimensions for the GraphView internal component */
+constexpr int maxDimX = 1000;
+constexpr int maxDimY = 500;
 
-    /** Will stop scrolling when node is this distance from edge */
-    constexpr int scrollDistanceFromEdge = 30;
+/** Will stop scrolling when node is this distance from edge */
+constexpr int scrollDistanceFromEdge = 30;
 
-    /** Speed of autoscrolling */
-    constexpr int scrollSpeed = 3;
+/** Speed of autoscrolling */
+constexpr int scrollSpeed = 3;
 
-    /** Dmensions for the "home" button */
-    constexpr int buttonDim = 20;
-}
+/** Dmensions for the "home" button */
+constexpr int buttonDim = 20;
+} // namespace
 
-GraphViewport::GraphViewport (ChowMatrix& plugin) :
-    graphView (plugin, *this),
-    aurora (plugin.getInsanityParam()),
-    manager (plugin.getManager()),
-    homeButton ("", DrawableButton::ImageStretched)
+GraphViewport::GraphViewport (ChowMatrix& plugin) : graphView (plugin, *this),
+                                                    aurora (plugin.getInsanityParam()),
+                                                    manager (plugin.getManager()),
+                                                    homeButton ("", DrawableButton::ImageStretched)
 {
     setViewedComponent (&graphView, false);
     addAndMakeVisible (aurora);
@@ -42,8 +41,7 @@ void GraphViewport::setupHomeButton()
     homeButton.setColour (DrawableButton::backgroundColourId, Colours::transparentBlack);
     homeButton.setColour (DrawableButton::backgroundOnColourId, Colours::transparentBlack);
 
-    std::unique_ptr<Drawable> offImage (Drawable::createFromImageData
-        (BinaryData::home_svg, BinaryData::home_svgSize));
+    std::unique_ptr<Drawable> offImage (Drawable::createFromImageData (BinaryData::home_svg, BinaryData::home_svgSize));
     auto downImage = offImage->createCopy();
 
     offImage->replaceColour (Colours::black, Colours::white.withAlpha (0.33f));
@@ -77,7 +75,7 @@ void GraphViewport::centerView()
         if (auto centreNodeEditor = selectedNode->getEditor())
         {
             auto pos = centreNodeEditor->getPosition()
-                .translated (-getWidth() / 2, -getHeight() / 2);
+                           .translated (-getWidth() / 2, -getHeight() / 2);
             setViewPosition (pos);
             return;
         }

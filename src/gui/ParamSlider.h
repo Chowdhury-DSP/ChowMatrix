@@ -1,11 +1,11 @@
 #pragma once
 
-#include <pch.h>
 #include "../dsp/DelayNode.h"
+#include <pch.h>
 
 /**
  * Text slider mapped to a parameter
- */ 
+ */
 class ParamSlider : public Slider,
                     private AudioProcessorParameter::Listener,
                     private Slider::Listener

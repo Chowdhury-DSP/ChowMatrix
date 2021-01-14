@@ -5,7 +5,7 @@
 
 /**
  * Utility class to manage delay interpolation types
- */ 
+ */
 class DelayTypeControl : private BaseController
 {
 public:

@@ -1,26 +1,24 @@
 #pragma once
 
-#include "ParamSlider.h"
 #include "../dsp/DelayNode.h"
+#include "ParamSlider.h"
 
 namespace NodeInfoConsts
 {
-    constexpr int InfoWidth = 95;
-    constexpr int InfoWidthNoLabel = 80;
-    constexpr int InfoHeight = 18;
-    constexpr int InfoHeightNoLabel = 22;
+constexpr int InfoWidth = 95;
+constexpr int InfoWidthNoLabel = 80;
+constexpr int InfoHeight = 18;
+constexpr int InfoHeightNoLabel = 22;
 
-    static StringArray skipParams { ParamTags::distTag, ParamTags::modFreqTag,
-                                    ParamTags::delayModTag, ParamTags::panModTag };
-}
+static StringArray skipParams { ParamTags::distTag, ParamTags::modFreqTag, ParamTags::delayModTag, ParamTags::panModTag };
+} // namespace NodeInfoConsts
 
 /** Node info component containing a column of ParamSliders */
 class NodeInfo : public Component
 {
 public:
-    NodeInfo (DelayNode& node, bool showLabel = true) :
-        node (node),
-        showLabel (showLabel)
+    NodeInfo (DelayNode& node, bool showLabel = true) : node (node),
+                                                        showLabel (showLabel)
     {
         for (int i = 0; i < node.getNumParams(); ++i)
         {
@@ -28,9 +26,7 @@ public:
             if (showLabel && NodeInfoConsts::skipParams.contains (node.getNodeParameter (i)->paramID))
                 continue;
 
-            addAndMakeVisible (sliders.add (std::make_unique<ParamSlider>
-                (node, dynamic_cast<AudioProcessorValueTreeState::Parameter*>
-                    (node.getNodeParameter (i)), showLabel)));
+            addAndMakeVisible (sliders.add (std::make_unique<ParamSlider> (node, dynamic_cast<AudioProcessorValueTreeState::Parameter*> (node.getNodeParameter (i)), showLabel)));
         }
 
         const int width = showLabel ? NodeInfoConsts::InfoWidth : NodeInfoConsts::InfoWidthNoLabel;

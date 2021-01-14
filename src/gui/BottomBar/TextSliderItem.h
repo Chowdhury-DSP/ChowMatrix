@@ -7,21 +7,18 @@ class TextSliderItem : public foleys::GuiItem
 public:
     FOLEYS_DECLARE_GUI_FACTORY (TextSliderItem)
 
-    TextSliderItem (foleys::MagicGUIBuilder& builder, const ValueTree& node) :
-        foleys::GuiItem (builder, node)
+    TextSliderItem (foleys::MagicGUIBuilder& builder, const ValueTree& node) : foleys::GuiItem (builder, node)
     {
         setColourTranslation (
-        {
-            { "slider-background", juce::Slider::backgroundColourId },
-            { "slider-thumb", juce::Slider::thumbColourId },
-            { "slider-track", juce::Slider::trackColourId },
-            { "rotary-fill", juce::Slider::rotarySliderFillColourId },
-            { "rotary-outline", juce::Slider::rotarySliderOutlineColourId },
-            { "slider-text", juce::Slider::textBoxTextColourId },
-            { "slider-text-background", juce::Slider::textBoxBackgroundColourId },
-            { "slider-text-highlight", juce::Slider::textBoxHighlightColourId },
-            { "slider-text-outline", juce::Slider::textBoxOutlineColourId }
-        });
+            { { "slider-background", juce::Slider::backgroundColourId },
+              { "slider-thumb", juce::Slider::thumbColourId },
+              { "slider-track", juce::Slider::trackColourId },
+              { "rotary-fill", juce::Slider::rotarySliderFillColourId },
+              { "rotary-outline", juce::Slider::rotarySliderOutlineColourId },
+              { "slider-text", juce::Slider::textBoxTextColourId },
+              { "slider-text-background", juce::Slider::textBoxBackgroundColourId },
+              { "slider-text-highlight", juce::Slider::textBoxHighlightColourId },
+              { "slider-text-outline", juce::Slider::textBoxOutlineColourId } });
 
         addAndMakeVisible (slider);
     }

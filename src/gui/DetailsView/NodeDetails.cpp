@@ -1,13 +1,12 @@
 #include "NodeDetails.h"
-#include "NodeDetailsGUI.h"
 #include "../MatrixView/NodeComponent.h"
+#include "NodeDetailsGUI.h"
 
 using namespace DetailsConsts;
 
-NodeDetails::NodeDetails (DelayNode& node, NodeManager& manager) :
-    manager (manager),
-    nodeInfo (node, false),
-    button (*this)
+NodeDetails::NodeDetails (DelayNode& node, NodeManager& manager) : manager (manager),
+                                                                   nodeInfo (node, false),
+                                                                   button (*this)
 {
     addAndMakeVisible (nodeInfo);
     addAndMakeVisible (button);
@@ -23,8 +22,7 @@ void NodeDetails::resized()
     nodeInfo.setBounds (0, buttonHeight, getWidth(), getHeight() - buttonHeight);
 }
 
-NodeDetails::Button::Button (NodeDetails& nodeDetails) :
-    nodeDetails (nodeDetails)
+NodeDetails::Button::Button (NodeDetails& nodeDetails) : nodeDetails (nodeDetails)
 {
     setWantsKeyboardFocus (true);
 
@@ -79,7 +77,7 @@ bool NodeDetails::Button::keyPressed (const KeyPress& key)
     {
         if (nodeDetails.getNode()->getSelected())
             nodeDetails.getNode()->deleteNode();
-            
+
         return true;
     }
 

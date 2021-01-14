@@ -4,25 +4,24 @@
 
 namespace ParamTags
 {
-    const String delayTag = "DLY";
-    const String panTag   = "PAN";
-    const String fbTag    = "FDBK";
-    const String gainTag  = "GAIN";
-    const String lpfTag   = "LPF";
-    const String hpfTag   = "HPF";
-    const String distTag  = "DIST";
-    const String pitchTag = "PITCH";
-    const String diffTag  = "DIFF";
-    const String modFreqTag   = "MOD_FREQ";
-    const String delayModTag  = "MOD_DELAY";
-    const String panModTag    = "MOD_PAN";
-}
+const String delayTag = "DLY";
+const String panTag = "PAN";
+const String fbTag = "FDBK";
+const String gainTag = "GAIN";
+const String lpfTag = "LPF";
+const String hpfTag = "HPF";
+const String distTag = "DIST";
+const String pitchTag = "PITCH";
+const String diffTag = "DIFF";
+const String modFreqTag = "MOD_FREQ";
+const String delayModTag = "MOD_DELAY";
+const String panModTag = "MOD_PAN";
+} // namespace ParamTags
 
 using Parameter = AudioProcessorValueTreeState::Parameter;
 
 namespace ParamHelpers
 {
-
 // parameter constants
 constexpr float maxDelay = 1500.0f;
 constexpr float centreDelay = 200.0f;
@@ -70,4 +69,4 @@ StringToValFunc getStringFuncForParam (const String& paramID);
 /** Creates a tooltip for a given paramID */
 String getTooltip (const String& paramID);
 
-} // ParamHelpers
+} // namespace ParamHelpers
