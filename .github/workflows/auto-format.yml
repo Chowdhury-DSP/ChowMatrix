@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+    - main
+    - develop
+    paths:
+    - '**.cpp'
+    - '**.h'
+
+  workflow_dispatch:
+
+jobs:
+  build_and_test:
+    if: contains(toJson(github.event.commits), '***NO_CI***') == false && contains(toJson(github.event.commits), '[ci skip]') == false && contains(toJson(github.event.commits), '[skip ci]') == false
+    name: Apply clang-format to pull request
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Install Linux Deps
+      run: |
+        sudo apt-get update
+        sudo apt-get install clang-format
+        clang-format --version
+        echo "$GITHUB_HEAD_REF"
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+
+    # - name: Setup debug session
+    #   uses: mxschmitt/action-tmate@v3
+
+    - name: Run clang-format
+      shell: bash
+      run: find src/ -iname *.h -o -iname *.cpp | xargs clang-format -style=file -verbose -i
+
+    # - name: Commit & Push changes
+    #   uses: actions-js/push@master
+    #   with:
+    #     message: "Apply clang-format"
+    #     branch: ""
+    #     github_token: ${{ secrets.GITHUB_TOKEN }}
