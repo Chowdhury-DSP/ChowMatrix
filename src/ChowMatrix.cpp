@@ -10,18 +10,17 @@
 
 namespace
 {
-    const String dryTag = "dry_param";
-    const String wetTag = "wet_param";
+const String dryTag = "dry_param";
+const String wetTag = "wet_param";
 
-    constexpr double gainFadeTime = 0.05;
-    constexpr float negInfDB = -60.0f;
-}
+constexpr double gainFadeTime = 0.05;
+constexpr float negInfDB = -60.0f;
+} // namespace
 
-ChowMatrix::ChowMatrix() :
-    insanityControl (vts, &inputNodes),
-    delayTypeControl (vts, &inputNodes),
-    syncControl (vts, &inputNodes),
-    stateManager (vts, inputNodes)
+ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
+                           delayTypeControl (vts, &inputNodes),
+                           syncControl (vts, &inputNodes),
+                           stateManager (vts, inputNodes)
 {
     manager.initialise (&inputNodes);
 
@@ -44,11 +43,9 @@ void ChowMatrix::addParameters (Parameters& params)
     auto gainToString = [] (float x) { return x <= negInfDB ? "-inf dB" : String (x, 1, false) + " dB"; };
     auto stringToGain = [] (const String& t) { return t.getFloatValue(); };
 
-    params.push_back (std::make_unique<Parameter> (dryTag, "Dry", String(),
-        gainRange, -12.0f, gainToString, stringToGain));
+    params.push_back (std::make_unique<Parameter> (dryTag, "Dry", String(), gainRange, -12.0f, gainToString, stringToGain));
 
-    params.push_back (std::make_unique<Parameter> (wetTag, "Wet", String(),
-        gainRange, -12.0f, gainToString, stringToGain));
+    params.push_back (std::make_unique<Parameter> (wetTag, "Wet", String(), gainRange, -12.0f, gainToString, stringToGain));
 
     InsanityControl::addParameters (params);
     DelayTypeControl::addParameters (params);
@@ -143,7 +140,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
         NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->randomiseParameters(); });
     });
 
-    auto editor =  new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
+    auto editor = new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
     updater.showUpdaterScreen (editor);
     return editor;
 }

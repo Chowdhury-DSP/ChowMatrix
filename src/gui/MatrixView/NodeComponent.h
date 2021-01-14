@@ -1,7 +1,7 @@
 #pragma once
 
-#include <pch.h>
 #include "../../dsp/DelayNode.h"
+#include <pch.h>
 
 class GraphView;
 class NodeComponent : public Component
@@ -21,7 +21,7 @@ public:
     float getHueIncrement() const noexcept { return hueIncrement; }
 
     virtual void updatePosition() {}
-    
+
     inline Point<int> getCentrePosition() const noexcept
     {
         return getPosition().translated (getWidth() / 2, getHeight() / 2);

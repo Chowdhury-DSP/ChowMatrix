@@ -12,8 +12,7 @@ private:
     void takeScreenshots (const ArgumentList& args);
 
     /** Take a single screenshot for a given rectangle */
-    void screenshotForBounds (Component* editor, Rectangle<int> bounds,
-                              const File& dir, const String& filename);
+    void screenshotForBounds (Component* editor, Rectangle<int> bounds, const File& dir, const String& filename);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScreenshotGenerator)
 };

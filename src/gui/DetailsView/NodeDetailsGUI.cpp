@@ -1,8 +1,7 @@
 #include "NodeDetailsGUI.h"
 #include "../../dsp/Parameters/ParamHelpers.h"
 
-NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) :
-    nodeDetailsViewport (chowMatrix)
+NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) : nodeDetailsViewport (chowMatrix)
 {
     setColour (nodeColour, Colours::green);
     setColour (nodeSelectedColour, Colours::pink);
@@ -18,7 +17,7 @@ NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) :
         String param = "parameters";
         if (i > 0)
         {
-            name = params[i-1]->getName(1024);
+            name = params[i - 1]->getName (1024);
             text = name;
             param = name;
         }
@@ -26,25 +25,25 @@ NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) :
         auto* l = labels.add (std::make_unique<Label> (name, text));
         l->setFont (16.0f);
 
-        if (i < 3)  // Delay time and pan have "Insanity Lock" option
-          #if JUCE_MAC
+        if (i < 3) // Delay time and pan have "Insanity Lock" option
+#if JUCE_MAC
             l->setTooltip ("Use shift+drag to change all nodes in unison, or CMD+click for Insanity Lock");
-          #else
+#else
             l->setTooltip ("Use shift+drag to change all nodes in unison, or CTRL+click for Insanity Lock");
-          #endif
-        else if (i == 10)   // Mod. Freq. has "Tempo Sync" option
-          #if JUCE_MAC
+#endif
+        else if (i == 10) // Mod. Freq. has "Tempo Sync" option
+#if JUCE_MAC
             l->setTooltip ("Use shift+drag to change all nodes in unison, or CMD+click for Tempo Sync");
-          #else
+#else
             l->setTooltip ("Use shift+drag to change all nodes in unison, or CTRL+click for Tempo Sync");
-          #endif
+#endif
         else
             l->setTooltip ("Use shift+drag to change " + String (param) + " for all nodes in unison");
 
         addAndMakeVisible (l);
     }
 
-    addAndMakeVisible (nodeDetailsViewport);    
+    addAndMakeVisible (nodeDetailsViewport);
 }
 
 void NodeDetailsGUI::resized()
@@ -54,7 +53,7 @@ void NodeDetailsGUI::resized()
 
     labels[0]->setBounds (0, -yOffset, labelWidth, DetailsConsts::buttonHeight);
     for (int i = 1; i < labels.size(); ++i)
-        labels[i]->setBounds (0, labels[i-1]->getBottom(), labelWidth, NodeInfoConsts::InfoHeightNoLabel);
+        labels[i]->setBounds (0, labels[i - 1]->getBottom(), labelWidth, NodeInfoConsts::InfoHeightNoLabel);
 
     nodeDetailsViewport.setBounds (labelWidth, 0, getWidth() - labelWidth, getHeight());
 }

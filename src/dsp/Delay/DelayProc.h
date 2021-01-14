@@ -1,16 +1,16 @@
 #pragma once
 
-#include <pch.h>
 #include "../Distortion/Distortion.h"
-#include "VariableDelay.h"
-#include "PitchShiftWrapper.h"
 #include "Diffusion.h"
+#include "PitchShiftWrapper.h"
 #include "TempoSyncUtils.h"
+#include "VariableDelay.h"
+#include <pch.h>
 
 /**
  * Audio processor that implements delay line with feedback,
  * including filtering and distortion in the feedback path
- */ 
+ */
 class DelayProc
 {
 public:
@@ -20,7 +20,7 @@ public:
     void prepare (const dsp::ProcessSpec& spec);
     void reset();
 
-    template<typename ProcessContext>
+    template <typename ProcessContext>
     void process (const ProcessContext& context);
 
     // flush delay line state
@@ -47,16 +47,16 @@ public:
     float getModDepth() const noexcept { return 1000.0f * delayModValue / fs; }
 
 private:
-    template<typename SampleType>
+    template <typename SampleType>
     inline SampleType processSample (SampleType x, size_t ch);
 
-    template<typename SampleType>
+    template <typename SampleType>
     inline SampleType processSampleSmooth (SampleType x, size_t ch);
 
     VariableDelay delay { 1 << 19 };
 
     float fs = 44100.0f;
-    
+
     SmoothedValue<float, ValueSmoothingTypes::Linear> delaySmooth;
     SmoothedValue<float, ValueSmoothingTypes::Linear> feedback;
     SmoothedValue<float, ValueSmoothingTypes::Linear> inGain;
@@ -76,8 +76,8 @@ private:
         chowdsp::IIR::Filter<float, 1>,
         Diffusion,
         Distortion,
-        PitchShiftWrapper
-        > procs;
+        PitchShiftWrapper>
+        procs;
 
     TempoSyncUtils::SyncedLFO modSine;
     float delayModValue = 0.0f;

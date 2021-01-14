@@ -29,14 +29,13 @@ class NodeDetailsItem : public foleys::GuiItem
 public:
     FOLEYS_DECLARE_GUI_FACTORY (NodeDetailsItem)
 
-    NodeDetailsItem (foleys::MagicGUIBuilder& builder, const ValueTree& node) :
-        foleys::GuiItem (builder, node)
+    NodeDetailsItem (foleys::MagicGUIBuilder& builder, const ValueTree& node) : foleys::GuiItem (builder, node)
     {
         setColourTranslation ({
-            { "node",          NodeDetailsGUI::nodeColour },
+            { "node", NodeDetailsGUI::nodeColour },
             { "node-selected", NodeDetailsGUI::nodeSelectedColour },
-            { "scroll",        NodeDetailsGUI::scrollThumbColour },
-            { "scroll-track",  NodeDetailsGUI::scrollTrackColour },
+            { "scroll", NodeDetailsGUI::scrollThumbColour },
+            { "scroll-track", NodeDetailsGUI::scrollTrackColour },
         });
 
         auto* plugin = dynamic_cast<ChowMatrix*> (builder.getMagicState().getProcessor());

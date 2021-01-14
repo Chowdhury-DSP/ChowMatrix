@@ -8,8 +8,8 @@ class GraphView;
 /**
  * Base class to provide shared functionality for Delay Nodes
  * and Input Nodes
- */ 
-template<typename Child>
+ */
+template <typename Child>
 class BaseNode
 {
 public:
@@ -33,7 +33,7 @@ public:
     // Managing children
     int getNumChildren() const noexcept { return children.size(); }
     Child* getChild (int idx) { return children[idx]; }
-    BaseNode* getParent() {return parent; }
+    BaseNode* getParent() { return parent; }
     void setParent (BaseNode* parent);
 
     struct Listener

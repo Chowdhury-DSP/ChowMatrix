@@ -2,9 +2,9 @@
 
 namespace
 {
-    constexpr double smoothTime = 0.01;
-    constexpr float allpassFreq = 200.0f;
-}
+constexpr double smoothTime = 0.01;
+constexpr float allpassFreq = 200.0f;
+} // namespace
 
 Diffusion::Diffusion()
 {
@@ -31,7 +31,7 @@ void Diffusion::prepare (const dsp::ProcessSpec& spec)
 
 void Diffusion::reset()
 {
-    std::fill (z, &z[maxNumStages+1], 0.0f);
+    std::fill (z, &z[maxNumStages + 1], 0.0f);
 }
 
 void Diffusion::calcCoefs (float freq)
@@ -44,7 +44,7 @@ void Diffusion::calcCoefs (float freq)
     const auto K = 2.0f * fs;
 
     const auto a0 = a0s * K + a1s;
-    b[0] = ( b0s * K + b1s) / a0;
+    b[0] = (b0s * K + b1s) / a0;
     b[1] = (-b0s * K + b1s) / a0;
     a[0] = 1.0f;
     a[1] = (-a0s * K + a1s) / a0;

@@ -5,7 +5,7 @@
 /**
  * Base class for some parameter controller that needs
  * access to all active nodes
- */ 
+ */
 class BaseController : private AudioProcessorValueTreeState::Listener,
                        private DBaseNode::Listener
 {
@@ -19,7 +19,7 @@ public:
 
 protected:
     virtual void newNodeAdded (DelayNode*) {}
-    void doForNodes (std::function<void(DelayNode*)> nodeFunc);
+    void doForNodes (std::function<void (DelayNode*)> nodeFunc);
 
 private:
     void nodeAdded (DelayNode* newNode) override;

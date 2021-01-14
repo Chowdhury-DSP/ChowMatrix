@@ -1,6 +1,6 @@
 #include "NodeManager.h"
 
-void NodeManager::doForNodes (DBaseNode* root, std::function<void(DelayNode*)> nodeFunc)
+void NodeManager::doForNodes (DBaseNode* root, std::function<void (DelayNode*)> nodeFunc)
 {
     for (int i = 0; i < root->getNumChildren(); ++i)
     {
@@ -10,7 +10,7 @@ void NodeManager::doForNodes (DBaseNode* root, std::function<void(DelayNode*)> n
     }
 }
 
-void NodeManager::doForNodes (std::array<InputNode, 2>* nodes, std::function<void(DelayNode*)> nodeFunc)
+void NodeManager::doForNodes (std::array<InputNode, 2>* nodes, std::function<void (DelayNode*)> nodeFunc)
 {
     for (auto& node : *nodes)
         NodeManager::doForNodes (&node, nodeFunc);
@@ -78,8 +78,7 @@ DelayNode* NodeManager::getSelected() const noexcept
 
 void NodeManager::setSoloed (DelayNode* soloedNode, ActionSource source)
 {
-    newNodeSoloState = soloedNode == nullptr ?
-        DelayNode::SoloState::None : DelayNode::SoloState::Mute;
+    newNodeSoloState = soloedNode == nullptr ? DelayNode::SoloState::None : DelayNode::SoloState::Mute;
 
     doForNodes (nodes, [=] (DelayNode* n) {
         if (soloedNode == nullptr) // "un-solo" and currently soloed nodes

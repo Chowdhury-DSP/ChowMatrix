@@ -1,11 +1,11 @@
 #include "StateManager.h"
 
 StateManager::StateManager (AudioProcessorValueTreeState& vts,
-                            std::array<InputNode, 2>& nodes) :
-    vts (vts),
-    inputNodes (nodes),
-    presetManager (this, vts)
-{}
+                            std::array<InputNode, 2>& nodes) : vts (vts),
+                                                               inputNodes (nodes),
+                                                               presetManager (this, vts)
+{
+}
 
 void StateManager::loadDefaultABStates()
 {
@@ -40,7 +40,7 @@ std::unique_ptr<XmlElement> StateManager::saveState()
     std::unique_ptr<XmlElement> childrenXml = std::make_unique<XmlElement> ("nodes");
     for (auto& node : inputNodes)
         childrenXml->addChildElement (node.saveXml());
-    
+
     xml->addChildElement (childrenXml.release());
     return std::move (xml);
 }

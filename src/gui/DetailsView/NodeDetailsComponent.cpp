@@ -1,21 +1,20 @@
 #include "NodeDetailsComponent.h"
-#include "NodeDetailsGUI.h"
 #include "../../NodeManager.h"
+#include "NodeDetailsGUI.h"
 
 namespace
 {
-    constexpr int xPad = 3;
-    constexpr int xOffset = xPad;
-    constexpr int scrollOffset = 4;
-}
+constexpr int xPad = 3;
+constexpr int xOffset = xPad;
+constexpr int scrollOffset = 4;
+} // namespace
 
 constexpr int calcHeight()
 {
     return DetailsConsts::buttonHeight + NodeInfoConsts::InfoHeightNoLabel * ParamHelpers::numParams + scrollOffset;
 }
 
-NodeDetailsComponent::NodeDetailsComponent (ChowMatrix& plugin) :
-    plugin (plugin)
+NodeDetailsComponent::NodeDetailsComponent (ChowMatrix& plugin) : plugin (plugin)
 {
     for (auto& node : *plugin.getNodes())
     {
@@ -61,9 +60,7 @@ void NodeDetailsComponent::paint (Graphics& g)
         if (nd->getNode()->getSelected())
         {
             g.setColour (findColour (NodeDetailsGUI::nodeColour, true));
-            g.drawRect (nd->getBounds().toFloat()
-                .expanded (rectOffset, 0.0f)
-                .withHeight ((float) getHeight()), rectOffset);
+            g.drawRect (nd->getBounds().toFloat().expanded (rectOffset, 0.0f).withHeight ((float) getHeight()), rectOffset);
             break;
         }
     }
@@ -73,8 +70,7 @@ void NodeDetailsComponent::resized()
 {
     for (int i = 0; i < nodes.size(); ++i)
     {
-        nodes[i]->setBounds (xOffset + (NodeInfoConsts::InfoWidthNoLabel + xPad) * i, 0,
-            NodeInfoConsts::InfoWidthNoLabel, getHeight() - xPad);
+        nodes[i]->setBounds (xOffset + (NodeInfoConsts::InfoWidthNoLabel + xPad) * i, 0, NodeInfoConsts::InfoWidthNoLabel, getHeight() - xPad);
     }
 }
 

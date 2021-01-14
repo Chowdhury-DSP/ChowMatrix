@@ -23,7 +23,7 @@ private:
         {
             auto xPos = x * b.getWidth();
             const auto halfHeight = b.getHeight() / 2.0f;
-            auto yTop = halfHeight - (y + y_range.first)  * halfHeight;
+            auto yTop = halfHeight - (y + y_range.first) * halfHeight;
             auto yBot = halfHeight - (y - y_range.second) * halfHeight;
             return { xPos, yTop, xPos, yBot };
         }

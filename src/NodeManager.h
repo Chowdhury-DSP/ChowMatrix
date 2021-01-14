@@ -1,20 +1,20 @@
 #pragma once
 
-#include "dsp/InputNode.h"
 #include "dsp/DelayNode.h"
+#include "dsp/InputNode.h"
 
 /**
  * Utility class to manage node graph
- */ 
+ */
 class NodeManager : private DBaseNode::Listener
 {
 public:
     NodeManager() = default;
-    
+
     /** Iterate through node tree and perform nodeFunc for all nodes */
-    static void doForNodes (DBaseNode* root, std::function<void(DelayNode*)> nodeFunc);
-    static void doForNodes (std::array<InputNode, 2>* nodes, std::function<void(DelayNode*)> nodeFunc);
-    
+    static void doForNodes (DBaseNode* root, std::function<void (DelayNode*)> nodeFunc);
+    static void doForNodes (std::array<InputNode, 2>* nodes, std::function<void (DelayNode*)> nodeFunc);
+
     /** Initialise node manager with an array of root nodes */
     void initialise (std::array<InputNode, 2>* _nodes);
 

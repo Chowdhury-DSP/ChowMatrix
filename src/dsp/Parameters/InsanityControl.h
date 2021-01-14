@@ -4,7 +4,7 @@
 
 /**
  * Utility class to manage insanity controls
- */ 
+ */
 class InsanityControl : private BaseController,
                         private Timer
 {
