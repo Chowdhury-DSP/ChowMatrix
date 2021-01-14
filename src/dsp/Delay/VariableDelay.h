@@ -4,7 +4,7 @@
 
 /**
  * Delay class with variable interpolation type
- */ 
+ */
 class VariableDelay
 {
 public:

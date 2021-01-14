@@ -1,17 +1,17 @@
 #pragma once
 
-#include <pch.h>
 #include "NodeManager.h"
 #include "dsp/InputNode.h"
-#include "dsp/Parameters/InsanityControl.h"
 #include "dsp/Parameters/DelayTypeControl.h"
+#include "dsp/Parameters/InsanityControl.h"
 #include "dsp/Parameters/SyncControl.h"
 #include "gui/AutoUpdating.h"
 #include "state/StateManager.h"
+#include <pch.h>
 
 /**
  * Main class for the Matrix plugin
- */ 
+ */
 class ChowMatrix : public chowdsp::PluginBase<ChowMatrix>
 {
 public:

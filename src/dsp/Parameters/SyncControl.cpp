@@ -3,11 +3,10 @@
 
 namespace
 {
-    const String syncTag = "snyc";
+const String syncTag = "snyc";
 }
 
-SyncControl::SyncControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) :
-    BaseController (vts, nodes, { syncTag })
+SyncControl::SyncControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) : BaseController (vts, nodes, { syncTag })
 {
     syncParam = vts.getRawParameterValue (syncTag);
     parameterChanged (syncTag, syncParam->load());
@@ -21,7 +20,7 @@ void SyncControl::addParameters (Parameters& params)
 void SyncControl::setTempo (AudioPlayHead* playhead)
 {
     double newTempo = 120.0;
-    
+
     // get tempo from host
     if (playhead)
     {

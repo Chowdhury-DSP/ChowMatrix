@@ -10,9 +10,7 @@ public:
     virtual ~InsanityLNF() = default;
 
 protected:
-    void drawLinearSlider (Graphics& g, int x, int y, int width, int height,
-        float sliderPos, float /*minSliderPos*/, float /*maxSliderPos*/,
-        const Slider::SliderStyle, Slider & slider) override
+    void drawLinearSlider (Graphics& g, int x, int y, int width, int height, float sliderPos, float /*minSliderPos*/, float /*maxSliderPos*/, const Slider::SliderStyle, Slider& slider) override
     {
         auto trackWidth = jmin (6.0f, slider.isHorizontal() ? (float) height * 0.25f : (float) width * 0.25f);
 
@@ -44,15 +42,15 @@ protected:
         valueTrack.startNewSubPath (minPoint);
         valueTrack.lineTo (maxPoint);
 
-        ColourGradient gr (Colour (0xffb843c3), startPoint,
-                           Colour (0xff38bb9d), endPoint, false);
+        ColourGradient gr (Colour (0xffb843c3), startPoint, Colour (0xff38bb9d), endPoint, false);
         g.setGradientFill (gr);
         g.strokePath (valueTrack, { trackWidth, PathStrokeType::curved, PathStrokeType::rounded });
 
         auto thumbRect = Rectangle<float> (static_cast<float> (thumbWidth),
-                                       static_cast<float> (thumbWidth)).withCentre (maxPoint);
+                                           static_cast<float> (thumbWidth))
+                             .withCentre (maxPoint);
         knob->drawWithin (g, thumbRect, RectanglePlacement::stretchToFit, 1.0f);
     }
 
-    juce::Typeface::Ptr getTypefaceForFont(const juce::Font&) override { return robotoBold; }
+    juce::Typeface::Ptr getTypefaceForFont (const juce::Font&) override { return robotoBold; }
 };

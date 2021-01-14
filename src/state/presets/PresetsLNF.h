@@ -28,16 +28,9 @@ public:
         label.setFont (getComboBoxFont (box).boldened());
     }
 
-    void drawPopupMenuItem (Graphics& g, const Rectangle<int>& area,
-        const bool isSeparator, const bool isActive,
-        const bool isHighlighted, const bool /*isTicked*/,
-        const bool hasSubMenu, const String& text,
-        const String& shortcutKeyText,
-        const Drawable* icon, const Colour* const textColourToUse) override
+    void drawPopupMenuItem (Graphics& g, const Rectangle<int>& area, const bool isSeparator, const bool isActive, const bool isHighlighted, const bool /*isTicked*/, const bool hasSubMenu, const String& text, const String& shortcutKeyText, const Drawable* icon, const Colour* const textColourToUse) override
     {
-        LookAndFeel_V4::drawPopupMenuItem (g, area, isSeparator, isActive,
-            isHighlighted, false /*isTicked*/, hasSubMenu, text,
-            shortcutKeyText, icon, textColourToUse);
+        LookAndFeel_V4::drawPopupMenuItem (g, area, isSeparator, isActive, isHighlighted, false /*isTicked*/, hasSubMenu, text, shortcutKeyText, icon, textColourToUse);
     }
 
     void drawPopupMenuBackground (Graphics& g, int width, int height) override

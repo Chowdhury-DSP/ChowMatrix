@@ -14,7 +14,7 @@ public:
     void createAndAddEditor (DelayNode*);
     void removeEditor (DelayNode*);
 
-    using NodeFunc = std::function<void(DBaseNode*, DelayNode*)>;
+    using NodeFunc = std::function<void (DBaseNode*, DelayNode*)>;
     void doForAllNodes (NodeFunc nodeFunc);
 
     friend class GraphView;

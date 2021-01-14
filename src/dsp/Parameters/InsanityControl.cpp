@@ -5,12 +5,11 @@ using namespace ParamTags;
 
 namespace
 {
-    const String insanityTag = "insanity";
-    constexpr float smoothFreq = 2.0f;
-}
+const String insanityTag = "insanity";
+constexpr float smoothFreq = 2.0f;
+} // namespace
 
-InsanityControl::InsanityControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) :
-    BaseController (vts, nodes, { insanityTag })
+InsanityControl::InsanityControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) : BaseController (vts, nodes, { insanityTag })
 {
     insanityParam = vts.getRawParameterValue (insanityTag);
     parameterChanged (insanityTag, insanityParam->load());
@@ -21,8 +20,7 @@ void InsanityControl::addParameters (Parameters& params)
 {
     auto insanityToString = [] (float x) { return String (x * 100.0f) + "%"; };
     auto stringToInsanity = [] (const String& t) { return t.getFloatValue() / 100.0f; };
-    params.push_back (std::make_unique<AudioProcessorValueTreeState::Parameter> (insanityTag, "Insanity", String(),
-        NormalisableRange<float> { 0.0f, 1.0f }, 0.0f, insanityToString, stringToInsanity));
+    params.push_back (std::make_unique<AudioProcessorValueTreeState::Parameter> (insanityTag, "Insanity", String(), NormalisableRange<float> { 0.0f, 1.0f }, 0.0f, insanityToString, stringToInsanity));
 }
 
 void InsanityControl::timerCallback()
@@ -37,11 +35,11 @@ void InsanityControl::timerCallback()
         float pan = n->getPan();
 
         delay += n->delaySmoother.processSample (delay_dist (generator) * scale);
-        pan   += n->panSmoother.processSample   (pan_dist   (generator) * scale);
+        pan += n->panSmoother.processSample (pan_dist (generator) * scale);
 
         if (! n->isParamLocked (delayTag))
             n->setDelay (jlimit (0.0f, 1.0f, delay));
-        
+
         if (! n->isParamLocked (panTag))
             n->setPan (jlimit (-1.0f, 1.0f, pan));
     });
@@ -59,10 +57,10 @@ void InsanityControl::parameterChanged (const String&, float newValue)
             n->panSmoother.reset();
         });
     }
-    
+
     // calc new timer callback rate
     timerFreq = int (std::pow (10, 1.0f + 0.65f * std::sqrt (newValue)));
-    
+
     // update smoothing filters
     auto smoothCoefs = dsp::IIR::Coefficients<float>::makeFirstOrderLowPass ((double) timerFreq, smoothFreq);
     doForNodes ([=] (DelayNode* n) {

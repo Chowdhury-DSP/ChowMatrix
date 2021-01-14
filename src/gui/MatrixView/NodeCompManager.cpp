@@ -1,9 +1,9 @@
 #include "NodeCompManager.h"
 #include "GraphView.h"
 
-template<typename Node, typename Editor>
+template <typename Node, typename Editor>
 Editor* createAndAddEditorToList (Node* node, OwnedArray<Editor>& list, GraphView* view)
-{ 
+{
     return list.add (dynamic_cast<Editor*> (node->createNodeEditor (view).release()));
 }
 
@@ -21,9 +21,9 @@ void doForAllChildNodes (DBaseNode* root, NodeCompManager::NodeFunc funcToDo)
 }
 
 ///////////////////////////////////////////////////////
-NodeCompManager::NodeCompManager (GraphView* parent) :
-    parent (parent)
-{}
+NodeCompManager::NodeCompManager (GraphView* parent) : parent (parent)
+{
+}
 
 void NodeCompManager::createAndAddEditor (InputNode* node, const Colour& colour, float hueIncrement)
 {
