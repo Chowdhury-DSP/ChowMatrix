@@ -1,5 +1,6 @@
 #include <string>
 
-int test() {
+int test()
+{
     std::string tester = "test";
 }
