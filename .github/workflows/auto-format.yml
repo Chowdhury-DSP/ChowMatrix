@@ -40,5 +40,5 @@ jobs:
       uses: actions-js/push@master
       with:
         message: "Apply clang-format"
-        branch: "$GITHUB_HEAD_REF"
+        branch: "${GITHUB_HEAD_REF}"
         github_token: ${{ secrets.GITHUB_TOKEN }}
