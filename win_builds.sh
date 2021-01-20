@@ -10,6 +10,9 @@ build32(){
     cmake --build build32 --config Release -j4
 }
 
+# exit on failure
+set -e
+
 # clean up old builds
 rm -Rf build/
 rm -Rf build32/
