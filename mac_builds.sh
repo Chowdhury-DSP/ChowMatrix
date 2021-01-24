@@ -8,7 +8,7 @@ rm -Rf build/
 rm -Rf bin/*Mac*
 
 # set up build VST
-VST_PATH=~/Developer/AnalogTapeModel/Plugin/Juce/VST2_SDK/
+VST_PATH=~/Developer/VST2_SDK/
 sed -i '' "9s~.*~juce_set_vst2_sdk_path(${VST_PATH})~" CMakeLists.txt
 sed -i '' '16s/#//' CMakeLists.txt
 
