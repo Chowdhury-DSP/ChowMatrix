@@ -8,7 +8,7 @@
 CHOW Matrix is a delay effect, made up of an infinitely growable
 tree of delay lines, each with individual controls for feedback,
 panning, distortion, and more. ChowMatrix is available as a VST,
-VST3, AU, and Standalone Application.
+VST3, AU, LV2, and Standalone Application.
 
 <img src="./manual/screenshots/full_gui.png" alt="Pic" height="400">
 
