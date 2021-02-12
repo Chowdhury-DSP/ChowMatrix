@@ -39,7 +39,7 @@ $ git submodule update --init --recursive
 $ cmake -Bbuild
 $ cmake --build build --config Release
 ```
-
+The built plugins will be located in `ChowMatrix/build/ChowMatrix_artefacts/`
 
 ## Credits
 
