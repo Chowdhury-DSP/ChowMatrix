@@ -15,3 +15,9 @@ presets:
 documentation:
   - manual/**/*
   - README.md
+
+ci-pipeline:
+  - .github/workflows/*
+
+installers:
+  - installers/**/*
