@@ -1,6 +1,10 @@
 # build artifacts
 build*/
 bin/*[!.zip]
+*_Packaged
+*.exe
+*.dmg
+
 
 # vscode settings
 .vscode/

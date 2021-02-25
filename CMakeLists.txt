@@ -38,3 +38,11 @@ target_compile_definitions(ChowMatrix
 target_link_libraries(ChowMatrix PUBLIC
     juce_plugin_modules
 )
+
+# we need these flags for notarization on MacOS
+option(MACOS_RELEASE "Set build flags for MacOS Release" OFF)
+if(MACOS_RELEASE)
+    message(STATUS "Setting MacOS release flags...")
+    set_target_properties(ChowMatrix_Standalone PROPERTIES
+        XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES)
+endif()
