@@ -5,7 +5,7 @@ namespace
 const String updateFilePath = "ChowdhuryDSP/ChowMatrix/UpdateManage.txt";
 const String currentVersion = "v" + String (JucePlugin_VersionString);
 const String versionURL = "https://api.github.com/repos/Chowdhury-DSP/ChowMatrix/releases/latest";
-const String updateURL = "https://github.com/Chowdhury-DSP/ChowMatrix/releases/latest";
+const String updateURL = "https://chowdsp.com/products.html#matrix";
 const Colour backgroundColour = Colour (0xFF31323A).withAlpha (0.9f);
 const Colour textColour = Colour (0xFFC954D4);
 } // namespace
