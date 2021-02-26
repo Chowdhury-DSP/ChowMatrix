@@ -16,6 +16,7 @@ juce_add_plugin(ChowMatrix
     FORMATS AU VST3 Standalone LV2 #VST
     ProductName "ChowMatrix"
     LV2_URI https://github.com/Chowdhury-DSP/ChowMatrix
+    ICON_BIG res/logo.png
 )
 
 # create JUCE header
