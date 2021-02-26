@@ -10,17 +10,21 @@ tree of delay lines, each with individual controls for feedback,
 panning, distortion, and more. ChowMatrix is available as a VST,
 VST3, AU, LV2, and Standalone Application.
 
-<img src="./manual/screenshots/full_gui.png" alt="Pic" height="400">
+### Quick Links
+- [Latest Release](https://chowdsp.com/products.html#matrix)
+- [Nightly Builds](https://chowdsp.com/nightly.html#matrix)
+- [User Manual](https://ccrma.stanford.edu/~jatin/chowdsp/Products/ChowMatrixManual.pdf)
 
-For more information on using ChowMatrix, see the [user manual](https://ccrma.stanford.edu/~jatin/chowdsp/Products/ChowMatrixManual.pdf).
+<img src="./manual/screenshots/full_gui.png" alt="Pic" height="400">
 
 
 ## Installing
 
 To download the latest release, visit the
-[Releases page](https://github.com/Chowdhury-DSP/ChowMatrix/releases/latest).
+[official website](https://chowdsp.com/products.html#matrix).
 If you would like to try the most recent builds (potentially
-unstable) see the [`bin/` directory](https://github.com/Chowdhury-DSP/ChowMatrix/tree/develop/bin).
+unstable) check out the
+[nightly builds](https://chowdsp.com/nightly.html#matrix).
 
 
 ## Building
