@@ -3,7 +3,9 @@
 VariableDelay::VariableDelay (size_t size) : l0Delay (static_cast<int> (size)),
                                              l1Delay (static_cast<int> (size)),
                                              l3Delay (static_cast<int> (size)),
-                                             l5Delay (static_cast<int> (size))
+                                             l5Delay (static_cast<int> (size)),
+                                             sinc16Delay (static_cast<int> (size)),
+                                             sinc32Delay (static_cast<int> (size))
 {
 }
 
