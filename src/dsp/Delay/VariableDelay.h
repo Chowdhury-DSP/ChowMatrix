@@ -16,6 +16,8 @@ public:
         LinearInterp,
         ThirdInterp,
         FifthInterp,
+        Sinc16,
+        Sinc32,
     };
 
     // manage parameters
@@ -43,9 +45,9 @@ public:
         delays[type]->pushSample (channel, sample);
     }
 
-    inline float popSample (int channel, float delayInSamples = -1, bool updateReadPointer = true)
+    inline float popSample (int channel)
     {
-        return delays[type]->popSample (channel, delayInSamples, updateReadPointer);
+        return delays[type]->popSample (channel);
     }
 
 private:
@@ -53,8 +55,10 @@ private:
     chowdsp::DelayLine<float, chowdsp::DelayLineInterpolationTypes::Linear> l1Delay;
     chowdsp::DelayLine<float, chowdsp::DelayLineInterpolationTypes::Lagrange3rd> l3Delay;
     chowdsp::DelayLine<float, chowdsp::DelayLineInterpolationTypes::Lagrange5th> l5Delay;
+    chowdsp::DelayLine<float, chowdsp::DelayLineInterpolationTypes::Sinc<float, 16>> sinc16Delay;
+    chowdsp::DelayLine<float, chowdsp::DelayLineInterpolationTypes::Sinc<float, 32>> sinc32Delay;
 
-    std::array<chowdsp::DelayLineBase<float>*, 4> delays { &l0Delay, &l1Delay, &l3Delay, &l5Delay };
+    std::array<chowdsp::DelayLineBase<float>*, 6> delays { &l0Delay, &l1Delay, &l3Delay, &l5Delay, &sinc16Delay, &sinc32Delay };
     DelayType type = ThirdInterp;
 
     SmoothedValue<float, ValueSmoothingTypes::Linear> delaySmooth;
