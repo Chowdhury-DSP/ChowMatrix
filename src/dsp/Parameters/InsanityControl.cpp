@@ -13,6 +13,7 @@ InsanityControl::InsanityControl (AudioProcessorValueTreeState& vts, std::array<
 {
     insanityParam = vts.getRawParameterValue (insanityTag);
     parameterChanged (insanityTag, insanityParam->load());
+    insanityResetState.reserve (100); // reserve some space so we don't have to allocate it later
     startTimerHz (timerFreq);
 }
 
@@ -23,10 +24,34 @@ void InsanityControl::addParameters (Parameters& params)
     params.push_back (std::make_unique<AudioProcessorValueTreeState::Parameter> (insanityTag, "Insanity", String(), NormalisableRange<float> { 0.0f, 1.0f }, 0.0f, insanityToString, stringToInsanity));
 }
 
+void InsanityControl::resetInsanityState()
+{
+    size_t idx = 0;
+    doForNodes ([=, &idx] (DelayNode* n) {
+        if (idx >= insanityResetState.size())
+            return;
+
+        const auto& nodeState = insanityResetState[idx++];
+        n->setDelay (nodeState.first);
+        n->setPan (nodeState.second);
+    });
+}
+
 void InsanityControl::timerCallback()
 {
     if (insanityParam->load() == 0.0f) // nothing to do...
+    {
+        lastInsanity = 0.0f;
         return;
+    }
+
+    if (lastInsanity == 0.0f) // turning on insanity
+    {
+        insanityResetState.clear();
+        doForNodes ([=] (DelayNode* n) {
+            insanityResetState.push_back (std::make_pair (n->getDelay(), n->getPan()));
+        });
+    }
 
     // set randomised params
     float scale = 0.5f * std::pow (insanityParam->load(), 2.0f);
@@ -44,6 +69,7 @@ void InsanityControl::timerCallback()
             n->setPan (jlimit (-1.0f, 1.0f, pan));
     });
 
+    lastInsanity = insanityParam->load();
     startTimerHz (timerFreq); // update timer callback rate
 }
 
