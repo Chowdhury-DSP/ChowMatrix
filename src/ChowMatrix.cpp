@@ -140,6 +140,10 @@ AudioProcessorEditor* ChowMatrix::createEditor()
         NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->randomiseParameters(); });
     });
 
+    magicState.addTrigger ("insanity_reset", [=] {
+        insanityControl.resetInsanityState();
+    });
+
     auto editor = new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
     updater.showUpdaterScreen (editor);
     return editor;

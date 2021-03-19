@@ -18,6 +18,12 @@ public:
     void parameterChanged (const String&, float newValue) override;
     std::atomic<float>* getParameter() const noexcept { return insanityParam; }
 
+    /** 
+     * Resets the delay parameters to what they were
+     * before insanity was turned on.
+     */
+    void resetInsanityState();
+
 private:
     std::atomic<float>* insanityParam = nullptr;
     int timerFreq = 10;
@@ -25,6 +31,9 @@ private:
     std::default_random_engine generator;
     std::uniform_real_distribution<float> delay_dist { -0.05f, 0.05f };
     std::uniform_real_distribution<float> pan_dist { -0.1f, 0.1f };
+
+    float lastInsanity = 0.0f;
+    std::vector<std::pair<float, float>> insanityResetState;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (InsanityControl)
 };
