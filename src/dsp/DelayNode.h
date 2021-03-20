@@ -40,6 +40,7 @@ public:
     // Manage parameter locking for Insanity Control
     void toggleInsanityLock (const String& paramID);
     bool isParamLocked (const String& paramID) const noexcept;
+    bool shouldParamReset (const String& paramID) const noexcept; // returns true if this parameter should reset after insanity
 
     void toggleLFOSync();
     bool isLFOSynced() const noexcept { return tempoSyncedLFO; }
@@ -53,6 +54,7 @@ public:
     void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer) override;
 
     std::unique_ptr<NodeComponent> createNodeEditor (GraphView*) override;
+    const Uuid& getID() const noexcept { return uuid; }
 
     // Manage parameters
     int getNumParams() const noexcept { return paramIDs.size(); }
@@ -100,6 +102,7 @@ private:
     double tempoBPM = 120.0;
 
     StringArray lockedParams;
+    StringArray resetParams;
     std::atomic<SoloState> isSoloed;
     SoloState prevSoloState = None;
 
@@ -134,6 +137,9 @@ private:
     // needed for GUI
     int nodeIdx = 0;
     bool isSelected = false;
+
+    // needed for insanity reset
+    const Uuid uuid;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayNode)
 };
