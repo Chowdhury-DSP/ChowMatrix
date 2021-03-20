@@ -95,10 +95,22 @@ void DelayNode::randomiseParameters()
 
 void DelayNode::toggleInsanityLock (const String& paramID)
 {
-    if (lockedParams.contains (paramID))
+    const auto isLocked = lockedParams.contains (paramID);
+    const auto isReset = resetParams.contains (paramID);
+
+    if (isLocked)
+    {
         lockedParams.removeString (paramID);
+        resetParams.addIfNotAlreadyThere (paramID);
+    }
+    else if (isReset)
+    {
+        resetParams.removeString (paramID);
+    }
     else
+    {
         lockedParams.addIfNotAlreadyThere (paramID);
+    }
 
     nodeListeners.call (&Listener::nodeParamLockChanged, this);
 }
@@ -106,6 +118,11 @@ void DelayNode::toggleInsanityLock (const String& paramID)
 bool DelayNode::isParamLocked (const String& paramID) const noexcept
 {
     return lockedParams.contains (paramID);
+}
+
+bool DelayNode::shouldParamReset (const String& paramID) const noexcept
+{
+    return resetParams.contains (paramID);
 }
 
 void DelayNode::toggleLFOSync()
@@ -227,6 +244,7 @@ XmlElement* DelayNode::saveXml()
     auto state = params.copyState();
     std::unique_ptr<XmlElement> xmlState (state.createXml());
     xmlState->setAttribute ("locked", lockedParams.joinIntoString (",") + ",");
+    xmlState->setAttribute ("reset", resetParams.joinIntoString (",") + ",");
     xmlState->setAttribute ("lfo_sync", tempoSyncedLFO);
     xml->addChildElement (xmlState.release());
     xml->addChildElement (DBaseNode::saveXml());
@@ -236,6 +254,20 @@ XmlElement* DelayNode::saveXml()
 
 void DelayNode::loadXml (XmlElement* xml)
 {
+    auto loadStringArray = [] (StringArray& array, String string)
+    {
+        array.clear();
+        while (string.isNotEmpty())
+        {
+            auto splitIdx = string.indexOfChar (',');
+            if (splitIdx <= 0)
+                break;
+
+            array.add (string.substring (0, splitIdx));
+            string = string.substring (splitIdx + 1);
+        }
+    };
+
     if (xml == nullptr)
         return;
 
@@ -243,17 +275,8 @@ void DelayNode::loadXml (XmlElement* xml)
     {
         params.replaceState (ValueTree::fromXml (*xmlState));
 
-        lockedParams.clear();
-        auto lockedParamsString = xmlState->getStringAttribute ("locked", String());
-        while (lockedParamsString.isNotEmpty())
-        {
-            auto splitIdx = lockedParamsString.indexOfChar (',');
-            if (splitIdx <= 0)
-                break;
-
-            lockedParams.add (lockedParamsString.substring (0, splitIdx));
-            lockedParamsString = lockedParamsString.substring (splitIdx + 1);
-        }
+        loadStringArray (lockedParams, xmlState->getStringAttribute ("locked", String()));
+        loadStringArray (resetParams, xmlState->getStringAttribute ("reset", String()));
 
         tempoSyncedLFO = xmlState->getBoolAttribute ("lfo_sync");
     }
