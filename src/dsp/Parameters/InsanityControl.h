@@ -33,7 +33,7 @@ private:
     std::uniform_real_distribution<float> pan_dist { -0.1f, 0.1f };
 
     float lastInsanity = 0.0f;
-    std::vector<std::pair<float, float>> insanityResetState;
+    std::unordered_map<Uuid, std::pair<float, float>> insanityResetMap;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (InsanityControl)
 };

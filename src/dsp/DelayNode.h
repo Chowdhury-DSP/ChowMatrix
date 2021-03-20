@@ -53,6 +53,7 @@ public:
     void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer) override;
 
     std::unique_ptr<NodeComponent> createNodeEditor (GraphView*) override;
+    const Uuid& getID() const noexcept { return uuid; }
 
     // Manage parameters
     int getNumParams() const noexcept { return paramIDs.size(); }
@@ -134,6 +135,9 @@ private:
     // needed for GUI
     int nodeIdx = 0;
     bool isSelected = false;
+
+    // needed for insanity reset
+    const Uuid uuid;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayNode)
 };
