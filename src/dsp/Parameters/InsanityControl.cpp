@@ -57,7 +57,7 @@ void InsanityControl::timerCallback()
                 const auto& nodeState = insanityResetMap[id];
                 if (resetDelay)
                     n->setDelay (nodeState.first);
-                
+
                 if (resetPan)
                     n->setPan (nodeState.second);
             });

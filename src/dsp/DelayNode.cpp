@@ -254,8 +254,7 @@ XmlElement* DelayNode::saveXml()
 
 void DelayNode::loadXml (XmlElement* xml)
 {
-    auto loadStringArray = [] (StringArray& array, String string)
-    {
+    auto loadStringArray = [] (StringArray& array, String string) {
         array.clear();
         while (string.isNotEmpty())
         {

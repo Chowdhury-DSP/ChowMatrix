@@ -113,7 +113,7 @@ void ParamSlider::resized()
 void ParamSlider::paint (Graphics&)
 {
     auto textColour = node.isParamLocked (param->paramID) ? Colours::red
-        : (node.shouldParamReset (param->paramID) ? Colour (0xFF21CCA5) : Colours::white);
+                                                          : (node.shouldParamReset (param->paramID) ? Colour (0xFF21CCA5) : Colours::white);
     valueLabel.setColour (Label::textColourId, textColour);
 }
 
