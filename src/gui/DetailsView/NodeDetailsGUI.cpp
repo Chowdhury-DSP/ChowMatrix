@@ -27,9 +27,9 @@ NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) : nodeDetailsViewport (c
 
         if (i < 3) // Delay time and pan have "Insanity Lock" option
 #if JUCE_MAC
-            l->setTooltip ("Use shift+drag to change all nodes in unison, or CMD+click for Insanity Lock");
+            l->setTooltip ("Use shift+drag to change all nodes in unison, or CMD+click for Insanity Lock/Reset");
 #else
-            l->setTooltip ("Use shift+drag to change all nodes in unison, or CTRL+click for Insanity Lock");
+            l->setTooltip ("Use shift+drag to change all nodes in unison, or CTRL+click for Insanity Lock/Reset");
 #endif
         else if (i == 10) // Mod. Freq. has "Tempo Sync" option
 #if JUCE_MAC

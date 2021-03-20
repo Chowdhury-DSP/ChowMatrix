@@ -39,8 +39,30 @@ void InsanityControl::resetInsanityState()
 
 void InsanityControl::timerCallback()
 {
-    if (insanityParam->load() == 0.0f) // nothing to do...
+    if (insanityParam->load() == 0.0f)
     {
+        if (lastInsanity != 0.0f) // insanity is turning off
+        {
+            doForNodes ([=] (DelayNode* n) {
+                bool resetDelay = n->shouldParamReset (ParamTags::delayTag);
+                bool resetPan = n->shouldParamReset (ParamTags::panTag);
+
+                if (! resetDelay && ! resetPan)
+                    return;
+
+                const auto& id = n->getID();
+                if (insanityResetMap.find (id) == insanityResetMap.end())
+                    return;
+
+                const auto& nodeState = insanityResetMap[id];
+                if (resetDelay)
+                    n->setDelay (nodeState.first);
+                
+                if (resetPan)
+                    n->setPan (nodeState.second);
+            });
+        }
+
         lastInsanity = 0.0f;
         return;
     }

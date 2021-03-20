@@ -40,6 +40,7 @@ public:
     // Manage parameter locking for Insanity Control
     void toggleInsanityLock (const String& paramID);
     bool isParamLocked (const String& paramID) const noexcept;
+    bool shouldParamReset (const String& paramID) const noexcept; // returns true if this parameter should reset after insanity
 
     void toggleLFOSync();
     bool isLFOSynced() const noexcept { return tempoSyncedLFO; }
@@ -101,6 +102,7 @@ private:
     double tempoBPM = 120.0;
 
     StringArray lockedParams;
+    StringArray resetParams;
     std::atomic<SoloState> isSoloed;
     SoloState prevSoloState = None;
 
