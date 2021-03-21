@@ -56,6 +56,7 @@ void DelayProc::process (const ProcessContext& context)
     {
         auto* inputSamples = inputBlock.getChannelPointer (channel);
         auto* outputSamples = outputBlock.getChannelPointer (channel);
+        delay.delayBlockStart();
 
         if (delay.isDelaySmoothing() || delaySmooth.isSmoothing() || modSine.getFrequency() > 0.0f)
         {
