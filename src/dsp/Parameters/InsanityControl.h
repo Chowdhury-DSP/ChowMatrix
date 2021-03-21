@@ -25,6 +25,9 @@ public:
     void resetInsanityState();
 
 private:
+    void insanityStarting();
+    void insanityEnding();
+
     std::atomic<float>* insanityParam = nullptr;
     int timerFreq = 10;
 
@@ -34,6 +37,7 @@ private:
 
     float lastInsanity = 0.0f;
     std::unordered_map<Uuid, std::pair<float, float>> insanityResetMap;
+    std::unordered_map<Uuid, std::pair<float, float>> insanityEndingMap;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (InsanityControl)
 };
