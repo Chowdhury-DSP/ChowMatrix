@@ -31,9 +31,54 @@ void InsanityControl::resetInsanityState()
         if (insanityResetMap.find (id) == insanityResetMap.end())
             return;
 
-        const auto& nodeState = insanityResetMap[id];
-        n->setDelay (nodeState.first);
-        n->setPan (nodeState.second);
+        const auto& [resetDelay, resetPan] = insanityResetMap[id];
+        if (insanityEndingMap.find (id) != insanityEndingMap.end())
+        {
+            // don't reset parameter if it's been moved since insanity ended
+            const auto& [endDelay, endPan] = insanityEndingMap[id];
+            if (n->getDelay() == endDelay)
+                n->setDelay (resetDelay);
+
+            if (n->getPan() == endPan)
+                n->setPan (resetPan);
+
+            return;
+        }
+
+        n->setDelay (resetDelay);
+        n->setPan (resetPan);
+    });
+}
+
+void InsanityControl::insanityStarting()
+{
+    insanityResetMap.clear();
+    doForNodes ([=] (DelayNode* n) {
+        insanityResetMap[n->getID()] = std::make_pair (n->getDelay(), n->getPan());
+    });
+}
+
+void InsanityControl::insanityEnding()
+{
+    insanityEndingMap.clear();
+    doForNodes ([=] (DelayNode* n) {
+        const auto& id = n->getID();
+        if (insanityResetMap.find (id) == insanityResetMap.end())
+            return;
+
+        bool resetDelay = n->shouldParamReset (ParamTags::delayTag);
+        bool resetPan = n->shouldParamReset (ParamTags::panTag);
+        insanityEndingMap[id] = std::make_pair (n->getDelay(), n->getPan());
+
+        if (! resetDelay && ! resetPan)
+            return;
+
+        const auto& [delayVal, panVal] = insanityResetMap[id];
+        if (resetDelay)
+            n->setDelay (delayVal);
+
+        if (resetPan)
+            n->setPan (panVal);
     });
 }
 
@@ -42,38 +87,14 @@ void InsanityControl::timerCallback()
     if (insanityParam->load() == 0.0f)
     {
         if (lastInsanity != 0.0f) // insanity is turning off
-        {
-            doForNodes ([=] (DelayNode* n) {
-                bool resetDelay = n->shouldParamReset (ParamTags::delayTag);
-                bool resetPan = n->shouldParamReset (ParamTags::panTag);
-
-                if (! resetDelay && ! resetPan)
-                    return;
-
-                const auto& id = n->getID();
-                if (insanityResetMap.find (id) == insanityResetMap.end())
-                    return;
-
-                const auto& nodeState = insanityResetMap[id];
-                if (resetDelay)
-                    n->setDelay (nodeState.first);
-
-                if (resetPan)
-                    n->setPan (nodeState.second);
-            });
-        }
+            insanityEnding();
 
         lastInsanity = 0.0f;
         return;
     }
 
     if (lastInsanity == 0.0f) // turning on insanity
-    {
-        insanityResetMap.clear();
-        doForNodes ([=] (DelayNode* n) {
-            insanityResetMap[n->getID()] = std::make_pair (n->getDelay(), n->getPan());
-        });
-    }
+        insanityStarting();
 
     // set randomised params
     float scale = 0.5f * std::pow (insanityParam->load(), 2.0f);
