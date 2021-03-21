@@ -21,7 +21,7 @@ void DelayTypeControl::addParameters (Parameters& params)
 {
     params.push_back (std::make_unique<AudioParameterChoice> (delayTypeTag,
                                                               "Delay Type",
-                                                              StringArray ({ "Glitch", "Rough", "Smooth", "Ultra Smooth", "Liquid", "Super Liquid" }),
+                                                              StringArray ({ "Glitch", "Rough", "Smooth", "Ultra Smooth", "Liquid", "Super Liquid", "Lo-Fi", "Analog" }),
                                                               2));
 }
 
