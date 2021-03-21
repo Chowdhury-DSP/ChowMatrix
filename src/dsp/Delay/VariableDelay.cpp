@@ -30,16 +30,16 @@ void VariableDelay::setDelayType (DelayType newType)
 
     switch (type)
     {
-    case BBDShort:
-        makeupGain = 0.85f;
-        delays[type]->reset();
-        break;
-    case BBDLong:
-        makeupGain = 0.65f;
-        delays[type]->reset();
-        break;
-    default:
-        makeupGain = 1.0f;
+        case BBDShort:
+            makeupGain = 0.85f;
+            delays[type]->reset();
+            break;
+        case BBDLong:
+            makeupGain = 0.65f;
+            delays[type]->reset();
+            break;
+        default:
+            makeupGain = 1.0f;
     };
 }
 
@@ -49,7 +49,7 @@ void VariableDelay::delayBlockStart() noexcept
 
     if (type == BBDShort)
         bbdShortDelay.setFilterFreq (2000.0f);
-        
+
     if (type == BBDLong)
         bbdLongDelay.setFilterFreq (9000.0f);
 }
