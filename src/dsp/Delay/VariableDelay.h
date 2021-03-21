@@ -18,6 +18,8 @@ public:
         FifthInterp,
         Sinc16,
         Sinc32,
+        BBDShort,
+        BBDLong,
     };
 
     // manage parameters
@@ -25,6 +27,9 @@ public:
     {
         delaySmooth.setTargetValue (newDelayInSamples);
     }
+
+    // call this at the start of processinf a block of data
+    void delayBlockStart() noexcept;
 
     void setDelayForce (float newDelayInSamples) noexcept;
     void setDelayType (DelayType newType);
@@ -47,7 +52,7 @@ public:
 
     inline float popSample (int channel)
     {
-        return delays[type]->popSample (channel);
+        return makeupGain * delays[type]->popSample (channel);
     }
 
 private:
@@ -57,11 +62,14 @@ private:
     chowdsp::DelayLine<float, chowdsp::DelayLineInterpolationTypes::Lagrange5th> l5Delay;
     chowdsp::DelayLine<float, chowdsp::DelayLineInterpolationTypes::Sinc<float, 16>> sinc16Delay;
     chowdsp::DelayLine<float, chowdsp::DelayLineInterpolationTypes::Sinc<float, 32>> sinc32Delay;
+    chowdsp::BBD::BBDDelayWrapper<4096> bbdShortDelay;
+    chowdsp::BBD::BBDDelayWrapper<16384> bbdLongDelay;
 
-    std::array<chowdsp::DelayLineBase<float>*, 6> delays { &l0Delay, &l1Delay, &l3Delay, &l5Delay, &sinc16Delay, &sinc32Delay };
+    std::array<chowdsp::DelayLineBase<float>*, 8> delays { &l0Delay, &l1Delay, &l3Delay, &l5Delay, &sinc16Delay, &sinc32Delay, &bbdShortDelay, &bbdLongDelay };
     DelayType type = ThirdInterp;
 
     SmoothedValue<float, ValueSmoothingTypes::Linear> delaySmooth;
+    float makeupGain = 1.0f;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VariableDelay)
 };
