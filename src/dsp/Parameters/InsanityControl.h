@@ -15,7 +15,7 @@ public:
     void newNodeAdded (DelayNode* newNode) override;
 
     void timerCallback() override;
-    void parameterChanged (const String&, float newValue) override;
+    void parameterChanged (const String& paramID, float newValue) override;
     std::atomic<float>* getParameter() const noexcept { return insanityParam; }
 
     /** 
