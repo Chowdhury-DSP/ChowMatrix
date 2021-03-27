@@ -18,7 +18,7 @@ constexpr float negInfDB = -60.0f;
 } // namespace
 
 ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
-                           delayTypeControl (vts, &inputNodes),
+                           delayTypeControl (vts, &inputNodes, stateManager),
                            syncControl (vts, &inputNodes),
                            stateManager (vts, inputNodes)
 {
@@ -34,6 +34,7 @@ ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
         node.addChild();
 
     stateManager.loadDefaultABStates();
+    stateManager.getPresetManager().hostUpdateFunc = std::bind (&ChowMatrix::updateHostPrograms, this);
 }
 
 void ChowMatrix::addParameters (Parameters& params)
@@ -55,6 +56,8 @@ void ChowMatrix::addParameters (Parameters& params)
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    const SpinLock::ScopedLockType stateLoadLock (stateManager.getStateLoadLock());
+
     for (size_t ch = 0; ch < 2; ++ch)
     {
         inputNodes[ch].prepare (sampleRate, samplesPerBlock);
@@ -159,6 +162,49 @@ void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
 {
     auto xmlState = getXmlFromBinary (data, sizeInBytes);
     stateManager.loadState (xmlState.get());
+}
+
+int ChowMatrix::getNumPrograms()
+{
+    return stateManager.getPresetManager().getNumFactoryPresets();
+}
+
+int ChowMatrix::getCurrentProgram()
+{
+    auto& manager = stateManager.getPresetManager();
+    const auto curPresetIdx = manager.getSelectedPresetIdx();
+
+    if (curPresetIdx > manager.getNumFactoryPresets())
+        return 0;
+
+    return curPresetIdx;
+}
+
+void ChowMatrix::setCurrentProgram (int index)
+{
+    auto& manager = stateManager.getPresetManager();
+
+    if (index > manager.getNumPresets() || index < 0) // out of range!
+        return;
+
+    if (index == manager.getSelectedPresetIdx()) // no update needed!
+        return;
+
+    MessageManager::callAsync ([&manager, index] { manager.setPreset (index); });
+}
+
+const String ChowMatrix::getProgramName (int index)
+{
+    return stateManager.getPresetManager().getPresetName (index);
+}
+
+void ChowMatrix::updateHostPrograms()
+{
+    // @TODO: when we upgrade JUCE, we can
+    // specify that we are changing something
+    // specific to the numer of programs, or
+    // the selected program.
+    MessageManager::callAsync ([=] { updateHostDisplay(); });
 }
 
 // This creates new instances of the plugin

@@ -78,6 +78,9 @@ bool PresetManager::setPreset (int idx)
     presetParam->setValueNotifyingHost (presetParam->convertTo0to1 ((float) idx));
     listeners.call (&Listener::presetUpdated);
 
+    if (idx < numFactoryPresets)
+        hostUpdateFunc();
+
     return true;
 }
 
