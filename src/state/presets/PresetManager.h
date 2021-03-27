@@ -35,6 +35,8 @@ public:
     void addListener (Listener* l) { listeners.add (l); }
     void removeListener (Listener* l) { listeners.remove (l); }
 
+    std::function<void()> hostUpdateFunc = {};
+
 private:
     File getUserPresetConfigFile() const;
     void updateUserPresets();
