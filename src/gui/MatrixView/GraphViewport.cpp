@@ -3,8 +3,8 @@
 namespace
 {
 /** Max dimensions for the GraphView internal component */
-constexpr int maxDimX = 1000;
-constexpr int maxDimY = 500;
+constexpr int maxDimX = 2500;
+constexpr int maxDimY = 1200;
 
 /** Will stop scrolling when node is this distance from edge */
 constexpr int scrollDistanceFromEdge = 30;
