@@ -45,7 +45,6 @@ private:
     PopupMenu userPresetMenu;
 
     StateManager* stateManager;
-    AudioProcessorValueTreeState& vts;
     AudioParameterInt* presetParam = nullptr;
 
     std::unordered_map<int, Preset*> presetMap;
