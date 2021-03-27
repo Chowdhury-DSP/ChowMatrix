@@ -12,7 +12,7 @@ static inline VariableDelay::DelayType getDelayType (float param)
 }
 
 DelayTypeControl::DelayTypeControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes, StateManager& stateMgr) : BaseController (vts, nodes, { delayTypeTag }),
-                                                                                                          stateManager (stateMgr)
+                                                                                                                                  stateManager (stateMgr)
 {
     delayTypeParam = vts.getRawParameterValue (delayTypeTag);
     parameterChanged (delayTypeTag, delayTypeParam->load());
