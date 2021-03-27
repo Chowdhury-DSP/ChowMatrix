@@ -18,7 +18,7 @@ constexpr float negInfDB = -60.0f;
 } // namespace
 
 ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
-                           delayTypeControl (vts, &inputNodes),
+                           delayTypeControl (vts, &inputNodes, stateManager),
                            syncControl (vts, &inputNodes),
                            stateManager (vts, inputNodes)
 {
@@ -56,6 +56,8 @@ void ChowMatrix::addParameters (Parameters& params)
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    const SpinLock::ScopedLockType stateLoadLock (stateManager.getStateLoadLock());
+
     for (size_t ch = 0; ch < 2; ++ch)
     {
         inputNodes[ch].prepare (sampleRate, samplesPerBlock);
@@ -188,7 +190,7 @@ void ChowMatrix::setCurrentProgram (int index)
     if (index == manager.getSelectedPresetIdx()) // no update needed!
         return;
 
-    manager.setPreset (index);
+    MessageManager::callAsync ([&manager, index] { manager.setPreset (index); });
 }
 
 const String ChowMatrix::getProgramName (int index)

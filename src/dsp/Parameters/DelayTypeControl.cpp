@@ -11,7 +11,8 @@ static inline VariableDelay::DelayType getDelayType (float param)
     return static_cast<VariableDelay::DelayType> (int (param));
 }
 
-DelayTypeControl::DelayTypeControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) : BaseController (vts, nodes, { delayTypeTag })
+DelayTypeControl::DelayTypeControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes, StateManager& stateMgr) : BaseController (vts, nodes, { delayTypeTag }),
+                                                                                                          stateManager (stateMgr)
 {
     delayTypeParam = vts.getRawParameterValue (delayTypeTag);
     parameterChanged (delayTypeTag, delayTypeParam->load());
@@ -27,6 +28,10 @@ void DelayTypeControl::addParameters (Parameters& params)
 
 void DelayTypeControl::parameterChanged (const String&, float newValue)
 {
+    const SpinLock::ScopedTryLockType stateLoadTryLock (stateManager.getStateLoadLock());
+    if (! stateLoadTryLock.isLocked()) // not safe to try to change delay type right now!
+        return;
+
     auto type = getDelayType (newValue);
     doForNodes ([=] (DelayNode* n) { n->setDelayType (type); });
 }
