@@ -8,8 +8,7 @@ static String userPresetPath = "ChowdhuryDSP/ChowMatrix/UserPresets.txt";
 static String presetTag = "preset";
 } // namespace
 
-PresetManager::PresetManager (StateManager* stateManager, AudioProcessorValueTreeState& vts) : stateManager (stateManager),
-                                                                                               vts (vts)
+PresetManager::PresetManager (StateManager* stateManager, AudioProcessorValueTreeState& vts) : stateManager (stateManager)
 {
     presetParam = dynamic_cast<AudioParameterInt*> (vts.getParameter (presetTag));
     jassert (presetParam);

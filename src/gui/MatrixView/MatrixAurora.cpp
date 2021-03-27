@@ -7,7 +7,6 @@ static Colour green (0xff38bb9d);
 
 constexpr float pixelMult = 0.6f;
 constexpr float lineWidth = 3.0f / pixelMult;
-constexpr float pixelWidth = 1.0f / pixelMult;
 
 constexpr float insanityFloor = 0.15f;
 constexpr float timerFreq = 20.0f;
@@ -31,12 +30,12 @@ inline std::pair<float, float> rangeCalc (float x, float t, float intensity)
     auto fullEnv = env1 * env2 * env3 * std::pow (std::sin (MathConstants<float>::halfPi * intensity), 2.4f);
 
     auto tEnv = 1.0f + 0.2f * std::sin (MathConstants<float>::pi * 4 * x + 0.3f);
-    tEnv *= 1.0f - 0.2f * std::pow (std::sin ((x + t) * omega_t * 5.7f + 0.1f), 3)
-            + 0.09f * std::pow (std::sin ((x + t) * omega_t * 29.4f + 0.9f), 3);
+    tEnv *= 1.0f - 0.2f * std::pow (std::sin ((x + t) * omega_t * 5.7f + 0.1f), 3.0f)
+            + 0.09f * std::pow (std::sin ((x + t) * omega_t * 29.4f + 0.9f), 3.0f);
 
-    auto bEnv = 0.5f + (x < 0.5f ? 0.0f : (x > 0.75f ? 3.0f : 3.0f * std::pow (4.0f * (x - 0.5f), 2)));
-    bEnv *= 1.0f + 0.2f * std::pow (std::sin ((2 * x + t) * omega_t * 6.04f - 0.1f), 3)
-            + 0.04f * std::pow (std::sin ((2 * x + t) * omega_t * 33.7f - 0.1f), 3);
+    auto bEnv = 0.5f + (x < 0.5f ? 0.0f : (x > 0.75f ? 3.0f : 3.0f * std::pow (4.0f * (x - 0.5f), 2.0f)));
+    bEnv *= 1.0f + 0.2f * std::pow (std::sin ((2 * x + t) * omega_t * 6.04f - 0.1f), 3.0f)
+            + 0.04f * std::pow (std::sin ((2 * x + t) * omega_t * 33.7f - 0.1f), 3.0f);
 
     auto intensityScale = 1.0f + 1.5f * std::pow (intensity, 1.5f);
     auto top = jlimit (0.0f, 10.0f, float (fullEnv * tEnv * intensityScale));

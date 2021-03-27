@@ -19,7 +19,7 @@ NodeDetailsComponent::NodeDetailsComponent (ChowMatrix& plugin) : plugin (plugin
     for (auto& node : *plugin.getNodes())
     {
         node.addNodeListener (this);
-        NodeManager::doForNodes (&node, [=] (DelayNode* node) { addNode (node); });
+        NodeManager::doForNodes (&node, [=] (DelayNode* n) { addNode (n); });
     }
 
     setSize (calcWidth(), calcHeight());
@@ -29,7 +29,7 @@ NodeDetailsComponent::~NodeDetailsComponent()
 {
     for (auto& node : *plugin.getNodes())
     {
-        NodeManager::doForNodes (&node, [=] (DelayNode* node) { node->removeNodeListener (this); });
+        NodeManager::doForNodes (&node, [=] (DelayNode* n) { n->removeNodeListener (this); });
         node.removeNodeListener (this);
     }
 }

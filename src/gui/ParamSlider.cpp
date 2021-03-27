@@ -33,7 +33,7 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) : n
         valueLabel.setColour (Label::textColourId, Colours::white);
         valueLabel.setColour (Label::outlineWhenEditingColourId, Colours::transparentBlack);
         valueLabel.setJustificationType (Justification::centred);
-        valueLabel.onEditorHide = [=, &node] {
+        valueLabel.onEditorHide = [=] {
             auto stringFunc = ParamHelpers::getStringFuncForParam (param->paramID);
             auto unNormalisedValue = stringFunc (valueLabel.getText (true));
             ParamHelpers::setParameterValue (param, unNormalisedValue);
