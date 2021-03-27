@@ -30,6 +30,9 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         -Wno-ignored-qualifiers -Wno-unused-function -Wno-pessimizing-move
         # From LV2 Wrapper
         -Wno-parentheses -Wno-deprecated-declarations -Wno-redundant-decls
+        # These lines suppress some custom warnings.
+        # Comment them out to be more strict.
+        -Wno-redundant-move
     )
 
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0.0")
