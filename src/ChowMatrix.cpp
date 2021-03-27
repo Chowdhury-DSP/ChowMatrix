@@ -202,7 +202,7 @@ void ChowMatrix::updateHostPrograms()
     // specify that we are changing something
     // specific to the numer of programs, or
     // the selected program.
-    updateHostDisplay();
+    MessageManager::callAsync ([=] { updateHostDisplay(); });
 }
 
 // This creates new instances of the plugin
