@@ -123,7 +123,7 @@ void InsanityControl::parameterChanged (const String& paramID, float newValue)
     if (paramID == insanityResetTag) // insanity reset was changed
     {
         if (newValue == 1.0f)
-            resetInsanityState();
+            MessageManager::callAsync ([=] { resetInsanityState(); });
     }
     else if (paramID == insanityTag) // insanity has changed
     {
