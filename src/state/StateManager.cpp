@@ -69,7 +69,7 @@ void StateManager::loadState (XmlElement* xmlState)
 
     // load nodes
     size_t count = 0;
-    forEachXmlChildElement (*childrenXml, childXml)
+    for (auto* childXml : childrenXml->getChildIterator())
     {
         if (count > 2)
             break;

@@ -40,8 +40,8 @@ void GraphView::mouseDown (const MouseEvent& e)
     if (e.mods.isShiftDown()) // create new node at mouse position
     {
         // lambda to add child to parent and move to mouse position
-        auto addNode = [&e] (DBaseNode* parent) -> DelayNode* {
-            auto newNode = parent->addChild();
+        auto addNode = [&e] (DBaseNode* nodeParent) -> DelayNode* {
+            auto newNode = nodeParent->addChild();
             newNode->getEditor()->mouseDrag (e);
             return newNode;
         };

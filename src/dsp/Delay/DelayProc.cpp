@@ -136,7 +136,7 @@ void DelayProc::setParameters (const Parameters& params, bool force)
     procs.get<lpfIdx>().coefficients = IIRCoefs::makeFirstOrderLowPass ((double) fs, params.lpfFreq);
     procs.get<hpfIdx>().coefficients = IIRCoefs::makeFirstOrderHighPass ((double) fs, params.hpfFreq);
     procs.get<diffusionIdx>().setDepth (params.diffAmt, force);
-    procs.get<distortionIdx>().setGain (19.5f * std::pow (params.distortion, 2) + 0.5f);
+    procs.get<distortionIdx>().setGain (19.5f * std::pow (params.distortion, 2.0f) + 0.5f);
     procs.get<pitchIdx>().setPitchSemitones (params.pitchSt, force);
 }
 

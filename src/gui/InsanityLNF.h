@@ -27,7 +27,7 @@ protected:
         g.strokePath (backgroundTrack, { trackWidth, PathStrokeType::curved, PathStrokeType::rounded });
 
         Path valueTrack;
-        Point<float> minPoint, maxPoint, thumbPoint;
+        Point<float> minPoint, maxPoint;
 
         {
             auto kx = slider.isHorizontal() ? sliderPos : ((float) x + (float) width * 0.5f);

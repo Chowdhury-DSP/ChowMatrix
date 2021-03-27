@@ -1,7 +1,13 @@
-add_subdirectory(JUCE)
+# use DISTRHO-JUCE on Linux to support LV2
+if(UNIX AND NOT APPLE)
+    add_subdirectory(DISTRHO-JUCE)
+else()
+    add_subdirectory(JUCE)
+endif()
 juce_add_modules(foleys_gui_magic)
 juce_add_modules(chowdsp_utils)
 add_subdirectory(polylogarithm)
+include(WarningFlags.cmake)
 
 add_library(juce_plugin_modules STATIC)
 
@@ -15,7 +21,7 @@ target_link_libraries(juce_plugin_modules
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
-        juce::juce_recommended_warning_flags
+        warning_flags
 )
 
 target_compile_definitions(juce_plugin_modules

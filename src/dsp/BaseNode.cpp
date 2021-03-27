@@ -101,7 +101,7 @@ void BaseNode<Child>::loadXml (XmlElement* xml)
 
     if (xml->hasTagName ("children"))
     {
-        forEachXmlChildElement (*xml, childXml)
+        for (auto* childXml : xml->getChildIterator())
             addChild()->loadXml (childXml);
     }
 }
