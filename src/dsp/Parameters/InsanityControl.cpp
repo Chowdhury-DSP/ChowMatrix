@@ -28,6 +28,8 @@ void InsanityControl::addParameters (Parameters& params)
 
 void InsanityControl::resetInsanityState()
 {
+    return;
+
     doForNodes ([=] (DelayNode* n) {
         const auto& id = n->getID();
         if (insanityResetMap.find (id) == insanityResetMap.end())
@@ -86,6 +88,8 @@ void InsanityControl::insanityEnding()
 
 void InsanityControl::timerCallback()
 {
+    return;
+
     if (insanityParam->load() == 0.0f)
     {
         if (lastInsanity != 0.0f) // insanity is turning off
@@ -120,6 +124,8 @@ void InsanityControl::timerCallback()
 
 void InsanityControl::parameterChanged (const String& paramID, float newValue)
 {
+    return;
+
     if (paramID == insanityResetTag) // insanity reset was changed
     {
         if (newValue == 1.0f)
