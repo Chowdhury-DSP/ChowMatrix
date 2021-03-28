@@ -29,7 +29,7 @@ void DelayTypeControl::addParameters (Parameters& params)
 void DelayTypeControl::parameterChanged (const String&, float newValue)
 {
     const SpinLock::ScopedTryLockType stateLoadTryLock (stateManager.getStateLoadLock());
-    if (! stateLoadTryLock.isLocked()) // not safe to try to change delay type right now!
+    if (! stateLoadTryLock.isLocked()) // not safe to change delay type right now!
         return;
 
     auto type = getDelayType (newValue);
