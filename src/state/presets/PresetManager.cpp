@@ -6,6 +6,18 @@ namespace
 {
 static String userPresetPath = "ChowdhuryDSP/ChowMatrix/UserPresets.txt";
 static String presetTag = "preset";
+
+class PresetParameter : public AudioParameterInt
+{
+public:
+    PresetParameter (const String& paramID, const String& name, int minValue, int maxValue, int defaultValue) :
+        AudioParameterInt (paramID, name, minValue, maxValue, defaultValue)
+    {
+    }
+
+    bool isAutomatable() const { return false; }
+};
+
 } // namespace
 
 PresetManager::PresetManager (StateManager* stateManager, AudioProcessorValueTreeState& vts) : stateManager (stateManager)
@@ -50,7 +62,7 @@ void PresetManager::loadPresets()
 
 void PresetManager::addParameters (std::vector<std::unique_ptr<juce::RangedAudioParameter>>& params)
 {
-    params.push_back (std::make_unique<AudioParameterInt> (presetTag, "Preset", 0, 1000, 0));
+    params.push_back (std::make_unique<PresetParameter> (presetTag, "Preset", 0, 1000, 0));
 }
 
 String PresetManager::getPresetName (int idx)
@@ -77,6 +89,9 @@ bool PresetManager::setPreset (int idx)
 
     presetParam->setValueNotifyingHost (presetParam->convertTo0to1 ((float) idx));
     listeners.call (&Listener::presetUpdated);
+
+    if (idx < numFactoryPresets)
+        hostUpdateFunc();
 
     return true;
 }
