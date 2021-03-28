@@ -154,12 +154,14 @@ AudioProcessorEditor* ChowMatrix::createEditor()
 
 void ChowMatrix::getStateInformation (MemoryBlock& destData)
 {
+    MessageManagerLock mml;
     auto xml = stateManager.saveState();
     copyXmlToBinary (*xml, destData);
 }
 
 void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
 {
+    MessageManagerLock mml;
     auto xmlState = getXmlFromBinary (data, sizeInBytes);
     stateManager.loadState (xmlState.get());
 }
