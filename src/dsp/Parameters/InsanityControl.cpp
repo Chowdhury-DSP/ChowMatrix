@@ -120,6 +120,8 @@ void InsanityControl::timerCallback()
 
 void InsanityControl::parameterChanged (const String& paramID, float newValue)
 {
+    return;
+
     if (paramID == insanityResetTag) // insanity reset was changed
     {
         if (newValue == 1.0f)
