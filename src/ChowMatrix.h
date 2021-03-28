@@ -65,6 +65,7 @@ private:
 
     AutoUpdater updater;
     StateManager stateManager;
+    std::atomic_bool prepared = false; // so we don't try to change presets before the processor is prepared
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChowMatrix)
 };
