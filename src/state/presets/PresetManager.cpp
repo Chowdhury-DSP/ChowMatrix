@@ -72,11 +72,11 @@ bool PresetManager::setPreset (int idx)
         return false;
     }
 
-    if (auto xmlState = presetMap[idx]->state->getChildByName ("state"))
-        stateManager->loadState (xmlState);
+    // if (auto xmlState = presetMap[idx]->state->getChildByName ("state"))
+    //     stateManager->loadState (xmlState);
 
     presetParam->setValueNotifyingHost (presetParam->convertTo0to1 ((float) idx));
-    // listeners.call (&Listener::presetUpdated);
+    listeners.call (&Listener::presetUpdated);
 
     if (idx < numFactoryPresets)
         hostUpdateFunc();
