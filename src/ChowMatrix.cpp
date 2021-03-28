@@ -171,10 +171,10 @@ int ChowMatrix::getNumPrograms()
 
 int ChowMatrix::getCurrentProgram()
 {
-    auto& manager = stateManager.getPresetManager();
-    const auto curPresetIdx = manager.getSelectedPresetIdx();
+    auto& presetManager = stateManager.getPresetManager();
+    const auto curPresetIdx = presetManager.getSelectedPresetIdx();
 
-    if (curPresetIdx > manager.getNumFactoryPresets())
+    if (curPresetIdx > presetManager.getNumFactoryPresets())
         return 0;
 
     return curPresetIdx;
@@ -182,15 +182,15 @@ int ChowMatrix::getCurrentProgram()
 
 void ChowMatrix::setCurrentProgram (int index)
 {
-    auto& manager = stateManager.getPresetManager();
+    auto& presetManager = stateManager.getPresetManager();
 
-    if (index > manager.getNumPresets() || index < 0) // out of range!
+    if (index > presetManager.getNumPresets() || index < 0) // out of range!
         return;
 
-    if (index == manager.getSelectedPresetIdx()) // no update needed!
+    if (index == presetManager.getSelectedPresetIdx()) // no update needed!
         return;
 
-    MessageManager::callAsync ([&manager, index] { manager.setPreset (index); });
+    MessageManager::callAsync ([&presetManager, index] { presetManager.setPreset (index); });
 }
 
 const String ChowMatrix::getProgramName (int index)
