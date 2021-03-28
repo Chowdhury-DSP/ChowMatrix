@@ -14,7 +14,7 @@ public:
     {
     }
 
-    bool isAutomatable() const { return false; }
+    bool isAutomatable() const override { return false; }
 };
 
 } // namespace

@@ -56,8 +56,6 @@ void ChowMatrix::addParameters (Parameters& params)
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    const SpinLock::ScopedLockType stateLoadLock (stateManager.getStateLoadLock());
-
     for (size_t ch = 0; ch < 2; ++ch)
     {
         inputNodes[ch].prepare (sampleRate, samplesPerBlock);
