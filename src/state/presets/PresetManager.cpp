@@ -10,7 +10,7 @@ static String presetTag = "preset";
 class PresetParameter : public AudioParameterInt
 {
 public:
-    PresetParameter (const String& paramID, const String& name, int minValue, int maxValue, int defaultValue) : AudioParameterInt (paramID, name, minValue, maxValue, defaultValue)
+    PresetParameter (const String& parameterID, const String& parameterName, int minValue, int maxValue, int defaultValue) : AudioParameterInt (parameterID, parameterName, minValue, maxValue, defaultValue)
     {
     }
 
