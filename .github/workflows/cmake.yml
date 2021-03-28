@@ -49,9 +49,6 @@ jobs:
       with:
         submodules: true
 
-    # - name: Setup debug session
-    #   uses: mxschmitt/action-tmate@v3
-
     - name: Configure
       shell: bash
       run: cmake -Bbuild
@@ -59,6 +56,9 @@ jobs:
     - name: Build
       shell: bash
       run: cmake --build build --config Release --parallel
+
+    - name: Setup debug session
+      uses: mxschmitt/action-tmate@v3
 
     - name: Pluginval
       if: runner.os == 'Windows' || runner.os == 'MacOS'
