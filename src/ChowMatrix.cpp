@@ -190,7 +190,7 @@ void ChowMatrix::setCurrentProgram (int index)
     if (index == manager.getSelectedPresetIdx()) // no update needed!
         return;
 
-    // MessageManager::callAsync ([&manager, index] { manager.setPreset (index); });
+    MessageManager::callAsync ([&manager, index] { manager.setPreset (index); });
 }
 
 const String ChowMatrix::getProgramName (int index)
