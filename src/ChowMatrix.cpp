@@ -56,6 +56,8 @@ void ChowMatrix::addParameters (Parameters& params)
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    const SpinLock::ScopedLockType stateLoadLock (stateManager.getStateLoadLock());
+
     for (size_t ch = 0; ch < 2; ++ch)
     {
         inputNodes[ch].prepare (sampleRate, samplesPerBlock);
@@ -65,13 +67,10 @@ void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
     dryBuffer.setSize (2, samplesPerBlock);
     dryGain.prepare ({ sampleRate, (uint32) samplesPerBlock, 2 });
     wetGain.prepare ({ sampleRate, (uint32) samplesPerBlock, 2 });
-
-    prepared.store (true);
 }
 
 void ChowMatrix::releaseResources()
 {
-    prepared.store (false);
 }
 
 void ChowMatrix::processAudioBlock (AudioBuffer<float>& buffer)
@@ -183,9 +182,6 @@ int ChowMatrix::getCurrentProgram()
 
 void ChowMatrix::setCurrentProgram (int index)
 {
-    if (! prepared.load()) // processor hasn't been prepared yet!
-        return;
-
     auto& presetManager = stateManager.getPresetManager();
 
     if (index > presetManager.getNumPresets() || index < 0) // out of range!
