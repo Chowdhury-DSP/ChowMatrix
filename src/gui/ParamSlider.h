@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../dsp/DelayNode.h"
 #include <pch.h>
+#include "../dsp/DelayNode.h"
+#include "../gui/BottomBar/BottomBarLNF.h"
 
 /**
  * Text slider mapped to a parameter
@@ -38,6 +39,8 @@ private:
     const bool showLabel;
     bool isDragging = false;
     std::atomic_bool linkFlag;
+
+    BottomBarLNF popupLNF;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ParamSlider)
 };

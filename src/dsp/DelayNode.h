@@ -89,6 +89,9 @@ public:
     dsp::IIR::Filter<float> delaySmoother;
     dsp::IIR::Filter<float> panSmoother;
 
+    // menu for parameter mappings
+    void getParamMapMenu (PopupMenu& menu);
+
 private:
     void cookParameters (bool force = false);
     void processPanner (dsp::AudioBlock<float>& inputBlock);

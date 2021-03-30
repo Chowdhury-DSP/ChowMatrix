@@ -4,7 +4,7 @@ namespace
 {
 
 static String getParamID (size_t idx) { return "assigned_" + String (idx); }
-static String getParamName (size_t idx) { return "Assigned " + String (idx + 1); }
+static String getParamName (size_t idx) { return "Assign " + String (idx + 1); }
 
 } // namespace
 
@@ -33,4 +33,10 @@ void HostParamControl::newNodeRemoved (DelayNode* newNode)
 void HostParamControl::parameterChanged (const String& paramID, float newValue)
 {
 
+}
+
+void HostParamControl::getParamMapMenu (PopupMenu& menu)
+{
+    for (size_t i = 0; i < numParams; ++i)
+        menu.addItem (0, getParamName (i), true);
 }

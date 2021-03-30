@@ -124,6 +124,20 @@ void ParamSlider::toggleParamLock()
 
 void ParamSlider::mouseDown (const MouseEvent& e)
 {
+    if (e.mods.isPopupMenu())
+    {
+        PopupMenu paramMapList;
+        node.getParamMapMenu (paramMapList);
+
+        PopupMenu menu;
+        menu.addSubMenu ("Parameter Map", paramMapList);
+
+        menu.setLookAndFeel (&popupLNF);
+        menu.showMenuAsync (PopupMenu::Options(), [] (int) {});
+
+        return;
+    }
+
     if (e.mods.isCommandDown())
     {
         if (param->paramID == delayTag || param->paramID == panTag)
@@ -156,7 +170,7 @@ void ParamSlider::mouseUp (const MouseEvent& e)
     Slider::mouseUp (e);
 
     bool dontShowLabel = isDragging || e.mods.isAnyModifierKeyDown()
-                         || showLabel || e.getNumberOfClicks() > 1;
+                         || e.mods.isPopupMenu() || showLabel || e.getNumberOfClicks() > 1;
     if (! dontShowLabel)
     {
         valueLabel.showEditor();

@@ -43,6 +43,7 @@ public:
         virtual void nodeRemoved (Child* /*nodeToRemove*/) {}
         virtual void setParameterDiff (Child* /*node*/, const String& /*paramID*/, float /*diff01*/) {}
         virtual void nodeParamLockChanged (Child* /*node*/) {}
+        virtual void getParamMapMenu (PopupMenu& /*menu*/) {}
     };
 
     void addNodeListener (Listener* l) { nodeListeners.add (l); }

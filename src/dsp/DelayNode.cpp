@@ -115,6 +115,11 @@ void DelayNode::toggleInsanityLock (const String& paramID)
     nodeListeners.call (&Listener::nodeParamLockChanged, this);
 }
 
+void DelayNode::getParamMapMenu (PopupMenu& menu)
+{
+    nodeListeners.call (&Listener::getParamMapMenu, menu);
+}
+
 bool DelayNode::isParamLocked (const String& paramID) const noexcept
 {
     return lockedParams.contains (paramID);

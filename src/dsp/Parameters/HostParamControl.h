@@ -10,6 +10,8 @@ public:
 
     void parameterChanged (const String&, float newValue) override;
 
+    void getParamMapMenu (PopupMenu& menu) override;
+
 private:
     static constexpr size_t numParams = 16;
     static inline StringArray paramIDs;
