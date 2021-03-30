@@ -3,6 +3,7 @@
 #include "NodeManager.h"
 #include "dsp/InputNode.h"
 #include "dsp/Parameters/DelayTypeControl.h"
+#include "dsp/Parameters/HostParamControl.h"
 #include "dsp/Parameters/InsanityControl.h"
 #include "dsp/Parameters/SyncControl.h"
 #include "gui/AutoUpdating.h"
@@ -57,6 +58,7 @@ private:
     dsp::Gain<float> wetGain;
 
     InsanityControl insanityControl;
+    HostParamControl hostParamControl;
     DelayTypeControl delayTypeControl;
     SyncControl syncControl;
 

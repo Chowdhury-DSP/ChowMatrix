@@ -20,6 +20,7 @@ constexpr float negInfDB = -60.0f;
 ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
                            delayTypeControl (vts, &inputNodes, stateManager),
                            syncControl (vts, &inputNodes),
+                           hostParamControl (vts, &inputNodes),
                            stateManager (vts, inputNodes)
 {
     manager.initialise (&inputNodes);
@@ -52,6 +53,7 @@ void ChowMatrix::addParameters (Parameters& params)
     DelayTypeControl::addParameters (params);
     SyncControl::addParameters (params);
     PresetManager::addParameters (params);
+    HostParamControl::addParameters (params);
 }
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)

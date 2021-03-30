@@ -15,6 +15,7 @@ target_sources(ChowMatrix PRIVATE
     dsp/Distortion/LookupTables.cpp
     dsp/Parameters/BaseController.cpp
     dsp/Parameters/DelayTypeControl.cpp
+    dsp/Parameters/HostParamControl.cpp
     dsp/Parameters/InsanityControl.cpp
     dsp/Parameters/ParamHelpers.cpp
     dsp/Parameters/SyncControl.cpp
