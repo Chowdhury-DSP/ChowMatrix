@@ -126,14 +126,9 @@ void ParamSlider::mouseDown (const MouseEvent& e)
 {
     if (e.mods.isPopupMenu())
     {
-        PopupMenu paramMapList;
-        node.getParamMapMenu (paramMapList);
-
-        PopupMenu menu;
-        menu.addSubMenu ("Parameter Map", paramMapList);
-
+        auto menu = node.createParamPopupMenu (param->paramID);
         menu.setLookAndFeel (&popupLNF);
-        menu.showMenuAsync (PopupMenu::Options(), [] (int) {});
+        menu.showMenuAsync (PopupMenu::Options());
 
         return;
     }

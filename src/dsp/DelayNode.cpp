@@ -84,6 +84,11 @@ void DelayNode::setNodeParameterDiff (const String& paramID, float diff01)
     thisParam->setValueNotifyingHost (newValue);
 }
 
+void DelayNode::setNodeParameter (const String& paramID, float value01)
+{
+    params.getParameter (paramID)->setValueNotifyingHost (value01);
+}
+
 void DelayNode::randomiseParameters()
 {
     for (auto& paramID : paramIDs)
@@ -115,9 +120,12 @@ void DelayNode::toggleInsanityLock (const String& paramID)
     nodeListeners.call (&Listener::nodeParamLockChanged, this);
 }
 
-void DelayNode::getParamMapMenu (PopupMenu& menu)
+PopupMenu DelayNode::createParamPopupMenu (const String& paramID)
 {
-    nodeListeners.call (&Listener::getParamMapMenu, menu);
+    PopupMenu menu;
+    nodeListeners.call (&Listener::addParameterMenus, menu, paramID, this);
+
+    return menu;
 }
 
 bool DelayNode::isParamLocked (const String& paramID) const noexcept

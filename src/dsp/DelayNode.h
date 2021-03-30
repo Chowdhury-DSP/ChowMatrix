@@ -34,6 +34,9 @@ public:
     /** Sets the parameter with given ID by diff to a 0-1 normalized value */
     void setNodeParameterDiff (const String& paramID, float diff01);
 
+    /** Sets the parameter with given ID to a 0-1 normalized value */
+    void setNodeParameter (const String& paramID, float value01);
+
     /** Randomise all the parameters of this delay node */
     void randomiseParameters();
 
@@ -90,7 +93,7 @@ public:
     dsp::IIR::Filter<float> panSmoother;
 
     // menu for parameter mappings
-    void getParamMapMenu (PopupMenu& menu);
+    PopupMenu createParamPopupMenu (const String& paramID);
 
 private:
     void cookParameters (bool force = false);

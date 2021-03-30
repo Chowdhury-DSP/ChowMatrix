@@ -18,9 +18,9 @@ constexpr float negInfDB = -60.0f;
 } // namespace
 
 ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
+                           hostParamControl (vts, &inputNodes),
                            delayTypeControl (vts, &inputNodes, stateManager),
                            syncControl (vts, &inputNodes),
-                           hostParamControl (vts, &inputNodes),
                            stateManager (vts, inputNodes)
 {
     manager.initialise (&inputNodes);

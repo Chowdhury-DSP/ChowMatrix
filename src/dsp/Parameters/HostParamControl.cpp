@@ -8,10 +8,13 @@ static String getParamName (size_t idx) { return "Assign " + String (idx + 1); }
 
 } // namespace
 
+// EDGE CASES TO WATCH FOR:
+// - Nodes getting re-ordered
+// - Saving/loading
+
 HostParamControl::HostParamControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) :
     BaseController (vts, nodes, paramIDs)
 {
-    
 }
 
 void HostParamControl::addParameters (Parameters& params)
@@ -27,16 +30,74 @@ void HostParamControl::addParameters (Parameters& params)
 
 void HostParamControl::newNodeRemoved (DelayNode* newNode)
 {
-
+    for (size_t i = 0; i < numParams; ++i)
+    {
+        auto& controlMap = paramControlMaps[i];
+        for (auto j = (int) controlMap.size() - 1; j >= 0; --j)
+        {
+            if (controlMap[(size_t) j].nodePtr == newNode)
+                controlMap.erase (controlMap.begin() + j);
+        }
+    }
 }
 
 void HostParamControl::parameterChanged (const String& paramID, float newValue)
 {
+    for (size_t i = 0; i < numParams; ++i)
+    {
+        if (paramID == getParamID (i))
+        {
+            auto& controlMap = paramControlMaps[i];
+            for (auto& map : controlMap)
+                map.nodePtr->setNodeParameter (map.mappedParamID, newValue);
 
+            return;
+        }
+    }
 }
 
-void HostParamControl::getParamMapMenu (PopupMenu& menu)
+void HostParamControl::addParameterMenus (PopupMenu& parentMenu, const String& paramID, DelayNode* node)
 {
+    PopupMenu paramMapMenu;
     for (size_t i = 0; i < numParams; ++i)
-        menu.addItem (0, getParamName (i), true);
+    {
+        auto& controlMap = paramControlMaps[i];
+        auto isMapped = findMap (node, paramID, i) != controlMap.end();
+
+        PopupMenu::Item paramItem (getParamName (i));
+        paramItem.itemID = (int) i + 1;
+        paramItem.action = [=] { toggleParamMap (node, paramID, i); };
+        paramItem.setColour (Colour (isMapped ? 0xFF21CCA5 : 0xFFFFFFFF));
+
+        paramMapMenu.addItem (paramItem);
+    }
+
+    parentMenu.addSubMenu ("Assign Parameter:", paramMapMenu);
+}
+
+std::vector<HostParamControl::MapInfo>::iterator HostParamControl::findMap (DelayNode* node, const String& paramID, size_t mapIdx)
+{
+    auto& controlMap = paramControlMaps[mapIdx];
+    for (size_t i = 0; i < controlMap.size(); ++i)
+    {
+        if (controlMap[i].nodePtr == node && controlMap[i].mappedParamID == paramID) // remove this node
+            return controlMap.begin() + (int) i;
+    }
+
+    return controlMap.end();
+}
+
+void HostParamControl::toggleParamMap (DelayNode* node, const String& paramID, size_t mapIdx)
+{
+    auto& controlMap = paramControlMaps[mapIdx];
+    auto paramMapIter = findMap (node, paramID, mapIdx);
+
+    if (paramMapIter != controlMap.end()) // remove this node!
+    {
+        controlMap.erase (paramMapIter);
+        return;
+    }
+
+    // add this node!
+    controlMap.push_back ({ node, paramID });
 }
