@@ -3,9 +3,8 @@
 class HostControlMenuComp : public PopupMenu::CustomComponent
 {
 public:
-    HostControlMenuComp (const HostParamControl& controller, size_t idx) :
-        PopupMenu::CustomComponent (false),
-        name ("Assign " + String (idx + 1))
+    HostControlMenuComp (const HostParamControl& controller, size_t idx) : PopupMenu::CustomComponent (false),
+                                                                           name ("Assign " + String (idx + 1))
     {
         controller.loadParamList (paramList, idx);
     }
@@ -22,7 +21,7 @@ public:
 
         g.setColour (Colours::white);
         g.setFont (Font (font).boldened());
-        
+
         auto labelBox = bounds.removeFromLeft (60);
         g.drawFittedText (name, labelBox.removeFromTop (labelHeight), Justification::centred, 1);
 
@@ -55,8 +54,7 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HostControlMenuComp)
 };
 
-HostControlMenu::HostControlMenu (const HostParamControl& controller) :
-    controller (controller)
+HostControlMenu::HostControlMenu (const HostParamControl& controller) : controller (controller)
 {
     cog = Drawable::createFromImageData (BinaryData::cogsolid_svg, BinaryData::cogsolid_svgSize);
     cog->replaceColour (Colours::black, Colours::white);
