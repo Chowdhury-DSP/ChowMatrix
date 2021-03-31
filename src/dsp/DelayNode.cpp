@@ -318,3 +318,18 @@ void DelayNode::setSoloed (SoloState newSoloState)
 {
     isSoloed = newSoloState;
 }
+
+void DelayNode::beginParameterChange (const String& paramID)
+{
+    nodeListeners.call (&Listener::beginParameterChange, paramID, this);
+}
+
+void DelayNode::endParameterChange (const String& paramID)
+{
+    nodeListeners.call (&Listener::endParameterChange, paramID, this);
+}
+
+void DelayNode::applyParameterChange (const String& paramID, float value01)
+{
+    nodeListeners.call (&Listener::applyParameterChange, paramID, this, value01);
+}

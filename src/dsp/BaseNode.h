@@ -44,6 +44,9 @@ public:
         virtual void setParameterDiff (Child* /*node*/, const String& /*paramID*/, float /*diff01*/) {}
         virtual void nodeParamLockChanged (Child* /*node*/) {}
         virtual void addParameterMenus (PopupMenu& /*parentMenu*/, const String& /*paramID*/, Child* /*node*/) {}
+        virtual void beginParameterChange (const String& /*paramID*/, Child* /*node*/) {}
+        virtual void endParameterChange (const String& /*paramID*/, Child* /*node*/) {}
+        virtual void applyParameterChange (const String& /*paramID*/, Child* /*node*/, float /*value01*/) {}
     };
 
     void addNodeListener (Listener* l) { nodeListeners.add (l); }

@@ -15,6 +15,8 @@ static String getParamName (size_t idx) { return "Assign " + String (idx + 1); }
 HostParamControl::HostParamControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) :
     BaseController (vts, nodes, paramIDs)
 {
+    for (size_t i = 0; i < numParams; ++i)
+        parameterHandles[i] = vts.getParameter (getParamID (i));
 }
 
 void HostParamControl::addParameters (Parameters& params)
@@ -56,6 +58,33 @@ void HostParamControl::parameterChanged (const String& paramID, float newValue)
     }
 }
 
+void HostParamControl::beginParameterChange (const String& paramID, DelayNode* node)
+{
+    for (size_t i = 0; i < numParams; ++i)
+    {
+        doForParamMap (node, paramID, i,
+            [=] (MapIter) { parameterHandles[i]->beginChangeGesture(); }, [] {});
+    }
+}
+
+void HostParamControl::endParameterChange (const String& paramID, DelayNode* node)
+{
+    for (size_t i = 0; i < numParams; ++i)
+    {
+        doForParamMap (node, paramID, i,
+            [=] (MapIter) { parameterHandles[i]->endChangeGesture(); }, [] {});
+    }
+}
+
+void HostParamControl::applyParameterChange (const String& paramID, DelayNode* node, float value01)
+{
+    for (size_t i = 0; i < numParams; ++i)
+    {
+        doForParamMap (node, paramID, i,
+            [=] (MapIter) { parameterHandles[i]->setValueNotifyingHost (value01); }, [] {});
+    }
+}
+
 void HostParamControl::addParameterMenus (PopupMenu& parentMenu, const String& paramID, DelayNode* node)
 {
     PopupMenu paramMapMenu;
@@ -75,7 +104,22 @@ void HostParamControl::addParameterMenus (PopupMenu& parentMenu, const String& p
     parentMenu.addSubMenu ("Assign Parameter:", paramMapMenu);
 }
 
-std::vector<HostParamControl::MapInfo>::iterator HostParamControl::findMap (DelayNode* node, const String& paramID, size_t mapIdx)
+void HostParamControl::doForParamMap (DelayNode* node, const String& paramID, size_t mapIdx,
+                                      std::function<void(MapIter)> found, std::function<void()> notFound)
+{
+    auto& controlMap = paramControlMaps[mapIdx];
+    auto paramMapIter = findMap (node, paramID, mapIdx);
+
+    if (paramMapIter != controlMap.end())
+    {
+        found (paramMapIter);
+        return;
+    }
+
+    notFound();
+}
+
+HostParamControl::MapIter HostParamControl::findMap (DelayNode* node, const String& paramID, size_t mapIdx)
 {
     auto& controlMap = paramControlMaps[mapIdx];
     for (size_t i = 0; i < controlMap.size(); ++i)
@@ -89,15 +133,9 @@ std::vector<HostParamControl::MapInfo>::iterator HostParamControl::findMap (Dela
 
 void HostParamControl::toggleParamMap (DelayNode* node, const String& paramID, size_t mapIdx)
 {
-    auto& controlMap = paramControlMaps[mapIdx];
-    auto paramMapIter = findMap (node, paramID, mapIdx);
-
-    if (paramMapIter != controlMap.end()) // remove this node!
-    {
-        controlMap.erase (paramMapIter);
-        return;
-    }
-
-    // add this node!
-    controlMap.push_back ({ node, paramID });
+    doForParamMap (node, paramID, mapIdx, [=] (MapIter iter) { paramControlMaps[mapIdx].erase (iter); },
+        [=] { 
+            paramControlMaps[mapIdx].push_back ({ node, paramID });
+            parameterHandles[mapIdx]->setValueNotifyingHost (node->getNodeParameter (paramID)->getValue());
+        });
 }

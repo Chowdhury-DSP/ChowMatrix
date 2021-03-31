@@ -39,6 +39,7 @@ private:
     const bool showLabel;
     bool isDragging = false;
     std::atomic_bool linkFlag;
+    std::atomic_bool isInGesture;
 
     BottomBarLNF popupLNF;
 

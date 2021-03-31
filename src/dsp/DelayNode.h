@@ -92,6 +92,11 @@ public:
     dsp::IIR::Filter<float> delaySmoother;
     dsp::IIR::Filter<float> panSmoother;
 
+    /** Parameter change functions */
+    void beginParameterChange (const String& paramID);
+    void endParameterChange (const String& paramID);
+    void applyParameterChange (const String& paramID, float value01);
+
     // menu for parameter mappings
     PopupMenu createParamPopupMenu (const String& paramID);
 

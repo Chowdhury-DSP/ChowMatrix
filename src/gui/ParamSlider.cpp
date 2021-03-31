@@ -12,6 +12,7 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) : n
     setTooltip (ParamHelpers::getTooltip (param->paramID));
     nameLabel.setTooltip (getTooltip());
     linkFlag.store (false);
+    isInGesture.store (false);
 
     addListener (this);
     param->addListener (this);
@@ -145,6 +146,12 @@ void ParamSlider::mouseDown (const MouseEvent& e)
 
     linkFlag.store (e.mods.isShiftDown());
     Slider::mouseDown (e);
+
+    if (! isInGesture.load())
+    {
+        isInGesture.store (true);
+        node.beginParameterChange (param->paramID);
+    }
 }
 
 void ParamSlider::mouseDrag (const MouseEvent& e)
@@ -152,6 +159,14 @@ void ParamSlider::mouseDrag (const MouseEvent& e)
     isDragging = true;
     linkFlag.store (e.mods.isShiftDown());
     Slider::mouseDrag (e);
+
+    if (! isInGesture.load())
+    {
+        isInGesture.store (true);
+        node.beginParameterChange (param->paramID);
+    }
+
+    node.applyParameterChange (param->paramID, (float) this->getValue());
 }
 
 void ParamSlider::mouseDoubleClick (const MouseEvent& e)
@@ -175,4 +190,10 @@ void ParamSlider::mouseUp (const MouseEvent& e)
 
     isDragging = false;
     linkFlag.store (false);
+
+    if (isInGesture.load())
+    {
+        isInGesture.store (false);
+        node.endParameterChange (param->paramID);
+    }
 }

@@ -46,6 +46,8 @@ void DelayNodeComponent::mouseDown (const MouseEvent& e)
 
     graphView->setSelected (&node);
     grabKeyboardFocus();
+    node.beginParameterChange (ParamTags::delayTag);
+    node.beginParameterChange (ParamTags::panTag);
 }
 
 void DelayNodeComponent::mouseDrag (const MouseEvent& e)
@@ -55,6 +57,12 @@ void DelayNodeComponent::mouseDrag (const MouseEvent& e)
     updateParams();
     updatePosition();
     graphView->mouseDrag (relE);
+}
+
+void DelayNodeComponent::mouseUp (const MouseEvent& e)
+{
+    node.endParameterChange (ParamTags::delayTag);
+    node.endParameterChange (ParamTags::panTag);
 }
 
 bool DelayNodeComponent::keyPressed (const KeyPress& key)
@@ -110,6 +118,9 @@ void DelayNodeComponent::updateParams()
 
     auto newPan = jlimit (-1.0f, 1.0f, parentPos.getAngleToPoint (myPos) / MathConstants<float>::halfPi);
     node.setPan (newPan);
+
+    node.applyParameterChange (ParamTags::delayTag, newDelay);
+    node.applyParameterChange (ParamTags::panTag, newPan * 0.5f + 0.5f);
 }
 
 void DelayNodeComponent::updatePosition()
