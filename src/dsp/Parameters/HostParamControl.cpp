@@ -175,3 +175,14 @@ void HostParamControl::loadExtraNodeState (XmlElement* nodeState, DelayNode* nod
         JUCE_END_IGNORE_WARNINGS_GCC_LIKE
     }
 }
+
+void HostParamControl::loadParamList (StringArray& paramList, size_t mapIdx) const
+{
+    auto& controlMap = paramControlMaps[mapIdx];
+    for (auto& map : controlMap)
+    {
+        auto nodeIdx = map.nodePtr->getIndex();
+        auto paramName = map.nodePtr->getNodeParameter (map.mappedParamID)->name;
+        paramList.addIfNotAlreadyThere ("Node " + String (nodeIdx + 1) + ": " + paramName);
+    }
+}

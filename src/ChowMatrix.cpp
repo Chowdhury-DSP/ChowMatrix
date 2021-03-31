@@ -1,6 +1,7 @@
 #include "ChowMatrix.h"
 #include "gui/BottomBar/ABComp.h"
 #include "gui/BottomBar/BottomBarLNF.h"
+#include "gui/BottomBar/HostControlMenu.h"
 #include "gui/BottomBar/TextSliderItem.h"
 #include "gui/DetailsView/NodeDetailsGUI.h"
 #include "gui/InsanityLNF.h"
@@ -132,6 +133,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerFactory ("TextSlider", &TextSliderItem::factory);
     builder->registerFactory ("PresetComp", &PresetCompItem::factory);
     builder->registerFactory ("ABComp", &ABCompItem::factory);
+    builder->registerFactory ("HostControlMenu", &HostControlMenuItem::factory);
     builder->registerLookAndFeel ("InsanityLNF", std::make_unique<InsanityLNF>());
     builder->registerLookAndFeel ("BottomBarLNF", std::make_unique<BottomBarLNF>());
     builder->registerLookAndFeel ("PresetsLNF", std::make_unique<PresetsLNF>());

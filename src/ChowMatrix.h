@@ -43,6 +43,7 @@ public:
     /** Access to array of input nodes */
     std::array<InputNode, 2>* getNodes() { return &inputNodes; }
     StateManager& getStateManager() { return stateManager; }
+    const HostParamControl& getHostControl() { return hostParamControl; }
 
 private:
     std::array<InputNode, 2> inputNodes;

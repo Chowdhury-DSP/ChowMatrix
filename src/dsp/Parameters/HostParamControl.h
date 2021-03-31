@@ -1,3 +1,5 @@
+#pragma once
+
 #include "BaseController.h"
 
 class HostParamControl : public BaseController
@@ -18,6 +20,9 @@ public:
 
     void saveExtraNodeState (XmlElement* nodeState, DelayNode* node) override;
     void loadExtraNodeState (XmlElement* nodeState, DelayNode* node) override;
+
+    void loadParamList (StringArray& paramList, size_t mapIdx) const;
+    constexpr size_t getNumAssignableParams() const noexcept { return numParams; }
 
 private:
     struct MapInfo

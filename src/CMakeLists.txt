@@ -24,6 +24,7 @@ target_sources(ChowMatrix PRIVATE
     gui/ParamSlider.cpp
     gui/BottomBar/ABComp.cpp
     gui/BottomBar/BottomBarLNF.cpp
+    gui/BottomBar/HostControlMenu.cpp
     gui/DetailsView/NodeDetails.cpp
     gui/DetailsView/NodeDetailsComponent.cpp
     gui/DetailsView/NodeDetailsGUI.cpp
