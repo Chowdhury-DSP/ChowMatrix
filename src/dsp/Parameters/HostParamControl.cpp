@@ -2,7 +2,6 @@
 
 namespace
 {
-
 static String getParamID (size_t idx) { return "assigned_" + String (idx); }
 static String getParamName (size_t idx) { return "Assign " + String (idx + 1); }
 
@@ -12,8 +11,7 @@ static String getParamName (size_t idx) { return "Assign " + String (idx + 1); }
 // - Nodes getting re-ordered
 // - Saving/loading
 
-HostParamControl::HostParamControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) :
-    BaseController (vts, nodes, paramIDs)
+HostParamControl::HostParamControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) : BaseController (vts, nodes, paramIDs)
 {
     for (size_t i = 0; i < numParams; ++i)
         parameterHandles[i] = vts.getParameter (getParamID (i));
@@ -62,8 +60,8 @@ void HostParamControl::beginParameterChange (const String& paramID, DelayNode* n
 {
     for (size_t i = 0; i < numParams; ++i)
     {
-        doForParamMap (node, paramID, i,
-            [=] (MapIter) { parameterHandles[i]->beginChangeGesture(); }, [] {});
+        doForParamMap (
+            node, paramID, i, [=] (MapIter) { parameterHandles[i]->beginChangeGesture(); }, [] {});
     }
 }
 
@@ -71,8 +69,8 @@ void HostParamControl::endParameterChange (const String& paramID, DelayNode* nod
 {
     for (size_t i = 0; i < numParams; ++i)
     {
-        doForParamMap (node, paramID, i,
-            [=] (MapIter) { parameterHandles[i]->endChangeGesture(); }, [] {});
+        doForParamMap (
+            node, paramID, i, [=] (MapIter) { parameterHandles[i]->endChangeGesture(); }, [] {});
     }
 }
 
@@ -80,8 +78,8 @@ void HostParamControl::applyParameterChange (const String& paramID, DelayNode* n
 {
     for (size_t i = 0; i < numParams; ++i)
     {
-        doForParamMap (node, paramID, i,
-            [=] (MapIter) { parameterHandles[i]->setValueNotifyingHost (value01); }, [] {});
+        doForParamMap (
+            node, paramID, i, [=] (MapIter) { parameterHandles[i]->setValueNotifyingHost (value01); }, [] {});
     }
 }
 
@@ -104,8 +102,7 @@ void HostParamControl::addParameterMenus (PopupMenu& parentMenu, const String& p
     parentMenu.addSubMenu ("Assign Parameter:", paramMapMenu);
 }
 
-void HostParamControl::doForParamMap (DelayNode* node, const String& paramID, size_t mapIdx,
-                                      std::function<void(MapIter)> found, std::function<void()> notFound)
+void HostParamControl::doForParamMap (DelayNode* node, const String& paramID, size_t mapIdx, std::function<void (MapIter)> found, std::function<void()> notFound)
 {
     auto& controlMap = paramControlMaps[mapIdx];
     auto paramMapIter = findMap (node, paramID, mapIdx);
@@ -133,11 +130,10 @@ HostParamControl::MapIter HostParamControl::findMap (DelayNode* node, const Stri
 
 void HostParamControl::toggleParamMap (DelayNode* node, const String& paramID, size_t mapIdx)
 {
-    doForParamMap (node, paramID, mapIdx, [=] (MapIter iter) { paramControlMaps[mapIdx].erase (iter); },
-        [=] { 
+    doForParamMap (
+        node, paramID, mapIdx, [=] (MapIter iter) { paramControlMaps[mapIdx].erase (iter); }, [=] { 
             paramControlMaps[mapIdx].push_back ({ node, paramID });
-            parameterHandles[mapIdx]->setValueNotifyingHost (node->getNodeParameter (paramID)->getValue());
-        });
+            parameterHandles[mapIdx]->setValueNotifyingHost (node->getNodeParameter (paramID)->getValue()); });
 }
 
 void HostParamControl::saveExtraNodeState (XmlElement* nodeState, DelayNode* node)
@@ -149,12 +145,12 @@ void HostParamControl::saveExtraNodeState (XmlElement* nodeState, DelayNode* nod
         for (int j = 0; j < node->getNumParams(); ++j)
         {
             auto paramID = node->getParamID (j);
-            doForParamMap (node, paramID, i, [=, &hostParamControlState] (MapIter) {
+            doForParamMap (
+                node, paramID, i, [=, &hostParamControlState] (MapIter) {
                 auto paramMap = std::make_unique<XmlElement> ("Map_" + paramID + "_assign" + String (i));
                 paramMap->setAttribute ("assigned_param", (int) i);
                 paramMap->setAttribute ("param_id", paramID);
-                hostParamControlState->addChildElement (paramMap.release());
-            }, [] {});
+                hostParamControlState->addChildElement (paramMap.release()); }, [] {});
         }
     }
 

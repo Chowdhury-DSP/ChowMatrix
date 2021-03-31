@@ -1,8 +1,8 @@
 #pragma once
 
-#include <pch.h>
 #include "../dsp/DelayNode.h"
 #include "../gui/BottomBar/BottomBarLNF.h"
+#include <pch.h>
 
 /**
  * Text slider mapped to a parameter

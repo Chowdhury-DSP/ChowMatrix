@@ -28,8 +28,7 @@ private:
 
     using MapIter = std::vector<MapInfo>::iterator;
 
-    void doForParamMap (DelayNode* node, const String& paramID, size_t mapIdx,
-                        std::function<void(MapIter)> found, std::function<void()> notFound);
+    void doForParamMap (DelayNode* node, const String& paramID, size_t mapIdx, std::function<void (MapIter)> found, std::function<void()> notFound);
     MapIter findMap (DelayNode* node, const String& paramID, size_t mapIdx);
     void toggleParamMap (DelayNode* node, const String& paramID, size_t mapIdx);
 
