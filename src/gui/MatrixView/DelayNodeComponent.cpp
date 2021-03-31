@@ -59,7 +59,7 @@ void DelayNodeComponent::mouseDrag (const MouseEvent& e)
     graphView->mouseDrag (relE);
 }
 
-void DelayNodeComponent::mouseUp (const MouseEvent& e)
+void DelayNodeComponent::mouseUp (const MouseEvent&)
 {
     node.endParameterChange (ParamTags::delayTag);
     node.endParameterChange (ParamTags::panTag);

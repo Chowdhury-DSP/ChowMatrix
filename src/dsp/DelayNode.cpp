@@ -260,6 +260,7 @@ XmlElement* DelayNode::saveXml()
     xmlState->setAttribute ("reset", resetParams.joinIntoString (",") + ",");
     xmlState->setAttribute ("lfo_sync", tempoSyncedLFO);
     xml->addChildElement (xmlState.release());
+    nodeListeners.call (&Listener::saveExtraNodeState, xml.get(), this);
     xml->addChildElement (DBaseNode::saveXml());
 
     return xml.release();
@@ -282,6 +283,8 @@ void DelayNode::loadXml (XmlElement* xml)
 
     if (xml == nullptr)
         return;
+
+    nodeListeners.call (&Listener::loadExtraNodeState, xml, this);
 
     if (auto* xmlState = xml->getChildByName (params.state.getType()))
     {

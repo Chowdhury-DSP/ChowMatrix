@@ -16,6 +16,9 @@ public:
     void endParameterChange (const String& paramID, DelayNode* node) override;
     void applyParameterChange (const String& paramID, DelayNode* node, float value01) override;
 
+    void saveExtraNodeState (XmlElement* nodeState, DelayNode* node) override;
+    void loadExtraNodeState (XmlElement* nodeState, DelayNode* node) override;
+
 private:
     struct MapInfo
     {

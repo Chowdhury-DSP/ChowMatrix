@@ -41,12 +41,18 @@ public:
         virtual ~Listener() {}
         virtual void nodeAdded (Child* /*newNode*/) {}
         virtual void nodeRemoved (Child* /*nodeToRemove*/) {}
+
         virtual void setParameterDiff (Child* /*node*/, const String& /*paramID*/, float /*diff01*/) {}
         virtual void nodeParamLockChanged (Child* /*node*/) {}
-        virtual void addParameterMenus (PopupMenu& /*parentMenu*/, const String& /*paramID*/, Child* /*node*/) {}
+
         virtual void beginParameterChange (const String& /*paramID*/, Child* /*node*/) {}
         virtual void endParameterChange (const String& /*paramID*/, Child* /*node*/) {}
         virtual void applyParameterChange (const String& /*paramID*/, Child* /*node*/, float /*value01*/) {}
+
+        virtual void addParameterMenus (PopupMenu& /*parentMenu*/, const String& /*paramID*/, Child* /*node*/) {}
+
+        virtual void saveExtraNodeState (XmlElement* /*nodeState*/, Child* /*node*/) {}
+        virtual void loadExtraNodeState (XmlElement* /*nodeState*/, Child* /*node*/) {}
     };
 
     void addNodeListener (Listener* l) { nodeListeners.add (l); }

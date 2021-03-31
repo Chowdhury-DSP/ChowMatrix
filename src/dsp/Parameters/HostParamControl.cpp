@@ -139,3 +139,43 @@ void HostParamControl::toggleParamMap (DelayNode* node, const String& paramID, s
             parameterHandles[mapIdx]->setValueNotifyingHost (node->getNodeParameter (paramID)->getValue());
         });
 }
+
+void HostParamControl::saveExtraNodeState (XmlElement* nodeState, DelayNode* node)
+{
+    auto hostParamControlState = std::make_unique<XmlElement> ("host_controls");
+
+    for (size_t i = 0; i < numParams; ++i)
+    {
+        for (int j = 0; j < node->getNumParams(); ++j)
+        {
+            auto paramID = node->getParamID (j);
+            doForParamMap (node, paramID, i, [=, &hostParamControlState] (MapIter) {
+                auto paramMap = std::make_unique<XmlElement> ("Map_" + paramID + "_assign" + String (i));
+                paramMap->setAttribute ("assigned_param", (int) i);
+                paramMap->setAttribute ("param_id", paramID);
+                hostParamControlState->addChildElement (paramMap.release());
+            }, [] {});
+        }
+    }
+
+    nodeState->addChildElement (hostParamControlState.release());
+}
+
+void HostParamControl::loadExtraNodeState (XmlElement* nodeState, DelayNode* node)
+{
+    if (auto* hostParamControlState = nodeState->getChildByName ("host_controls"))
+    {
+        // forEachChildElement is deprecated in some version of JUCE
+        JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wdeprecated-declarations")
+        forEachXmlChildElement (*hostParamControlState, paramMap)
+        {
+            if (paramMap->hasAttribute ("assigned_param") && paramMap->hasAttribute ("param_id"))
+            {
+                auto mapIdx = (size_t) paramMap->getIntAttribute ("assigned_param");
+                auto paramID = paramMap->getStringAttribute ("param_id");
+                paramControlMaps[mapIdx].push_back ({ node, paramID });
+            }
+        }
+        JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+    }
+}
