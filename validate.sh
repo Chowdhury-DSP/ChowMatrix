@@ -36,7 +36,7 @@ fi
 
 echo "Pluginval installed at ${pluginval}"
 echo "Validating ${plugin}"
-$pluginval --strictness-level 8 --validate-in-process --validate $plugin --timeout-ms 600000
+$pluginval --strictness-level 8 --validate-in-process --validate $plugin --timeout-ms 900000
 result=$?
 
 # clean up
