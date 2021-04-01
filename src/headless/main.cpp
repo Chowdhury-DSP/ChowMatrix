@@ -1,6 +1,6 @@
 #include "../pch.h"
-#include "ScreenshotGenerator.h"
 #include "SaveLoadSpeedTest.h"
+#include "ScreenshotGenerator.h"
 
 String getVersion()
 {

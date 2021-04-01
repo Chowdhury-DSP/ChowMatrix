@@ -33,7 +33,7 @@ void SaveLoadSpeedTest::saveTest (int numIter)
     auto start = time.getMillisecondCounterHiRes();
     for (int i = 0; i < numIter; ++i)
         stateManager.saveState();
-    
+
     auto duration = (time.getMillisecondCounterHiRes() - start) / 1000.0;
     std::cout << "Saved state " << numIter << " times in " << duration << " seconds" << std::endl;
     std::cout << "Average time " << duration / (double) numIter << std::endl;
@@ -53,7 +53,7 @@ void SaveLoadSpeedTest::loadTest (int numIter)
     auto start = time.getMillisecondCounterHiRes();
     for (int i = 0; i < numIter; ++i)
         stateManager.loadState (stateXml.get());
-    
+
     auto duration = (time.getMillisecondCounterHiRes() - start) / 1000.0;
     std::cout << "Loaded state " << numIter << " times in " << duration << " seconds" << std::endl;
     std::cout << "Average time " << duration / (double) numIter << std::endl;
