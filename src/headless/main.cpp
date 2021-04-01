@@ -1,4 +1,5 @@
 #include "../pch.h"
+#include "SaveLoadSpeedTest.h"
 #include "ScreenshotGenerator.h"
 
 String getVersion()
@@ -26,6 +27,9 @@ int main (int argc, char* argv[])
 
     ScreenshotGenerator screenshooter;
     app.addCommand (screenshooter);
+
+    SaveLoadSpeedTest saveLoadSpeedTest;
+    app.addCommand (saveLoadSpeedTest);
 
     return app.findAndRunCommand (argc, argv);
 }
