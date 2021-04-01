@@ -15,6 +15,7 @@ target_link_libraries(juce_plugin_modules
     PRIVATE
         BinaryData
         juce::juce_audio_utils
+        juce::juce_audio_plugin_client
         foleys_gui_magic
         chowdsp_utils
         polylogarithm

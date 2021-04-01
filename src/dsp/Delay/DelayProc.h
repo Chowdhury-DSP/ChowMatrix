@@ -14,7 +14,7 @@
 class DelayProc
 {
 public:
-    DelayProc() = default;
+    DelayProc();
 
     // processing functions
     void prepare (const dsp::ProcessSpec& spec);
@@ -43,7 +43,7 @@ public:
     };
 
     void setParameters (const Parameters& params, bool force = false);
-    void setDelayType (VariableDelay::DelayType type) { delay.setDelayType (type); }
+    void setDelayType (VariableDelay::DelayType type) { delay->setDelayType (type); }
     float getModDepth() const noexcept { return 1000.0f * delayModValue / fs; }
 
 private:
@@ -53,7 +53,9 @@ private:
     template <typename SampleType>
     inline SampleType processSampleSmooth (SampleType x, size_t ch);
 
-    VariableDelay delay { 1 << 19 };
+    SharedResourcePointer<DelayStore> delayStore;
+    std::unique_ptr<VariableDelay> delay;
+    // VariableDelay delay { 1 << 19 };
 
     float fs = 44100.0f;
 

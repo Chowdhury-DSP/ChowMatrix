@@ -62,8 +62,14 @@ void StateManager::loadState (XmlElement* xmlState)
         return;
 
     // clear current nodes
+    std::vector<std::future<void>> clearingFutures;
     for (auto& node : inputNodes)
-        node.clearChildren();
+        clearingFutures.push_back (std::async (std::launch::async, [&node] {
+            node.clearChildren();
+        }));
+
+    for (auto& f : clearingFutures)
+        f.wait();
 
     vts.replaceState (ValueTree::fromXml (*vtsXml)); //load parameters
 
