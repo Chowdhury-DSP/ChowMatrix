@@ -60,8 +60,10 @@ private:
     DelayTypeControl delayTypeControl;
     SyncControl syncControl;
 
-    // create this here so loading new nodes is always fast
+    // create shared resources here so that
+    // loading new nodes is fast
     SharedResourcePointer<LookupTables> luts;
+    SharedResourcePointer<DelayStore> delayStore;
 
     AutoUpdater updater;
     StateManager stateManager;
