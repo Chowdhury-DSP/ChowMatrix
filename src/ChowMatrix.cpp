@@ -196,7 +196,8 @@ void ChowMatrix::setCurrentProgram (int index)
     if (index == presetManager.getSelectedPresetIdx()) // no update needed!
         return;
 
-    MessageManager::callAsync ([&presetManager, index] { presetManager.setPreset (index); });
+    MessageManagerLock mml;
+    presetManager.setPreset (index);
 }
 
 const String ChowMatrix::getProgramName (int index)

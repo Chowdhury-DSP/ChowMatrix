@@ -7,10 +7,6 @@ static String getParamName (size_t idx) { return "Assign " + String (idx + 1); }
 
 } // namespace
 
-// EDGE CASES TO WATCH FOR:
-// - Nodes getting re-ordered
-// - Saving/loading
-
 HostParamControl::HostParamControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) : BaseController (vts, nodes, paramIDs)
 {
     for (size_t i = 0; i < numParams; ++i)
