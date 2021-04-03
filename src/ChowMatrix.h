@@ -3,6 +3,7 @@
 #include "NodeManager.h"
 #include "dsp/InputNode.h"
 #include "dsp/Parameters/DelayTypeControl.h"
+#include "dsp/Parameters/HostParamControl.h"
 #include "dsp/Parameters/InsanityControl.h"
 #include "dsp/Parameters/SyncControl.h"
 #include "gui/AutoUpdating.h"
@@ -42,6 +43,7 @@ public:
     /** Access to array of input nodes */
     std::array<InputNode, 2>* getNodes() { return &inputNodes; }
     StateManager& getStateManager() { return stateManager; }
+    const HostParamControl& getHostControl() { return hostParamControl; }
 
 private:
     std::array<InputNode, 2> inputNodes;
@@ -57,6 +59,7 @@ private:
     dsp::Gain<float> wetGain;
 
     InsanityControl insanityControl;
+    HostParamControl hostParamControl;
     DelayTypeControl delayTypeControl;
     SyncControl syncControl;
 

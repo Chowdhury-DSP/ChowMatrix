@@ -4,6 +4,7 @@ juce_add_binary_data(BinaryData SOURCES
     Panic.png
     home.svg
     undo-solid.png
+    cog-solid.svg
 
     presets/Crazy.chowpreset
     presets/Default.chowpreset

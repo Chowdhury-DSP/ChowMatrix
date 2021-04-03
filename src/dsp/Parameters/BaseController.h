@@ -19,6 +19,7 @@ public:
 
 protected:
     virtual void newNodeAdded (DelayNode*) {}
+    virtual void newNodeRemoved (DelayNode*) {}
     void doForNodes (std::function<void (DelayNode*)> nodeFunc);
 
 private:

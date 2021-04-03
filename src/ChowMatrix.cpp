@@ -1,6 +1,7 @@
 #include "ChowMatrix.h"
 #include "gui/BottomBar/ABComp.h"
 #include "gui/BottomBar/BottomBarLNF.h"
+#include "gui/BottomBar/HostControlMenu.h"
 #include "gui/BottomBar/TextSliderItem.h"
 #include "gui/DetailsView/NodeDetailsGUI.h"
 #include "gui/InsanityLNF.h"
@@ -18,6 +19,7 @@ constexpr float negInfDB = -60.0f;
 } // namespace
 
 ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
+                           hostParamControl (vts, &inputNodes),
                            delayTypeControl (vts, &inputNodes, stateManager),
                            syncControl (vts, &inputNodes),
                            stateManager (vts, inputNodes)
@@ -52,6 +54,7 @@ void ChowMatrix::addParameters (Parameters& params)
     DelayTypeControl::addParameters (params);
     SyncControl::addParameters (params);
     PresetManager::addParameters (params);
+    HostParamControl::addParameters (params);
 }
 
 void ChowMatrix::prepareToPlay (double sampleRate, int samplesPerBlock)
@@ -130,6 +133,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerFactory ("TextSlider", &TextSliderItem::factory);
     builder->registerFactory ("PresetComp", &PresetCompItem::factory);
     builder->registerFactory ("ABComp", &ABCompItem::factory);
+    builder->registerFactory ("HostControlMenu", &HostControlMenuItem::factory);
     builder->registerLookAndFeel ("InsanityLNF", std::make_unique<InsanityLNF>());
     builder->registerLookAndFeel ("BottomBarLNF", std::make_unique<BottomBarLNF>());
     builder->registerLookAndFeel ("PresetsLNF", std::make_unique<PresetsLNF>());

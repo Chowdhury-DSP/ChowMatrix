@@ -84,6 +84,11 @@ void DelayNode::setNodeParameterDiff (const String& paramID, float diff01)
     thisParam->setValueNotifyingHost (newValue);
 }
 
+void DelayNode::setNodeParameter (const String& paramID, float value01)
+{
+    params.getParameter (paramID)->setValueNotifyingHost (value01);
+}
+
 void DelayNode::randomiseParameters()
 {
     for (auto& paramID : paramIDs)
@@ -113,6 +118,14 @@ void DelayNode::toggleInsanityLock (const String& paramID)
     }
 
     nodeListeners.call (&Listener::nodeParamLockChanged, this);
+}
+
+PopupMenu DelayNode::createParamPopupMenu (const String& paramID)
+{
+    PopupMenu menu;
+    nodeListeners.call (&Listener::addParameterMenus, menu, paramID, this);
+
+    return menu;
 }
 
 bool DelayNode::isParamLocked (const String& paramID) const noexcept
@@ -247,6 +260,7 @@ XmlElement* DelayNode::saveXml()
     xmlState->setAttribute ("reset", resetParams.joinIntoString (",") + ",");
     xmlState->setAttribute ("lfo_sync", tempoSyncedLFO);
     xml->addChildElement (xmlState.release());
+    nodeListeners.call (&Listener::saveExtraNodeState, xml.get(), this);
     xml->addChildElement (DBaseNode::saveXml());
 
     return xml.release();
@@ -269,6 +283,8 @@ void DelayNode::loadXml (XmlElement* xml)
 
     if (xml == nullptr)
         return;
+
+    nodeListeners.call (&Listener::loadExtraNodeState, xml, this);
 
     if (auto* xmlState = xml->getChildByName (params.state.getType()))
     {
@@ -304,4 +320,19 @@ void DelayNode::setSelected (bool shouldBeSelected)
 void DelayNode::setSoloed (SoloState newSoloState)
 {
     isSoloed = newSoloState;
+}
+
+void DelayNode::beginParameterChange (const String& paramID)
+{
+    nodeListeners.call (&Listener::beginParameterChange, paramID, this);
+}
+
+void DelayNode::endParameterChange (const String& paramID)
+{
+    nodeListeners.call (&Listener::endParameterChange, paramID, this);
+}
+
+void DelayNode::applyParameterChange (const String& paramID, float value01)
+{
+    nodeListeners.call (&Listener::applyParameterChange, paramID, this, value01);
 }
