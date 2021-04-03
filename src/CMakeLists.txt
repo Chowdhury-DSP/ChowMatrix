@@ -15,6 +15,7 @@ target_sources(ChowMatrix PRIVATE
     dsp/Distortion/LookupTables.cpp
     dsp/Parameters/BaseController.cpp
     dsp/Parameters/DelayTypeControl.cpp
+    dsp/Parameters/HostParamControl.cpp
     dsp/Parameters/InsanityControl.cpp
     dsp/Parameters/ParamHelpers.cpp
     dsp/Parameters/SyncControl.cpp
@@ -23,6 +24,7 @@ target_sources(ChowMatrix PRIVATE
     gui/ParamSlider.cpp
     gui/BottomBar/ABComp.cpp
     gui/BottomBar/BottomBarLNF.cpp
+    gui/BottomBar/HostControlMenu.cpp
     gui/DetailsView/NodeDetails.cpp
     gui/DetailsView/NodeDetailsComponent.cpp
     gui/DetailsView/NodeDetailsGUI.cpp

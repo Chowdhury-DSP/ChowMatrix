@@ -38,7 +38,7 @@ NodeDetailsGUI::NodeDetailsGUI (ChowMatrix& chowMatrix) : nodeDetailsViewport (c
             l->setTooltip ("Use shift+drag to change all nodes in unison, or CTRL+click for Tempo Sync");
 #endif
         else
-            l->setTooltip ("Use shift+drag to change " + String (param) + " for all nodes in unison");
+            l->setTooltip ("Use shift+drag to adjust all nodes in unison. Use right-click to assign to target");
 
         addAndMakeVisible (l);
     }

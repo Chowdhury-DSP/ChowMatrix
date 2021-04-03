@@ -33,6 +33,7 @@ void BaseController::nodeAdded (DelayNode* newNode)
 
 void BaseController::nodeRemoved (DelayNode* nodeToRemove)
 {
+    newNodeRemoved (nodeToRemove);
     nodeToRemove->removeNodeListener (this);
 }
 
