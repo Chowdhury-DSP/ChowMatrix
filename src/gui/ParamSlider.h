@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../dsp/DelayNode.h"
-#include "../gui/BottomBar/BottomBarLNF.h"
+#include "BottomBar/BottomBarLNF.h"
 #include <pch.h>
 
 /**
@@ -41,7 +41,7 @@ private:
     std::atomic_bool linkFlag;
     std::atomic_bool isInGesture;
 
-    BottomBarLNF popupLNF;
+    SharedResourcePointer<BottomBarLNF> popupLNF;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ParamSlider)
 };

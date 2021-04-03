@@ -128,7 +128,7 @@ void ParamSlider::mouseDown (const MouseEvent& e)
     if (e.mods.isPopupMenu())
     {
         auto menu = node.createParamPopupMenu (param->paramID);
-        menu.setLookAndFeel (&popupLNF);
+        menu.setLookAndFeel (&popupLNF.get());
         menu.showMenuAsync (PopupMenu::Options());
 
         return;
