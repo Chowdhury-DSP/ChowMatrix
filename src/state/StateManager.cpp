@@ -1,7 +1,9 @@
 #include "StateManager.h"
 
 StateManager::StateManager (AudioProcessorValueTreeState& vts,
+                            HostParamControl& paramControl,
                             std::array<InputNode, 2>& nodes) : vts (vts),
+                                                               paramControl (paramControl),
                                                                inputNodes (nodes),
                                                                presetManager (this, vts)
 {
@@ -40,8 +42,13 @@ std::unique_ptr<XmlElement> StateManager::saveState()
     std::unique_ptr<XmlElement> childrenXml = std::make_unique<XmlElement> ("nodes");
     for (auto& node : inputNodes)
         childrenXml->addChildElement (node.saveXml());
-
     xml->addChildElement (childrenXml.release());
+
+    // save parameter mappings
+    std::unique_ptr<XmlElement> paramMapXml = std::make_unique<XmlElement> ("param_maps");
+    paramControl.saveGlobalMap (paramMapXml.get());
+    xml->addChildElement (paramMapXml.release());
+
     return std::move (xml);
 }
 
@@ -80,4 +87,10 @@ void StateManager::loadState (XmlElement* xmlState)
         inputNodes[count++].loadXml (childXml);
     }
     JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+
+    auto paramMapXml = xmlState->getChildByName ("param_maps");
+    if (paramMapXml == nullptr) // invalid param map XML
+        return;
+
+    paramControl.loadGlobalMap (paramMapXml);
 }
