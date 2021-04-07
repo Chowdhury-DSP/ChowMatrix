@@ -322,14 +322,14 @@ void DelayNode::setSoloed (SoloState newSoloState)
     isSoloed = newSoloState;
 }
 
-void DelayNode::beginParameterChange (const String& paramID)
+void DelayNode::beginParameterChange (const StringArray& IDs)
 {
-    nodeListeners.call (&Listener::beginParameterChange, paramID, this);
+    nodeListeners.call (&Listener::beginParameterChange, IDs, this);
 }
 
-void DelayNode::endParameterChange (const String& paramID)
+void DelayNode::endParameterChange (const StringArray& IDs)
 {
-    nodeListeners.call (&Listener::endParameterChange, paramID, this);
+    nodeListeners.call (&Listener::endParameterChange, IDs, this);
 }
 
 void DelayNode::applyParameterChange (const String& paramID, float value01)

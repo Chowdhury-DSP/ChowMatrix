@@ -93,8 +93,8 @@ public:
     dsp::IIR::Filter<float> panSmoother;
 
     /** Parameter change functions */
-    void beginParameterChange (const String& paramID);
-    void endParameterChange (const String& paramID);
+    void beginParameterChange (const StringArray& paramIDs);
+    void endParameterChange (const StringArray& paramIDs);
     void applyParameterChange (const String& paramID, float value01);
 
     // menu for parameter mappings

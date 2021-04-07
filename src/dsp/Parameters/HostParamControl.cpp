@@ -45,28 +45,35 @@ void HostParamControl::parameterChanged (const String& paramID, float newValue)
         {
             auto& controlMap = paramControlMaps[i];
             for (auto& map : controlMap)
-                map.nodePtr->setNodeParameter (map.mappedParamID, newValue);
+                if (map.mappedParamID == paramID)
+                    map.nodePtr->setNodeParameter (paramID, newValue);
 
             return;
         }
     }
 }
 
-void HostParamControl::beginParameterChange (const String& paramID, DelayNode* node)
+void HostParamControl::beginParameterChange (const StringArray& IDs, DelayNode* node)
 {
     for (size_t i = 0; i < numParams; ++i)
     {
-        doForParamMap (
-            node, paramID, i, [=] (MapIter) { parameterHandles[i]->beginChangeGesture(); }, [] {});
+        for (const auto& paramID : IDs)
+        {
+            if (doForParamMap (node, paramID, i, [=] (MapIter) { parameterHandles[i]->beginChangeGesture(); }, [] {}))
+                break;
+        }
     }
 }
 
-void HostParamControl::endParameterChange (const String& paramID, DelayNode* node)
+void HostParamControl::endParameterChange (const StringArray& IDs, DelayNode* node)
 {
     for (size_t i = 0; i < numParams; ++i)
     {
-        doForParamMap (
-            node, paramID, i, [=] (MapIter) { parameterHandles[i]->endChangeGesture(); }, [] {});
+        for (const auto& paramID : IDs)
+        {
+            if (doForParamMap (node, paramID, i, [=] (MapIter) { parameterHandles[i]->endChangeGesture(); }, [] {}))
+                break;
+        }
     }
 }
 
@@ -95,10 +102,26 @@ void HostParamControl::addParameterMenus (PopupMenu& parentMenu, const String& p
         paramMapMenu.addItem (paramItem);
     }
 
+    PopupMenu paramGroupMapMenu;
+    // for (size_t i = 0; i < numParams; ++i)
+    // {
+    //     auto& groupMap = paramGroupMaps[i];
+    //     auto mapIter = std::find (groupMap.begin(), groupMap.end(), paramID);
+    //     auto isMapped = mapIter != groupMap.end();
+
+    //     PopupMenu::Item paramItem (getParamName (i));
+    //     paramItem.itemID = (int) i + 1;
+    //     paramItem.action = [=] { toggleGroupParamMap (paramID, i); };
+    //     paramItem.setColour (Colour (isMapped ? 0xFF21CCA5 : 0xFFFFFFFF));
+
+    //     paramGroupMapMenu.addItem (paramItem);
+    // }
+
     parentMenu.addSubMenu ("Assign Parameter:", paramMapMenu);
+    parentMenu.addSubMenu ("Assign Global:", paramGroupMapMenu);
 }
 
-void HostParamControl::doForParamMap (DelayNode* node, const String& paramID, size_t mapIdx, std::function<void (MapIter)> found, std::function<void()> notFound)
+bool HostParamControl::doForParamMap (DelayNode* node, const String& paramID, size_t mapIdx, std::function<void (MapIter)> found, std::function<void()> notFound)
 {
     auto& controlMap = paramControlMaps[mapIdx];
     auto paramMapIter = findMap (node, paramID, mapIdx);
@@ -106,10 +129,11 @@ void HostParamControl::doForParamMap (DelayNode* node, const String& paramID, si
     if (paramMapIter != controlMap.end())
     {
         found (paramMapIter);
-        return;
+        return true;
     }
 
     notFound();
+    return false;
 }
 
 HostParamControl::MapIter HostParamControl::findMap (DelayNode* node, const String& paramID, size_t mapIdx)
@@ -117,7 +141,7 @@ HostParamControl::MapIter HostParamControl::findMap (DelayNode* node, const Stri
     auto& controlMap = paramControlMaps[mapIdx];
     for (size_t i = 0; i < controlMap.size(); ++i)
     {
-        if (controlMap[i].nodePtr == node && controlMap[i].mappedParamID == paramID) // remove this node
+        if (controlMap[i].nodePtr == node && controlMap[i].mappedParamID == paramID)
             return controlMap.begin() + (int) i;
     }
 
@@ -129,7 +153,37 @@ void HostParamControl::toggleParamMap (DelayNode* node, const String& paramID, s
     doForParamMap (
         node, paramID, mapIdx, [=] (MapIter iter) { paramControlMaps[mapIdx].erase (iter); }, [=] { 
             paramControlMaps[mapIdx].push_back ({ node, paramID });
-            parameterHandles[mapIdx]->setValueNotifyingHost (node->getNodeParameter (paramID)->getValue()); });
+
+            if (paramControlMaps[mapIdx].size() == 1) // this is the only parameter here
+                parameterHandles[mapIdx]->setValueNotifyingHost (node->getNodeParameter (paramID)->getValue());
+            else
+                node->setNodeParameter (paramID, parameterHandles[mapIdx]->getValue());
+        });
+}
+
+void HostParamControl::toggleGroupParamMap (const String& paramID, size_t mapIdx)
+{
+    auto& groupMap = paramGroupMaps[mapIdx];
+    auto mapIter = std::find (groupMap.begin(), groupMap.end(), paramID);
+    if (mapIter != groupMap.end()) // parameter is currently mapped
+    {
+        groupMap.erase (mapIter);
+        return;
+    }
+
+    // we need to add it to the map
+    // first remove it from existing node maps
+    for (size_t idx = 0; idx < numParams; ++idx)
+    {
+        auto& controlMap = paramControlMaps[idx];
+        for (int i = (int) controlMap.size() - 1; i >= 0; --i)
+        {
+            if (controlMap[(size_t) i].mappedParamID == paramID) // remove this node
+                controlMap.erase (controlMap.begin() + i);
+        }
+    }
+
+    groupMap.push_back (paramID);
 }
 
 void HostParamControl::saveExtraNodeState (XmlElement* nodeState, DelayNode* node)

@@ -14,8 +14,8 @@ public:
 
     void addParameterMenus (PopupMenu& parentMenu, const String& paramID, DelayNode* node) override;
 
-    void beginParameterChange (const String& paramID, DelayNode* node) override;
-    void endParameterChange (const String& paramID, DelayNode* node) override;
+    void beginParameterChange (const StringArray& paramIDs, DelayNode* node) override;
+    void endParameterChange (const StringArray& paramIDs, DelayNode* node) override;
     void applyParameterChange (const String& paramID, DelayNode* node, float value01) override;
 
     void saveExtraNodeState (XmlElement* nodeState, DelayNode* node) override;
@@ -33,13 +33,15 @@ private:
 
     using MapIter = std::vector<MapInfo>::iterator;
 
-    void doForParamMap (DelayNode* node, const String& paramID, size_t mapIdx, std::function<void (MapIter)> found, std::function<void()> notFound);
+    bool doForParamMap (DelayNode* node, const String& paramID, size_t mapIdx, std::function<void (MapIter)> found, std::function<void()> notFound);
     MapIter findMap (DelayNode* node, const String& paramID, size_t mapIdx);
     void toggleParamMap (DelayNode* node, const String& paramID, size_t mapIdx);
+    void toggleGroupParamMap (const String& paramID, size_t mapIdx);
 
     static constexpr size_t numParams = 16;
     static inline StringArray paramIDs;
 
+    std::array<std::vector<String>, numParams> paramGroupMaps;
     std::array<std::vector<MapInfo>, numParams> paramControlMaps;
     std::array<RangedAudioParameter*, numParams> parameterHandles;
 

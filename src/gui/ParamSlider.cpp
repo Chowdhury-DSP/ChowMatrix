@@ -150,7 +150,7 @@ void ParamSlider::mouseDown (const MouseEvent& e)
     if (! isInGesture.load())
     {
         isInGesture.store (true);
-        node.beginParameterChange (param->paramID);
+        node.beginParameterChange ({ param->paramID });
     }
 }
 
@@ -163,7 +163,7 @@ void ParamSlider::mouseDrag (const MouseEvent& e)
     if (! isInGesture.load())
     {
         isInGesture.store (true);
-        node.beginParameterChange (param->paramID);
+        node.beginParameterChange ({ param->paramID });
     }
 
     node.applyParameterChange (param->paramID, (float) this->getValue());
@@ -173,6 +173,7 @@ void ParamSlider::mouseDoubleClick (const MouseEvent& e)
 {
     valueLabel.hideEditor (true);
     Slider::mouseDoubleClick (e);
+    node.applyParameterChange (param->paramID, (float) this->getValue());
 }
 
 void ParamSlider::mouseUp (const MouseEvent& e)
@@ -194,6 +195,6 @@ void ParamSlider::mouseUp (const MouseEvent& e)
     if (isInGesture.load())
     {
         isInGesture.store (false);
-        node.endParameterChange (param->paramID);
+        node.endParameterChange ({ param->paramID });
     }
 }
