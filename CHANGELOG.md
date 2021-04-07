@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
   - Super Liquid (more ideal Sinc interpolation)
   - Lo-Fi (4096-stage BBD delay emulation)
   - Analog (16384-stage BBD delay emulation)
+- Added parameter modulation targets for host control.
 - Added insanity reset/insanity lock behaviour.
 - Support for Macs with Apple Silicon.
 - Created installer packages for Windows/Mac.
