@@ -15,7 +15,7 @@ public:
 
         beginTest ("No Interp Test");
         runPerfTest (DelayType::NoInterp, rtLimit);
-        
+
         beginTest ("Linear Interp Test");
         runPerfTest (DelayType::LinearInterp, rtLimit);
 
