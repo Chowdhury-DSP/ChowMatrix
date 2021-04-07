@@ -5,12 +5,12 @@ HostControlMenuComp::HostControlMenuComp (HostParamControl& controller, size_t i
 {
     controller.loadParamList (paramList, xCallbacks, idx);
 
-    for (auto& xCallback :xCallbacks)
+    for (auto& xCallback : xCallbacks)
     {
         auto newButton = xButtons.add (std::make_unique<DrawableButton> ("Delete", DrawableButton::ImageFitted));
         createXButton (*newButton);
         addAndMakeVisible (newButton);
-        newButton->onClick = [=, &controller] { 
+        newButton->onClick = [=, &controller] {
             xCallback();
             triggerMenuItem();
         };

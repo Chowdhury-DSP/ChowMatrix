@@ -15,7 +15,7 @@ public:
 private:
     String name;
     StringArray paramList;
-    
+
     OwnedArray<DrawableButton> xButtons;
     std::vector<std::function<void()>> xCallbacks;
 
