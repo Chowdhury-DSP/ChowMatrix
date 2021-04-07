@@ -69,4 +69,7 @@ StringToValFunc getStringFuncForParam (const String& paramID);
 /** Creates a tooltip for a given paramID */
 String getTooltip (const String& paramID);
 
+/** Gets a parameter name for a given parameter ID */
+String getName (const String& paramID);
+
 } // namespace ParamHelpers
