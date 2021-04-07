@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../dsp/InputNode.h"
+#include "dsp/Parameters/HostParamControl.h"
 #include "presets/PresetManager.h"
 
 /** Class to manage the plugin state */
@@ -8,6 +9,7 @@ class StateManager
 {
 public:
     StateManager (AudioProcessorValueTreeState& vts,
+                  HostParamControl& paramControl,
                   std::array<InputNode, 2>& nodes);
 
     /** Call this from the main plugin once the default states have been
@@ -39,6 +41,7 @@ public:
 
 private:
     AudioProcessorValueTreeState& vts;
+    HostParamControl& paramControl;
     std::array<InputNode, 2>& inputNodes;
     SpinLock stateLoadingLock;
 

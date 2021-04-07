@@ -220,4 +220,45 @@ String getTooltip (const String& paramID)
     return {};
 }
 
+String getName (const String& paramID)
+{
+    if (paramID == delayTag)
+        return "Delay";
+
+    if (paramID == panTag)
+        return "Pan";
+
+    if (paramID == fbTag)
+        return "Feedback";
+
+    if (paramID == gainTag)
+        return "Gain";
+
+    if (paramID == lpfTag)
+        return "LPF";
+
+    if (paramID == hpfTag)
+        return "HPF";
+
+    if (paramID == distTag)
+        return "Distortion";
+
+    if (paramID == pitchTag)
+        return "Pitch";
+
+    if (paramID == diffTag)
+        return "Diffusion";
+
+    if (paramID == modFreqTag)
+        return "Mod Freq";
+
+    if (paramID == delayModTag)
+        return "Delay Mod";
+
+    if (paramID == panModTag)
+        return "Pan Mod";
+
+    return {};
+}
+
 } // namespace ParamHelpers
