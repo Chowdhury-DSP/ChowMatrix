@@ -7,13 +7,13 @@ class HostControlMenu : public Component,
                         public SettableTooltipClient
 {
 public:
-    HostControlMenu (const HostParamControl& controller);
+    HostControlMenu (HostParamControl& controller);
 
     void paint (Graphics& g) override;
     void mouseDown (const MouseEvent& e) override;
 
 private:
-    const HostParamControl& controller;
+    HostParamControl& controller;
     std::unique_ptr<Drawable> cog;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HostControlMenu)
