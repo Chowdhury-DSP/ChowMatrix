@@ -332,13 +332,17 @@ void HostParamControl::loadGlobalMap (XmlElement* mapXml)
     JUCE_END_IGNORE_WARNINGS_GCC_LIKE
 }
 
-void HostParamControl::loadParamList (StringArray& paramList, size_t mapIdx) const
+void HostParamControl::loadParamList (StringArray& paramList, std::vector<std::function<void()>>& xCallbacks, size_t mapIdx)
 {
     auto& groupMap = paramGroupMaps[mapIdx];
     for (auto& mappedParam : groupMap)
     {
         auto paramName = ParamHelpers::getName (mappedParam);
         paramList.addIfNotAlreadyThere ("Global: " + paramName);
+        xCallbacks.push_back ([=, &groupMap] {
+            auto mapIter = findMap (mappedParam, mapIdx);
+            groupMap.erase (mapIter);
+        });
     }
 
     auto& controlMap = paramControlMaps[mapIdx];
@@ -347,5 +351,9 @@ void HostParamControl::loadParamList (StringArray& paramList, size_t mapIdx) con
         auto nodeIdx = map.nodePtr->getIndex();
         auto paramName = ParamHelpers::getName (map.mappedParamID);
         paramList.addIfNotAlreadyThere ("Node " + String (nodeIdx + 1) + ": " + paramName);
+        xCallbacks.push_back ([=, &controlMap] {
+            auto mapIter = findMap (map.nodePtr, map.mappedParamID, mapIdx);
+            controlMap.erase (mapIter);
+        });
     }
 }

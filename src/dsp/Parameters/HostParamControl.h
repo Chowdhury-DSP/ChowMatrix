@@ -25,7 +25,7 @@ public:
     void saveGlobalMap (XmlElement* mapXml);
     void loadGlobalMap (XmlElement* mapXml);
 
-    void loadParamList (StringArray& paramList, size_t mapIdx) const;
+    void loadParamList (StringArray& paramList, std::vector<std::function<void()>>& xCallbacks, size_t mapIdx);
     constexpr size_t getNumAssignableParams() const noexcept { return numParams; }
 
 private:
@@ -49,7 +49,7 @@ private:
     bool isParamMapped (size_t mapIdx) const noexcept;
     bool doForBothMaps (DelayNode* node, const String& paramID, size_t mapIdx, std::function<void()> found, std::function<void()> notFound);
 
-    static constexpr size_t numParams = 16;
+    static constexpr size_t numParams = 8;
     static inline StringArray paramIDs;
 
     std::array<std::vector<String>, numParams> paramGroupMaps;
