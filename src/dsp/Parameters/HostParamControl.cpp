@@ -45,8 +45,7 @@ void HostParamControl::parameterChanged (const String& paramID, float newValue)
         {
             auto& controlMap = paramControlMaps[i];
             for (auto& map : controlMap)
-                if (map.mappedParamID == paramID)
-                    map.nodePtr->setNodeParameter (paramID, newValue);
+                MessageManager::callAsync ([=] { map.nodePtr->setNodeParameter (map.mappedParamID, newValue); });
 
             return;
         }
