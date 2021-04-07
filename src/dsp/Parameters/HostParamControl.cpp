@@ -74,7 +74,8 @@ void HostParamControl::beginParameterChange (const StringArray& IDs, DelayNode* 
     {
         for (const auto& paramID : IDs)
         {
-            if (doForBothMaps (node, paramID, i, [=] { parameterHandles[i]->beginChangeGesture(); }, [] {}))
+            if (doForBothMaps (
+                    node, paramID, i, [=] { parameterHandles[i]->beginChangeGesture(); }, [] {}))
                 break;
         }
     }
@@ -86,7 +87,8 @@ void HostParamControl::endParameterChange (const StringArray& IDs, DelayNode* no
     {
         for (const auto& paramID : IDs)
         {
-            if (doForBothMaps (node, paramID, i, [=] { parameterHandles[i]->endChangeGesture(); }, [] {}))
+            if (doForBothMaps (
+                    node, paramID, i, [=] { parameterHandles[i]->endChangeGesture(); }, [] {}))
                 break;
         }
     }
@@ -95,7 +97,8 @@ void HostParamControl::endParameterChange (const StringArray& IDs, DelayNode* no
 void HostParamControl::applyParameterChange (const String& paramID, DelayNode* node, float value01)
 {
     for (size_t i = 0; i < numParams; ++i)
-        doForBothMaps (node, paramID, i, [=] { parameterHandles[i]->setValueNotifyingHost (value01); }, [] {});
+        doForBothMaps (
+            node, paramID, i, [=] { parameterHandles[i]->setValueNotifyingHost (value01); }, [] {});
 }
 
 void HostParamControl::addParameterMenus (PopupMenu& parentMenu, const String& paramID, DelayNode* node)
@@ -165,11 +168,12 @@ bool HostParamControl::doForGroupMap (const String& paramID, size_t mapIdx, std:
 
 bool HostParamControl::doForBothMaps (DelayNode* node, const String& paramID, size_t mapIdx, std::function<void()> found, std::function<void()> notFound)
 {
-    if (doForGroupMap (paramID, mapIdx, [=] (GlobalIter) { found(); }, [=] { notFound(); }))
+    if (doForGroupMap (
+            paramID, mapIdx, [=] (GlobalIter) { found(); }, [=] { notFound(); }))
         return true;
-    
 
-    if (doForParamMap (node, paramID, mapIdx, [=] (MapIter) { found(); }, [=] { notFound(); }))
+    if (doForParamMap (
+            node, paramID, mapIdx, [=] (MapIter) { found(); }, [=] { notFound(); }))
         return true;
 
     return false;
@@ -209,8 +213,7 @@ void HostParamControl::toggleParamMap (DelayNode* node, const String& paramID, s
             if (! isMapped) // this is the only parameter here
                 parameterHandles[mapIdx]->setValueNotifyingHost (node->getNodeParameter (paramID)->getValue());
             else
-                node->setNodeParameter (paramID, parameterHandles[mapIdx]->getValue());
-        });
+                node->setNodeParameter (paramID, parameterHandles[mapIdx]->getValue()); });
 }
 
 void HostParamControl::toggleGroupParamMap (DelayNode* node, const String& paramID, size_t mapIdx)

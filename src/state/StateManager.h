@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../dsp/InputNode.h"
-#include "presets/PresetManager.h"
 #include "dsp/Parameters/HostParamControl.h"
+#include "presets/PresetManager.h"
 
 /** Class to manage the plugin state */
 class StateManager

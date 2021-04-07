@@ -3,7 +3,7 @@
 StateManager::StateManager (AudioProcessorValueTreeState& vts,
                             HostParamControl& paramControl,
                             std::array<InputNode, 2>& nodes) : vts (vts),
-                                                               paramControl(paramControl),
+                                                               paramControl (paramControl),
                                                                inputNodes (nodes),
                                                                presetManager (this, vts)
 {
