@@ -11,8 +11,11 @@ add_custom_command(TARGET ChowMatrix_headless
 
 target_sources(ChowMatrix_headless PRIVATE
     main.cpp
-    SaveLoadSpeedTest.cpp
     ScreenshotGenerator.cpp
+
+    UnitTests/PerformanceTest.cpp
+    UnitTests/SaveLoadSpeedTest.cpp
+    UnitTests/UnitTests.cpp
 )
 
 target_precompile_headers(ChowMatrix_headless PRIVATE ../pch.h)
