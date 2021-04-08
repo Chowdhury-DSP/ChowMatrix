@@ -11,7 +11,7 @@ public:
 
     void runTest() override
     {
-        constexpr double rtLimit = 250.0;
+        constexpr double rtLimit = 24.0;
 
         beginTest ("No Interp Test");
         runPerfTest (DelayType::NoInterp, rtLimit);
