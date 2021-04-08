@@ -60,6 +60,10 @@ jobs:
     # - name: Setup debug session
     #   uses: mxschmitt/action-tmate@v3
 
+    - name: Unit Tests
+      if: runner.os == 'Linux'
+      run: build/ChowMatrix --unit-tests --all
+
     - name: Pluginval
       if: runner.os == 'Windows' || runner.os == 'MacOS'
       run: bash validate.sh

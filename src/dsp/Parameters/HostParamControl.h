@@ -56,5 +56,7 @@ private:
     std::array<std::vector<MapInfo>, numParams> paramControlMaps;
     std::array<RangedAudioParameter*, numParams> parameterHandles;
 
+    friend class HostControlTest;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HostParamControl)
 };
