@@ -10,7 +10,7 @@ HostControlMenuComp::HostControlMenuComp (HostParamControl& controller, size_t i
         auto newButton = xButtons.add (std::make_unique<DrawableButton> ("Delete", DrawableButton::ImageFitted));
         createXButton (*newButton);
         addAndMakeVisible (newButton);
-        newButton->onClick = [=, &controller] {
+        newButton->onClick = [=] {
             xCallback();
             triggerMenuItem();
         };
