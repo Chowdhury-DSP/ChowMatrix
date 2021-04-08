@@ -42,7 +42,7 @@ public:
         paramControl.toggleParamMap (node, ParamTags::fbTag, paramIdx);
 
         assignParam->setValueNotifyingHost (value1);
-        MessageManager::getInstance()->runDispatchLoopUntil(50); // wait for message thread to catch up...
+        MessageManager::getInstance()->runDispatchLoopUntil (50); // wait for message thread to catch up...
         expectWithinAbsoluteError (node->getNodeParameter (ParamTags::delayTag)->getValue(), value1, 1.0e-5f);
         expectWithinAbsoluteError (node->getNodeParameter (ParamTags::fbTag)->getValue(), value1, 1.0e-5f);
 
@@ -50,7 +50,7 @@ public:
         paramControl.toggleParamMap (node, ParamTags::fbTag, paramIdx);
 
         assignParam->setValueNotifyingHost (value2);
-        MessageManager::getInstance()->runDispatchLoopUntil(50);
+        MessageManager::getInstance()->runDispatchLoopUntil (50);
         expectWithinAbsoluteError (node->getNodeParameter (ParamTags::delayTag)->getValue(), value1, 1.0e-5f);
         expectWithinAbsoluteError (node->getNodeParameter (ParamTags::fbTag)->getValue(), value1, 1.0e-5f);
     }
