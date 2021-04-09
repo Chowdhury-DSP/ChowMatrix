@@ -5,6 +5,8 @@ juce_add_binary_data(BinaryData SOURCES
     home.svg
     undo-solid.png
     cog-solid.svg
+    LeftArrow.svg
+    RightArrow.svg
 
     presets/Crazy.chowpreset
     presets/Default.chowpreset
