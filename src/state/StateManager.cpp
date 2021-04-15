@@ -77,16 +77,13 @@ void StateManager::loadState (XmlElement* xmlState)
     // load nodes
     size_t count = 0;
 
-    // forEachChildElement is deprecated in some version of JUCE
-    JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wdeprecated-declarations")
-    forEachXmlChildElement (*childrenXml, childXml)
+    for (auto* childXml : childrenXml->getChildIterator())
     {
         if (count > 2)
             break;
 
         inputNodes[count++].loadXml (childXml);
     }
-    JUCE_END_IGNORE_WARNINGS_GCC_LIKE
 
     auto paramMapXml = xmlState->getChildByName ("param_maps");
     if (paramMapXml == nullptr) // invalid param map XML

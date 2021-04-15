@@ -210,11 +210,7 @@ const String ChowMatrix::getProgramName (int index)
 
 void ChowMatrix::updateHostPrograms()
 {
-    // @TODO: when we upgrade JUCE, we can
-    // specify that we are changing something
-    // specific to the numer of programs, or
-    // the selected program.
-    MessageManager::callAsync ([=] { updateHostDisplay(); });
+    MessageManager::callAsync ([=] { updateHostDisplay (AudioProcessorListener::ChangeDetails().withProgramChanged (true)); });
 }
 
 // This creates new instances of the plugin
