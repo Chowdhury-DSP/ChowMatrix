@@ -26,3 +26,5 @@ target_link_libraries(ChowMatrix_headless PUBLIC
     BinaryData
     ChowMatrix
 )
+
+set_target_properties(ChowMatrix_headless PROPERTIES CXX_VISIBILITY_PRESET hidden)
