@@ -280,9 +280,7 @@ void HostParamControl::loadExtraNodeState (XmlElement* nodeState, DelayNode* nod
 {
     if (auto* hostParamControlState = nodeState->getChildByName ("host_controls"))
     {
-        // forEachChildElement is deprecated in some version of JUCE
-        JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wdeprecated-declarations")
-        forEachXmlChildElement (*hostParamControlState, paramMap)
+        for (auto* paramMap : hostParamControlState->getChildIterator())
         {
             if (paramMap->hasAttribute ("assigned_param") && paramMap->hasAttribute ("param_id"))
             {
@@ -291,7 +289,6 @@ void HostParamControl::loadExtraNodeState (XmlElement* nodeState, DelayNode* nod
                 paramControlMaps[mapIdx].push_back ({ node, paramID });
             }
         }
-        JUCE_END_IGNORE_WARNINGS_GCC_LIKE
     }
 }
 
@@ -318,9 +315,7 @@ void HostParamControl::loadGlobalMap (XmlElement* mapXml)
         groupMap.clear();
     }
 
-    // forEachChildElement is deprecated in some version of JUCE
-    JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wdeprecated-declarations")
-    forEachXmlChildElement (*mapXml, paramMap)
+    for (auto* paramMap : mapXml->getChildIterator())
     {
         if (paramMap->hasAttribute ("assigned_param") && paramMap->hasAttribute ("param_id"))
         {
@@ -329,7 +324,6 @@ void HostParamControl::loadGlobalMap (XmlElement* mapXml)
             paramGroupMaps[mapIdx].push_back (paramID);
         }
     }
-    JUCE_END_IGNORE_WARNINGS_GCC_LIKE
 }
 
 void HostParamControl::loadParamList (StringArray& paramList, std::vector<std::function<void()>>& xCallbacks, size_t mapIdx)

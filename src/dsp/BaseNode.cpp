@@ -101,11 +101,8 @@ void BaseNode<Child>::loadXml (XmlElement* xml)
 
     if (xml->hasTagName ("children"))
     {
-        // forEachChildElement is deprecated in some version of JUCE
-        JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wdeprecated-declarations")
-        forEachXmlChildElement (*xml, childXml)
+        for (auto* childXml : xml->getChildIterator())
             addChild()->loadXml (childXml);
-        JUCE_END_IGNORE_WARNINGS_GCC_LIKE
     }
 }
 
