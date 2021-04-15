@@ -4,13 +4,17 @@ if(UNIX AND NOT APPLE)
 else()
     add_subdirectory(JUCE)
 endif()
+
+include(cmake/SubprojectVersion.cmake)
+subproject_version(JUCE juce_version)
+message(STATUS "VERSION for JUCE: ${juce_version}")
+
 juce_add_modules(foleys_gui_magic)
 juce_add_modules(chowdsp_utils)
 add_subdirectory(polylogarithm)
-include(WarningFlags.cmake)
 
+include(cmake/WarningFlags.cmake)
 add_library(juce_plugin_modules STATIC)
-
 target_link_libraries(juce_plugin_modules
     PRIVATE
         BinaryData

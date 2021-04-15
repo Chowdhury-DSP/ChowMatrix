@@ -153,6 +153,10 @@ AudioProcessorEditor* ChowMatrix::createEditor()
 
     auto editor = new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
     updater.showUpdaterScreen (editor);
+
+    // we need to set resize limits for StandalonePluginHolder
+    editor->setResizeLimits (10, 10, 1000, 1000);
+
     return editor;
 }
 
@@ -206,11 +210,7 @@ const String ChowMatrix::getProgramName (int index)
 
 void ChowMatrix::updateHostPrograms()
 {
-    // @TODO: when we upgrade JUCE, we can
-    // specify that we are changing something
-    // specific to the numer of programs, or
-    // the selected program.
-    MessageManager::callAsync ([=] { updateHostDisplay(); });
+    MessageManager::callAsync ([=] { updateHostDisplay (AudioProcessorListener::ChangeDetails().withProgramChanged (true)); });
 }
 
 // This creates new instances of the plugin
