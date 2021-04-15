@@ -21,7 +21,7 @@ elseif((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR (CMAKE_CXX_COMPILER_ID STREQU
         # Comment them out to be more strict.
         -Wno-shadow-field-in-constructor
         # Needed for ARM processor, OSX versions below 10.14
-        # -fno-aligned-allocation
+        -fno-aligned-allocation
     )
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(warning_flags INTERFACE
