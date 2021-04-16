@@ -48,6 +48,7 @@ public:
 
     // Manage parameter locking for Insanity Control
     void toggleInsanityLock (const String& paramID);
+    void setInsanityLock (const String& paramID, bool shouldBeLocked, bool shouldBeReset);
     bool isParamLocked (const String& paramID) const noexcept;
     bool shouldParamReset (const String& paramID) const noexcept; // returns true if this parameter should reset after insanity
 
