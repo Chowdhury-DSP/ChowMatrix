@@ -55,6 +55,16 @@ void NodeManager::setParameterDiff (DelayNode* sourceNode, const String& paramID
     });
 }
 
+void NodeManager::setParameterDefault (DelayNode* sourceNode, const String& paramID)
+{
+    doForNodes (nodes, [=] (DelayNode* n) {
+        if (n == sourceNode)
+            return;
+
+        n->setNodeParameterToDefault (paramID);
+    });
+}
+
 void NodeManager::setSelected (DelayNode* selectedNode, ActionSource source)
 {
     selectedNodePtr = selectedNode;

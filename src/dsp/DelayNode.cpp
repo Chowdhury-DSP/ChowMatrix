@@ -76,6 +76,11 @@ void DelayNode::setParameterDiffListeners (const String& paramID, float diff01)
     nodeListeners.call (&DBaseNode::Listener::setParameterDiff, this, paramID, diff01);
 }
 
+void DelayNode::setParameterDefaultListeners (const String& paramID)
+{
+    nodeListeners.call (&DBaseNode::Listener::setParameterDefault, this, paramID);
+}
+
 void DelayNode::setNodeParameterDiff (const String& paramID, float diff01)
 {
     auto thisParam = params.getParameter (paramID);
@@ -87,6 +92,12 @@ void DelayNode::setNodeParameterDiff (const String& paramID, float diff01)
 void DelayNode::setNodeParameter (const String& paramID, float value01)
 {
     params.getParameter (paramID)->setValueNotifyingHost (value01);
+}
+
+void DelayNode::setNodeParameterToDefault (const String& paramID)
+{
+    auto* param = params.getParameter (paramID);
+    param->setValueNotifyingHost (param->getDefaultValue());
 }
 
 void DelayNode::randomiseParameters()
