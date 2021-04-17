@@ -6,7 +6,8 @@
 using namespace ParamTags;
 using namespace TempoSyncUtils;
 
-DelayNode::DelayNode() : params (*this, nullptr, Identifier ("Parameters"), ParamHelpers::createParameterLayout())
+DelayNode::DelayNode() : params (*this, nullptr, Identifier ("Parameters"), ParamHelpers::createParameterLayout()),
+                         paramLockHelper ([=] { nodeListeners.call (&Listener::nodeParamLockChanged, this); })
 {
     auto loadParam = [=] (String paramID) -> Parameter* {
         paramIDs.add (paramID);
@@ -76,6 +77,11 @@ void DelayNode::setParameterDiffListeners (const String& paramID, float diff01)
     nodeListeners.call (&DBaseNode::Listener::setParameterDiff, this, paramID, diff01);
 }
 
+void DelayNode::setParameterDefaultListeners (const String& paramID)
+{
+    nodeListeners.call (&DBaseNode::Listener::setParameterDefault, this, paramID);
+}
+
 void DelayNode::setNodeParameterDiff (const String& paramID, float diff01)
 {
     auto thisParam = params.getParameter (paramID);
@@ -89,6 +95,12 @@ void DelayNode::setNodeParameter (const String& paramID, float value01)
     params.getParameter (paramID)->setValueNotifyingHost (value01);
 }
 
+void DelayNode::setNodeParameterToDefault (const String& paramID)
+{
+    auto* param = params.getParameter (paramID);
+    param->setValueNotifyingHost (param->getDefaultValue());
+}
+
 void DelayNode::randomiseParameters()
 {
     for (auto& paramID : paramIDs)
@@ -98,44 +110,24 @@ void DelayNode::randomiseParameters()
     }
 }
 
-void DelayNode::toggleInsanityLock (const String& paramID)
-{
-    const auto isLocked = lockedParams.contains (paramID);
-    const auto isReset = resetParams.contains (paramID);
-
-    if (isLocked)
-    {
-        lockedParams.removeString (paramID);
-        resetParams.addIfNotAlreadyThere (paramID);
-    }
-    else if (isReset)
-    {
-        resetParams.removeString (paramID);
-    }
-    else
-    {
-        lockedParams.addIfNotAlreadyThere (paramID);
-    }
-
-    nodeListeners.call (&Listener::nodeParamLockChanged, this);
-}
-
 PopupMenu DelayNode::createParamPopupMenu (const String& paramID)
 {
     PopupMenu menu;
     nodeListeners.call (&Listener::addParameterMenus, menu, paramID, this);
 
+    if (paramID == ParamTags::delayTag || paramID == ParamTags::panTag)
+        paramLockHelper.createPopupMenu (menu, paramID);
+
+    if (paramID == ParamTags::modFreqTag)
+    {
+        PopupMenu::Item item ("LFO Sync");
+        item.itemID = 1;
+        item.setColour (Colour (tempoSyncedLFO ? 0xFF21CCA5 : 0xFFFFFFFF));
+        item.action = [=] { toggleLFOSync(); };
+        menu.addItem (item);
+    }
+
     return menu;
-}
-
-bool DelayNode::isParamLocked (const String& paramID) const noexcept
-{
-    return lockedParams.contains (paramID);
-}
-
-bool DelayNode::shouldParamReset (const String& paramID) const noexcept
-{
-    return resetParams.contains (paramID);
 }
 
 void DelayNode::toggleLFOSync()
@@ -256,8 +248,7 @@ XmlElement* DelayNode::saveXml()
 
     auto state = params.copyState();
     std::unique_ptr<XmlElement> xmlState (state.createXml());
-    xmlState->setAttribute ("locked", lockedParams.joinIntoString (",") + ",");
-    xmlState->setAttribute ("reset", resetParams.joinIntoString (",") + ",");
+    paramLockHelper.saveState (xmlState.get());
     xmlState->setAttribute ("lfo_sync", tempoSyncedLFO);
     xml->addChildElement (xmlState.release());
     nodeListeners.call (&Listener::saveExtraNodeState, xml.get(), this);
@@ -268,19 +259,6 @@ XmlElement* DelayNode::saveXml()
 
 void DelayNode::loadXml (XmlElement* xml)
 {
-    auto loadStringArray = [] (StringArray& array, String string) {
-        array.clear();
-        while (string.isNotEmpty())
-        {
-            auto splitIdx = string.indexOfChar (',');
-            if (splitIdx <= 0)
-                break;
-
-            array.add (string.substring (0, splitIdx));
-            string = string.substring (splitIdx + 1);
-        }
-    };
-
     if (xml == nullptr)
         return;
 
@@ -289,10 +267,7 @@ void DelayNode::loadXml (XmlElement* xml)
     if (auto* xmlState = xml->getChildByName (params.state.getType()))
     {
         params.replaceState (ValueTree::fromXml (*xmlState));
-
-        loadStringArray (lockedParams, xmlState->getStringAttribute ("locked", String()));
-        loadStringArray (resetParams, xmlState->getStringAttribute ("reset", String()));
-
+        paramLockHelper.loadState (xmlState);
         tempoSyncedLFO = xmlState->getBoolAttribute ("lfo_sync");
     }
 

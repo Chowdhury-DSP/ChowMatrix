@@ -3,6 +3,7 @@
 #include "BaseNode.h"
 #include "Delay/DelayProc.h"
 #include "Parameters/ParamHelpers.h"
+#include "Parameters/ParamLockHelper.h"
 
 /**
  * Class for delay processing node
@@ -31,19 +32,25 @@ public:
     /** Call node listeners to set parameter by a diff value */
     void setParameterDiffListeners (const String& paramID, float diff01);
 
+    /** Call node listeners to set parameter to default value */
+    void setParameterDefaultListeners (const String& paramID);
+
     /** Sets the parameter with given ID by diff to a 0-1 normalized value */
     void setNodeParameterDiff (const String& paramID, float diff01);
 
     /** Sets the parameter with given ID to a 0-1 normalized value */
     void setNodeParameter (const String& paramID, float value01);
 
+    /** Sets the parameter with given ID to its default value */
+    void setNodeParameterToDefault (const String& paramID);
+
     /** Randomise all the parameters of this delay node */
     void randomiseParameters();
 
     // Manage parameter locking for Insanity Control
-    void toggleInsanityLock (const String& paramID);
-    bool isParamLocked (const String& paramID) const noexcept;
-    bool shouldParamReset (const String& paramID) const noexcept; // returns true if this parameter should reset after insanity
+    bool isParamLocked (const String& paramID) const noexcept { return paramLockHelper.isParamLocked (paramID); }
+    bool shouldParamReset (const String& paramID) const noexcept { return paramLockHelper.shouldParamReset (paramID); }
+    void toggleInsanityLock (const String& paramID) { paramLockHelper.toggleInsanityLock (paramID); }
 
     void toggleLFOSync();
     bool isLFOSynced() const noexcept { return tempoSyncedLFO; }
@@ -112,8 +119,7 @@ private:
     bool syncDelay = false;
     double tempoBPM = 120.0;
 
-    StringArray lockedParams;
-    StringArray resetParams;
+    ParamLockHelper paramLockHelper;
     std::atomic<SoloState> isSoloed;
     SoloState prevSoloState = None;
 
