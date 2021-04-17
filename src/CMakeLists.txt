@@ -18,6 +18,7 @@ target_sources(ChowMatrix PRIVATE
     dsp/Parameters/HostParamControl.cpp
     dsp/Parameters/InsanityControl.cpp
     dsp/Parameters/ParamHelpers.cpp
+    dsp/Parameters/ParamLockHelper.cpp
     dsp/Parameters/SyncControl.cpp
 
     gui/AutoUpdating.cpp
