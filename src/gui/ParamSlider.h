@@ -38,6 +38,7 @@ private:
 
     const bool showLabel;
     bool isDragging = false;
+    bool isDoubleClicking = false;
     std::atomic_bool linkFlag;
     std::atomic_bool isInGesture;
 

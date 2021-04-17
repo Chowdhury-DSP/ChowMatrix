@@ -22,6 +22,7 @@ public:
     void nodeAdded (DelayNode* newNode) override;
     void nodeRemoved (DelayNode* nodeToRemove) override;
     void setParameterDiff (DelayNode* sourceNode, const String& paramID, float diff01) override;
+    void setParameterDefault (DelayNode* sourceNode, const String& paramID) override;
     void nodeParamLockChanged (DelayNode* node) override { listeners.call (&Listener::nodeParamLockChanged, node); }
 
     /** Sources that can trigger node selection */

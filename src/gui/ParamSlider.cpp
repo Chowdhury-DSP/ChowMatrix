@@ -93,8 +93,13 @@ void ParamSlider::sliderValueChanged (Slider*)
     ParamHelpers::setParameterValue (param, param->convertFrom0to1 (value01));
 
     // if slider is linked, set parameter for all nodes
-    if (linkFlag.load() && isDragging)
-        node.setParameterDiffListeners (param->paramID, diff01);
+    if (linkFlag.load())
+    {
+        if (isDragging)
+            node.setParameterDiffListeners (param->paramID, diff01);
+        else if (isDoubleClicking)
+            node.setParameterDefaultListeners (param->paramID);
+    }
 }
 
 void ParamSlider::resized()
@@ -171,7 +176,13 @@ void ParamSlider::mouseDrag (const MouseEvent& e)
 
 void ParamSlider::mouseDoubleClick (const MouseEvent& e)
 {
+    isDoubleClicking = true;
+    linkFlag.store (e.mods.isShiftDown());
     valueLabel.hideEditor (true);
+
+    if (e.mods.isCommandDown()) // CMD+click is for insanity lock!
+        return;
+
     Slider::mouseDoubleClick (e);
     node.applyParameterChange (param->paramID, (float) this->getValue());
 }
@@ -190,6 +201,7 @@ void ParamSlider::mouseUp (const MouseEvent& e)
     }
 
     isDragging = false;
+    isDoubleClicking = false;
     linkFlag.store (false);
 
     if (isInGesture.load())
