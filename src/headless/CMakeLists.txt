@@ -13,6 +13,7 @@ target_sources(ChowMatrix_headless PRIVATE
     main.cpp
     ScreenshotGenerator.cpp
 
+    UnitTests/DelayClearTest.cpp
     UnitTests/HostControlTest.cpp
     UnitTests/PerformanceTest.cpp
     UnitTests/SaveLoadSpeedTest.cpp
