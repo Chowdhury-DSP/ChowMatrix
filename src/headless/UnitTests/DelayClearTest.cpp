@@ -28,8 +28,13 @@ public:
         AudioBuffer<float> buffer (2, nSamples);
         buffer.clear();
         for (int ch = 0; ch < 2; ++ch)
-            buffer.setSample (ch, 0, 1.0f);
+            buffer.setSample (ch, 100, 1.0f);
         plugin->processAudioBlock (buffer);
+        
+        {
+            auto mag = buffer.getMagnitude (0, nSamples);
+            std::cout << "Starting Magnitude: " << mag << std::endl;
+        }
 
         NodeManager::doForNodes (plugin->getNodes(), [] (DelayNode* n) { n->flushDelays(); });
 
