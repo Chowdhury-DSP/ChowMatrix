@@ -3,6 +3,7 @@
 #include "BaseNode.h"
 #include "Delay/DelayProc.h"
 #include "Parameters/ParamHelpers.h"
+#include "Parameters/ParamLockHelper.h"
 
 /**
  * Class for delay processing node
@@ -47,10 +48,9 @@ public:
     void randomiseParameters();
 
     // Manage parameter locking for Insanity Control
-    void toggleInsanityLock (const String& paramID);
-    void setInsanityLock (const String& paramID, bool shouldBeLocked, bool shouldBeReset);
-    bool isParamLocked (const String& paramID) const noexcept;
-    bool shouldParamReset (const String& paramID) const noexcept; // returns true if this parameter should reset after insanity
+    bool isParamLocked (const String& paramID) const noexcept { return paramLockHelper.isParamLocked (paramID); }
+    bool shouldParamReset (const String& paramID) const noexcept { return paramLockHelper.shouldParamReset (paramID); }
+    void toggleInsanityLock (const String& paramID) { paramLockHelper.toggleInsanityLock (paramID); }
 
     void toggleLFOSync();
     bool isLFOSynced() const noexcept { return tempoSyncedLFO; }
@@ -118,9 +118,8 @@ private:
 
     bool syncDelay = false;
     double tempoBPM = 120.0;
-
-    StringArray lockedParams;
-    StringArray resetParams;
+    
+    ParamLockHelper paramLockHelper;
     std::atomic<SoloState> isSoloed;
     SoloState prevSoloState = None;
 
