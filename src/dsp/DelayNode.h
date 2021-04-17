@@ -118,7 +118,7 @@ private:
 
     bool syncDelay = false;
     double tempoBPM = 120.0;
-    
+
     ParamLockHelper paramLockHelper;
     std::atomic<SoloState> isSoloed;
     SoloState prevSoloState = None;

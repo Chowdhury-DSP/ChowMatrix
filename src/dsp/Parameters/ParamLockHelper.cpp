@@ -1,7 +1,6 @@
 #include "ParamLockHelper.h"
 
-ParamLockHelper::ParamLockHelper (std::function<void()> onParamLockChange) :
-    onParamLockChange (onParamLockChange)
+ParamLockHelper::ParamLockHelper (std::function<void()> onParamLockChange) : onParamLockChange (onParamLockChange)
 {
 }
 
@@ -62,15 +61,15 @@ void ParamLockHelper::createPopupMenu (PopupMenu& parent, const String& paramID)
     bool isReset = shouldParamReset (paramID);
 
     const std::map<int, std::pair<String, bool>> settings {
-        { 1, { "Unlock", ! (isLocked || isReset) }},
-        { 2, { "Lock", isLocked }},
-        { 3, { "Reset", isReset }}
+        { 1, { "Unlock", ! (isLocked || isReset) } },
+        { 2, { "Lock", isLocked } },
+        { 3, { "Reset", isReset } }
     };
 
     PopupMenu insanityLockMenu;
     for (const auto& [idx, setting] : settings)
     {
-        const auto&[name, isOn] = setting;
+        const auto& [name, isOn] = setting;
         PopupMenu::Item item (name);
         item.itemID = idx;
         item.setColour (Colour (isOn ? 0xFF21CCA5 : 0xFFFFFFFF));
