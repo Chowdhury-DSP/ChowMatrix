@@ -30,7 +30,7 @@ public:
         for (int ch = 0; ch < 2; ++ch)
             buffer.setSample (ch, 100, 1.0f);
         plugin->processAudioBlock (buffer);
-        
+
         {
             auto mag = buffer.getMagnitude (0, nSamples);
             std::cout << "Starting Magnitude: " << mag << std::endl;
