@@ -9,79 +9,125 @@
       <PARAM id="snyc" value="0.0"/>
       <PARAM id="wet_param" value="-12.0"/>
       <PARAM id="preset" value="3"/>
+      <PARAM id="assigned_0"/>
+      <PARAM id="assigned_1"/>
+      <PARAM id="assigned_2"/>
+      <PARAM id="assigned_3"/>
+      <PARAM id="assigned_4"/>
+      <PARAM id="assigned_5"/>
+      <PARAM id="assigned_6"/>
+      <PARAM id="assigned_7"/>
+      <PARAM id="insanity_reset"/>
     </Parameters>
     <nodes>
       <input_node>
         <children>
           <delay_node>
-            <Parameters locked=",">
+            <Parameters locked="," reset="," lfo_sync="0">
               <PARAM id="DIST" value="0.0"/>
-              <PARAM id="DLY" value="727.3914184570313"/>
+              <PARAM id="DLY" value="741.812744140625"/>
               <PARAM id="FDBK" value="0.0"/>
               <PARAM id="GAIN" value="0.0"/>
               <PARAM id="HPF" value="20.0"/>
               <PARAM id="LPF" value="2316.951904296875"/>
-              <PARAM id="PAN" value="-0.5387030243873596"/>
+              <PARAM id="PAN" value="-0.5496152639389038"/>
+              <PARAM id="DIFF"/>
+              <PARAM id="MOD_DELAY"/>
+              <PARAM id="MOD_FREQ" value="0.0"/>
+              <PARAM id="MOD_PAN"/>
+              <PARAM id="PITCH"/>
             </Parameters>
+            <host_controls/>
             <no_children/>
           </delay_node>
           <delay_node>
-            <Parameters locked=",">
+            <Parameters locked="," reset="," lfo_sync="0">
               <PARAM id="DIST" value="0.0"/>
-              <PARAM id="DLY" value="1047.515502929688"/>
+              <PARAM id="DLY" value="1059.2763671875"/>
               <PARAM id="FDBK" value="0.293040007352829"/>
               <PARAM id="GAIN" value="0.0"/>
               <PARAM id="HPF" value="139.3467712402344"/>
               <PARAM id="LPF" value="20000.0"/>
-              <PARAM id="PAN" value="0.6275776624679565"/>
+              <PARAM id="PAN" value="0.6313667297363281"/>
               <no_children/>
+              <PARAM id="DIFF"/>
+              <PARAM id="MOD_DELAY"/>
+              <PARAM id="MOD_FREQ" value="0.0"/>
+              <PARAM id="MOD_PAN"/>
+              <PARAM id="PITCH"/>
             </Parameters>
+            <host_controls/>
+            <no_children/>
           </delay_node>
           <delay_node>
-            <Parameters locked=",">
+            <Parameters locked="," reset="," lfo_sync="0">
               <PARAM id="DIST" value="0.0"/>
-              <PARAM id="DLY" value="508.4991760253906"/>
+              <PARAM id="DLY" value="497.8699340820312"/>
               <PARAM id="FDBK" value="0.0"/>
               <PARAM id="GAIN" value="0.0"/>
               <PARAM id="HPF" value="20.0"/>
               <PARAM id="LPF" value="20000.0"/>
-              <PARAM id="PAN" value="0.01767933368682861"/>
+              <PARAM id="PAN" value="0.02577888965606689"/>
+              <PARAM id="DIFF"/>
+              <PARAM id="MOD_DELAY"/>
+              <PARAM id="MOD_FREQ" value="0.0"/>
+              <PARAM id="MOD_PAN"/>
+              <PARAM id="PITCH"/>
             </Parameters>
+            <host_controls/>
             <children>
               <delay_node>
-                <Parameters locked=",">
+                <Parameters locked="," reset="," lfo_sync="0">
                   <PARAM id="DIST" value="0.0"/>
-                  <PARAM id="DLY" value="550.1846923828125"/>
+                  <PARAM id="DLY" value="566.226318359375"/>
                   <PARAM id="FDBK" value="0.621720016002655"/>
                   <PARAM id="GAIN" value="0.0"/>
                   <PARAM id="HPF" value="190.2313232421875"/>
                   <PARAM id="LPF" value="20000.0"/>
-                  <PARAM id="PAN" value="0.008602499961853027"/>
+                  <PARAM id="PAN" value="0.002952218055725098"/>
+                  <PARAM id="DIFF"/>
+                  <PARAM id="MOD_DELAY"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN"/>
+                  <PARAM id="PITCH"/>
                 </Parameters>
+                <host_controls/>
                 <no_children/>
               </delay_node>
               <delay_node>
-                <Parameters locked=",">
+                <Parameters locked="," reset="," lfo_sync="0">
                   <PARAM id="DIST" value="0.0"/>
-                  <PARAM id="DLY" value="461.3444213867188"/>
+                  <PARAM id="DLY" value="467.36767578125"/>
                   <PARAM id="FDBK" value="0.2851199805736542"/>
                   <PARAM id="GAIN" value="0.0"/>
                   <PARAM id="HPF" value="20.0"/>
                   <PARAM id="LPF" value="20000.0"/>
-                  <PARAM id="PAN" value="-0.56473708152771"/>
+                  <PARAM id="PAN" value="-0.5660385489463806"/>
+                  <PARAM id="DIFF"/>
+                  <PARAM id="MOD_DELAY"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN"/>
+                  <PARAM id="PITCH"/>
                 </Parameters>
+                <host_controls/>
                 <no_children/>
               </delay_node>
               <delay_node>
-                <Parameters locked=",">
+                <Parameters locked="," reset="," lfo_sync="0">
                   <PARAM id="DIST" value="0.0"/>
-                  <PARAM id="DLY" value="812.49853515625"/>
+                  <PARAM id="DLY" value="804.0822143554688"/>
                   <PARAM id="FDBK" value="0.0"/>
                   <PARAM id="GAIN" value="0.0"/>
                   <PARAM id="HPF" value="20.0"/>
                   <PARAM id="LPF" value="20000.0"/>
-                  <PARAM id="PAN" value="0.6068859100341797"/>
+                  <PARAM id="PAN" value="0.6080924272537231"/>
+                  <PARAM id="DIFF"/>
+                  <PARAM id="MOD_DELAY"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN"/>
+                  <PARAM id="PITCH"/>
                 </Parameters>
+                <host_controls/>
                 <no_children/>
               </delay_node>
             </children>
@@ -91,105 +137,154 @@
       <input_node>
         <children>
           <delay_node>
-            <Parameters locked=",">
+            <Parameters locked="," reset="," lfo_sync="0">
               <PARAM id="DIST" value="0.0"/>
-              <PARAM id="DLY" value="252.8488464355469"/>
+              <PARAM id="DLY" value="250.0946044921875"/>
               <PARAM id="FDBK" value="0.9702000021934509"/>
               <PARAM id="GAIN" value="4.654685974121094"/>
               <PARAM id="HPF" value="49.35182952880859"/>
               <PARAM id="LPF" value="5630.171875"/>
-              <PARAM id="PAN" value="-0.4681954979896545"/>
+              <PARAM id="PAN" value="-0.4732091426849365"/>
+              <PARAM id="DIFF"/>
+              <PARAM id="MOD_DELAY"/>
+              <PARAM id="MOD_FREQ" value="0.0"/>
+              <PARAM id="MOD_PAN"/>
+              <PARAM id="PITCH"/>
             </Parameters>
+            <host_controls/>
             <children>
               <delay_node>
-                <Parameters locked=",">
+                <Parameters locked="," reset="," lfo_sync="0">
                   <PARAM id="DIST" value="0.0"/>
-                  <PARAM id="DLY" value="642.4651489257813"/>
+                  <PARAM id="DLY" value="638.616455078125"/>
                   <PARAM id="FDBK" value="0.0"/>
                   <PARAM id="GAIN" value="0.0"/>
                   <PARAM id="HPF" value="20.0"/>
                   <PARAM id="LPF" value="20000.0"/>
-                  <PARAM id="PAN" value="-0.1223031282424927"/>
+                  <PARAM id="PAN" value="-0.1113296747207642"/>
+                  <PARAM id="DIFF"/>
+                  <PARAM id="MOD_DELAY"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN"/>
+                  <PARAM id="PITCH"/>
                 </Parameters>
+                <host_controls/>
                 <no_children/>
               </delay_node>
               <delay_node>
-                <Parameters locked=",">
+                <Parameters locked="," reset="," lfo_sync="0">
                   <PARAM id="DIST" value="0.0"/>
-                  <PARAM id="DLY" value="131.7386474609375"/>
+                  <PARAM id="DLY" value="138.2790832519531"/>
                   <PARAM id="FDBK" value="0.0"/>
                   <PARAM id="GAIN" value="0.0"/>
                   <PARAM id="HPF" value="20.0"/>
                   <PARAM id="LPF" value="20000.0"/>
-                  <PARAM id="PAN" value="0.3221685886383057"/>
+                  <PARAM id="PAN" value="0.3318638801574707"/>
+                  <PARAM id="DIFF"/>
+                  <PARAM id="MOD_DELAY"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN"/>
+                  <PARAM id="PITCH"/>
                 </Parameters>
+                <host_controls/>
                 <no_children/>
               </delay_node>
               <delay_node>
-                <Parameters locked=",">
+                <Parameters locked="," reset="," lfo_sync="0">
                   <PARAM id="DIST" value="0.2680000066757202"/>
-                  <PARAM id="DLY" value="493.3277587890625"/>
+                  <PARAM id="DLY" value="509.8193054199219"/>
                   <PARAM id="FDBK" value="0.0"/>
                   <PARAM id="GAIN" value="0.0"/>
                   <PARAM id="HPF" value="20.0"/>
                   <PARAM id="LPF" value="20000.0"/>
-                  <PARAM id="PAN" value="-0.3792881965637207"/>
+                  <PARAM id="PAN" value="-0.3660109043121338"/>
+                  <PARAM id="DIFF"/>
+                  <PARAM id="MOD_DELAY"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN"/>
+                  <PARAM id="PITCH"/>
                 </Parameters>
+                <host_controls/>
                 <no_children/>
               </delay_node>
             </children>
           </delay_node>
           <delay_node>
-            <Parameters locked=",">
+            <Parameters locked="," reset="," lfo_sync="0">
               <PARAM id="DIST" value="0.5879999995231628"/>
-              <PARAM id="DLY" value="904.7439575195313"/>
+              <PARAM id="DLY" value="894.0374755859375"/>
               <PARAM id="FDBK" value="0.0"/>
               <PARAM id="GAIN" value="0.0"/>
               <PARAM id="HPF" value="20.0"/>
               <PARAM id="LPF" value="20000.0"/>
-              <PARAM id="PAN" value="0.6659046411514282"/>
+              <PARAM id="PAN" value="0.6705875396728516"/>
+              <PARAM id="DIFF"/>
+              <PARAM id="MOD_DELAY"/>
+              <PARAM id="MOD_FREQ" value="0.0"/>
+              <PARAM id="MOD_PAN"/>
+              <PARAM id="PITCH"/>
             </Parameters>
+            <host_controls/>
             <children>
               <delay_node>
-                <Parameters locked=",">
+                <Parameters locked="," reset="," lfo_sync="0">
                   <PARAM id="DIST" value="0.0"/>
-                  <PARAM id="DLY" value="487.833740234375"/>
+                  <PARAM id="DLY" value="502.6377563476562"/>
                   <PARAM id="FDBK" value="0.380160003900528"/>
                   <PARAM id="GAIN" value="0.0"/>
                   <PARAM id="HPF" value="20.0"/>
                   <PARAM id="LPF" value="20000.0"/>
-                  <PARAM id="PAN" value="0.008965849876403809"/>
+                  <PARAM id="PAN" value="0.02311897277832031"/>
+                  <PARAM id="DIFF"/>
+                  <PARAM id="MOD_DELAY"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN"/>
+                  <PARAM id="PITCH"/>
                 </Parameters>
+                <host_controls/>
                 <no_children/>
               </delay_node>
               <delay_node>
-                <Parameters locked=",">
+                <Parameters locked="," reset="," lfo_sync="0">
                   <PARAM id="DIST" value="0.0"/>
-                  <PARAM id="DLY" value="578.4386596679688"/>
+                  <PARAM id="DLY" value="594.4288940429688"/>
                   <PARAM id="FDBK" value="0.0"/>
                   <PARAM id="GAIN" value="0.0"/>
                   <PARAM id="HPF" value="20.0"/>
                   <PARAM id="LPF" value="20000.0"/>
-                  <PARAM id="PAN" value="-0.6632087230682373"/>
+                  <PARAM id="PAN" value="-0.6731306314468384"/>
+                  <PARAM id="DIFF"/>
+                  <PARAM id="MOD_DELAY"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN"/>
+                  <PARAM id="PITCH"/>
                 </Parameters>
+                <host_controls/>
                 <no_children/>
               </delay_node>
               <delay_node>
-                <Parameters locked=",">
+                <Parameters locked="," reset="," lfo_sync="0">
                   <PARAM id="DIST" value="0.0"/>
-                  <PARAM id="DLY" value="344.0255432128906"/>
+                  <PARAM id="DLY" value="342.9068908691406"/>
                   <PARAM id="FDBK" value="0.3167999982833862"/>
                   <PARAM id="GAIN" value="0.0"/>
                   <PARAM id="HPF" value="82.33692932128906"/>
                   <PARAM id="LPF" value="20000.0"/>
-                  <PARAM id="PAN" value="0.6368827819824219"/>
+                  <PARAM id="PAN" value="0.643574595451355"/>
+                  <PARAM id="DIFF"/>
+                  <PARAM id="MOD_DELAY"/>
+                  <PARAM id="MOD_FREQ" value="0.0"/>
+                  <PARAM id="MOD_PAN"/>
+                  <PARAM id="PITCH"/>
                 </Parameters>
+                <host_controls/>
                 <no_children/>
               </delay_node>
             </children>
-          </delay_node>  
+          </delay_node>
         </children>
       </input_node>
     </nodes>
+    <param_maps/>
   </state>
 </Preset>
