@@ -9,12 +9,21 @@
       <PARAM id="snyc" value="0.0"/>
       <PARAM id="wet_param" value="-12.0"/>
       <PARAM id="preset" value="0"/>
+      <PARAM id="assigned_0"/>
+      <PARAM id="assigned_1"/>
+      <PARAM id="assigned_2"/>
+      <PARAM id="assigned_3"/>
+      <PARAM id="assigned_4"/>
+      <PARAM id="assigned_5"/>
+      <PARAM id="assigned_6"/>
+      <PARAM id="assigned_7"/>
+      <PARAM id="insanity_reset"/>
     </Parameters>
     <nodes>
       <input_node>
         <children>
           <delay_node>
-            <Parameters locked=",">
+            <Parameters locked="," reset="," lfo_sync="0">
               <PARAM id="DIST" value="0.0"/>
               <PARAM id="DLY" value="199.9999847412109"/>
               <PARAM id="FDBK" value="0.0"/>
@@ -22,7 +31,13 @@
               <PARAM id="HPF" value="20.0"/>
               <PARAM id="LPF" value="20000.0"/>
               <PARAM id="PAN" value="0.0"/>
+              <PARAM id="DIFF"/>
+              <PARAM id="MOD_DELAY"/>
+              <PARAM id="MOD_FREQ" value="0.0"/>
+              <PARAM id="MOD_PAN"/>
+              <PARAM id="PITCH"/>
             </Parameters>
+            <host_controls/>
             <no_children/>
           </delay_node>
         </children>
@@ -30,7 +45,7 @@
       <input_node>
         <children>
           <delay_node>
-            <Parameters locked=",">
+            <Parameters locked="," reset="," lfo_sync="0">
               <PARAM id="DIST" value="0.0"/>
               <PARAM id="DLY" value="199.9999847412109"/>
               <PARAM id="FDBK" value="0.0"/>
@@ -38,11 +53,18 @@
               <PARAM id="HPF" value="20.0"/>
               <PARAM id="LPF" value="20000.0"/>
               <PARAM id="PAN" value="0.0"/>
+              <PARAM id="DIFF"/>
+              <PARAM id="MOD_DELAY"/>
+              <PARAM id="MOD_FREQ" value="0.0"/>
+              <PARAM id="MOD_PAN"/>
+              <PARAM id="PITCH"/>
             </Parameters>
+            <host_controls/>
             <no_children/>
           </delay_node>
         </children>
       </input_node>
     </nodes>
+    <param_maps/>
   </state>
 </Preset>

@@ -1,4 +1,5 @@
 #include "../pch.h"
+#include "PresetResaver.h"
 #include "ScreenshotGenerator.h"
 #include "UnitTests/UnitTests.h"
 
@@ -27,6 +28,9 @@ int main (int argc, char* argv[])
 
     ScreenshotGenerator screenshooter;
     app.addCommand (screenshooter);
+
+    PresetResaver presetsResaver;
+    app.addCommand (presetsResaver);
 
     UnitTests unitTests;
     app.addCommand (unitTests);

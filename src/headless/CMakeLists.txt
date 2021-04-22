@@ -11,6 +11,7 @@ add_custom_command(TARGET ChowMatrix_headless
 
 target_sources(ChowMatrix_headless PRIVATE
     main.cpp
+    PresetResaver.cpp
     ScreenshotGenerator.cpp
 
     UnitTests/DelayClearTest.cpp
