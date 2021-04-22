@@ -18,9 +18,7 @@
 \newcommand\shortcut[1]{\colorbox{highlightcolour}{\texttt{#1}}}
 
 \pluginname{ChowMatrix}
-
-\def\pluginfolder{\href{https://help.uaudio.com/hc/en-us/articles/210216306-Default-Install-Locations-for-UAD-Plug-Ins}{plugin folder}}
-\def\dllink#1{\href{https://github.com/jatinchowdhury18/AnalogTapeModel/releases}{#1}}
+\def\dllink#1{\href{https://chowdsp.com/products.html\#matrix}{#1}}
 
 \begin{document}
 
@@ -37,13 +35,12 @@ echoes, to lush reverberant spaces.The plugin is currently
 available as a VST/VST3/AU/LV2 for Windows, Linux, and Mac.
 
 \subsection{Installation}
-To install ChowMatrix for Mac or Windows, download the
-\dllink{latest release}, unzip the downloaded file, and copy
-the plugin files to your \pluginfolder. Note that Macintosh
-users may need to
-\href{https://www.imore.com/how-open-apps-anywhere-macos-catalina-and-mojave}{allow applications from unidentified developers}.
-Linux users may 
-\href{https://github.com/Chowdhury-DSP/ChowMatrix#Building}{compile from source}.
+To install ChowMatrix, download the \dllink{latest release},
+and run the installer. If you would like to try the
+latest builds (potentially unstable), visit the
+\href{https://chowdsp.com/nightly.html\#matrix}{Nightly Builds page}.
+Note that it is also possible to
+\href{https://github.com/Chowdhury-DSP/ChowMatrix#Building}{compile from the source code}.
 
 \begin{figure}[ht]
     \center
@@ -54,8 +51,8 @@ Linux users may
 \subsection{Processing}
 The way in which ChowMatrix processes audio may not
 be immediately obvious, especially compared with more
-traditionally designed audio plugins. ChowMatrix is made
-up a ``tree'' of delay nodes, where each node has a ``parent''
+traditionally designed audio plugins. ChowMatrix is made up
+of a ``tree'' of delay nodes, where each node has a ``parent''
 node and potentially one or more ``child'' nodes. The tree has
 two ``root'' nodes, representing the left and right input
 channels to the plugin. Each node accepts a mono input
@@ -257,8 +254,8 @@ will reset the parameter to its default value.
 Using \shortcut{SHIFT+Click+Drag}
 will change the same parameter for all the delay nodes in
 unison. \shortcut{CMD+Click} on the delay or pan value to
-``lock'' the parameter so that it will not be affected by
-the ``Insanity'' control. \shortcut{CMD+Click} on the mod
+toggle ``insanity lock'' and ``insanity reset'' for a given
+parameter (see below). \shortcut{CMD+Click} on the mod
 freq. parameter to toggle between a free and tempo-synced
 LFO.
 
@@ -270,10 +267,27 @@ determined by the parameter value. Insanity is useful for
 finding new delay node configurations, or for adding a source
 of chaotic modulation.
 
+\subsubsection{Insanity Lock/Reset}
+Since the Insanity control alters the other parameters
+in the plugin, it is important to understand the Insanity
+``reset'' behaviour so that Insanity can be used without
+fear of losing existing settings. To the left of the
+Insanity slider is the global \boldtheme{Insanity Reset}
+button, which will instantly bring each delay node back
+to the state that it was in when Insanity was turned on.
+\newpar
+It is also possible to enable \boldtheme{lock} or
+\boldtheme{reset} for an individual parameter by using
+\shortcut{CMD+Click} or right-clicking on a parameter
+slider. A parameter with ``lock'' enabled will not be
+affected by the Insanity behaviour, while a parameter with
+``reset'' enabled will snap back to its original value as
+soon as Insanity is turned off.
+
 \begin{figure}[ht]
     \center
     \includegraphics[width=0.95\columnwidth]{screenshots/BottomBar.png}
-    \caption{\label{fig:details_view}{\it ChowMatrix Bottom Bar}}
+    \caption{\label{fig:bottom_bar}{\it ChowMatrix Bottom Bar}}
 \end{figure}
 
 \subsubsection{Bottom Bar}
@@ -285,20 +299,27 @@ and wet signals coming out of the plugin. To use ChowMatrix as
 a ``send'', turn the Dry level all the way down to \texttt{-inf}.
 \newpar
 \hypertarget{goto:interp-mode}{\boldtheme{Mode}} controls
-the delay interpolation mode\footnote{For more information on
-delay-line interpolation, see \href{https://ccrma.stanford.edu/~jos/pasp/Delay_Line_Signal_Interpolation.html}{Smith III, 2010}.}
-used by the delay nodes. Using higher-order interpolation modes
-will make the delay nodes sound more ``smooth'' when the delay
-length is changed, at the cost of slightly higher CPU usage.
-First-order interpolation will make the delay nodes sound ``rough''
-when the delay length is changed, as well as attenuating high
-frequencies passing through the delay. Zero-order interpolation
-will make the delay nodes sound  ``glitchy'' when the delay length
-is changed. The differences between the delay modes are most noticeable
-when moving or modulating the delay nodes quickly, particularly
-in ``Insane'' mode, and are further accentuated when lots of
-feedback is used.
-\newpar
+the style of delay line used by the delay nodes. The
+differences between most of the delay modes is in how they
+handles delay-line interpolation\footnote{For more information on
+delay-line interpolation, see \href{https://ccrma.stanford.edu/~jos/pasp/Delay_Line_Signal_Interpolation.html}{Smith III, 2010}.},
+which is most noticeable when moving or modulating the delay
+nodes quickly.
+\vspace{-0.5em}
+\begin{itemize}
+    \itemsep-1mm
+    \item \boldtheme{Glitch} uses zero-order interpolation.
+    \item \boldtheme{Rough} uses linear interpolation.
+    \item \boldtheme{Smooth} uses 3rd-order interpolation.
+    \item \boldtheme{Ultra Smooth} uses 5th-order interpolation.
+    \item \boldtheme{Liquid} uses a short Sinc interpolation.
+    \item \boldtheme{Super Liquid} uses a longer Sinc interpolation.
+    \item \boldtheme{Lo-Fi} uses a bucket-brigade device (BBD)
+          delay line\footnote{For more information on BBD emulation, see
+          \href{https://www.dafx.de/paper-archive/2018/papers/DAFx2018_paper_12.pdf}{Holters and Parker, 2018}.}.
+    \item \boldtheme{Analog} uses a longer BBD delay line.
+\end{itemize}
+%
 \boldtheme{Clear} will flush all signal from the delay nodes.
 This can be useful if you have delay nodes with lots of feedback,
 and wish to clear the delay lines without having to wait for
@@ -319,6 +340,32 @@ save the current state as either the A or B state.
 The \boldtheme{Randomise} button will randomise the parameters
 for all the delay nodes. This can be useful for quickly
 dicovering new delay node configurations.
+\newpar
+The \boldtheme{Param Assignment Menu} shows which delay
+node parameters are assigned to global parameters that
+can be altered from the plugin host (see below).
+
+\subsection{Parameter Assignment}
+Typically, plugin parameters are exposed to the host DAW,
+to allow for things like automation, or MIDI control.
+Unfortunately, most DAWs expect a plugin's number of
+parameters to stay constant, meaning that ChowMatrix's
+delay node parameters cannot be exposed to the DAW,
+since the user could create an unlimited number of
+delay nodes.
+\newpar
+To allow for delay node parameters to be host controlled,
+ChowMatrix contains 8 ``target'' parameters each of which
+can be mapped to any number of parameters within the plugin.
+\newpar
+To assign a delay node parameter to a target, right-click
+on the parameter slider, and select either ``Assign Param'',
+which will map the parameter to the target for the given delay
+node, or ``Assign Global'', which will assign the parameter to
+the target for \emph{all} delay nodes.
+The ``Param Assignment Menu'' accessible from the bottom bar
+can be used to quickly view which parameters are mapped to
+which targets, and to remove unwanted mappings.
 
 \subsection{Presets}
 Presets provide a quick way to achieve a specific sound
@@ -379,6 +426,7 @@ Jatin Chowdhury
     Set to default & \texttt{Double-Click} & Param Slider \\
     Freeze Mode & $>95\%$ & Feedback Slider \\
     Tempo-sync LFO & \texttt{CMD+Click} & Mod. Freq. Slider \\
+    Assign Parameter & \texttt{right-click} & Param Slider \\
     \hline
    \end{tabular}
 \end{center}
