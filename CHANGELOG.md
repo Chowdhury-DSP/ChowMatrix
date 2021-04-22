@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 - Added parameter modulation targets for host control.
 - Added insanity reset/insanity lock behaviour.
 - Support for Macs with Apple Silicon.
-- Created installer packages for Windows/Mac.
+- Created installer packages for Windows/Mac/Linux.
 
 ## [1.1.0] 2021-01-13
 - Added individual node modulation, for delay time and panning.
