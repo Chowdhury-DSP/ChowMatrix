@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [UNRELEASED]
+## [1.2.0] 2021-04-23
 - Added new delay modes:
   - Liquid (Sinc interpolation)
   - Super Liquid (more ideal Sinc interpolation)
