@@ -10,7 +10,7 @@ constexpr int maxDimY = 1200;
 constexpr int scrollDistanceFromEdge = 30;
 
 /** Speed of autoscrolling */
-constexpr int scrollSpeed = 3;
+constexpr int scrollSpeed = 2;
 
 /** Dmensions for the "home" button */
 constexpr int buttonDim = 20;
@@ -63,7 +63,6 @@ void GraphViewport::resized()
 
 void GraphViewport::mouseDrag (const MouseEvent& e)
 {
-    const auto myE = e.getEventRelativeTo (this);
     autoScroll (e.x - getViewPositionX(), e.y - getViewPositionY(), scrollDistanceFromEdge, scrollSpeed);
     graphView.repaint();
 }
