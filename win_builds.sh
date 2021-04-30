@@ -22,7 +22,6 @@ rm -Rf bin/*Win32*
 # set up VST and ASIO paths
 sed -i -e "9s/#//" CMakeLists.txt
 sed -i -e "10s/#//" CMakeLists.txt
-sed -i -e '16s/#//' CMakeLists.txt
 
 # cmake new builds
 build64 &
