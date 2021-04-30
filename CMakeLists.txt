@@ -9,11 +9,25 @@ include_directories(modules)
 # juce_set_vst2_sdk_path(C:/SDKs/VST_SDK/VST2_SDK/)
 # include_directories(C:/SDKs/asiosdk2.3/common)
 
+set(JUCE_FORMATS AU VST3 Standalone)
+
+# Build LV2 only on Linux
+if(UNIX AND NOT APPLE)
+    message(STATUS "Building LV2 plugin format")
+    list(APPEND JUCE_FORMATS LV2)
+endif()
+
+# Build VST2 is SDK set
+if(TARGET juce_vst2_sdk)
+    message(STATUS "Building VST2 plugin format")
+    list(APPEND JUCE_FORMATS VST)
+endif()
+
 juce_add_plugin(ChowMatrix
     COMPANY_NAME chowdsp
     PLUGIN_MANUFACTURER_CODE Chow
     PLUGIN_CODE spg3
-    FORMATS AU VST3 Standalone LV2 #VST
+    FORMATS ${JUCE_FORMATS}
     ProductName "ChowMatrix"
     LV2_URI https://github.com/Chowdhury-DSP/ChowMatrix
     ICON_BIG res/logo.png
