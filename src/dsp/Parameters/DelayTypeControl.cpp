@@ -28,10 +28,12 @@ void DelayTypeControl::addParameters (Parameters& params)
 
 void DelayTypeControl::parameterChanged (const String& paramID, float newValue)
 {
-    if (stateManager.getIsLoading()) // state lock is already held!
+    if (stateManager.getIsLoading())
     {
-        auto type = getDelayType (newValue);
-        doForNodes ([=] (DelayNode* n) { n->setDelayType (type); });
+        // StateManager is currently loading a new state.
+        // Let's wait until it's done and call again...
+        Thread::sleep (2);
+        MessageManager::callAsync ([=] { parameterChanged (paramID, newValue); });
     }
     else
     {
@@ -39,11 +41,14 @@ void DelayTypeControl::parameterChanged (const String& paramID, float newValue)
 
         if (stateLoadTryLock.isLocked())
         {
+            // We're sure it's safe to set delay types now!
             auto type = getDelayType (newValue);
             doForNodes ([=] (DelayNode* n) { n->setDelayType (type); });
         }
         else
         {
+            // Can't reset delay types while processing audio!
+            // Let's wait and try again...
             Thread::sleep (2);
             MessageManager::callAsync ([=] { parameterChanged (paramID, newValue); });
         }
