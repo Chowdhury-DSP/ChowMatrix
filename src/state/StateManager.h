@@ -39,11 +39,14 @@ public:
 
     PresetManager& getPresetManager() { return presetManager; }
 
+    bool getIsLoading() const noexcept { return isLoading.load(); }
+
 private:
     AudioProcessorValueTreeState& vts;
     HostParamControl& paramControl;
     std::array<InputNode, 2>& inputNodes;
     SpinLock stateLoadingLock;
+    std::atomic_bool isLoading { false };
 
     PresetManager presetManager;
     std::array<std::unique_ptr<XmlElement>, 2> abStates;
