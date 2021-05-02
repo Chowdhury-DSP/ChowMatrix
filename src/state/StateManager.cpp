@@ -56,6 +56,7 @@ void StateManager::loadState (XmlElement* xmlState)
 {
     MessageManagerLock mml; // lock MessageManager so other parameter changes won't happen while we're loading new state
     const SpinLock::ScopedLockType stateLoadingScopedLock (stateLoadingLock); // Lock our SpinLock so the processor won't try to run while we're loading new state
+    isLoading.store (true);
 
     if (xmlState == nullptr) // invalid XML
         return;
@@ -90,4 +91,5 @@ void StateManager::loadState (XmlElement* xmlState)
         return;
 
     paramControl.loadGlobalMap (paramMapXml);
+    isLoading.store (false);
 }

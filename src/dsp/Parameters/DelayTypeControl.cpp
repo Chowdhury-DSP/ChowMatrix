@@ -22,18 +22,37 @@ void DelayTypeControl::addParameters (Parameters& params)
 {
     params.push_back (std::make_unique<AudioParameterChoice> (delayTypeTag,
                                                               "Delay Type",
-                                                              StringArray ({ "Glitch", "Rough", "Smooth", "Ultra Smooth", "Liquid", "Super Liquid", "Lo-Fi", "Analog" }),
+                                                              StringArray ({ "Glitch", "Rough", "Smooth", "Ultra Smooth", "Liquid", "Super Liquid", "Lo-Fi", "Analog", "Alien" }),
                                                               2));
 }
 
-void DelayTypeControl::parameterChanged (const String&, float newValue)
+void DelayTypeControl::parameterChanged (const String& paramID, float newValue)
 {
-    const SpinLock::ScopedTryLockType stateLoadTryLock (stateManager.getStateLoadLock());
-    if (! stateLoadTryLock.isLocked()) // not safe to change delay type right now!
-        return;
+    if (stateManager.getIsLoading())
+    {
+        // StateManager is currently loading a new state.
+        // Let's wait until it's done and call again...
+        Thread::sleep (2);
+        MessageManager::callAsync ([=] { parameterChanged (paramID, newValue); });
+    }
+    else
+    {
+        const SpinLock::ScopedTryLockType stateLoadTryLock (stateManager.getStateLoadLock());
 
-    auto type = getDelayType (newValue);
-    doForNodes ([=] (DelayNode* n) { n->setDelayType (type); });
+        if (stateLoadTryLock.isLocked())
+        {
+            // We're sure it's safe to set delay types now!
+            auto type = getDelayType (newValue);
+            doForNodes ([=] (DelayNode* n) { n->setDelayType (type); });
+        }
+        else
+        {
+            // Can't reset delay types while processing audio!
+            // Let's wait and try again...
+            Thread::sleep (2);
+            MessageManager::callAsync ([=] { parameterChanged (paramID, newValue); });
+        }
+    }
 }
 
 void DelayTypeControl::newNodeAdded (DelayNode* newNode)
