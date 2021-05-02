@@ -26,19 +26,26 @@ void DelayTypeControl::addParameters (Parameters& params)
                                                               2));
 }
 
-void DelayTypeControl::parameterChanged (const String&, float newValue)
+void DelayTypeControl::parameterChanged (const String& paramID, float newValue)
 {
-    if (stateManager.getIsLoading())
+    if (stateManager.getIsLoading()) // state lock is already held!
     {
         auto type = getDelayType (newValue);
         doForNodes ([=] (DelayNode* n) { n->setDelayType (type); });
     }
     else
     {
-        const SpinLock::ScopedLockType stateLoadLock (stateManager.getStateLoadLock());
+        const SpinLock::ScopedTryLockType stateLoadTryLock (stateManager.getStateLoadLock());
 
-        auto type = getDelayType (newValue);
-        doForNodes ([=] (DelayNode* n) { n->setDelayType (type); });
+        if (stateLoadTryLock.isLocked())
+        {
+            auto type = getDelayType (newValue);
+            doForNodes ([=] (DelayNode* n) { n->setDelayType (type); });
+        }
+        else
+        {
+            MessageManager::callAsync ([=] { parameterChanged (paramID, newValue); });
+        }
     }
 }
 
