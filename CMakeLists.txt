@@ -31,6 +31,7 @@ juce_add_plugin(ChowMatrix
     ProductName "ChowMatrix"
     LV2_URI https://github.com/Chowdhury-DSP/ChowMatrix
     ICON_BIG res/logo.png
+    MICROPHONE_PERMISSION_ENABLED TRUE
 )
 
 # create JUCE header
