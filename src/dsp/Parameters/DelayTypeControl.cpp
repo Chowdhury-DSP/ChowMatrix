@@ -22,18 +22,25 @@ void DelayTypeControl::addParameters (Parameters& params)
 {
     params.push_back (std::make_unique<AudioParameterChoice> (delayTypeTag,
                                                               "Delay Type",
-                                                              StringArray ({ "Glitch", "Rough", "Smooth", "Ultra Smooth", "Liquid", "Super Liquid", "Lo-Fi", "Analog" }),
+                                                              StringArray ({ "Glitch", "Rough", "Smooth", "Ultra Smooth", "Liquid", "Super Liquid", "Lo-Fi", "Analog", "Alien" }),
                                                               2));
 }
 
 void DelayTypeControl::parameterChanged (const String&, float newValue)
 {
-    const SpinLock::ScopedTryLockType stateLoadTryLock (stateManager.getStateLoadLock());
-    if (! stateLoadTryLock.isLocked()) // not safe to change delay type right now!
-        return;
+    
+    if (stateManager.getIsLoading())
+    {
+        auto type = getDelayType (newValue);
+        doForNodes ([=] (DelayNode* n) { n->setDelayType (type); });
+    }
+    else
+    {
+        const SpinLock::ScopedLockType stateLoadLock (stateManager.getStateLoadLock());
 
-    auto type = getDelayType (newValue);
-    doForNodes ([=] (DelayNode* n) { n->setDelayType (type); });
+        auto type = getDelayType (newValue);
+        doForNodes ([=] (DelayNode* n) { n->setDelayType (type); });
+    }
 }
 
 void DelayTypeControl::newNodeAdded (DelayNode* newNode)
