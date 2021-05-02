@@ -67,8 +67,7 @@ private:
     chowdsp::BBD::BBDDelayWrapper<16384> bbdLongDelay;
     chowdsp::BBD::BBDDelayWrapper<8192, true> bbdAlienDelay;
 
-    std::array<chowdsp::DelayLineBase<float>*, 9> delays { &l0Delay, &l1Delay, &l3Delay, &l5Delay,
-        &sinc16Delay, &sinc32Delay, &bbdShortDelay, &bbdLongDelay, &bbdAlienDelay };
+    std::array<chowdsp::DelayLineBase<float>*, 9> delays { &l0Delay, &l1Delay, &l3Delay, &l5Delay, &sinc16Delay, &sinc32Delay, &bbdShortDelay, &bbdLongDelay, &bbdAlienDelay };
     DelayType type = ThirdInterp;
 
     SmoothedValue<float, ValueSmoothingTypes::Linear> delaySmooth;

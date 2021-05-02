@@ -28,7 +28,6 @@ void DelayTypeControl::addParameters (Parameters& params)
 
 void DelayTypeControl::parameterChanged (const String&, float newValue)
 {
-    
     if (stateManager.getIsLoading())
     {
         auto type = getDelayType (newValue);
