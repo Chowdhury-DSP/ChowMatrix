@@ -44,6 +44,7 @@ void DelayTypeControl::parameterChanged (const String& paramID, float newValue)
         }
         else
         {
+            Thread::sleep (2);
             MessageManager::callAsync ([=] { parameterChanged (paramID, newValue); });
         }
     }
