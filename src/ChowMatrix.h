@@ -6,9 +6,12 @@
 #include "dsp/Parameters/HostParamControl.h"
 #include "dsp/Parameters/InsanityControl.h"
 #include "dsp/Parameters/SyncControl.h"
-#include "gui/AutoUpdating.h"
 #include "state/StateManager.h"
 #include <pch.h>
+
+#if CHOWDSP_AUTO_UPDATE
+#include "gui/AutoUpdating.h"
+#endif // CHOWDSP_AUTO_UPDATE
 
 /**
  * Main class for the Matrix plugin
@@ -68,8 +71,11 @@ private:
     SharedResourcePointer<LookupTables> luts;
     SharedResourcePointer<DelayStore> delayStore;
 
-    AutoUpdater updater;
     StateManager stateManager;
+
+#if CHOWDSP_AUTO_UPDATE
+    AutoUpdater updater;
+#endif // CHOWDSP_AUTO_UPDATE
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChowMatrix)
 };

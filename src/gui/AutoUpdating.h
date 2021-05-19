@@ -1,5 +1,7 @@
 #pragma once
 
+#if CHOWDSP_AUTO_UPDATE
+
 #include <pch.h>
 
 struct UpdateButtonLNF;
@@ -36,3 +38,5 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutoUpdater)
 };
+
+#endif // CHOWDSP_AUTO_UPDATE

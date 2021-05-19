@@ -152,7 +152,10 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     });
 
     auto editor = new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
+    
+#if CHOWDSP_AUTO_UPDATE
     updater.showUpdaterScreen (editor);
+#endif // CHOWDSP_AUTO_UPDATE
 
     // we need to set resize limits for StandalonePluginHolder
     editor->setResizeLimits (10, 10, 1000, 1000);
