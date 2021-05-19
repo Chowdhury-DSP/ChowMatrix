@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "Minimum OS X deployment target")
-project(ChowMatrix VERSION 1.2.0)
+project(ChowMatrix VERSION 1.2.1)
 
 set(CMAKE_CXX_STANDARD 17)
 add_subdirectory(modules)
@@ -49,6 +49,7 @@ target_compile_definitions(ChowMatrix
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
     JUCE_VST3_CAN_REPLACE_VST2=0
+    CHOWDSP_AUTO_UPDATE=0
 )
 
 target_link_libraries(ChowMatrix PUBLIC
