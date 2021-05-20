@@ -9,7 +9,7 @@ public:
     DelayStore()
     {
         // start with a bunch in the queue
-        for (int i = 0; i < 32; ++i)
+        for (int i = 0; i < storeSize; ++i)
             loadNewDelay();
     }
 
@@ -34,6 +34,8 @@ private:
             return std::move (newDelay);
         }));
     }
+
+    static constexpr int storeSize = 8;
 
     std::deque<std::future<std::unique_ptr<VariableDelay>>> delayFutureStore;
     SpinLock delayStoreLock;
