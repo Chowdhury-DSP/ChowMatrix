@@ -131,7 +131,7 @@ bool AutoUpdater::runAutoUpdateCheck()
     if (latestVersion.isEmpty()) // unable to get latest version
         return false;
 
-    if (latestVersion == currentVersion) // you're up to date!
+    if (chowdsp::VersionUtils::compareVersions (latestVersion, currentVersion) <= 0) // you're up to date!
         return false;
 
     String updateVersion = getUpdateFileVersion (updateFile);
