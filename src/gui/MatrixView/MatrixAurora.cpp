@@ -5,11 +5,11 @@ namespace
 static Colour purple (0xffb843c3);
 static Colour green (0xff38bb9d);
 
-constexpr float pixelMult = 0.6f;
-constexpr float lineWidth = 3.0f / pixelMult;
+constexpr float pixelMult = 0.51f;
+constexpr float lineWidth = 4.0f / pixelMult;
 
 constexpr float insanityFloor = 0.15f;
-constexpr float timerFreq = 20.0f;
+constexpr float timerFreq = 18.0f;
 constexpr float omega_t = MathConstants<float>::twoPi / timerFreq;
 } // namespace
 
@@ -109,7 +109,7 @@ void MatrixAurora::paint (Graphics& g)
 void MatrixAurora::resized()
 {
     const auto width = (float) getWidth();
-    points.resize (static_cast<size_t> (width * pixelMult));
+    points.resize (static_cast<size_t> (jmin (width * pixelMult, 450.0f)));
 
     for (size_t i = 0; i < points.size(); ++i)
         points[i].x = (float) i / (float) points.size();
