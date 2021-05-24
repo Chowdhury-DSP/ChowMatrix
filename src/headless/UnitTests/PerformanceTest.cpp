@@ -36,6 +36,9 @@ public:
 
         beginTest ("Large BBD Interp Test");
         runPerfTest (DelayType::BBDLong, rtLimit);
+        
+        beginTest ("Alien Mode Test");
+        runPerfTest (DelayType::BBDAlien, rtLimit);
     }
 
     void setDelayMode (AudioProcessor* plugin, DelayType mode)
@@ -45,7 +48,7 @@ public:
         {
             if (param->getName (1024) == "Delay Type")
             {
-                param->setValue ((float) mode / 7.0f);
+                param->setValue ((float) mode / 8.0f);
                 std::cout << "Setting parameter " << param->getName (1024)
                           << ": " << param->getText (param->getValue(), 1024) << std::endl;
             }
@@ -71,7 +74,7 @@ public:
 
         plugin->prepareToPlay (sampleRate, nSamples);
         plugin->setCurrentProgram (1);
-        Thread::sleep (250);
+        MessageManager::getInstance()->runDispatchLoopUntil (50);
         setDelayMode (plugin.get(), mode);
 
         for (int i = 0; i < 10; ++i)
