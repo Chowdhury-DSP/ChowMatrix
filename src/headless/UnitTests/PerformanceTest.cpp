@@ -36,7 +36,7 @@ public:
 
         beginTest ("Large BBD Interp Test");
         runPerfTest (DelayType::BBDLong, rtLimit);
-        
+
         beginTest ("Alien Mode Test");
         runPerfTest (DelayType::BBDAlien, rtLimit);
     }
