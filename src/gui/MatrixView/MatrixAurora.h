@@ -11,6 +11,10 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
 
+    void setGraphicsThrottle (bool shouldThrottle);
+    bool getGraphicsThrottle() const noexcept { return throttleGraphics; }
+    void refreshGraphicsSettings (File& graphicsFile);
+
 private:
     struct AuroraPt
     {
@@ -33,6 +37,8 @@ private:
 
     float time = 0.0f;
     std::atomic<float>* insanityParam = nullptr;
+
+    bool throttleGraphics;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MatrixAurora)
 };
