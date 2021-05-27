@@ -76,6 +76,25 @@ void GraphView::mouseDrag (const MouseEvent& e)
     parent.mouseDrag (compE);
 }
 
+void GraphView::mouseUp (const MouseEvent& e)
+{
+    if (e.mods.isPopupMenu())
+    {
+        auto& aurora = dynamic_cast<GraphViewport*> (&parent)->getAurora();
+        const auto graphicsThrottle = aurora.getGraphicsThrottle();
+        
+        PopupMenu menu;
+        PopupMenu::Item item ("Throttle Matrix Graphics");
+        item.itemID = 1;
+        item.setColour (Colour (graphicsThrottle ? 0xFF21CCA5 : 0xFFFFFFFF));
+        item.action = [=, &aurora] { aurora.setGraphicsThrottle (! graphicsThrottle); };
+        menu.addItem (item);
+
+        menu.setLookAndFeel (&popupLNF.get());
+        menu.showMenuAsync(PopupMenu::Options());
+    }
+}
+
 void GraphView::paint (Graphics& g)
 {
     g.fillAll (findColour (backgroundColour, true));
