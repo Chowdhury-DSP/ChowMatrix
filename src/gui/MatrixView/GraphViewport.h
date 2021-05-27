@@ -17,6 +17,8 @@ public:
     void nodeSoloed (DelayNode* soloedNode, NodeManager::ActionSource source) override;
     void nodeParamLockChanged (DelayNode* node) override;
 
+    MatrixAurora& getAurora() { return aurora; }
+
 private:
     void setupHomeButton();
     void centerView();

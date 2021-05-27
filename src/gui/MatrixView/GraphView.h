@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../ChowMatrix.h"
+#include "../BottomBar/BottomBarLNF.h"
 #include "DelayNodeComponent.h"
 #include "InputNodeComponent.h"
 #include "NodeCompManager.h"
@@ -24,6 +25,7 @@ public:
 
     void mouseDown (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
+    void mouseUp (const MouseEvent& e) override;
     void paint (Graphics& g) override;
     void updateParentSize (int parentWidth, int parentHeight);
     int getVisibleHeight() const noexcept { return visibleHeight; }
@@ -41,6 +43,8 @@ private:
     Viewport& parent;
 
     int visibleHeight = 100;
+
+    SharedResourcePointer<BottomBarLNF> popupLNF;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GraphView)
 };

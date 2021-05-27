@@ -2,6 +2,8 @@
 
 namespace
 {
+const String graphicsFilePath = "ChowdhuryDSP/ChowMatrix/GraphicsConfig.txt";
+
 static Colour purple (0xffb843c3);
 static Colour green (0xff38bb9d);
 
@@ -60,19 +62,39 @@ inline std::pair<float, float> opaqueCalc (float x, float t, float intensity)
 }
 
 //==================================================================
+File getGraphicsConfigFile()
+{
+    File graphicsConfigFile = File::getSpecialLocation (File::userApplicationDataDirectory);
+    graphicsConfigFile = graphicsConfigFile.getChildFile (graphicsFilePath);
+
+    if (! graphicsConfigFile.existsAsFile())
+    {
+        graphicsConfigFile.create();
+        graphicsConfigFile.appendText ("ThrottleGraphics:FALSE\n");
+    }
+
+    return graphicsConfigFile;
+}
+
 MatrixAurora::MatrixAurora (std::atomic<float>* insanityParam) : insanityParam (insanityParam)
 {
     setOpaque (false);
     setFramesPerSecond ((int) timerFreq);
     setInterceptsMouseClicks (false, false);
+
+    auto graphicsFile = getGraphicsConfigFile();
+    refreshGraphicsSettings (graphicsFile);
 }
 
 void MatrixAurora::update()
 {
+    auto insanityFps = 1 + (int) (std::pow (insanityParam->load(), 0.2f) * (timerFreq - 1.0f));
     if (insanityParam->load() < insanityFloor)
         setFramesPerSecond (1);
+    else if (throttleGraphics)
+        setFramesPerSecond (jmin (insanityFps, 4));
     else
-        setFramesPerSecond (1 + (int) (std::pow (insanityParam->load(), 0.2f) * (timerFreq - 1.0f)));
+        setFramesPerSecond (insanityFps);
     time += (float) getMillisecondsSinceLastUpdate() / 1000.0f;
 
     for (auto& pt : points)
@@ -115,4 +137,27 @@ void MatrixAurora::resized()
         points[i].x = (float) i / (float) points.size();
 
     update();
+}
+
+void MatrixAurora::setGraphicsThrottle (bool shouldThrottle)
+{
+    auto graphicsFile = getGraphicsConfigFile();
+    graphicsFile.deleteFile();
+    graphicsFile.create();
+
+    if (shouldThrottle)
+        graphicsFile.appendText ("ThrottleGraphics:TRUE\n");
+    else
+        graphicsFile.appendText ("ThrottleGraphics:FALSE\n");
+
+    refreshGraphicsSettings (graphicsFile);
+}
+
+void MatrixAurora::refreshGraphicsSettings (File& graphicsFile)
+{
+    StringArray lines;
+    graphicsFile.readLines (lines);
+
+    auto shouldThrottle = lines[0].fromLastOccurrenceOf ("ThrottleGraphics:", false, false);
+    throttleGraphics = shouldThrottle.contains ("TRUE");
 }
