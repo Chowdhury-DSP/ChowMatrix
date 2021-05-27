@@ -88,12 +88,13 @@ MatrixAurora::MatrixAurora (std::atomic<float>* insanityParam) : insanityParam (
 
 void MatrixAurora::update()
 {
+    auto insanityFps = 1 + (int) (std::pow (insanityParam->load(), 0.2f) * (timerFreq - 1.0f));
     if (insanityParam->load() < insanityFloor)
         setFramesPerSecond (1);
     else if (throttleGraphics)
-        setFramesPerSecond (4);
+        setFramesPerSecond (jmin (insanityFps, 4));
     else
-        setFramesPerSecond (1 + (int) (std::pow (insanityParam->load(), 0.2f) * (timerFreq - 1.0f)));
+        setFramesPerSecond (insanityFps);
     time += (float) getMillisecondsSinceLastUpdate() / 1000.0f;
 
     for (auto& pt : points)
