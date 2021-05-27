@@ -1,10 +1,10 @@
 #pragma once
 
 #include "../../ChowMatrix.h"
+#include "../BottomBar/BottomBarLNF.h"
 #include "DelayNodeComponent.h"
 #include "InputNodeComponent.h"
 #include "NodeCompManager.h"
-#include "../BottomBar/BottomBarLNF.h"
 #include <pch.h>
 
 class GraphView : public Component,

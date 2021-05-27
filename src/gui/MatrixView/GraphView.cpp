@@ -82,7 +82,7 @@ void GraphView::mouseUp (const MouseEvent& e)
     {
         auto& aurora = dynamic_cast<GraphViewport*> (&parent)->getAurora();
         const auto graphicsThrottle = aurora.getGraphicsThrottle();
-        
+
         PopupMenu menu;
         PopupMenu::Item item ("Throttle Matrix Graphics");
         item.itemID = 1;
@@ -91,7 +91,7 @@ void GraphView::mouseUp (const MouseEvent& e)
         menu.addItem (item);
 
         menu.setLookAndFeel (&popupLNF.get());
-        menu.showMenuAsync(PopupMenu::Options());
+        menu.showMenuAsync (PopupMenu::Options());
     }
 }
 
