@@ -51,15 +51,15 @@ target_compile_definitions(ChowMatrix
     CHOWDSP_AUTO_UPDATE=1
 )
 
+if(ASIOSDK_DIR)
+    message(STATUS "Using ASIO SDK from ${ASIOSDK_DIR}")
+    target_include_directories(juce_plugin_modules PUBLIC ${ASIOSDK_DIR}/common)
+    target_compile_definitions(juce_plugin_modules PUBLIC JUCE_ASIO=1)
+endif()
+
 target_link_libraries(ChowMatrix PUBLIC
     juce_plugin_modules
 )
-
-if(ASIOSDK_DIR)
-    message(STATUS "Using ASIO SDK from ${ASIOSDK_DIR}")
-    target_include_directories(ChowMatrix PUBLIC ${ASIOSDK_DIR}/common)
-    target_compile_definitions(ChowMatrix PUBLIC JUCE_ASIO=1)
-endif()
 
 # we need these flags for notarization on MacOS
 option(MACOS_RELEASE "Set build flags for MacOS Release" OFF)
