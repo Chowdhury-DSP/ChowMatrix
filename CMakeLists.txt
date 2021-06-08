@@ -7,7 +7,6 @@ add_subdirectory(modules)
 include_directories(modules)
 
 # juce_set_vst2_sdk_path(C:/SDKs/VST_SDK/VST2_SDK/)
-# include_directories(C:/SDKs/asiosdk2.3/common)
 
 set(JUCE_FORMATS AU VST3 Standalone)
 
@@ -55,6 +54,12 @@ target_compile_definitions(ChowMatrix
 target_link_libraries(ChowMatrix PUBLIC
     juce_plugin_modules
 )
+
+if(ASIOSDK_DIR)
+    message(STATUS "Using ASIO SDK from ${ASIOSDK_DIR}")
+    target_include_directories(ChowMatrix PUBLIC ${ASIOSDK_DIR}/common)
+    target_compile_definitions(ChowMatrix PUBLIC JUCE_ASIO=1)
+endif()
 
 # we need these flags for notarization on MacOS
 option(MACOS_RELEASE "Set build flags for MacOS Release" OFF)
