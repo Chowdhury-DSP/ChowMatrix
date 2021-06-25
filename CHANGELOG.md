@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## UNRELEASED
+- Added "Alien" delay mode.
+- Added option to throttle graphics rendering for the Matrix View.
+- Improve memory usage.
+
 ## [1.2.0] 2021-04-23
 - Added new delay modes:
   - Liquid (Sinc interpolation)
