@@ -13,6 +13,7 @@ const String hpfTag = "HPF";
 const String distTag = "DIST";
 const String pitchTag = "PITCH";
 const String diffTag = "DIFF";
+const String revTag = "REV";
 const String modFreqTag = "MOD_FREQ";
 const String delayModTag = "MOD_DELAY";
 const String panModTag = "MOD_PAN";

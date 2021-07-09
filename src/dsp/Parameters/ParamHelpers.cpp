@@ -54,6 +54,11 @@ AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
     NormalisableRange<float> distRange { 0.0f, 1.0f };
     params.push_back (std::make_unique<Parameter> (distTag, "Distortion", String(), distRange, 0.0f, &percentValToString, &stringToPercentVal));
 
+    // set up reverse
+    NormalisableRange<float> revRange { 0.0f, 1000.0f };
+    revRange.setSkewForCentre (100.0f);
+    params.push_back (std::make_unique<Parameter> (revTag, "Reverse", String(), revRange, 0.0f, &delayValToString, &stringToDelayVal));
+
     // set up mod frequency
     NormalisableRange<float> modFreqRange { minModFreq, maxModFreq };
     modFreqRange.setSkewForCentre (2.0f);
@@ -169,6 +174,7 @@ std::unordered_map<String, StringToValFunc> funcMap {
     { distTag, stringToPercentVal },
     { pitchTag, stringToPitchVal },
     { diffTag, stringToPercentVal },
+    { revTag, stringToDelayVal },
     { modFreqTag, stringToFreqVal },
     { delayModTag, stringToPercentVal },
     { panModTag, stringToPercentVal },
@@ -207,6 +213,9 @@ String getTooltip (const String& paramID)
 
     if (paramID == diffTag)
         return "Sets the amount of diffusion on this delay node";
+
+    if (paramID == revTag)
+        return "Sets the lenght of reverse grain on this delay node";
 
     if (paramID == modFreqTag)
         return "Sets the modulation frequency for this delay node";
@@ -248,6 +257,9 @@ String getName (const String& paramID)
 
     if (paramID == diffTag)
         return "Diffusion";
+
+    if (paramID == revTag)
+        return "Reverse";
 
     if (paramID == modFreqTag)
         return "Mod Freq";
