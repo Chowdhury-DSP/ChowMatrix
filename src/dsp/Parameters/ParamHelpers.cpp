@@ -56,7 +56,6 @@ AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
 
     // set up reverse
     NormalisableRange<float> revRange { 0.0f, 1000.0f };
-    revRange.setSkewForCentre (100.0f);
     params.push_back (std::make_unique<Parameter> (revTag, "Reverse", String(), revRange, 0.0f, &delayValToString, &stringToDelayVal));
 
     // set up mod frequency

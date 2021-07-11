@@ -35,9 +35,9 @@ public:
         revBuffPtr[bufferWrite + doubleWindowSize] = x;
 
         bufferWrite++;
-        bufferWrite = bufferWrite > doubleWindowSize ? 0 : bufferWrite;
+        bufferWrite = bufferWrite >= doubleWindowSize ? 0 : bufferWrite;
 
-        return y;
+        return y * corrGain;
     }
 
 private:
@@ -54,6 +54,8 @@ private:
 
     int bufferWrite, bufferRead1, bufferRead2;
     int windowSize, halfWindowSize, doubleWindowSize;
+
+    const float corrGain = Decibels::decibelsToGain (-6.0f);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Reverser)
 };

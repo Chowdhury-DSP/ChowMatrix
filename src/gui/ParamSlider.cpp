@@ -75,6 +75,13 @@ void ParamSlider::setValueText (const String& paramID, float value01)
         return;
     }
 
+    // special case: mod freq. parameter in Sync mode
+    if (paramID == revTag && value01 == 0.0f)
+    {
+        valueLabel.setText ("OFF", sendNotification);
+        return;
+    }
+
     valueLabel.setText (param->getCurrentValueAsText(), sendNotification);
 }
 

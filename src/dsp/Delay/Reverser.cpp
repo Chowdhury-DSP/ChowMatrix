@@ -31,6 +31,7 @@ void Reverser::reset()
 void Reverser::setReverseTime (float revTimeMs)
 {
     auto newWindowSize = nearestEvenInt (int (revTimeMs * fs / 1000.0f));
+    newWindowSize = newWindowSize > 0 ? jmax (newWindowSize, 8) : 0;
     if (windowSize == newWindowSize)
         return;
 
