@@ -133,6 +133,7 @@ private:
     Parameter* distortion = nullptr;
     Parameter* pitchSt = nullptr;
     Parameter* diffAmt = nullptr;
+    Parameter* revTimeMs = nullptr;
     Parameter* modFreq = nullptr;
     Parameter* delayMod = nullptr;
     Parameter* panMod = nullptr;

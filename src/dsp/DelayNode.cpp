@@ -23,6 +23,7 @@ DelayNode::DelayNode() : params (*this, nullptr, Identifier ("Parameters"), Para
     pitchSt = loadParam (pitchTag);
     diffAmt = loadParam (diffTag);
     distortion = loadParam (distTag);
+    revTimeMs = loadParam (revTag);
     modFreq = loadParam (modFreqTag);
     delayMod = loadParam (delayModTag);
     panMod = loadParam (panModTag);
@@ -58,6 +59,7 @@ void DelayNode::cookParameters (bool force)
                                                 *distortion,
                                                 *pitchSt,
                                                 *diffAmt,
+                                                *revTimeMs,
                                                 modFreq,
                                                 *delayMod,
                                                 (float) tempoBPM,

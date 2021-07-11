@@ -3,6 +3,7 @@
 #include "../Distortion/Distortion.h"
 #include "Diffusion.h"
 #include "PitchShiftWrapper.h"
+#include "Reverser.h"
 #include "TempoSyncUtils.h"
 #include "VariableDelay.h"
 #include <pch.h>
@@ -35,6 +36,7 @@ public:
         float distortion;
         float pitchSt;
         float diffAmt;
+        float revTimeMs;
         const AudioProcessorValueTreeState::Parameter* modFreq;
         float modDepth;
         float tempoBPM;
@@ -70,6 +72,7 @@ private:
         hpfIdx,
         diffusionIdx,
         distortionIdx,
+        reverserIdx,
         pitchIdx,
     };
 
@@ -78,6 +81,7 @@ private:
         chowdsp::IIR::Filter<float, 1>,
         Diffusion,
         Distortion,
+        Reverser,
         PitchShiftWrapper>
         procs;
 
