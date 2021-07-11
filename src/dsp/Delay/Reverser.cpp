@@ -4,7 +4,7 @@ namespace
 {
 int nearestEvenInt (int to)
 {
-  return (to % 2 == 0) ? to : (to + 1);
+    return (to % 2 == 0) ? to : (to + 1);
 }
 } // namespace
 
@@ -23,7 +23,7 @@ void Reverser::prepare (const dsp::ProcessSpec& spec)
 }
 
 void Reverser::reset()
-{  
+{
     reverseBuffer.clear();
     windowSize = -1; // this will get reset next time setReverseTime is called
 }
