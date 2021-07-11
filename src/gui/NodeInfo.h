@@ -10,7 +10,7 @@ constexpr int InfoWidthNoLabel = 80;
 constexpr int InfoHeight = 18;
 constexpr int InfoHeightNoLabel = 22;
 
-static StringArray skipParams { ParamTags::distTag, ParamTags::modFreqTag, ParamTags::delayModTag, ParamTags::panModTag };
+static StringArray skipParams { ParamTags::distTag, ParamTags::revTag, ParamTags::modFreqTag, ParamTags::delayModTag, ParamTags::panModTag };
 } // namespace NodeInfoConsts
 
 /** Node info component containing a column of ParamSliders */
