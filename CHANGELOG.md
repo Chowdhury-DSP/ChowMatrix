@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## UNRELEASED
 - Added "Alien" delay mode.
+- Add reverse delay parameter.
 - Added option to throttle graphics rendering for the Matrix View.
 - Improve memory usage.
 
