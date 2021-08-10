@@ -7,7 +7,7 @@ using namespace ParamTags;
 using namespace TempoSyncUtils;
 
 DelayNode::DelayNode() : params (*this, nullptr, Identifier ("Parameters"), ParamHelpers::createParameterLayout()),
-                         paramLockHelper ([=] { nodeListeners.call (&Listener::nodeParamLockChanged, this); })
+                         insanityLockHelper ([=] { nodeListeners.call (&Listener::nodeInsanityLockChanged, this); })
 {
     auto loadParam = [=] (String paramID) -> Parameter* {
         paramIDs.add (paramID);
@@ -118,7 +118,7 @@ PopupMenu DelayNode::createParamPopupMenu (const String& paramID)
     nodeListeners.call (&Listener::addParameterMenus, menu, paramID, this);
 
     if (paramID == ParamTags::delayTag || paramID == ParamTags::panTag)
-        paramLockHelper.createPopupMenu (menu, paramID);
+        insanityLockHelper.createPopupMenu (menu, paramID);
 
     if (paramID == ParamTags::modFreqTag)
     {
@@ -250,7 +250,7 @@ XmlElement* DelayNode::saveXml()
 
     auto state = params.copyState();
     std::unique_ptr<XmlElement> xmlState (state.createXml());
-    paramLockHelper.saveState (xmlState.get());
+    insanityLockHelper.saveState (xmlState.get());
     xmlState->setAttribute ("lfo_sync", tempoSyncedLFO);
     xml->addChildElement (xmlState.release());
     nodeListeners.call (&Listener::saveExtraNodeState, xml.get(), this);
@@ -269,7 +269,7 @@ void DelayNode::loadXml (XmlElement* xml)
     if (auto* xmlState = xml->getChildByName (params.state.getType()))
     {
         params.replaceState (ValueTree::fromXml (*xmlState));
-        paramLockHelper.loadState (xmlState);
+        insanityLockHelper.loadState (xmlState);
         tempoSyncedLFO = xmlState->getBoolAttribute ("lfo_sync");
     }
 

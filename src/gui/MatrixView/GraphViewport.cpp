@@ -102,7 +102,7 @@ void GraphViewport::nodeSoloed (DelayNode* /*soloedNode*/, NodeManager::ActionSo
     graphView.repaint();
 }
 
-void GraphViewport::nodeParamLockChanged (DelayNode* node)
+void GraphViewport::nodeInsanityLockChanged (DelayNode* node)
 {
     for (auto* comp : graphView.getDelayNodeComps())
         if (&comp->getNode() == node)

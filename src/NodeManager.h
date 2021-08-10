@@ -23,7 +23,7 @@ public:
     void nodeRemoved (DelayNode* nodeToRemove) override;
     void setParameterDiff (DelayNode* sourceNode, const String& paramID, float diff01) override;
     void setParameterDefault (DelayNode* sourceNode, const String& paramID) override;
-    void nodeParamLockChanged (DelayNode* node) override { listeners.call (&Listener::nodeParamLockChanged, node); }
+    void nodeInsanityLockChanged (DelayNode* node) override { listeners.call (&Listener::nodeInsanityLockChanged, node); }
 
     /** Sources that can trigger node selection */
     enum class ActionSource
@@ -45,7 +45,7 @@ public:
         virtual ~Listener() {}
         virtual void nodeSelected (DelayNode* /*selectedNode*/, ActionSource /*source*/) {}
         virtual void nodeSoloed (DelayNode* /*soloedNode*/, ActionSource /*source*/) {}
-        virtual void nodeParamLockChanged (DelayNode* /*node*/) {}
+        virtual void nodeInsanityLockChanged (DelayNode* /*node*/) {}
     };
 
     void addListener (Listener* l) { listeners.add (l); }

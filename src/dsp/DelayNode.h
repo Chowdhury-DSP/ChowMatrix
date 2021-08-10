@@ -48,9 +48,8 @@ public:
     void randomiseParameters();
 
     // Manage parameter locking for Insanity Control
-    bool isParamLocked (const String& paramID) const noexcept { return paramLockHelper.isParamLocked (paramID); }
-    bool shouldParamReset (const String& paramID) const noexcept { return paramLockHelper.shouldParamReset (paramID); }
-    void toggleInsanityLock (const String& paramID) { paramLockHelper.toggleInsanityLock (paramID); }
+    const InsanityLockHelper& getInsanityLockHelper() const { return insanityLockHelper; }
+    InsanityLockHelper& getInsanityLockHelper() { return insanityLockHelper; }
 
     void toggleLFOSync();
     bool isLFOSynced() const noexcept { return tempoSyncedLFO; }
@@ -119,7 +118,7 @@ private:
     bool syncDelay = false;
     double tempoBPM = 120.0;
 
-    InsanityLockHelper paramLockHelper;
+    InsanityLockHelper insanityLockHelper;
     std::atomic<SoloState> isSoloed;
     SoloState prevSoloState = None;
 
