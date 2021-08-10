@@ -272,4 +272,18 @@ String getName (const String& paramID)
     return {};
 }
 
+void loadStringArray (StringArray& array, String string)
+{
+    array.clear();
+    while (string.isNotEmpty())
+    {
+        auto splitIdx = string.indexOfChar (',');
+        if (splitIdx <= 0)
+            break;
+
+        array.add (string.substring (0, splitIdx));
+        string = string.substring (splitIdx + 1);
+    }
+}
+
 } // namespace ParamHelpers

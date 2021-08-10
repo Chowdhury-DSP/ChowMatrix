@@ -107,6 +107,9 @@ void DelayNode::randomiseParameters()
 {
     for (auto& paramID : paramIDs)
     {
+        if (randLockHelper.isParamLocked (paramID))
+            continue;
+
         auto* param = params.getParameter (paramID);
         param->setValueNotifyingHost (rand.nextFloat());
     }
@@ -119,6 +122,8 @@ PopupMenu DelayNode::createParamPopupMenu (const String& paramID)
 
     if (paramID == ParamTags::delayTag || paramID == ParamTags::panTag)
         insanityLockHelper.createPopupMenu (menu, paramID);
+
+    randLockHelper.createPopupMenu (menu, paramID);
 
     if (paramID == ParamTags::modFreqTag)
     {
@@ -251,6 +256,7 @@ XmlElement* DelayNode::saveXml()
     auto state = params.copyState();
     std::unique_ptr<XmlElement> xmlState (state.createXml());
     insanityLockHelper.saveState (xmlState.get());
+    randLockHelper.saveState (xmlState.get());
     xmlState->setAttribute ("lfo_sync", tempoSyncedLFO);
     xml->addChildElement (xmlState.release());
     nodeListeners.call (&Listener::saveExtraNodeState, xml.get(), this);
@@ -270,6 +276,7 @@ void DelayNode::loadXml (XmlElement* xml)
     {
         params.replaceState (ValueTree::fromXml (*xmlState));
         insanityLockHelper.loadState (xmlState);
+        randLockHelper.loadState (xmlState);
         tempoSyncedLFO = xmlState->getBoolAttribute ("lfo_sync");
     }
 

@@ -4,6 +4,7 @@
 #include "Delay/DelayProc.h"
 #include "Parameters/ParamHelpers.h"
 #include "Parameters/InsanityLockHelper.h"
+#include "Parameters/RandomiseLockHelper.h"
 
 /**
  * Class for delay processing node
@@ -119,6 +120,7 @@ private:
     double tempoBPM = 120.0;
 
     InsanityLockHelper insanityLockHelper;
+    RandomiseLockHelper randLockHelper;
     std::atomic<SoloState> isSoloed;
     SoloState prevSoloState = None;
 
