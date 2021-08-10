@@ -3,7 +3,7 @@
 #include "BaseNode.h"
 #include "Delay/DelayProc.h"
 #include "Parameters/ParamHelpers.h"
-#include "Parameters/ParamLockHelper.h"
+#include "Parameters/InsanityLockHelper.h"
 
 /**
  * Class for delay processing node
@@ -119,7 +119,7 @@ private:
     bool syncDelay = false;
     double tempoBPM = 120.0;
 
-    ParamLockHelper paramLockHelper;
+    InsanityLockHelper paramLockHelper;
     std::atomic<SoloState> isSoloed;
     SoloState prevSoloState = None;
 
