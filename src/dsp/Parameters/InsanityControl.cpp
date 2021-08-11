@@ -68,8 +68,9 @@ void InsanityControl::insanityEnding()
         if (insanityResetMap.find (id) == insanityResetMap.end())
             return;
 
-        bool resetDelay = n->shouldParamReset (ParamTags::delayTag);
-        bool resetPan = n->shouldParamReset (ParamTags::panTag);
+        const auto& lockHelper = n->getInsanityLockHelper();
+        bool resetDelay = lockHelper.shouldParamReset (ParamTags::delayTag);
+        bool resetPan = lockHelper.shouldParamReset (ParamTags::panTag);
         insanityEndingMap[id] = std::make_pair (n->getDelay(), n->getPan());
 
         if (! resetDelay && ! resetPan)
@@ -107,10 +108,11 @@ void InsanityControl::timerCallback()
         delay += n->delaySmoother.processSample (delay_dist (generator) * scale);
         pan += n->panSmoother.processSample (pan_dist (generator) * scale);
 
-        if (! n->isParamLocked (delayTag))
+        const auto& lockHelper = n->getInsanityLockHelper();
+        if (! lockHelper.isParamLocked (delayTag))
             n->setDelay (jlimit (0.0f, 1.0f, delay));
 
-        if (! n->isParamLocked (panTag))
+        if (! lockHelper.isParamLocked (panTag))
             n->setPan (jlimit (-1.0f, 1.0f, pan));
     });
 

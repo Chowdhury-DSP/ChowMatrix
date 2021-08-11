@@ -73,4 +73,7 @@ String getTooltip (const String& paramID);
 /** Gets a parameter name for a given parameter ID */
 String getName (const String& paramID);
 
+/** Loads parameters from a comma-separated string into a StringArray */
+void loadStringArray (StringArray& array, String string);
+
 } // namespace ParamHelpers
