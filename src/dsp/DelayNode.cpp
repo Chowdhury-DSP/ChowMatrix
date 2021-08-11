@@ -179,27 +179,41 @@ void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBu
 
 void DelayNode::processPanner (dsp::AudioBlock<float>& inputBlock)
 {
+    panBuffer.setSize (2, (int) inputBlock.getNumSamples(), false, false, true);
+    dsp::AudioBlock<float> panBlock { panBuffer };
+
     if (*panMod == 0.0f || *modFreq == 0.0f) // no modulation needed
     {
         modSine.reset();
         panModValue = 0.0f;
-        panBuffer.setSize (2, (int) inputBlock.getNumSamples(), false, false, true);
-        dsp::AudioBlock<float> panBlock { panBuffer };
         panner.process<dsp::ProcessContextNonReplacing<float>> ({ inputBlock, panBlock });
     }
-    else
+    else // process with modulation
     {
-        auto* x = inputBlock.getChannelPointer (0);
-        auto* left = panBuffer.getWritePointer (0);
-        auto* right = panBuffer.getWritePointer (1);
+        const auto panParamValue = (float) *pan;
+        const auto panModParamValue = (float) *panMod;
         modSine.setPlayHead (getPlayHead());
 
-        for (size_t i = 0; i < inputBlock.getNumSamples(); ++i)
-        {
-            panModValue = 0.33f * *panMod * modSine.processSample(); // max pan mod = 33%
-            panner.setPan (jlimit (-1.0f, 1.0f, *pan + panModValue));
-            std::tie (left[i], right[i]) = panner.processSample (x[i]);
-        }
+        constexpr size_t subBlockSize = 256;
+        auto processSubBlock = [=] (size_t i, size_t numSamples) {
+            panModValue = 0.33f * panModParamValue * modSine.processSample(); // max pan mod = 33%
+            panner.setPan (jlimit (-1.0f, 1.0f, panParamValue + panModValue));
+
+            auto panSubBlock = panBlock.getSubBlock (i, numSamples);
+            const auto inSubBlock = inputBlock.getSubBlock (i, numSamples);
+            panner.process<dsp::ProcessContextNonReplacing<float>> ({ inSubBlock, panSubBlock });
+
+            // iterate modSine forward
+            for (size_t j  = 1; j < numSamples; ++j)
+                modSine.processSample(); 
+        };
+
+        size_t i = 0;
+        for (; i + subBlockSize <= inputBlock.getNumSamples(); i += subBlockSize)
+            processSubBlock (i, subBlockSize);
+
+        if (i < inputBlock.getNumSamples())
+            processSubBlock (i, inputBlock.getNumSamples() - i);
     }
 }
 
