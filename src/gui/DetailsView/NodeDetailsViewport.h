@@ -15,7 +15,7 @@ public:
 
     void nodeSelected (DelayNode* selectedNode, NodeManager::ActionSource source) override;
     void nodeSoloed (DelayNode* soloedNode, NodeManager::ActionSource source) override;
-    void nodeParamLockChanged (DelayNode* node) override;
+    void nodeInsanityLockChanged (DelayNode* node) override;
 
 private:
     NodeManager& manager;

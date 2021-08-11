@@ -6,10 +6,10 @@
  * Helper class to manage parameter insanity
  * lock and reset functionality
  */
-class ParamLockHelper
+class InsanityLockHelper
 {
 public:
-    ParamLockHelper (std::function<void()> onParamLockChange);
+    InsanityLockHelper (std::function<void()> onParamLockChange);
 
     void toggleInsanityLock (const String& paramID);
     void setInsanityLock (const String& paramID, bool shouldBeLocked, bool shouldBeReset);
@@ -28,5 +28,5 @@ private:
 
     std::function<void()> onParamLockChange;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ParamLockHelper)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (InsanityLockHelper)
 };
