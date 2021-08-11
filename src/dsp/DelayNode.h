@@ -2,8 +2,8 @@
 
 #include "BaseNode.h"
 #include "Delay/DelayProc.h"
-#include "Parameters/ParamHelpers.h"
 #include "Parameters/InsanityLockHelper.h"
+#include "Parameters/ParamHelpers.h"
 #include "Parameters/RandomiseLockHelper.h"
 
 /**

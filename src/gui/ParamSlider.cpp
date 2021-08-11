@@ -127,7 +127,7 @@ void ParamSlider::paint (Graphics&)
 {
     const auto& lockHelper = node.getInsanityLockHelper();
     auto textColour = lockHelper.isParamLocked (param->paramID) ? Colours::red
-                        : (lockHelper.shouldParamReset (param->paramID) ? Colour (0xFF21CCA5) : Colours::white);
+                                                                : (lockHelper.shouldParamReset (param->paramID) ? Colour (0xFF21CCA5) : Colours::white);
     valueLabel.setColour (Label::textColourId, textColour);
 }
 

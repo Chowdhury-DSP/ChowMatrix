@@ -209,8 +209,8 @@ void DelayNode::processPanner (dsp::AudioBlock<float>& inputBlock)
             panner.process<dsp::ProcessContextNonReplacing<float>> ({ inSubBlock, panSubBlock });
 
             // iterate modSine forward
-            for (size_t j  = 1; j < numSamples; ++j)
-                modSine.processSample(); 
+            for (size_t j = 1; j < numSamples; ++j)
+                modSine.processSample();
         };
 
         size_t i = 0;
