@@ -44,7 +44,7 @@ public:
 
         virtual void setParameterDiff (Child* /*node*/, const String& /*paramID*/, float /*diff01*/) {}
         virtual void setParameterDefault (Child* /*node*/, const String& /*paramID*/) {}
-        virtual void nodeParamLockChanged (Child* /*node*/) {}
+        virtual void nodeInsanityLockChanged (Child* /*node*/) {}
 
         virtual void beginParameterChange (const StringArray& /*paramIDs*/, Child* /*node*/) {}
         virtual void endParameterChange (const StringArray& /*paramIDs*/, Child* /*node*/) {}

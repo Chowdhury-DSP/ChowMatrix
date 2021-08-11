@@ -1,10 +1,10 @@
-#include "ParamLockHelper.h"
+#include "InsanityLockHelper.h"
 
-ParamLockHelper::ParamLockHelper (std::function<void()> onParamLockChange) : onParamLockChange (onParamLockChange)
+InsanityLockHelper::InsanityLockHelper (std::function<void()> onParamLockChange) : onParamLockChange (onParamLockChange)
 {
 }
 
-void ParamLockHelper::setInsanityLock (const String& paramID, bool shouldBeLocked, bool shouldBeReset)
+void InsanityLockHelper::setInsanityLock (const String& paramID, bool shouldBeLocked, bool shouldBeReset)
 {
     jassert (! (shouldBeLocked && shouldBeReset)); // can't have both!
 
@@ -33,7 +33,7 @@ void ParamLockHelper::setInsanityLock (const String& paramID, bool shouldBeLocke
     onParamLockChange();
 }
 
-void ParamLockHelper::toggleInsanityLock (const String& paramID)
+void InsanityLockHelper::toggleInsanityLock (const String& paramID)
 {
     const auto isLocked = lockedParams.contains (paramID);
     const auto isReset = resetParams.contains (paramID);
@@ -55,7 +55,7 @@ void ParamLockHelper::toggleInsanityLock (const String& paramID)
     onParamLockChange();
 }
 
-void ParamLockHelper::createPopupMenu (PopupMenu& parent, const String& paramID)
+void InsanityLockHelper::createPopupMenu (PopupMenu& parent, const String& paramID)
 {
     bool isLocked = isParamLocked (paramID);
     bool isReset = shouldParamReset (paramID);
@@ -81,31 +81,17 @@ void ParamLockHelper::createPopupMenu (PopupMenu& parent, const String& paramID)
         insanityLockMenu.addItem (item);
     }
 
-    parent.addSubMenu ("Insanity Lock", insanityLockMenu);
+    parent.addSubMenu ("Insanity Lock:", insanityLockMenu);
 }
 
-static void loadStringArray (StringArray& array, String string)
-{
-    array.clear();
-    while (string.isNotEmpty())
-    {
-        auto splitIdx = string.indexOfChar (',');
-        if (splitIdx <= 0)
-            break;
-
-        array.add (string.substring (0, splitIdx));
-        string = string.substring (splitIdx + 1);
-    }
-}
-
-void ParamLockHelper::saveState (XmlElement* xml)
+void InsanityLockHelper::saveState (XmlElement* xml)
 {
     xml->setAttribute ("locked", lockedParams.joinIntoString (",") + ",");
     xml->setAttribute ("reset", resetParams.joinIntoString (",") + ",");
 }
 
-void ParamLockHelper::loadState (XmlElement* xml)
+void InsanityLockHelper::loadState (XmlElement* xml)
 {
-    loadStringArray (lockedParams, xml->getStringAttribute ("locked", String()));
-    loadStringArray (resetParams, xml->getStringAttribute ("reset", String()));
+    ParamHelpers::loadStringArray (lockedParams, xml->getStringAttribute ("locked", String()));
+    ParamHelpers::loadStringArray (resetParams, xml->getStringAttribute ("reset", String()));
 }

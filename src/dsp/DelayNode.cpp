@@ -7,7 +7,7 @@ using namespace ParamTags;
 using namespace TempoSyncUtils;
 
 DelayNode::DelayNode() : params (*this, nullptr, Identifier ("Parameters"), ParamHelpers::createParameterLayout()),
-                         paramLockHelper ([=] { nodeListeners.call (&Listener::nodeParamLockChanged, this); })
+                         insanityLockHelper ([=] { nodeListeners.call (&Listener::nodeInsanityLockChanged, this); })
 {
     auto loadParam = [=] (String paramID) -> Parameter* {
         paramIDs.add (paramID);
@@ -107,6 +107,9 @@ void DelayNode::randomiseParameters()
 {
     for (auto& paramID : paramIDs)
     {
+        if (randLockHelper.isParamLocked (paramID))
+            continue;
+
         auto* param = params.getParameter (paramID);
         param->setValueNotifyingHost (rand.nextFloat());
     }
@@ -118,7 +121,9 @@ PopupMenu DelayNode::createParamPopupMenu (const String& paramID)
     nodeListeners.call (&Listener::addParameterMenus, menu, paramID, this);
 
     if (paramID == ParamTags::delayTag || paramID == ParamTags::panTag)
-        paramLockHelper.createPopupMenu (menu, paramID);
+        insanityLockHelper.createPopupMenu (menu, paramID);
+
+    randLockHelper.createPopupMenu (menu, paramID);
 
     if (paramID == ParamTags::modFreqTag)
     {
@@ -204,8 +209,8 @@ void DelayNode::processPanner (dsp::AudioBlock<float>& inputBlock)
             panner.process<dsp::ProcessContextNonReplacing<float>> ({ inSubBlock, panSubBlock });
 
             // iterate modSine forward
-            for (size_t j  = 1; j < numSamples; ++j)
-                modSine.processSample(); 
+            for (size_t j = 1; j < numSamples; ++j)
+                modSine.processSample();
         };
 
         size_t i = 0;
@@ -264,7 +269,8 @@ XmlElement* DelayNode::saveXml()
 
     auto state = params.copyState();
     std::unique_ptr<XmlElement> xmlState (state.createXml());
-    paramLockHelper.saveState (xmlState.get());
+    insanityLockHelper.saveState (xmlState.get());
+    randLockHelper.saveState (xmlState.get());
     xmlState->setAttribute ("lfo_sync", tempoSyncedLFO);
     xml->addChildElement (xmlState.release());
     nodeListeners.call (&Listener::saveExtraNodeState, xml.get(), this);
@@ -283,7 +289,8 @@ void DelayNode::loadXml (XmlElement* xml)
     if (auto* xmlState = xml->getChildByName (params.state.getType()))
     {
         params.replaceState (ValueTree::fromXml (*xmlState));
-        paramLockHelper.loadState (xmlState);
+        insanityLockHelper.loadState (xmlState);
+        randLockHelper.loadState (xmlState);
         tempoSyncedLFO = xmlState->getBoolAttribute ("lfo_sync");
     }
 

@@ -66,7 +66,7 @@ void NodeDetailsViewport::nodeSoloed (DelayNode* /*soloedNode*/, NodeManager::Ac
     detailsComp.repaint();
 }
 
-void NodeDetailsViewport::nodeParamLockChanged (DelayNode* node)
+void NodeDetailsViewport::nodeInsanityLockChanged (DelayNode* node)
 {
     detailsComp.getNodeDetails (node)->repaint();
 }
