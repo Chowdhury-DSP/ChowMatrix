@@ -4,9 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## UNRELEASED
 - Added "Alien" delay mode.
-- Add reverse delay parameter.
+- Added reverse delay parameter.
+- Added lock/unlock options for parameter randomisation.
+- Improved performance for pan modulation.
 - Added option to throttle graphics rendering for the Matrix View.
-- Improve memory usage.
+- Improved memory usage.
 
 ## [1.2.0] 2021-04-23
 - Added new delay modes:
