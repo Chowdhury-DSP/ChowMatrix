@@ -199,7 +199,7 @@ void ParamSlider::mouseUp (const MouseEvent& e)
 {
     Slider::mouseUp (e);
 
-    bool dontShowLabel = isDragging || e.mods.isAnyModifierKeyDown()
+    bool dontShowLabel = e.mouseWasDraggedSinceMouseDown() || e.mods.isAnyModifierKeyDown()
                          || e.mods.isPopupMenu() || showLabel || e.getNumberOfClicks() > 1;
     if (! dontShowLabel)
     {
