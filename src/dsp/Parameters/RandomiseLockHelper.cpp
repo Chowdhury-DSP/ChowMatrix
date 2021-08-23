@@ -6,6 +6,12 @@ RandomiseLockHelper::RandomiseLockHelper()
     lockedParams.add (ParamTags::modFreqTag);
 }
 
+void RandomiseLockHelper::getLockedParamsFromParent (const RandomiseLockHelper& parentHelper)
+{
+    // copy locked params from parent
+    lockedParams = parentHelper.lockedParams;
+}
+
 void RandomiseLockHelper::toggleRandomiseLock (const String& paramID)
 {
     if (lockedParams.contains (paramID))
