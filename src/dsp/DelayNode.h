@@ -79,6 +79,7 @@ public:
     // Manage node index
     void setIndex (int newIdx) { nodeIdx = newIdx; }
     int getIndex() const noexcept { return nodeIdx; }
+    void setParent (BaseNode<DelayNode>* parent) override;
 
     // Manage selection state
     bool getSelected() const noexcept { return isSelected; }
