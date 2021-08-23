@@ -34,7 +34,7 @@ public:
     int getNumChildren() const noexcept { return children.size(); }
     Child* getChild (int idx) { return children[idx]; }
     BaseNode* getParent() { return parent; }
-    void setParent (BaseNode* parent);
+    virtual void setParent (BaseNode* parent);
 
     struct Listener
     {

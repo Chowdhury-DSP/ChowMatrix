@@ -320,6 +320,15 @@ void DelayNode::setSoloed (SoloState newSoloState)
     isSoloed = newSoloState;
 }
 
+void DelayNode::setParent (DBaseNode* newParent)
+{
+    DBaseNode::setParent (newParent);
+
+    // copy locked parameters from parent
+    if (auto parentCast = dynamic_cast<DelayNode*> (newParent))
+        randLockHelper.getLockedParamsFromParent (parentCast->randLockHelper);
+}
+
 void DelayNode::beginParameterChange (const StringArray& IDs)
 {
     nodeListeners.call (&Listener::beginParameterChange, IDs, this);

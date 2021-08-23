@@ -11,6 +11,8 @@ class RandomiseLockHelper
 public:
     RandomiseLockHelper();
 
+    void getLockedParamsFromParent (const RandomiseLockHelper& parentHelper);
+
     void toggleRandomiseLock (const String& paramID);
     bool isParamLocked (const String& paramID) const noexcept { return lockedParams.contains (paramID); }
 
