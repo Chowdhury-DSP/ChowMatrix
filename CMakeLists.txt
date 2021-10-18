@@ -42,13 +42,15 @@ include_directories(src)
 add_subdirectory(res)
 
 target_compile_definitions(ChowMatrix
-    PUBLIC
+  PUBLIC
     JUCE_DISPLAY_SPLASH_SCREEN=0
     JUCE_REPORT_APP_USAGE=0
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
     JUCE_VST3_CAN_REPLACE_VST2=0
     CHOWDSP_AUTO_UPDATE=1
+  PRIVATE
+    JUCE_MODAL_LOOPS_PERMITTED=0
 )
 
 if(ASIOSDK_DIR)
