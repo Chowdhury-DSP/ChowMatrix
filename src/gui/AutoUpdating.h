@@ -28,7 +28,7 @@ private:
     void editUpdateCheckFile (String version, bool wantsUpdate);
     void parentSizeChanged() override;
 
-    String newVersion = String (JucePlugin_VersionString);
+    chowdsp::VersionUtils::Version newVersion { JucePlugin_VersionString };
 
     TextButton yesButton { "Yes" };
     TextButton noButton { "No" };

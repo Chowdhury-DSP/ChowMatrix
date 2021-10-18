@@ -5,7 +5,6 @@
 namespace
 {
 const String updateFilePath = "ChowdhuryDSP/ChowMatrix/UpdateManage.txt";
-const String currentVersion = "v" + String (JucePlugin_VersionString);
 const String versionURL = "https://api.github.com/repos/Chowdhury-DSP/ChowMatrix/releases/latest";
 const String updateURL = "https://chowdsp.com/products.html#matrix";
 const Colour backgroundColour = Colour (0xFF31323A).withAlpha (0.9f);
@@ -67,14 +66,14 @@ void AutoUpdater::yesButtonPressed()
 
     // reset update check file
     setVisible (false);
-    editUpdateCheckFile (newVersion, true);
+    editUpdateCheckFile (newVersion.getVersionString(), true);
 }
 
 void AutoUpdater::noButtonPressed()
 {
     // reset update check file
     setVisible (false);
-    editUpdateCheckFile (newVersion, false);
+    editUpdateCheckFile (newVersion.getVersionString(), false);
 }
 
 void AutoUpdater::paint (Graphics& g)
@@ -84,7 +83,7 @@ void AutoUpdater::paint (Graphics& g)
     g.setColour (Colours::white);
     g.setFont (Font (36.0f));
 
-    String updatePrompt = String ("Version " + newVersion.removeCharacters ("v") + " of CHOW Matrix is available. Would you like to download?");
+    String updatePrompt = String ("Version " + newVersion.getVersionString() + " of CHOW Matrix is available. Would you like to download?");
 
     const auto promptWidth = getWidth() * 2 / 3;
     const auto promptX = getWidth() / 6;
@@ -126,12 +125,13 @@ void AutoUpdater::parentSizeChanged()
 bool AutoUpdater::runAutoUpdateCheck()
 {
     auto updateFile = getUpdateCheckFile();
-    String latestVersion = getLatestVersion();
+    String latestVersionStr = getLatestVersion();
 
-    if (latestVersion.isEmpty()) // unable to get latest version
+    if (latestVersionStr.isEmpty()) // unable to get latest version
         return false;
 
-    if (chowdsp::VersionUtils::compareVersions (latestVersion, currentVersion) <= 0) // you're up to date!
+    chowdsp::VersionUtils::Version latestVersion { latestVersionStr };
+    if (latestVersion <= newVersion) // you're up to date!
         return false;
 
     String updateVersion = getUpdateFileVersion (updateFile);
@@ -153,7 +153,7 @@ File AutoUpdater::getUpdateCheckFile()
     if (! updateCheckFile.existsAsFile())
     {
         updateCheckFile.create();
-        updateCheckFile.appendText (currentVersion + "\n");
+        updateCheckFile.appendText (newVersion.getVersionString() + "\n");
         updateCheckFile.appendText ("YES\n");
     }
 
