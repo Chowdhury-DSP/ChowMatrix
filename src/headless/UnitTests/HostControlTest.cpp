@@ -9,6 +9,7 @@ public:
 
     void runTest() override
     {
+        std::cout << "ENTER" << std::endl;
         auto proc = createPluginFilterOfType (AudioProcessor::WrapperType::wrapperType_Standalone);
         std::unique_ptr<ChowMatrix> plugin (dynamic_cast<ChowMatrix*> (proc));
         auto& paramControl = plugin->getHostControl();
