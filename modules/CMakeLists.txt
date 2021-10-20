@@ -32,13 +32,12 @@ target_compile_definitions(juce_plugin_modules
         JUCE_VST3_CAN_REPLACE_VST2=0
         JUCE_JACK=1
         JUCE_ALSA=1
+        JUCE_MODAL_LOOPS_PERMITTED=1
         FOLEYS_SHOW_GUI_EDITOR_PALLETTE=0
         FOLEYS_ENABLE_BINARY_DATA=1
         JucePlugin_Manufacturer="chowdsp"
         JucePlugin_VersionString="${CMAKE_PROJECT_VERSION}"
         JucePlugin_Name="${CMAKE_PROJECT_NAME}"
-    PRIVATE
-        JUCE_MODAL_LOOPS_PERMITTED=1
     INTERFACE
         $<TARGET_PROPERTY:juce_plugin_modules,COMPILE_DEFINITIONS>
 )
