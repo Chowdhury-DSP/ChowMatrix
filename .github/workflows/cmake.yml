@@ -32,7 +32,7 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            cmake_args: ""
+            cmake_args: "-DCMAKE_BUILD_TYPE=Release"
           - os: windows-latest
             cmake_args: ""
           - os: macos-latest
