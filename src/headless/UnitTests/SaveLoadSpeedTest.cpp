@@ -57,7 +57,7 @@ public:
         std::cout << "Loaded state " << numIter << " times in " << duration << " seconds" << std::endl;
         std::cout << "Average time " << duration / (double) numIter << std::endl;
 
-        expectLessThan (duration, 2.0, "Loading state took too long!");
+        expectLessThan (duration, 3.0, "Loading state took too long!");
     }
 };
 
