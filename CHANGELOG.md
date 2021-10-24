@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - Added "Alien" delay mode.
 - Added reverse delay parameter.
 - Added lock/unlock options for parameter randomisation.
+- Fixed "hang" when bringing delay to 0 ms in "Analog" mode.
 - Improved performance for pan modulation.
 - Added option to throttle graphics rendering for the Matrix View.
 - Improved memory usage.
