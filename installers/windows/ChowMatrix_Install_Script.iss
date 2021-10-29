@@ -1,13 +1,29 @@
+#define MyAppPublisher "Chowdhury DSP"
+#define MyAppURL "https://chowdsp.com"
+#define MyAppName "ChowMatrix"
+#define MyAppVersion "##APPVERSION##"
+
 [Setup]
-AppName=ChowMatrix
-AppVersion=##APPVERSION##
-DisableWelcomePage=no
+AppName="{#MyAppName} {#MyAppVersion}"
+AppVersion={#MyAppVersion}
+AppVerName={#MyAppName}
+AppPublisher={#MyAppPublisher}
+AppPublisherURL={#MyAppURL}
+AppSupportURL={#MyAppURL}
+AppUpdatesURL={#MyAppURL}
+DefaultDirName={commonpf64}\Chowdhury DSP\
+DefaultGroupName={#MyAppName}
+DisableProgramGroupPage=yes
 DisableDirPage=yes
-DefaultDirName={commoncf64}
-DefaultGroupName=ChowMatrix
-OutputBaseFilename="ChowMatrix-Win-##APPVERSION##"
-OutputDir=.
+DisableWelcomePage=no
 LicenseFile=../../LICENSE
+OutputBaseFilename="{#MyAppName}-Win-{#MyAppVersion}"
+OutputDir=.
+SetupIconFile=chowmatrix.ico
+UninstallDisplayIcon=chowmatrix.ico
+UninstallFilesDir={commonpf64}\Chowdhury DSP\{#MyAppName}
+Compression=lzma
+SolidCompression=yes
 
 [Types]
 Name: "full"; Description: "Full installation"
