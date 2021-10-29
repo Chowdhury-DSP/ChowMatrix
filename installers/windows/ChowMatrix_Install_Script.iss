@@ -44,6 +44,9 @@ Source: "../../bin/Win32/ChowMatrix.vst3"; DestDir: "{code:GetDir|VST3_32}"; Com
 Source: "../../bin/Win32/ChowMatrix.dll"; DestDir: "{code:GetDir|VST_32}"; Components: VST_32; Flags: ignoreversion
 Source: "../../bin/Win64/ChowMatrix.exe"; DestDir: "{code:GetDir|Standalone}"; Components: Standalone; Flags: ignoreversion
 
+[Icons]
+Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
+
 [Code]
 var
   AAXDirPage: TInputDirWizardPage;
