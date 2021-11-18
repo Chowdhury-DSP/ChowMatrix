@@ -74,4 +74,4 @@ jobs:
 
     - name: Pluginval
       if: runner.os == 'Windows' || runner.os == 'MacOS'
-      run: bash validate.sh
+      run: bash scripts/validate.sh
