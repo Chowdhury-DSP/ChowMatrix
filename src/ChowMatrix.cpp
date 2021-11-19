@@ -158,7 +158,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
 #endif // CHOWDSP_AUTO_UPDATE
 
     // we need to set resize limits for StandalonePluginHolder
-    editor->setResizeLimits (10, 10, 1000, 1000);
+    editor->setResizeLimits (20, 20, 2000, 2000);
 
     return editor;
 }

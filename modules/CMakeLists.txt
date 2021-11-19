@@ -16,7 +16,6 @@ target_link_libraries(juce_plugin_modules
         BinaryData
         juce::juce_audio_utils
         juce::juce_audio_plugin_client
-        juce::juce_opengl
         foleys_gui_magic
         chowdsp_dsp
         chowdsp_gui
@@ -40,7 +39,6 @@ target_compile_definitions(juce_plugin_modules
         JUCE_MODAL_LOOPS_PERMITTED=1
         FOLEYS_SHOW_GUI_EDITOR_PALLETTE=0
         FOLEYS_ENABLE_BINARY_DATA=1
-        FOLEYS_ENABLE_OPEN_GL_CONTEXT=1
         JucePlugin_Manufacturer="chowdsp"
         JucePlugin_VersionString="${CMAKE_PROJECT_VERSION}"
         JucePlugin_Name="${CMAKE_PROJECT_NAME}"
@@ -59,3 +57,14 @@ set_target_properties(juce_plugin_modules PROPERTIES
     C_VISBILITY_PRESET hidden
     CXX_VISIBILITY_PRESET hidden
 )
+
+if(IOS)
+    target_link_libraries(juce_plugin_modules PRIVATE juce::juce_product_unlocking)
+    target_compile_definitions(juce_plugin_modules PUBLIC JUCE_IN_APP_PURCHASES=1)
+endif()
+
+if(NOT APPLE)
+    message(STATUS "Linking with OpenGL")
+    target_link_libraries(juce_plugin_modules PRIVATE juce::juce_opengl)
+    target_compile_definitions(juce_plugin_modules PUBLIC FOLEYS_ENABLE_OPEN_GL_CONTEXT=1)
+endif()

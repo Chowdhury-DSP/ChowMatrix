@@ -1,4 +1,5 @@
 #include "GraphView.h"
+#include "../BottomBar/BottomBarLNF.h"
 #include "GraphViewItem.h"
 
 GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) : plugin (plugin),
@@ -18,6 +19,10 @@ GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) : plugin (plugin
     manager.createAndAddEditor (&inputNodes[1], findColour (nodeColour2), -0.02f);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { manager.createAndAddEditor (child); });
+
+#if JUCE_IOS
+    MouseEvent::setDoubleClickTimeout (200);
+#endif
 }
 
 GraphView::~GraphView()
@@ -28,39 +33,69 @@ GraphView::~GraphView()
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { child->removeNodeListener (this); });
 }
 
+void GraphView::createNodeForMouseEvent (const MouseEvent& e)
+{
+    // lambda to add child to parent and move to mouse position
+    auto addNode = [&e] (DBaseNode* nodeParent) -> DelayNode* {
+        auto newNode = nodeParent->addChild();
+        newNode->getEditor()->mouseDrag (e);
+        return newNode;
+    };
+
+    // if a node is selected create child from that node
+    DelayNode* newNode = nullptr;
+    if (auto selectedNode = plugin.getManager().getSelected())
+    {
+        newNode = addNode (selectedNode);
+    }
+    else // otherwise create a node from whichever side the mouse is on
+    {
+        bool mouseSide = e.getPosition().x > getWidth() / 2;
+        newNode = addNode (&plugin.getNodes()->at ((size_t) mouseSide));
+    }
+
+    if (newNode)
+        setSelected (newNode, true);
+}
+
 void GraphView::mouseDown (const MouseEvent& e)
 {
-    if (! e.mods.isAnyModifierKeyDown()) // deselect current node
-    {
+    auto unselectNode = [=] {
+#if ! JUCE_IOS
         setSelected (nullptr);
         setSoloed (nullptr);
+#else
+        Timer::callAfterDelay (MouseEvent::getDoubleClickTimeout(), [=] {
+            if (doubleClickFlag)
+            {
+                Timer::callAfterDelay (MouseEvent::getDoubleClickTimeout(), [=] { doubleClickFlag = false; });
+                return;
+            }
+
+            setSelected (nullptr);
+            setSoloed (nullptr);
+        });
+#endif
+    };
+
+    if (! e.mods.isAnyModifierKeyDown()) // deselect current node
+    {
+        unselectNode();
         return;
     }
 
     if (e.mods.isShiftDown()) // create new node at mouse position
-    {
-        // lambda to add child to parent and move to mouse position
-        auto addNode = [&e] (DBaseNode* nodeParent) -> DelayNode* {
-            auto newNode = nodeParent->addChild();
-            newNode->getEditor()->mouseDrag (e);
-            return newNode;
-        };
+        createNodeForMouseEvent (e);
+}
 
-        // if a node is selected create child from that node
-        DelayNode* newNode = nullptr;
-        if (auto selectedNode = plugin.getManager().getSelected())
-        {
-            newNode = addNode (selectedNode);
-        }
-        else // otherwise create a node from whichever side the mouse is on
-        {
-            bool mouseSide = e.getPosition().x > getWidth() / 2;
-            newNode = addNode (&plugin.getNodes()->at ((size_t) mouseSide));
-        }
-
-        if (newNode)
-            setSelected (newNode, true);
-    }
+void GraphView::mouseDoubleClick (const MouseEvent& e)
+{
+#if JUCE_IOS
+    doubleClickFlag = true;
+    createNodeForMouseEvent (e);
+#else
+    ignoreUnused (e);
+#endif
 }
 
 void GraphView::mouseDrag (const MouseEvent& e)
@@ -90,7 +125,7 @@ void GraphView::mouseUp (const MouseEvent& e)
         item.action = [=, &aurora] { aurora.setGraphicsThrottle (! graphicsThrottle); };
         menu.addItem (item);
 
-        menu.setLookAndFeel (&popupLNF.get());
+        menu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
         menu.showMenuAsync (PopupMenu::Options());
     }
 }

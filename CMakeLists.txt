@@ -7,8 +7,12 @@ add_subdirectory(modules)
 include_directories(modules)
 
 # juce_set_vst2_sdk_path(C:/SDKs/VST_SDK/VST2_SDK/)
-
-set(JUCE_FORMATS AU VST3 Standalone)
+# set default plugin formats to build
+if(IOS)
+    set(JUCE_FORMATS Standalone AUv3)
+else()
+    set(JUCE_FORMATS AU VST3 Standalone)
+endif()
 
 # Build LV2 only on Linux
 if(UNIX AND NOT APPLE)
@@ -31,6 +35,10 @@ juce_add_plugin(ChowMatrix
     LV2_URI https://github.com/Chowdhury-DSP/ChowMatrix
     ICON_BIG res/logo.png
     MICROPHONE_PERMISSION_ENABLED TRUE
+    NEEDS_STORE_KIT TRUE
+    REQUIRES_FULL_SCREEN TRUE
+    IPHONE_SCREEN_ORIENTATIONS UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+    IPAD_SCREEN_ORIENTATIONS UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
 )
 
 # create JUCE header
@@ -67,4 +75,26 @@ if(MACOS_RELEASE)
     message(STATUS "Setting MacOS release flags...")
     set_target_properties(ChowMatrix_Standalone PROPERTIES
         XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES)
+endif()
+
+if(IOS)
+    message(STATUS "Setting iOS-specific properties...")
+
+    foreach(target IN ITEMS BinaryData juce_plugin_modules ChowMatrix ChowMatrix_Standalone ChowMatrix_AUv3)
+        set_target_properties(${target}
+            PROPERTIES
+                RUNTIME_OUTPUT_DIRECTORY "./"
+                ARCHIVE_OUTPUT_DIRECTORY "./"
+                LIBRARY_OUTPUT_DIRECTORY "./")
+    endforeach()
+
+    set_target_properties(ChowMatrix_Standalone PROPERTIES
+            XCODE_ATTRIBUTE_INSTALL_PATH "$(LOCAL_APPS_DIR)"
+            XCODE_ATTRIBUTE_SKIP_INSTALL "NO"
+            XCODE_ATTRIBUTE_ENABLE_IN_APP_PURCHASE "YES")
+
+    set_target_properties(ChowMatrix_AUv3 PROPERTIES
+            XCODE_ATTRIBUTE_INSTALL_PATH "$(LOCAL_APPS_DIR)/ChowMatrix.app/PlugIns"
+            XCODE_ATTRIBUTE_SKIP_INSTALL "NO"
+            XCODE_ATTRIBUTE_ENABLE_IN_APP_PURCHASE "YES")
 endif()
