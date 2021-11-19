@@ -1,6 +1,6 @@
 #include "GraphView.h"
-#include "GraphViewItem.h"
 #include "../BottomBar/BottomBarLNF.h"
+#include "GraphViewItem.h"
 
 GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) : plugin (plugin),
                                                                   manager (this),
@@ -19,7 +19,7 @@ GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) : plugin (plugin
     manager.createAndAddEditor (&inputNodes[1], findColour (nodeColour2), -0.02f);
 
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { manager.createAndAddEditor (child); });
-    
+
 #if JUCE_IOS
     MouseEvent::setDoubleClickTimeout (200);
 #endif
@@ -88,7 +88,6 @@ void GraphView::mouseDown (const MouseEvent& e)
         createNodeForMouseEvent (e);
 }
 
-
 void GraphView::mouseDoubleClick (const MouseEvent& e)
 {
 #if JUCE_IOS
@@ -98,7 +97,6 @@ void GraphView::mouseDoubleClick (const MouseEvent& e)
     ignoreUnused (e);
 #endif
 }
-
 
 void GraphView::mouseDrag (const MouseEvent& e)
 {

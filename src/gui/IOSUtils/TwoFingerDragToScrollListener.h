@@ -9,7 +9,7 @@ using ViewportTwoFingerDragPosition = AnimatedPosition<AnimatedPositionBehaviour
 struct TwoFingerDragToScrollListener : private MouseListener,
                                        private ViewportTwoFingerDragPosition::Listener
 {
-    TwoFingerDragToScrollListener (Viewport& v)  : viewport (v)
+    TwoFingerDragToScrollListener (Viewport& v) : viewport (v)
     {
         getContentHolder().addMouseListener (this, true);
         offsetX.addListener (this);
@@ -26,8 +26,7 @@ struct TwoFingerDragToScrollListener : private MouseListener,
 
     void positionChanged (ViewportTwoFingerDragPosition&, double) override
     {
-        viewport.setViewPosition (originalViewPos - Point<int> ((int) offsetX.getPosition(),
-                                                                (int) offsetY.getPosition()));
+        viewport.setViewPosition (originalViewPos - Point<int> ((int) offsetX.getPosition(), (int) offsetY.getPosition()));
     }
 
     void mouseDown (const MouseEvent&) override
@@ -102,10 +101,10 @@ struct TwoFingerDragToScrollListener : private MouseListener,
     {
         auto* viewedComp = viewport.getViewedComponent();
         jassert (viewedComp != nullptr); // Viewport must own a component before creating a drag-to-scroll listener
-        
+
         auto* contentHolder = viewedComp->getParentComponent();
         jassert (contentHolder != nullptr); // This should never happen unless JUCE changes how Viewport works!
-        
+
         return *contentHolder;
     }
 

@@ -26,7 +26,7 @@ GraphViewport::GraphViewport (ChowMatrix& plugin) : graphView (plugin, *this),
 
     manager.addListener (this);
     setupHomeButton();
-    
+
 #if JUCE_IOS
     setScrollOnDragEnabled (false);
     dragToScrollListener = std::make_unique<TwoFingerDragToScrollListener> (*this);
