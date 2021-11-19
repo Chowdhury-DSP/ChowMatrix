@@ -35,7 +35,11 @@ DelayNodeComponent::~DelayNodeComponent()
 
 void DelayNodeComponent::mouseDown (const MouseEvent& e)
 {
+#if JUCE_IOS
+    if (e.getNumberOfClicks() == 2)
+#else
     if (e.mods.isCommandDown())
+#endif
     {
         node.deleteNode();
         return;

@@ -1,6 +1,7 @@
 #include "ParamSlider.h"
 #include "../dsp/Delay/TempoSyncUtils.h"
 #include "../dsp/DelayNode.h"
+#include "BottomBar/BottomBarLNF.h"
 
 using namespace ParamTags;
 
@@ -141,7 +142,7 @@ void ParamSlider::mouseDown (const MouseEvent& e)
     if (e.mods.isPopupMenu())
     {
         auto menu = node.createParamPopupMenu (param->paramID);
-        menu.setLookAndFeel (&popupLNF.get());
+        menu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
         menu.showMenuAsync (PopupMenu::Options());
 
         return;

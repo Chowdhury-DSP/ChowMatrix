@@ -1,4 +1,6 @@
-add_subdirectory(headless)
+if(NOT (IOS OR MACOS_RELEASE))
+    add_subdirectory(headless)
+endif()
 
 target_sources(ChowMatrix PRIVATE
     ChowMatrix.cpp

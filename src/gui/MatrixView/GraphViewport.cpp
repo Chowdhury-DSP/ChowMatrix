@@ -11,9 +11,6 @@ constexpr int scrollDistanceFromEdge = 30;
 
 /** Speed of autoscrolling */
 constexpr int scrollSpeed = 2;
-
-/** Dmensions for the "home" button */
-constexpr int buttonDim = 20;
 } // namespace
 
 GraphViewport::GraphViewport (ChowMatrix& plugin) : graphView (plugin, *this),
@@ -29,10 +26,19 @@ GraphViewport::GraphViewport (ChowMatrix& plugin) : graphView (plugin, *this),
 
     manager.addListener (this);
     setupHomeButton();
+    
+#if JUCE_IOS
+    setScrollOnDragEnabled (false);
+    dragToScrollListener = std::make_unique<TwoFingerDragToScrollListener> (*this);
+#endif
 }
 
 GraphViewport::~GraphViewport()
 {
+#if JUCE_IOS
+    dragToScrollListener.reset();
+#endif
+
     manager.removeListener (this);
 }
 
@@ -58,6 +64,7 @@ void GraphViewport::resized()
     graphView.updateParentSize (getWidth(), getHeight());
     centerView();
 
+    const int buttonDim = jmax (proportionOfWidth (0.025f), 20);
     homeButton.setBounds (0, getHeight() - buttonDim, buttonDim, buttonDim);
 }
 

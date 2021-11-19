@@ -17,40 +17,13 @@ public:
     void refreshStates();
 
 private:
-    struct ABLNF : public BottomBarLNF
-    {
-        Font getTextButtonFont (TextButton&, int) override { return Font (15.0f).boldened(); }
-
-        void drawButtonText (Graphics& g, TextButton& button, bool, bool) override
-        {
-            Font font (getTextButtonFont (button, button.getHeight()));
-            g.setFont (font);
-            g.setColour (button.findColour (button.getToggleState() ? TextButton::textColourOnId
-                                                                    : TextButton::textColourOffId)
-                             .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f));
-
-            const int yIndent = jmin (4, button.proportionOfHeight (0.3f));
-            const int leftIndent = 2;
-            const int rightIndent = 2;
-            const int textWidth = button.getWidth() - leftIndent - rightIndent;
-
-            if (textWidth > 0)
-                g.drawFittedText (button.getButtonText(),
-                                  leftIndent,
-                                  yIndent,
-                                  textWidth,
-                                  button.getHeight() - yIndent * 2,
-                                  Justification::centred,
-                                  2);
-        }
-    };
-    ABLNF lnf;
-
     StateManager& manager;
 
     TextButton aButton;
     TextButton bButton;
     TextButton arrowButton;
+
+    chowdsp::SharedLNFAllocator lnfAllocator;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ABComp)
 };

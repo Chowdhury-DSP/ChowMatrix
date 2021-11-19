@@ -14,10 +14,19 @@ NodeDetailsViewport::NodeDetailsViewport (ChowMatrix& chowMatrix) : manager (cho
     setScrollBarThickness (scrollThickness);
 
     manager.addListener (this);
+
+#if JUCE_IOS
+    setScrollOnDragEnabled (false);
+    dragToScrollListener = std::make_unique<TwoFingerDragToScrollListener> (*this);
+#endif
 }
 
 NodeDetailsViewport::~NodeDetailsViewport()
 {
+#if JUCE_IOS
+    dragToScrollListener.reset();
+#endif
+
     manager.removeListener (this);
 }
 
