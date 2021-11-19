@@ -4,7 +4,6 @@
 
 #include <pch.h>
 
-struct UpdateButtonLNF;
 class AutoUpdater : public Component
 {
 public:
@@ -32,9 +31,10 @@ private:
 
     TextButton yesButton { "Yes" };
     TextButton noButton { "No" };
-    std::unique_ptr<UpdateButtonLNF> ubLNF;
 
     std::future<bool> needsUpdate;
+
+    chowdsp::SharedLNFAllocator lnfAllocator;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutoUpdater)
 };

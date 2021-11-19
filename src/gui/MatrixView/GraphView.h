@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../../ChowMatrix.h"
-#include "../BottomBar/BottomBarLNF.h"
 #include "DelayNodeComponent.h"
 #include "InputNodeComponent.h"
 #include "NodeCompManager.h"
@@ -24,6 +23,7 @@ public:
     };
 
     void mouseDown (const MouseEvent& e) override;
+    void mouseDoubleClick (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
     void mouseUp (const MouseEvent& e) override;
     void paint (Graphics& g) override;
@@ -38,13 +38,19 @@ public:
     OwnedArray<DelayNodeComponent>& getDelayNodeComps() { return manager.delayNodeComponents; }
 
 private:
+    void createNodeForMouseEvent (const MouseEvent& e);
+
     ChowMatrix& plugin;
     NodeCompManager manager;
     Viewport& parent;
 
     int visibleHeight = 100;
 
-    SharedResourcePointer<BottomBarLNF> popupLNF;
+    chowdsp::SharedLNFAllocator lnfAllocator;
+
+#if JUCE_IOS
+    std::atomic_bool doubleClickFlag { false };
+#endif
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GraphView)
 };

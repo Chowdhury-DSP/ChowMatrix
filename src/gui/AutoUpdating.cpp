@@ -31,8 +31,6 @@ private:
 
 AutoUpdater::AutoUpdater()
 {
-    ubLNF = std::make_unique<UpdateButtonLNF>();
-
     auto setupButton = [=] (TextButton& button) {
         addAndMakeVisible (button);
         button.setColour (TextButton::buttonColourId, backgroundColour);
@@ -40,7 +38,7 @@ AutoUpdater::AutoUpdater()
         button.setColour (ComboBox::outlineColourId, Colours::transparentBlack);
         button.setOpaque (false);
         button.setMouseCursor (MouseCursor::PointingHandCursor);
-        button.setLookAndFeel (ubLNF.get());
+        button.setLookAndFeel (lnfAllocator->getLookAndFeel<UpdateButtonLNF>());
     };
 
     setupButton (yesButton);

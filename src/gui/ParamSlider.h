@@ -1,8 +1,6 @@
 #pragma once
 
 #include "../dsp/DelayNode.h"
-#include "BottomBar/BottomBarLNF.h"
-#include <pch.h>
 
 /**
  * Text slider mapped to a parameter
@@ -42,7 +40,7 @@ private:
     std::atomic_bool linkFlag;
     std::atomic_bool isInGesture;
 
-    SharedResourcePointer<BottomBarLNF> popupLNF;
+    chowdsp::SharedLNFAllocator lnfAllocator;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ParamSlider)
 };

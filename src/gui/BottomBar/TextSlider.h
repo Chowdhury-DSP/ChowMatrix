@@ -8,7 +8,7 @@ class TextSlider : public Slider
 public:
     TextSlider()
     {
-        setLookAndFeel (&lnf);
+        setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
     }
 
     ~TextSlider() override
@@ -39,8 +39,9 @@ public:
     }
 
 private:
-    BottomBarLNF lnf;
     bool isDragging = false;
+
+    chowdsp::SharedLNFAllocator lnfAllocator;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TextSlider)
 };
