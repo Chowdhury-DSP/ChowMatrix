@@ -42,9 +42,8 @@ target_sources(ChowMatrix PRIVATE
     gui/MatrixView/NodeCompManager.cpp
     gui/MatrixView/NodeComponent.cpp
 
+    state/PresetManager.cpp
     state/StateManager.cpp
-    state/presets/PresetComp.cpp
-    state/presets/PresetManager.cpp
 )
 
 target_precompile_headers(ChowMatrix PRIVATE pch.h)

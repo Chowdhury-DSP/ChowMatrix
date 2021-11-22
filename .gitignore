@@ -5,9 +5,9 @@ bin/
 *.exe
 *.dmg
 
-
-# vscode settings
+# IDE settings
 .vscode/
+.idea/
 
 # Mac extras
 .DS_Store
