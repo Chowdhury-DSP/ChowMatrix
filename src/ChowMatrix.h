@@ -31,12 +31,6 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    int getNumPrograms() override;
-    int getCurrentProgram() override;
-    void setCurrentProgram (int index) override;
-    const String getProgramName (int index) override;
-    void updateHostPrograms();
-
     /** Handle to access node manager */
     NodeManager& getManager() { return manager; }
 
