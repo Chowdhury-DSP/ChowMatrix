@@ -19,7 +19,7 @@ void ScreenshotGenerator::takeScreenshots (const ArgumentList& args)
     std::cout << "Generating screenshots... Saving to " << outputDir.getFullPathName() << std::endl;
 
     std::unique_ptr<AudioProcessor> plugin (createPluginFilterOfType (AudioProcessor::WrapperType::wrapperType_Standalone));
-    dynamic_cast<ChowMatrix*> (plugin.get())->getStateManager().getPresetManager().setPreset (3); // set to "crazy" preset
+    plugin->setCurrentProgram (3); // set to "crazy" preset
     std::unique_ptr<AudioProcessorEditor> editor (plugin->createEditorIfNeeded());
 
     editor->setSize (700, 700); // make editor larger

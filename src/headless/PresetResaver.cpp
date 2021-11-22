@@ -22,7 +22,7 @@ void PresetResaver::savePresets (const ArgumentList& args)
     std::cout << "Resaving presets in directory: " << presetsDir.getFullPathName() << std::endl;
 
     std::unique_ptr<ChowMatrix> plugin (dynamic_cast<ChowMatrix*> (createPluginFilterOfType (AudioProcessor::WrapperType::wrapperType_Standalone)));
-    auto& stateManager = plugin->getStateManager();
+    auto& presetManager = plugin->getPresetManager();
 
     for (DirectoryEntry file : RangedDirectoryIterator (presetsDir, true))
     {
@@ -36,41 +36,27 @@ void PresetResaver::savePresets (const ArgumentList& args)
         std::cout << "Resaving: " << presetFile.getFileName() << std::endl;
 
         // reset to default state
-        stateManager.getPresetManager().setPreset (0);
+        presetManager.loadDefaultPreset();
         MessageManager::getInstance()->runDispatchLoopUntil (10); // pump dispatch loop so changes propagate...
 
         // load original preset
         auto originalPresetXml = XmlDocument::parse (presetFile);
-        int presetIdx = -1;
+        chowdsp::Preset originalPreset { originalPresetXml.get() };
         if (auto xmlState = originalPresetXml->getChildByName ("state"))
         {
-            stateManager.loadState (xmlState);
-
-            if (auto paramsXml = xmlState->getChildByName ("Parameters"))
-                if (auto presetParamXml = paramsXml->getChildByAttribute ("id", "preset"))
-                    presetIdx = presetParamXml->getIntAttribute ("value");
+            presetManager.loadPreset (originalPreset);
         }
-
-        if (presetIdx < 0)
+        else
         {
-            std::cout << "Unable to get preset index!" << std::endl;
+            std::cout << "Unable to load preset!" << std::endl;
             continue;
         }
 
         MessageManager::getInstance()->runDispatchLoopUntil (10); // pump dispatch loop so changes propagate...
 
         // save as new preset
-        auto newPresetXml = std::make_unique<XmlElement> ("Preset");
-        newPresetXml->setAttribute ("name", originalPresetXml->getStringAttribute ("name"));
-
-        auto newPresetXmlState = stateManager.saveState();
-        if (auto paramsXml = newPresetXmlState->getChildByName ("Parameters"))
-        {
-            if (auto presetParamXml = paramsXml->getChildByAttribute ("id", "preset"))
-                presetParamXml->setAttribute ("value", presetIdx);
-        }
-
-        newPresetXml->addChildElement (newPresetXmlState.release());
-        presetFile.replaceWithText (newPresetXml->toString());
+        auto curPreset = presetManager.getCurrentPreset();
+        chowdsp::Preset newPreset (curPreset->getName(), curPreset->getVendor(), *curPreset->getState(), curPreset->getCategory());
+        newPreset.toFile (presetFile);
     }
 }
