@@ -4,15 +4,17 @@
 #include "gui/BottomBar/HostControlMenu.h"
 #include "gui/BottomBar/TextSliderItem.h"
 #include "gui/DetailsView/NodeDetailsGUI.h"
-#include "gui/InsanityLNF.h"
+#include "gui/LookAndFeel/InsanityLNF.h"
+#include "gui/LookAndFeel/PresetsLNF.h"
 #include "gui/MatrixView/GraphViewItem.h"
-#include "state/presets/PresetCompItem.h"
-#include "state/presets/PresetsLNF.h"
+#include "state/PresetManager.h"
 
 namespace
 {
 const String dryTag = "dry_param";
 const String wetTag = "wet_param";
+
+const Identifier pluginStateTag = "ChowMatrix_State";
 
 constexpr double gainFadeTime = 0.05;
 constexpr float negInfDB = -60.0f;
@@ -36,7 +38,7 @@ ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
         node.addChild();
 
     stateManager.loadDefaultABStates();
-    stateManager.getPresetManager().hostUpdateFunc = std::bind (&ChowMatrix::updateHostPrograms, this);
+    presetManager = std::make_unique<PresetManager> (vts, stateManager);
 }
 
 void ChowMatrix::addParameters (Parameters& params)
@@ -53,7 +55,6 @@ void ChowMatrix::addParameters (Parameters& params)
     InsanityControl::addParameters (params);
     DelayTypeControl::addParameters (params);
     SyncControl::addParameters (params);
-    PresetManager::addParameters (params);
     HostParamControl::addParameters (params);
 }
 
@@ -131,7 +132,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerFactory ("GraphView", &GraphViewItem::factory);
     builder->registerFactory ("NodeDetails", &NodeDetailsItem::factory);
     builder->registerFactory ("TextSlider", &TextSliderItem::factory);
-    builder->registerFactory ("PresetComp", &PresetCompItem::factory);
+    builder->registerFactory ("PresetComp", &chowdsp::PresetsItem<ChowMatrix>::factory);
     builder->registerFactory ("ABComp", &ABCompItem::factory);
     builder->registerFactory ("HostControlMenu", &HostControlMenuItem::factory);
     builder->registerLookAndFeel ("InsanityLNF", std::make_unique<InsanityLNF>());
@@ -165,55 +166,34 @@ AudioProcessorEditor* ChowMatrix::createEditor()
 
 void ChowMatrix::getStateInformation (MemoryBlock& destData)
 {
-    MessageManagerLock mml;
-    auto xml = stateManager.saveState();
+    auto xml = std::make_unique<XmlElement> (pluginStateTag);
+
+    xml->addChildElement (stateManager.saveState().release());
+    xml->addChildElement (presetManager->saveXmlState().release());
+
     copyXmlToBinary (*xml, destData);
 }
 
 void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
 {
-    MessageManagerLock mml;
-    auto xmlState = getXmlFromBinary (data, sizeInBytes);
-    stateManager.loadState (xmlState.get());
-}
+    auto xml = getXmlFromBinary (data, sizeInBytes);
 
-int ChowMatrix::getNumPrograms()
-{
-    return stateManager.getPresetManager().getNumFactoryPresets();
-}
+    if (! xml->hasTagName (pluginStateTag))
+    {
+        // backwards compatibility with older way of loading state
+        stateManager.loadState (xml.get());
+        return;
+    }
 
-int ChowMatrix::getCurrentProgram()
-{
-    auto& presetManager = stateManager.getPresetManager();
-    const auto curPresetIdx = presetManager.getSelectedPresetIdx();
-
-    if (curPresetIdx > presetManager.getNumFactoryPresets())
-        return 0;
-
-    return curPresetIdx;
-}
-
-void ChowMatrix::setCurrentProgram (int index)
-{
-    auto& presetManager = stateManager.getPresetManager();
-
-    if (index > presetManager.getNumPresets() || index < 0) // out of range!
+    if (xml == nullptr) // invalid XML
         return;
 
-    if (index == presetManager.getSelectedPresetIdx()) // no update needed!
+    auto stateXml = xml->getChildByName (StateManager::stateXmlTag);
+    if (stateXml == nullptr) // invalid StateManager state
         return;
 
-    MessageManager::callAsync ([&presetManager, index] { presetManager.setPreset (index); });
-}
-
-const String ChowMatrix::getProgramName (int index)
-{
-    return stateManager.getPresetManager().getPresetName (index);
-}
-
-void ChowMatrix::updateHostPrograms()
-{
-    MessageManager::callAsync ([=] { updateHostDisplay (AudioProcessorListener::ChangeDetails().withProgramChanged (true)); });
+    presetManager->loadXmlState (xml->getChildByName (chowdsp::PresetManager::presetStateTag));
+    stateManager.loadState (stateXml);
 }
 
 // This creates new instances of the plugin
