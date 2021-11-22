@@ -4,7 +4,7 @@
 #include "dsp/Parameters/HostParamControl.h"
 
 /** Class to manage the plugin state */
-class StateManager
+class StateManager : private AsyncUpdater
 {
 public:
     StateManager (AudioProcessorValueTreeState& vts,
@@ -41,14 +41,21 @@ public:
     static const Identifier stateXmlTag;
 
 private:
+    void handleAsyncUpdate() override;
+    void loadStateInternal (const XmlElement* xml);
+
     AudioProcessorValueTreeState& vts;
     HostParamControl& paramControl;
     std::array<InputNode, 2>& inputNodes;
+
     SpinLock stateLoadingLock;
     std::atomic_bool isLoading { false };
 
     std::array<std::unique_ptr<XmlElement>, 2> abStates;
     bool currentState = false;
+
+    CriticalSection xmlStateChangingSection;
+    std::unique_ptr<XmlElement> xmlStateToLoad;
 
     static const Identifier nodesXmlTag;
     static const Identifier paramMapXmlTag;

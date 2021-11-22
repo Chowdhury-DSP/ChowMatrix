@@ -30,6 +30,16 @@ void StateManager::setCurrentABState (int newState)
     loadState (abStates[(size_t) currentState].get());
 }
 
+void StateManager::handleAsyncUpdate()
+{
+    ScopedLock sl (xmlStateChangingSection);
+    if (xmlStateToLoad != nullptr)
+    {
+        loadStateInternal (xmlStateToLoad.get());
+        xmlStateToLoad.reset();
+    }
+}
+
 std::unique_ptr<XmlElement> StateManager::saveState()
 {
     // save parameters
@@ -51,18 +61,35 @@ std::unique_ptr<XmlElement> StateManager::saveState()
     return std::move (xml);
 }
 
-void StateManager::loadState (const XmlElement* xmlState)
+void StateManager::loadState (const XmlElement* xml)
 {
-    const MessageManagerLock mml; // lock MessageManager so other parameter changes won't happen while we're loading new state
-    const SpinLock::ScopedLockType stateLoadingScopedLock (stateLoadingLock); // Lock our SpinLock so the processor won't try to run while we're loading new state
-    isLoading.store (true);
-
-    if (xmlState == nullptr || ! xmlState->hasTagName (stateXmlTag)) // invalid XML
+    // load ValueTreeState synchronously
+    if (xml == nullptr || ! xml->hasTagName (stateXmlTag)) // invalid XML
         return;
 
-    auto vtsXml = xmlState->getChildByName (vts.state.getType());
+    auto vtsXml = xml->getChildByName (vts.state.getType());
     if (vtsXml == nullptr) // invalid ValueTreeState
         return;
+
+    vts.replaceState (ValueTree::fromXml (*vtsXml)); //load parameters
+
+    // load nodes synchronously if we're on the message thread
+    if (MessageManager::existsAndIsCurrentThread())
+    {
+        loadStateInternal (xml);
+        return;
+    }
+
+    // otherwise load nodes asynchronously
+    ScopedLock sl (xmlStateChangingSection);
+    xmlStateToLoad = std::make_unique<XmlElement> (*xml);
+    triggerAsyncUpdate();
+}
+
+void StateManager::loadStateInternal (const XmlElement* xmlState)
+{
+    const SpinLock::ScopedLockType stateLoadingScopedLock (stateLoadingLock); // Lock our SpinLock so the processor won't try to run while we're loading new state
+    isLoading.store (true);
 
     auto childrenXml = xmlState->getChildByName (nodesXmlTag);
     if (childrenXml == nullptr) // invalid children XML
@@ -72,11 +99,8 @@ void StateManager::loadState (const XmlElement* xmlState)
     for (auto& node : inputNodes)
         node.clearChildren();
 
-    vts.replaceState (ValueTree::fromXml (*vtsXml)); //load parameters
-
     // load nodes
     size_t count = 0;
-
     for (auto* childXml : childrenXml->getChildIterator())
     {
         if (count > 2)
