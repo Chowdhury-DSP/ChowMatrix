@@ -36,8 +36,6 @@ public:
      */
     SpinLock& getStateLoadLock() noexcept { return stateLoadingLock; }
 
-    //    PresetManager& getPresetManager() { return presetManager; }
-
     bool getIsLoading() const noexcept { return isLoading.load(); }
 
     static const Identifier stateXmlTag;
@@ -48,8 +46,7 @@ private:
     std::array<InputNode, 2>& inputNodes;
     SpinLock stateLoadingLock;
     std::atomic_bool isLoading { false };
-
-    //    PresetManager presetManager;
+    
     std::array<std::unique_ptr<XmlElement>, 2> abStates;
     bool currentState = false;
 
