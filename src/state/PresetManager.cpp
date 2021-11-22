@@ -41,7 +41,7 @@ std::unique_ptr<XmlElement> PresetManager::savePresetState()
 
 void PresetManager::loadPresetState (const XmlElement* xml)
 {
-    stateManager.loadState(xml);
+    stateManager.loadState (xml);
 }
 
 chowdsp::Preset PresetManager::loadUserPresetFromFile (const File& file)

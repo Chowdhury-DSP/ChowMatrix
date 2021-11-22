@@ -46,7 +46,7 @@ private:
     std::array<InputNode, 2>& inputNodes;
     SpinLock stateLoadingLock;
     std::atomic_bool isLoading { false };
-    
+
     std::array<std::unique_ptr<XmlElement>, 2> abStates;
     bool currentState = false;
 
