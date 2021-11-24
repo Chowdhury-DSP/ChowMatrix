@@ -5,6 +5,7 @@
 #include "dsp/Parameters/DelayTypeControl.h"
 #include "dsp/Parameters/HostParamControl.h"
 #include "dsp/Parameters/InsanityControl.h"
+#include "dsp/Parameters/NodeParamControl.h"
 #include "dsp/Parameters/SyncControl.h"
 #include "state/StateManager.h"
 #include <pch.h>
@@ -59,6 +60,7 @@ private:
     HostParamControl hostParamControl;
     DelayTypeControl delayTypeControl;
     SyncControl syncControl;
+    NodeParamControl nodeParamControl;
 
     // create shared resources here so that
     // loading new nodes is fast
