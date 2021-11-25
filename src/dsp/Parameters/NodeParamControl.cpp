@@ -48,7 +48,7 @@ NodeParamControl::NodeParamControl (AudioProcessorValueTreeState& vts, std::arra
     doForParams ([&] (int nodeNum, int paramNum)
                  {
                      auto id = getForwardParamID (nodeNum, paramNum);
-                     auto forwardedParam = std::make_unique<chowdsp::ForwardingParameter> (id, "Blank");
+                     auto forwardedParam = std::make_unique<chowdsp::ForwardingParameter> (id, nullptr, "Blank");
 
                      forwardedParam->setProcessor (&vts.processor);
                      forwardedParams.add (forwardedParam.get());
