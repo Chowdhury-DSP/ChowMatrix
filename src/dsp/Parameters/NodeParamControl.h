@@ -10,6 +10,7 @@ public:
 
     void newNodeAdded (DelayNode* newNode) override;
     void newNodeRemoved (DelayNode* newNode) override;
+    void nodeIndexHasChanged (DelayNode* node, int oldIndex, int newIndex) override;
 
     void parameterChanged (const String& /*parameterID*/, float /*newValue*/) override {}
 

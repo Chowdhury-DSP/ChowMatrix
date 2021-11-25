@@ -37,6 +37,11 @@ void BaseController::nodeRemoved (DelayNode* nodeToRemove)
     nodeToRemove->removeNodeListener (this);
 }
 
+void BaseController::nodeIndexChanged (DelayNode* node, int oldIndex, int newIndex)
+{
+    nodeIndexHasChanged (node, oldIndex, newIndex);
+}
+
 void BaseController::doForNodes (std::function<void (DelayNode*)> nodeFunc)
 {
     NodeManager::doForNodes (nodes, nodeFunc);

@@ -31,30 +31,47 @@ void doForNodeParams (DelayNode* node, FuncType&& func)
         func (paramCast, nodeIndex, forwardIndex);
     }
 }
+
+template <typename FuncType>
+void doForNodeParamIndexes (int nodeIndex, FuncType&& func)
+{
+    for (int paramIndex = 0; paramIndex < ParamHelpers::numParams; ++paramIndex)
+    {
+        int forwardIndex = nodeIndex * ParamHelpers::numParams + paramIndex;
+        func (forwardIndex);
+    }
 }
+} // namespace
 
 NodeParamControl::NodeParamControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes) : BaseController (vts, nodes, StringArray())
 {
-    doForParams ([&] (int nodeNum, int paramNum) {
+    doForParams ([&] (int nodeNum, int paramNum)
+                 {
                      auto id = getForwardParamID (nodeNum, paramNum);
                      auto forwardedParam = std::make_unique<chowdsp::ForwardingParameter> (id, "Blank");
 
                      forwardedParam->setProcessor (&vts.processor);
-                     forwardedParams.add(forwardedParam.get());
+                     forwardedParams.add (forwardedParam.get());
                      vts.processor.addParameter (forwardedParam.release());
                  });
 }
 
 void NodeParamControl::newNodeAdded (DelayNode* newNode)
 {
-    doForNodeParams(newNode, [=] (RangedAudioParameter* param, int nodeIndex, int forwardIndex) {
-        forwardedParams[forwardIndex]->setParam (param, "Node " + String (nodeIndex + 1) + ": " + param->getName (1024));
-    });
+    doForNodeParams (newNode, [=] (RangedAudioParameter* param, int nodeIndex, int forwardIndex)
+                     { forwardedParams[forwardIndex]->setParam (param, "Node " + String (nodeIndex + 1) + ": " + param->getName (1024)); });
 }
 
-void NodeParamControl::newNodeRemoved (DelayNode* newNode)
+void NodeParamControl::newNodeRemoved (DelayNode* node)
 {
-    doForNodeParams(newNode, [=] (RangedAudioParameter* /*param*/, int /*nodeIndex*/, int forwardIndex) {
-        forwardedParams[forwardIndex]->setParam (nullptr);
-    });
+    doForNodeParamIndexes (node->getIndex(), [=] (int forwardIndex)
+                           { forwardedParams[forwardIndex]->setParam (nullptr); });
+}
+
+void NodeParamControl::nodeIndexHasChanged (DelayNode* node, int oldIndex, int newIndex)
+{
+    doForNodeParamIndexes (oldIndex, [=] (int forwardIndex)
+                           { forwardedParams[forwardIndex]->setParam (nullptr); });
+
+    newNodeAdded (node);
 }
