@@ -8,8 +8,7 @@ using namespace ParamTags;
 ParamSlider::SliderAttachment::SliderAttachment (ParamSlider& s)
     : slider (s), attachment (
                       *s.param,
-                      [=] (float val)
-                      { setValue (val); },
+                      [=] (float val) { setValue (val); },
                       nullptr)
 {
     attachment.sendInitialUpdate();

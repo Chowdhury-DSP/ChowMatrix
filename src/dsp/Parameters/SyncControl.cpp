@@ -49,13 +49,10 @@ void SyncControl::parameterChanged (const String&, float newValue)
 {
     if (MessageManager::getInstance()->isThisTheMessageThread())
     {
-        doForNodes ([=] (DelayNode* n)
-                    { n->setDelaySync (static_cast<bool> (newValue)); });
+        doForNodes ([=] (DelayNode* n) { n->setDelaySync (static_cast<bool> (newValue)); });
     }
     else
     {
-        MessageManager::callAsync ([=]
-                                   { doForNodes ([=] (DelayNode* n)
-                                                 { n->setDelaySync (static_cast<bool> (newValue)); }); });
+        MessageManager::callAsync ([=] { doForNodes ([=] (DelayNode* n) { n->setDelaySync (static_cast<bool> (newValue)); }); });
     }
 }
