@@ -77,7 +77,7 @@ public:
     void deleteNode();
 
     // Manage node index
-    void setIndex (int newIdx) { nodeIdx = newIdx; }
+    void setIndex (int newIdx);
     int getIndex() const noexcept { return nodeIdx; }
     void setParent (BaseNode<DelayNode>* parent) override;
 

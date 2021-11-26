@@ -310,6 +310,17 @@ void DelayNode::deleteNode()
     nodeListeners.call (&DBaseNode::Listener::nodeRemoved, this);
 }
 
+void DelayNode::setIndex (int newIndex)
+{
+    if (nodeIdx == newIndex)
+        return;
+
+    auto oldIndex = nodeIdx;
+    nodeIdx = newIndex;
+
+    nodeListeners.call (&DBaseNode::Listener::nodeIndexChanged, this, oldIndex, nodeIdx);
+}
+
 void DelayNode::setSelected (bool shouldBeSelected)
 {
     isSelected = shouldBeSelected;

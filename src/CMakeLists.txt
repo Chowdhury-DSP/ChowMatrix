@@ -21,6 +21,7 @@ target_sources(ChowMatrix PRIVATE
     dsp/Parameters/HostParamControl.cpp
     dsp/Parameters/InsanityControl.cpp
     dsp/Parameters/InsanityLockHelper.cpp
+    dsp/Parameters/NodeParamControl.cpp
     dsp/Parameters/RandomiseLockHelper.cpp
     dsp/Parameters/ParamHelpers.cpp
     dsp/Parameters/SyncControl.cpp

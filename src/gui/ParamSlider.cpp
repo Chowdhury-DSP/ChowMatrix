@@ -5,8 +5,46 @@
 
 using namespace ParamTags;
 
+ParamSlider::SliderAttachment::SliderAttachment (ParamSlider& s)
+    : slider (s), attachment (
+                      *s.param,
+                      [=] (float val)
+                      { setValue (val); },
+                      nullptr)
+{
+    attachment.sendInitialUpdate();
+    slider.valueChanged();
+    slider.addListener (this);
+}
+
+ParamSlider::SliderAttachment::~SliderAttachment()
+{
+    slider.removeListener (this);
+}
+
+void ParamSlider::SliderAttachment::setValue (float value)
+{
+    const ScopedValueSetter<bool> svs (ignoreCallbacks, true);
+    slider.setParameterValue (slider.param->convertTo0to1 (value), sendNotificationSync);
+}
+
+void ParamSlider::SliderAttachment::sliderValueChanged (Slider*)
+{
+    if (ignoreCallbacks)
+        return;
+
+    auto value01 = (float) slider.getValue();
+    auto diff01 = value01 - slider.param->convertTo0to1 (slider.param->get());
+
+    attachment.setValueAsPartOfGesture (slider.param->convertFrom0to1 (value01));
+
+    slider.setLinkedParams (diff01);
+}
+
+//==================================================================
 ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) : node (node),
                                                                                param (param),
+                                                                               attachment (*this),
                                                                                showLabel (showLabel)
 {
     setName (param->name);
@@ -14,9 +52,6 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) : n
     nameLabel.setTooltip (getTooltip());
     linkFlag.store (false);
     isInGesture.store (false);
-
-    addListener (this);
-    param->addListener (this);
 
     addAndMakeVisible (nameLabel);
     addAndMakeVisible (valueLabel);
@@ -44,21 +79,18 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) : n
 
     nameLabel.setText (param->paramID, sendNotification);
     valueLabel.setInterceptsMouseClicks (false, false);
-    parameterValueChanged (0, 0.0f);
+    setParameterValue (0.0f, dontSendNotification);
 
     setRange (0.0, 1.0);
     setSliderStyle (SliderStyle::RotaryVerticalDrag);
     setDoubleClickReturnValue (true, param->getDefaultValue());
 }
 
-ParamSlider::~ParamSlider()
-{
-    param->removeListener (this);
-}
+ParamSlider::~ParamSlider() = default;
 
 void ParamSlider::setValueText (const String& paramID, float value01)
 {
-    MessageManagerLock mml;
+    const MessageManagerLock mml;
 
     // special case: delay parameter in Sync mode
     if (paramID == delayTag && node.getDelaySync())
@@ -86,20 +118,8 @@ void ParamSlider::setValueText (const String& paramID, float value01)
     valueLabel.setText (param->getCurrentValueAsText(), sendNotification);
 }
 
-void ParamSlider::parameterValueChanged (int, float)
+void ParamSlider::setLinkedParams (float diff01)
 {
-    auto value01 = param->convertTo0to1 (param->get());
-    setValueText (param->paramID, value01);
-    this->setValue (value01, dontSendNotification);
-}
-
-void ParamSlider::sliderValueChanged (Slider*)
-{
-    auto value01 = (float) this->getValue();
-    auto diff01 = value01 - param->convertTo0to1 (param->get());
-
-    ParamHelpers::setParameterValue (param, param->convertFrom0to1 (value01));
-
     // if slider is linked, set parameter for all nodes
     if (linkFlag.load())
     {
@@ -108,6 +128,12 @@ void ParamSlider::sliderValueChanged (Slider*)
         else if (isDoubleClicking)
             node.setParameterDefaultListeners (param->paramID);
     }
+}
+
+void ParamSlider::setParameterValue (float value01, NotificationType notificationType)
+{
+    setValueText (param->paramID, value01);
+    setValue (value01, notificationType);
 }
 
 void ParamSlider::resized()
