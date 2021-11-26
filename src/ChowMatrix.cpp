@@ -24,7 +24,7 @@ ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
                            hostParamControl (vts, &inputNodes),
                            delayTypeControl (vts, &inputNodes, stateManager),
                            syncControl (vts, &inputNodes),
-                           nodeParamControl (vts, &inputNodes),
+                           nodeParamControl (vts, &inputNodes, presetManager),
                            stateManager (vts, hostParamControl, inputNodes)
 {
     manager.initialise (&inputNodes);
