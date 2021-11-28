@@ -32,11 +32,11 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            cmake_args: "-DCMAKE_BUILD_TYPE=Release"
+            cmake_args: "-DBUILD_HEADLESS=ON"
           - os: windows-latest
-            cmake_args: ""
+            cmake_args: "-DRUN_PLUGINVAL=ON"
           - os: macos-latest
-            cmake_args: "-D\"CMAKE_OSX_ARCHITECTURES=arm64;x86_64\""
+            cmake_args: "-DRUN_PLUGINVAL=ON -D\"CMAKE_OSX_ARCHITECTURES=arm64;x86_64\""
     
     steps:
     - name: Install Linux Deps
@@ -63,15 +63,15 @@ jobs:
 
     - name: Build
       shell: bash
-      run: cmake --build build --config Release --parallel
+      run: cmake --build build --parallel
 
-    # - name: Setup debug session
-    #   uses: mxschmitt/action-tmate@v3
+      # - name: Setup debug session
+      #   uses: mxschmitt/action-tmate@v3
 
     - name: Unit Tests
       if: runner.os == 'Linux'
       run: build/ChowMatrix --unit-tests --all
 
-    - name: Pluginval
-      if: runner.os == 'Windows' || runner.os == 'MacOS'
-      run: bash scripts/validate.sh
+#    - name: Pluginval
+#      if: runner.os == 'Windows' || runner.os == 'MacOS'
+#      run: bash scripts/validate.sh

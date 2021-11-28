@@ -69,6 +69,14 @@ target_link_libraries(ChowMatrix PUBLIC
     juce_plugin_modules
 )
 
+option(RUN_PLUGINVAL "Run pluginval on ChowMatrix plugins" OFF)
+if(RUN_PLUGINVAL)
+    create_pluginval_target(ChowMatrix_VST3 "ChowMatrix.vst3")
+    if(APPLE)
+        create_pluginval_target(ChowMatrix_AU "ChowMatrix.component")
+    endif()
+endif()
+
 # we need these flags for notarization on MacOS
 option(MACOS_RELEASE "Set build flags for MacOS Release" OFF)
 if(MACOS_RELEASE)

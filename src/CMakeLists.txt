@@ -1,4 +1,5 @@
-if(NOT (IOS OR MACOS_RELEASE))
+option(BUILD_HEADLESS "Build ChowMatrix headless utilities" OFF)
+if(NOT (IOS OR MACOS_RELEASE) AND BUILD_HEADLESS)
     add_subdirectory(headless)
 endif()
 
