@@ -33,10 +33,13 @@ jobs:
         include:
           - os: ubuntu-latest
             cmake_args: "-DBUILD_HEADLESS=ON"
+            build_args: ""
           - os: windows-latest
             cmake_args: "-DRUN_PLUGINVAL=ON"
+            build_args: "--target pluginval-all"
           - os: macos-latest
-            cmake_args: "-DRUN_PLUGINVAL=ON -D\"CMAKE_OSX_ARCHITECTURES=arm64;x86_64\""
+            cmake_args: "-DRUN_PLUGINVAL=ON"
+            build_args: "--target pluginval-all"
     
     steps:
     - name: Install Linux Deps
@@ -62,8 +65,10 @@ jobs:
       run: cmake -Bbuild $CMAKE_ARGS
 
     - name: Build
+      env:
+        BUILD_ARGS: ${{ matrix.build_args }}
       shell: bash
-      run: cmake --build build --parallel
+      run: cmake --build build --parallel 4 $BUILD_ARGS
 
       # - name: Setup debug session
       #   uses: mxschmitt/action-tmate@v3
