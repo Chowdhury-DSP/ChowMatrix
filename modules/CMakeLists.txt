@@ -16,6 +16,7 @@ target_link_libraries(juce_plugin_modules
         BinaryData
         juce::juce_audio_utils
         juce::juce_audio_plugin_client
+        juce::juce_dsp
         foleys_gui_magic
         chowdsp_dsp
         chowdsp_gui
