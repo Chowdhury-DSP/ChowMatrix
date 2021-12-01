@@ -167,7 +167,7 @@ void DelayNodeComponent::parameterValueChanged (int idx, float value)
     if (node.getParamID (idx) == modFreqTag)
         updateTimerFreq (value);
 
-    MessageManagerLock mml;
+    const MessageManagerLock mml;
     updatePosition();
 }
 

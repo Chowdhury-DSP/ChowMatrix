@@ -24,6 +24,7 @@ ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
                            hostParamControl (vts, &inputNodes),
                            delayTypeControl (vts, &inputNodes, stateManager),
                            syncControl (vts, &inputNodes),
+                           nodeParamControl (vts, &inputNodes, presetManager),
                            stateManager (vts, hostParamControl, inputNodes)
 {
     manager.initialise (&inputNodes);
@@ -191,7 +192,7 @@ void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
     auto stateXml = xml->getChildByName (StateManager::stateXmlTag);
     if (stateXml == nullptr) // invalid StateManager state
         return;
-
+    
     presetManager->loadXmlState (xml->getChildByName (chowdsp::PresetManager::presetStateTag));
     stateManager.loadState (stateXml);
 }

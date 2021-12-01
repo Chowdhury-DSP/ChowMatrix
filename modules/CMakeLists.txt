@@ -69,3 +69,5 @@ if(NOT APPLE)
     target_link_libraries(juce_plugin_modules PRIVATE juce::juce_opengl)
     target_compile_definitions(juce_plugin_modules PUBLIC FOLEYS_ENABLE_OPEN_GL_CONTEXT=1)
 endif()
+
+include(cmake/pluginval.cmake)

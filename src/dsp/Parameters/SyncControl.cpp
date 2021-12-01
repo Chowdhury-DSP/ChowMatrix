@@ -47,7 +47,12 @@ void SyncControl::newNodeAdded (DelayNode* newNode)
 
 void SyncControl::parameterChanged (const String&, float newValue)
 {
-    MessageManager::callAsync ([=] {
+    if (MessageManager::getInstance()->isThisTheMessageThread())
+    {
         doForNodes ([=] (DelayNode* n) { n->setDelaySync (static_cast<bool> (newValue)); });
-    });
+    }
+    else
+    {
+        MessageManager::callAsync ([=] { doForNodes ([=] (DelayNode* n) { n->setDelaySync (static_cast<bool> (newValue)); }); });
+    }
 }
