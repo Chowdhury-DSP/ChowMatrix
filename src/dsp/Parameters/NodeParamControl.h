@@ -8,6 +8,7 @@ class NodeParamControl : public BaseController,
 {
 public:
     NodeParamControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes, std::unique_ptr<chowdsp::PresetManager>& presetMgr);
+    ~NodeParamControl() override;
 
     void newNodeAdded (DelayNode* newNode) override;
     void newNodeRemoved (DelayNode* newNode) override;

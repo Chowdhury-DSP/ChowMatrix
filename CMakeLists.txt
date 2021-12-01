@@ -69,7 +69,7 @@ target_link_libraries(ChowMatrix PUBLIC
     juce_plugin_modules
 )
 
-option(RUN_PLUGINVAL "Run pluginval on ChowMatrix plugins" ON)
+option(RUN_PLUGINVAL "Run pluginval on ChowMatrix plugins" OFF)
 if(RUN_PLUGINVAL)
     create_pluginval_target(ChowMatrix_VST3 "ChowMatrix.vst3")
 endif()
