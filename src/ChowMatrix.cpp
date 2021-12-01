@@ -192,7 +192,7 @@ void ChowMatrix::setStateInformation (const void* data, int sizeInBytes)
     auto stateXml = xml->getChildByName (StateManager::stateXmlTag);
     if (stateXml == nullptr) // invalid StateManager state
         return;
-    
+
     presetManager->loadXmlState (xml->getChildByName (chowdsp::PresetManager::presetStateTag));
     stateManager.loadState (stateXml);
 }

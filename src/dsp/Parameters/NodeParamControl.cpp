@@ -52,16 +52,15 @@ void doForNodeParamIndexes (int nodeIndex, FuncType&& func)
 NodeParamControl::NodeParamControl (AudioProcessorValueTreeState& vts, std::array<InputNode, 2>* nodes, std::unique_ptr<chowdsp::PresetManager>& presetMgr)
     : BaseController (vts, nodes, StringArray()), presetManager (presetMgr)
 {
-    doForParams ([&] (int nodeNum, int paramNum)
-                 {
-                     auto id = getForwardParamID (nodeNum, paramNum);
-                     auto forwardedParam = std::make_unique<chowdsp::ForwardingParameter> (id, nullptr, "Blank");
+    doForParams ([&] (int nodeNum, int paramNum) {
+        auto id = getForwardParamID (nodeNum, paramNum);
+        auto forwardedParam = std::make_unique<chowdsp::ForwardingParameter> (id, nullptr, "Blank");
 
-                     forwardedParam->setProcessor (&vts.processor);
-                     forwardedParams.add (forwardedParam.get());
-                     forwardedParam->addListener (this);
-                     vts.processor.addParameter (forwardedParam.release());
-                 });
+        forwardedParam->setProcessor (&vts.processor);
+        forwardedParams.add (forwardedParam.get());
+        forwardedParam->addListener (this);
+        vts.processor.addParameter (forwardedParam.release());
+    });
 }
 
 NodeParamControl::~NodeParamControl()
@@ -72,8 +71,7 @@ NodeParamControl::~NodeParamControl()
 
 void NodeParamControl::newNodeAdded (DelayNode* newNode)
 {
-    doForNodeParams (newNode, [=] (RangedAudioParameter* param, int nodeIndex, int forwardIndex)
-                     { forwardedParams[forwardIndex]->setParam (param, "Node " + String (nodeIndex + 1) + ": " + param->getName (1024)); });
+    doForNodeParams (newNode, [=] (RangedAudioParameter* param, int nodeIndex, int forwardIndex) { forwardedParams[forwardIndex]->setParam (param, "Node " + String (nodeIndex + 1) + ": " + param->getName (1024)); });
 
     setCurrentPresetDirty();
 }
