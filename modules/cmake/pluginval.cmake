@@ -37,7 +37,7 @@ function(create_pluginval_target target plugin)
     add_custom_command(TARGET ${name}
             POST_BUILD
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-            COMMAND ${pluginval_exe} --validate-in-process --strictness-level 8 --timeout-ms 600000 --output-dir "." --validate "${plugin_location}/${plugin}" || exit 1
+            COMMAND ${pluginval_exe} --validate-in-process --strictness-level 5 --timeout-ms 600000 --output-dir "." --validate "${plugin_location}/${plugin}" || exit 1
             )
     add_dependencies(pluginval-all ${name})
 endfunction()
