@@ -272,6 +272,44 @@ String getName (const String& paramID)
     return {};
 }
 
+String getParamID (int index)
+{
+    switch (index)
+    {
+        case 0:
+            return delayTag;
+        case 1:
+            return panTag;
+        case 2:
+            return fbTag;
+        case 3:
+            return gainTag;
+        case 4:
+            return lpfTag;
+        case 5:
+            return hpfTag;
+        case 6:
+            return distTag;
+        case 7:
+            return pitchTag;
+        case 8:
+            return diffTag;
+        case 9:
+            return revTag;
+        case 10:
+            return modFreqTag;
+        case 11:
+            return delayModTag;
+        case 12:
+            return panModTag;
+        default:
+            break;
+    }
+
+    jassertfalse;
+    return {};
+}
+
 void loadStringArray (StringArray& array, String string)
 {
     array.clear();

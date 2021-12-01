@@ -1,4 +1,6 @@
-if(NOT (IOS OR MACOS_RELEASE))
+option(BUILD_HEADLESS "Build ChowMatrix headless utilities" OFF)
+if(NOT (IOS OR MACOS_RELEASE) AND BUILD_HEADLESS)
+    message(STATUS "Building ChowMatrix Headless!")
     add_subdirectory(headless)
 endif()
 
@@ -21,6 +23,7 @@ target_sources(ChowMatrix PRIVATE
     dsp/Parameters/HostParamControl.cpp
     dsp/Parameters/InsanityControl.cpp
     dsp/Parameters/InsanityLockHelper.cpp
+    dsp/Parameters/NodeParamControl.cpp
     dsp/Parameters/RandomiseLockHelper.cpp
     dsp/Parameters/ParamHelpers.cpp
     dsp/Parameters/SyncControl.cpp
