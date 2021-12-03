@@ -3,7 +3,7 @@
 
 namespace
 {
-constexpr int scrollThickness = 6;
+constexpr int scrollThickness = 8;
 }
 
 NodeDetailsViewport::NodeDetailsViewport (ChowMatrix& chowMatrix) : manager (chowMatrix.getManager()),
