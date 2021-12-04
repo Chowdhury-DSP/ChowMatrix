@@ -1,5 +1,7 @@
 juce_add_binary_data(BinaryData SOURCES
     gui.xml
+    gui_ios.xml
+    
     Diceroll.png
     Panic.png
     home.svg

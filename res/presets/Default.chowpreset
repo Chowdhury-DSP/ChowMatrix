@@ -49,7 +49,7 @@
               <PARAM id="DIST" value="0.0"/>
               <PARAM id="DLY" value="199.9999847412109"/>
               <PARAM id="FDBK" value="0.0"/>
-              <PARAM id="GAIN" value="4.654685974121094"/>
+              <PARAM id="GAIN" value="0.0"/>
               <PARAM id="HPF" value="20.0"/>
               <PARAM id="LPF" value="20000.0"/>
               <PARAM id="PAN" value="0.0"/>
