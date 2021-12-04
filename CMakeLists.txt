@@ -85,7 +85,7 @@ endif()
 if(IOS)
     message(STATUS "Setting iOS-specific properties...")
 
-    foreach(target IN ITEMS BinaryData juce_plugin_modules ChowMatrix ChowMatrix_Standalone ChowMatrix_AUv3)
+    foreach(target IN ITEMS BinaryData polylogarithm juce_plugin_modules ChowMatrix ChowMatrix_Standalone ChowMatrix_AUv3)
         set_target_properties(${target}
             PROPERTIES
                 RUNTIME_OUTPUT_DIRECTORY "./"
