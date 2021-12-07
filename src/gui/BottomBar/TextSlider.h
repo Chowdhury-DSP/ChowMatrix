@@ -16,30 +16,29 @@ public:
         setLookAndFeel (nullptr);
     }
 
-    void mouseDrag (const MouseEvent& e) override
-    {
-        isDragging = true;
-        Slider::mouseDrag (e);
-    }
-
-    void mouseDoubleClick (const MouseEvent& e) override
-    {
-        hideTextBox (false);
-        Slider::mouseDoubleClick (e);
-    }
-
     void mouseUp (const MouseEvent& e) override
     {
         Slider::mouseUp (e);
 
-        if (! isDragging && ! e.mods.isAnyModifierKeyDown())
-            showTextBox();
+        multiClicking = e.getNumberOfClicks() > 1;
+        bool dontShowLabel = e.mouseWasDraggedSinceMouseDown() || e.mods.isAnyModifierKeyDown() || multiClicking;
+        if (! dontShowLabel)
+        {
+            Timer::callAfterDelay (270,
+                                   [=] {
+                                       if (multiClicking)
+                                       {
+                                           multiClicking = false;
+                                           return;
+                                       }
 
-        isDragging = false;
+                                       showTextBox();
+                                   });
+        }
     }
 
 private:
-    bool isDragging = false;
+    bool multiClicking = false;
 
     chowdsp::SharedLNFAllocator lnfAllocator;
 
