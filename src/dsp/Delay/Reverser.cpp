@@ -55,5 +55,6 @@ void Reverser::setReverseTime (float revTimeMs)
 
     dsp::WindowingFunction<float>::fillWindowingTables (window,
                                                         (size_t) windowSize,
-                                                        dsp::WindowingFunction<float>::hann);
+                                                        dsp::WindowingFunction<float>::hann,
+                                                        false);
 }

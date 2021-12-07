@@ -24,6 +24,7 @@ public:
         y += revBuffPtr[bufferRead1] * window[bufferRead1 % windowSize];
         y += revBuffPtr[bufferRead2] * window[bufferRead2 % windowSize];
 
+        // update read pointers
         bufferRead1--;
         bufferRead1 = bufferRead1 > 0 ? bufferRead1 : doubleWindowSize;
 
@@ -34,10 +35,11 @@ public:
         revBuffPtr[bufferWrite] = x;
         revBuffPtr[bufferWrite + doubleWindowSize] = x;
 
+        // update write pointers
         bufferWrite++;
         bufferWrite = bufferWrite >= doubleWindowSize ? 0 : bufferWrite;
 
-        return y * corrGain;
+        return y;
     }
 
 private:
@@ -54,8 +56,6 @@ private:
 
     int bufferWrite, bufferRead1, bufferRead2;
     int windowSize, halfWindowSize, doubleWindowSize;
-
-    const float corrGain = Decibels::decibelsToGain (-6.0f);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Reverser)
 };
