@@ -25,8 +25,7 @@ public:
         if (! dontShowLabel)
         {
             Timer::callAfterDelay (270,
-                                   [=]
-                                   {
+                                   [=] {
                                        if (multiClicking)
                                        {
                                            multiClicking = false;

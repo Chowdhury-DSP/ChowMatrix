@@ -8,8 +8,7 @@ using namespace ParamTags;
 ParamSlider::SliderAttachment::SliderAttachment (ParamSlider& s)
     : slider (s), attachment (
                       *s.param,
-                      [=] (float val)
-                      { setValue (val); },
+                      [=] (float val) { setValue (val); },
                       nullptr)
 {
     attachment.sendInitialUpdate();
@@ -70,8 +69,7 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) : n
         valueLabel.setColour (Label::textColourId, Colours::white);
         valueLabel.setColour (Label::outlineWhenEditingColourId, Colours::transparentBlack);
         valueLabel.setJustificationType (Justification::centred);
-        valueLabel.onEditorHide = [=]
-        {
+        valueLabel.onEditorHide = [=] {
             auto stringFunc = ParamHelpers::getStringFuncForParam (param->paramID);
             auto unNormalisedValue = stringFunc (valueLabel.getText (true));
             ParamHelpers::setParameterValue (param, unNormalisedValue);
@@ -232,8 +230,7 @@ void ParamSlider::mouseUp (const MouseEvent& e)
     if (! dontShowLabel)
     {
         Timer::callAfterDelay (270,
-                               [=]
-                               {
+                               [=] {
                                    if (isMultiClicking)
                                    {
                                        isMultiClicking = false;
