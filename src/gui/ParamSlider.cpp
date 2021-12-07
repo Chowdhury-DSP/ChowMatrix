@@ -8,7 +8,8 @@ using namespace ParamTags;
 ParamSlider::SliderAttachment::SliderAttachment (ParamSlider& s)
     : slider (s), attachment (
                       *s.param,
-                      [=] (float val) { setValue (val); },
+                      [=] (float val)
+                      { setValue (val); },
                       nullptr)
 {
     attachment.sendInitialUpdate();
@@ -69,7 +70,8 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) : n
         valueLabel.setColour (Label::textColourId, Colours::white);
         valueLabel.setColour (Label::outlineWhenEditingColourId, Colours::transparentBlack);
         valueLabel.setJustificationType (Justification::centred);
-        valueLabel.onEditorHide = [=] {
+        valueLabel.onEditorHide = [=]
+        {
             auto stringFunc = ParamHelpers::getStringFuncForParam (param->paramID);
             auto unNormalisedValue = stringFunc (valueLabel.getText (true));
             ParamHelpers::setParameterValue (param, unNormalisedValue);
@@ -78,7 +80,7 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) : n
 
     nameLabel.setText (param->paramID, sendNotification);
     valueLabel.setInterceptsMouseClicks (false, false);
-    setParameterValue (0.0f, dontSendNotification);
+    setParameterValue (param->convertTo0to1 (param->get()), dontSendNotification);
 
     setRange (0.0, 1.0);
     setSliderStyle (SliderStyle::RotaryVerticalDrag);
@@ -212,7 +214,6 @@ void ParamSlider::mouseDoubleClick (const MouseEvent& e)
 {
     isDoubleClicking = true;
     linkFlag.store (e.mods.isShiftDown());
-    valueLabel.hideEditor (true);
 
     if (e.mods.isCommandDown()) // CMD+click is for insanity lock!
         return;
@@ -225,13 +226,24 @@ void ParamSlider::mouseUp (const MouseEvent& e)
 {
     Slider::mouseUp (e);
 
+    isMultiClicking = e.getNumberOfClicks() > 1;
     bool dontShowLabel = e.mouseWasDraggedSinceMouseDown() || e.mods.isAnyModifierKeyDown()
-                         || e.mods.isPopupMenu() || showLabel || e.getNumberOfClicks() > 1;
+                         || e.mods.isPopupMenu() || showLabel || isMultiClicking;
     if (! dontShowLabel)
     {
-        valueLabel.showEditor();
-        if (auto editor = valueLabel.getCurrentTextEditor())
-            editor->setJustification (Justification::centred);
+        Timer::callAfterDelay (270,
+                               [=]
+                               {
+                                   if (isMultiClicking)
+                                   {
+                                       isMultiClicking = false;
+                                       return;
+                                   }
+
+                                   valueLabel.showEditor();
+                                   if (auto* editor = valueLabel.getCurrentTextEditor())
+                                       editor->setJustification (Justification::centred);
+                               });
     }
 
     isDragging = false;
