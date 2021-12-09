@@ -14,8 +14,10 @@ struct TwoFingerDragToScrollListener : private MouseListener,
         getContentHolder().addMouseListener (this, true);
         offsetX.addListener (this);
         offsetY.addListener (this);
-        offsetX.behaviour.setMinimumVelocity (60);
-        offsetY.behaviour.setMinimumVelocity (60);
+        offsetX.behaviour.setMinimumVelocity (0.1);
+        offsetY.behaviour.setMinimumVelocity (0.1);
+        offsetX.behaviour.setFriction (0.1);
+        offsetY.behaviour.setFriction (0.1);
     }
 
     ~TwoFingerDragToScrollListener() override
@@ -78,8 +80,6 @@ struct TwoFingerDragToScrollListener : private MouseListener,
 
     void endDragAndClearGlobalMouseListener()
     {
-        offsetX.endDrag();
-        offsetY.endDrag();
         isDragging = false;
 
         getContentHolder().addMouseListener (this, true);

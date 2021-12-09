@@ -9,6 +9,7 @@ juce_add_binary_data(BinaryData SOURCES
     cog-solid.svg
     LeftArrow.svg
     RightArrow.svg
+    ellipsis-h-solid.png
 
     presets/Crazy.chowpreset
     presets/Default.chowpreset

@@ -1,16 +1,17 @@
 #include "GraphViewport.h"
+#include "ChowMatrix.h"
 
 namespace
 {
 /** Max dimensions for the GraphView internal component */
-constexpr int maxDimX = 2500;
-constexpr int maxDimY = 1200;
+constexpr int maxDimX = 1500;
+constexpr int maxDimY = 800;
 
 /** Will stop scrolling when node is this distance from edge */
 constexpr int scrollDistanceFromEdge = 30;
 
 /** Speed of autoscrolling */
-constexpr int scrollSpeed = 2;
+constexpr int scrollSpeed = 1;
 } // namespace
 
 GraphViewport::GraphViewport (ChowMatrix& plugin) : graphView (plugin, *this),

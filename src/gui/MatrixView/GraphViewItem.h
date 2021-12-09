@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ChowMatrix.h"
 #include "GraphViewport.h"
 
 class GraphViewItem : public foleys::GuiItem
