@@ -145,19 +145,13 @@ AudioProcessorEditor* ChowMatrix::createEditor()
 #endif
 
     // GUI trigger functions
-    magicState.addTrigger ("flush_delays", [=]
-                           { NodeManager::doForNodes (&inputNodes, [] (DelayNode* n)
-                                                      { n->flushDelays(); }); });
+    magicState.addTrigger ("flush_delays", [=] { NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->flushDelays(); }); });
 
-    magicState.addTrigger ("randomise", [=]
-                           { NodeManager::doForNodes (&inputNodes, [] (DelayNode* n)
-                                                      { n->randomiseParameters(); }); });
+    magicState.addTrigger ("randomise", [=] { NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->randomiseParameters(); }); });
 
-    magicState.addTrigger ("insanity_reset", [=]
-                           { insanityControl.resetInsanityState(); });
+    magicState.addTrigger ("insanity_reset", [=] { insanityControl.resetInsanityState(); });
 
-    auto changeUIComponentsToIgnore = [=] (std::initializer_list<Identifier> ids, bool needsGraphView = false)
-    {
+    auto changeUIComponentsToIgnore = [=] (std::initializer_list<Identifier> ids, bool needsGraphView = false) {
         if (auto* editor = dynamic_cast<foleys::MagicPluginEditor*> (getActiveEditor()))
         {
             graphViewPtr.reset();
@@ -175,15 +169,11 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     };
 
     magicState.addTrigger ("view_control",
-                           [=]
-                           {
+                           [=] {
                                PopupMenu menu;
-                               menu.addItem ("Only show Matrix View", [=]
-                                             { changeUIComponentsToIgnore ({ "NodeDetails" }); });
-                               menu.addItem ("Only show Details View", [=]
-                                             { changeUIComponentsToIgnore ({ "GraphView" }, true); });
-                               menu.addItem ("Show both views", [=]
-                                             { changeUIComponentsToIgnore ({}); });
+                               menu.addItem ("Only show Matrix View", [=] { changeUIComponentsToIgnore ({ "NodeDetails" }); });
+                               menu.addItem ("Only show Details View", [=] { changeUIComponentsToIgnore ({ "GraphView" }, true); });
+                               menu.addItem ("Show both views", [=] { changeUIComponentsToIgnore ({}); });
 
                                chowdsp::SharedLNFAllocator lnfAllocator;
                                menu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());

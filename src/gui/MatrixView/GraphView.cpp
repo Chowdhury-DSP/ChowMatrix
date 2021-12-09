@@ -1,7 +1,7 @@
 #include "GraphView.h"
+#include "../../ChowMatrix.h"
 #include "../BottomBar/BottomBarLNF.h"
 #include "GraphViewItem.h"
-#include "../../ChowMatrix.h"
 
 GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) : plugin (plugin),
                                                                   manager (this),
