@@ -2,6 +2,7 @@
 
 #include "GraphView.h"
 #include "MatrixAurora.h"
+#include "NodeManager.h"
 
 #if JUCE_IOS
 #include "../IOSUtils/TwoFingerDragToScrollListener.h"

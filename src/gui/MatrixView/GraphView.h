@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../../ChowMatrix.h"
 #include "DelayNodeComponent.h"
 #include "InputNodeComponent.h"
 #include "NodeCompManager.h"
 #include <pch.h>
 
+class ChowMatrix;
 class GraphView : public Component,
                   public SettableTooltipClient,
                   public DBaseNode::Listener

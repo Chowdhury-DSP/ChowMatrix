@@ -7,6 +7,7 @@
 #include "dsp/Parameters/InsanityControl.h"
 #include "dsp/Parameters/NodeParamControl.h"
 #include "dsp/Parameters/SyncControl.h"
+#include "gui/MatrixView/GraphViewport.h"
 #include "state/StateManager.h"
 #include <pch.h>
 
@@ -72,6 +73,8 @@ private:
 #if CHOWDSP_AUTO_UPDATE
     AutoUpdater updater;
 #endif // CHOWDSP_AUTO_UPDATE
+
+    std::unique_ptr<GraphViewport> graphViewPtr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChowMatrix)
 };

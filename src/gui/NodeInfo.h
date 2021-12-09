@@ -5,10 +5,17 @@
 
 namespace NodeInfoConsts
 {
+#if ! JUCE_IOS
 constexpr int InfoWidth = 95;
 constexpr int InfoWidthNoLabel = 80;
 constexpr int InfoHeight = 18;
 constexpr int InfoHeightNoLabel = 22;
+#else
+constexpr int InfoWidth = 105;
+constexpr int InfoWidthNoLabel = 90;
+constexpr int InfoHeight = 25;
+constexpr int InfoHeightNoLabel = 30;
+#endif
 
 static StringArray skipParams { ParamTags::distTag, ParamTags::revTag, ParamTags::modFreqTag, ParamTags::delayModTag, ParamTags::panModTag };
 } // namespace NodeInfoConsts

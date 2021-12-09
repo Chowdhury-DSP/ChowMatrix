@@ -1,4 +1,5 @@
 #include "GraphView.h"
+#include "../../ChowMatrix.h"
 #include "../BottomBar/BottomBarLNF.h"
 #include "GraphViewItem.h"
 
@@ -21,7 +22,7 @@ GraphView::GraphView (ChowMatrix& plugin, Viewport& parentView) : plugin (plugin
     manager.doForAllNodes ([=] (DBaseNode*, DelayNode* child) { manager.createAndAddEditor (child); });
 
 #if JUCE_IOS
-    MouseEvent::setDoubleClickTimeout (200);
+    MouseEvent::setDoubleClickTimeout (250);
 #endif
 }
 

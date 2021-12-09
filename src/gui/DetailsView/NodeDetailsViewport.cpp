@@ -6,7 +6,7 @@ namespace
 #if ! JUCE_IOS
 constexpr int scrollThickness = 8;
 #else
-constexpr int scrollThickness = 10;
+constexpr int scrollThickness = 12;
 #endif
 } // namespace
 

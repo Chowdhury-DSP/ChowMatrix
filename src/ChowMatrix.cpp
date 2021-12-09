@@ -140,18 +140,45 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerLookAndFeel ("BottomBarLNF", std::make_unique<BottomBarLNF>());
     builder->registerLookAndFeel ("PresetsLNF", std::make_unique<PresetsLNF>());
 
+#if JUCE_IOS
+    builder->setIdsToIgnore ({ "NodeDetails" });
+#endif
+
     // GUI trigger functions
-    magicState.addTrigger ("flush_delays", [=] {
-        NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->flushDelays(); });
-    });
+    magicState.addTrigger ("flush_delays", [=] { NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->flushDelays(); }); });
 
-    magicState.addTrigger ("randomise", [=] {
-        NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->randomiseParameters(); });
-    });
+    magicState.addTrigger ("randomise", [=] { NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->randomiseParameters(); }); });
 
-    magicState.addTrigger ("insanity_reset", [=] {
-        insanityControl.resetInsanityState();
-    });
+    magicState.addTrigger ("insanity_reset", [=] { insanityControl.resetInsanityState(); });
+
+    auto changeUIComponentsToIgnore = [=] (std::initializer_list<Identifier> ids, bool needsGraphView = false) {
+        if (auto* editor = dynamic_cast<foleys::MagicPluginEditor*> (getActiveEditor()))
+        {
+            graphViewPtr.reset();
+
+            auto bounds = editor->getBounds();
+            editor->getGUIBuilder().setIdsToIgnore (std::move (ids));
+            editor->setConfigTree (editor->getGUIBuilder().getConfigTree());
+            editor->setSize (bounds.getWidth(), bounds.getHeight());
+
+            // this is not a good way to do this, but...
+            // we need the graph view to exist for the node details to look right.
+            if (needsGraphView)
+                graphViewPtr = std::make_unique<GraphViewport> (*this);
+        }
+    };
+
+    magicState.addTrigger ("view_control",
+                           [=] {
+                               PopupMenu menu;
+                               menu.addItem ("Only show Matrix View", [=] { changeUIComponentsToIgnore ({ "NodeDetails" }); });
+                               menu.addItem ("Only show Details View", [=] { changeUIComponentsToIgnore ({ "GraphView" }, true); });
+                               menu.addItem ("Show both views", [=] { changeUIComponentsToIgnore ({}); });
+
+                               chowdsp::SharedLNFAllocator lnfAllocator;
+                               menu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
+                               menu.showMenuAsync (PopupMenu::Options());
+                           });
 
 #if ! JUCE_IOS
     auto editor = new foleys::MagicPluginEditor (magicState, BinaryData::gui_xml, BinaryData::gui_xmlSize, std::move (builder));
