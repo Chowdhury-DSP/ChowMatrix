@@ -1,4 +1,5 @@
 #include "GraphViewport.h"
+#include "ChowMatrix.h"
 
 namespace
 {

@@ -156,12 +156,21 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     magicState.addTrigger ("insanity_reset", [=]
                            { insanityControl.resetInsanityState(); });
 
-    auto changeUIComponentsToIgnore = [=] (std::initializer_list<Identifier> ids)
+    auto changeUIComponentsToIgnore = [=] (std::initializer_list<Identifier> ids, bool needsGraphView = false)
     {
         if (auto* editor = dynamic_cast<foleys::MagicPluginEditor*> (getActiveEditor()))
         {
+            graphViewPtr.reset();
+
+            auto bounds = editor->getBounds();
             editor->getGUIBuilder().setIdsToIgnore (std::move (ids));
             editor->setConfigTree (editor->getGUIBuilder().getConfigTree());
+            editor->setSize (bounds.getWidth(), bounds.getHeight());
+
+            // this is not a good way to do this, but...
+            // we need the graph view to exist for the node details to look right.
+            if (needsGraphView)
+                graphViewPtr = std::make_unique<GraphViewport> (*this);
         }
     };
 
@@ -172,9 +181,12 @@ AudioProcessorEditor* ChowMatrix::createEditor()
                                menu.addItem ("Only show Matrix View", [=]
                                              { changeUIComponentsToIgnore ({ "NodeDetails" }); });
                                menu.addItem ("Only show Details View", [=]
-                                             { changeUIComponentsToIgnore ({ "GraphView" }); });
+                                             { changeUIComponentsToIgnore ({ "GraphView" }, true); });
                                menu.addItem ("Show both views", [=]
                                              { changeUIComponentsToIgnore ({}); });
+
+                               chowdsp::SharedLNFAllocator lnfAllocator;
+                               menu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
                                menu.showMenuAsync (PopupMenu::Options());
                            });
 

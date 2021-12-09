@@ -11,7 +11,7 @@ public:
 
     enum ColourIDs
     {
-        nodeColour,
+        nodeColour = 0x110778,
         nodeSelectedColour,
         scrollThumbColour,
         scrollTrackColour,
