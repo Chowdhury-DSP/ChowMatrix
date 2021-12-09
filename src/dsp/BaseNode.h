@@ -78,8 +78,5 @@ private:
     double sampleRate = 44100.0;
     int samplesPerBlock = 256;
 
-    Colour nodeColour = Colours::black;
-    float hueIncrement = 0.0f;
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BaseNode)
 };
