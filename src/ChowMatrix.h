@@ -43,6 +43,7 @@ public:
     std::array<InputNode, 2>* getNodes() { return &inputNodes; }
     StateManager& getStateManager() { return stateManager; }
     HostParamControl& getHostControl() { return hostParamControl; }
+    AudioProcessorValueTreeState& getVTS() { return vts; }
 
 private:
     std::array<InputNode, 2> inputNodes;
@@ -50,6 +51,7 @@ private:
 
     std::atomic<float>* dryParamDB = nullptr;
     std::atomic<float>* wetParamDB = nullptr;
+    std::atomic<float>* wetGainCompParam = nullptr;
 
     AudioBuffer<float> chBuffers[2];
 

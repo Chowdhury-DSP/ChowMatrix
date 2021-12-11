@@ -63,6 +63,8 @@ public:
     void prepare (double sampleRate, int samplesPerBlock) override;
     void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer) override;
 
+    float getNodeLevel (float inputLevel) const override;
+
     std::unique_ptr<NodeComponent> createNodeEditor (GraphView*) override;
     const Uuid& getID() const noexcept { return uuid; }
 

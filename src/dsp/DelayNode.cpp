@@ -182,6 +182,14 @@ void DelayNode::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBu
     addToOutput (outBuffer);
 }
 
+float DelayNode::getNodeLevel (float inputLevel) const
+{
+    float outputLevel = inputLevel * Decibels::decibelsToGain (gainDB->get());
+    outputLevel *= 1.0f + *feedback;
+
+    return outputLevel + DBaseNode::getNodeLevel (outputLevel);
+}
+
 void DelayNode::processPanner (dsp::AudioBlock<float>& inputBlock)
 {
     panBuffer.setSize (2, (int) inputBlock.getNumSamples(), false, false, true);

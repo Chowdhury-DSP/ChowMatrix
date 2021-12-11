@@ -30,6 +30,16 @@ void BaseNode<Child>::process (AudioBuffer<float>& inBuffer, AudioBuffer<float>&
 }
 
 template <typename Child>
+float BaseNode<Child>::getNodeLevel (float inputLevel) const
+{
+    float outputLevel = 0.0f;
+    for (auto* child : children)
+        outputLevel += child->getNodeLevel (inputLevel);
+
+    return outputLevel;
+}
+
+template <typename Child>
 NodeComponent* BaseNode<Child>::getEditor()
 {
     return editor;

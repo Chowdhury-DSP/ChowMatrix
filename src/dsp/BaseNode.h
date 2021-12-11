@@ -14,7 +14,7 @@ class BaseNode
 {
 public:
     BaseNode();
-    virtual ~BaseNode() {}
+    virtual ~BaseNode() = default;
 
     /** Create a GUI editor for this node */
     virtual std::unique_ptr<NodeComponent> createNodeEditor (GraphView*) = 0;
@@ -24,6 +24,8 @@ public:
 
     virtual void prepare (double sampleRate, int samplesPerBlock);
     virtual void process (AudioBuffer<float>& inBuffer, AudioBuffer<float>& outBuffer);
+
+    virtual float getNodeLevel (float inputLevel) const;
 
     // Adding/removing children
     Child* addChild();
@@ -38,7 +40,7 @@ public:
 
     struct Listener
     {
-        virtual ~Listener() {}
+        virtual ~Listener() = default;
         virtual void nodeAdded (Child* /*newNode*/) {}
         virtual void nodeRemoved (Child* /*nodeToRemove*/) {}
         virtual void nodeIndexChanged (Child* /*node*/, int /*oldIndex*/, int /*newIndex*/) {}
