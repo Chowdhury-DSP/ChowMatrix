@@ -22,10 +22,8 @@ void InsanityControl::addParameters (Parameters& params)
 {
     using namespace chowdsp::ParamUtils;
 
-    auto insanityToString = [] (float x)
-    { return String (x * 100.0f) + "%"; };
-    auto stringToInsanity = [] (const String& t)
-    { return t.getFloatValue() / 100.0f; };
+    auto insanityToString = [] (float x) { return String (x * 100.0f) + "%"; };
+    auto stringToInsanity = [] (const String& t) { return t.getFloatValue() / 100.0f; };
 
     emplace_param<VTSParam> (params, insanityTag, "Insanity", String(), NormalisableRange<float> { 0.0f, 1.0f }, 0.0f, insanityToString, stringToInsanity);
     emplace_param<AudioParameterBool> (params, insanityResetTag, "Insanity Reset", false);

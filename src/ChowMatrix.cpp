@@ -50,10 +50,8 @@ void ChowMatrix::addParameters (Parameters& params)
     using namespace chowdsp::ParamUtils;
 
     NormalisableRange<float> gainRange (negInfDB, 12.0f);
-    auto gainToString = [] (float x)
-    { return x <= negInfDB ? "-inf dB" : String (x, 1, false) + " dB"; };
-    auto stringToGain = [] (const String& t)
-    { return t.getFloatValue(); };
+    auto gainToString = [] (float x) { return x <= negInfDB ? "-inf dB" : String (x, 1, false) + " dB"; };
+    auto stringToGain = [] (const String& t) { return t.getFloatValue(); };
 
     emplace_param<Parameter> (params, dryTag, "Dry", String(), gainRange, -12.0f, gainToString, stringToGain);
     emplace_param<Parameter> (params, wetTag, "Wet", String(), gainRange, -12.0f, gainToString, stringToGain);

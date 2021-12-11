@@ -9,8 +9,7 @@ class WetGainSlider : public TextSlider
 public:
     explicit WetGainSlider (AudioProcessorValueTreeState& vts) : attachment (
         *vts.getParameter ("wet_gain_comp_param"),
-        [=] (float v)
-        { updateMenu (v == 1.0f); },
+        [=] (float v) { updateMenu (v == 1.0f); },
         vts.undoManager)
     {
         attachment.sendInitialUpdate();
@@ -33,8 +32,7 @@ public:
         PopupMenu::Item gainCompItem;
         gainCompItem.itemID = 1;
         gainCompItem.text = "Automatic Gain Compensation";
-        gainCompItem.action = [=]
-        { attachment.setValueAsCompleteGesture ((float) ! gainCompOn); };
+        gainCompItem.action = [=] { attachment.setValueAsCompleteGesture ((float) ! gainCompOn); };
         gainCompItem.colour = gainCompOn ? Colour (0xFF21CCA5) : Colours::white;
 
         gainCompMenu.clear();
