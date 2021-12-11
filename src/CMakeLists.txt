@@ -38,6 +38,7 @@ target_sources(ChowMatrix PRIVATE
     gui/DetailsView/NodeDetailsComponent.cpp
     gui/DetailsView/NodeDetailsGUI.cpp
     gui/DetailsView/NodeDetailsViewport.cpp
+    gui/IOSUtils/LongPressActionHelper.cpp
     gui/MatrixView/DelayNodeComponent.cpp
     gui/MatrixView/GraphView.cpp
     gui/MatrixView/GraphViewport.cpp
