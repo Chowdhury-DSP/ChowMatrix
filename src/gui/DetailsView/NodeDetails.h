@@ -41,9 +41,11 @@ public:
 
     private:
         NodeDetails& nodeDetails;
-        LongPressActionHelper longPressAction;
         
+#if JUCE_IOS
+        LongPressActionHelper longPressAction;
         chowdsp::SharedLNFAllocator lnfAllocator;
+#endif
     };
 
 private:

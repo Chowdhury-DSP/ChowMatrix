@@ -3,6 +3,7 @@
 #include "../../dsp/DelayNode.h"
 #include "../NodeInfo.h"
 #include "NodeComponent.h"
+#include "gui/IOSUtils/LongPressActionHelper.h"
 
 class DelayNodeComponent : public NodeComponent,
                            public SettableTooltipClient,
@@ -17,6 +18,7 @@ public:
     void mouseDrag (const MouseEvent& e) override;
     void mouseUp (const MouseEvent& e) override;
     bool keyPressed (const KeyPress& key) override;
+    
     void paint (Graphics& g) override;
     void updatePosition() override;
     NodeInfo& getNodeInfo() { return nodeInfo; }
@@ -34,5 +36,10 @@ private:
     DelayNode& node;
     NodeInfo nodeInfo;
 
+#if JUCE_IOS
+    LongPressActionHelper longPressAction;
+    chowdsp::SharedLNFAllocator lnfAllocator;
+#endif
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DelayNodeComponent)
 };
