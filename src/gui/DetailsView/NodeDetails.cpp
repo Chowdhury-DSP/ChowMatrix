@@ -29,7 +29,7 @@ NodeDetails::Button::Button (NodeDetails& nd) : nodeDetails (nd)
 
     setName ("Node Details");
     setTooltip ("Click to select this node, alt+click to solo, press \"Delete\" to delete");
-    
+
 #if JUCE_IOS
     longPressAction.longPressCallback = [=] (Point<int>) {
         PopupMenu actionMenu;
@@ -38,7 +38,7 @@ NodeDetails::Button::Button (NodeDetails& nd) : nodeDetails (nd)
             if (nodeDetails.getNode()->getSelected())
                 nodeDetails.getNode()->deleteNode();
         });
-        
+
         actionMenu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
         actionMenu.showMenuAsync (PopupMenu::Options());
     };
@@ -84,7 +84,7 @@ void NodeDetails::Button::mouseDown (const MouseEvent& e)
 
     nodeDetails.setSelected();
     grabKeyboardFocus();
-    
+
 #if JUCE_IOS
     longPressAction.startPress (e.getMouseDownPosition());
 #endif

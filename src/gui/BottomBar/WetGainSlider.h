@@ -1,9 +1,9 @@
 #pragma once
 
+#include "../IOSUtils/LongPressActionHelper.h"
 #include "BottomBarLNF.h"
 #include "ChowMatrix.h"
 #include "TextSliderItem.h"
-#include "../IOSUtils/LongPressActionHelper.h"
 
 class WetGainSlider : public TextSlider
 {
@@ -15,7 +15,7 @@ public:
     {
         attachment.sendInitialUpdate();
         gainCompMenu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
-        
+
 #if JUCE_IOS
         longPressAction.longPressCallback = [=] (Point<int>) {
             gainCompMenu.showMenuAsync (PopupMenu::Options());
@@ -32,28 +32,28 @@ public:
         }
 
         TextSlider::mouseDown (e);
-        
+
 #if JUCE_IOS
         longPressAction.startPress (e.getMouseDownPosition());
 #endif
     }
-    
+
     void mouseDrag (const MouseEvent& e) override
     {
         TextSlider::mouseDrag (e);
-        
-    #if JUCE_IOS
+
+#if JUCE_IOS
         longPressAction.setDragDistance ((float) e.getDistanceFromDragStart());
-    #endif
+#endif
     }
 
     void mouseUp (const MouseEvent& e) override
     {
         TextSlider::mouseUp (e);
-        
-    #if JUCE_IOS
+
+#if JUCE_IOS
         longPressAction.abortPress();
-    #endif
+#endif
     }
 
     void updateMenu (bool gainCompOn)
@@ -73,7 +73,7 @@ private:
 
     PopupMenu gainCompMenu;
     chowdsp::SharedLNFAllocator lnfAllocator;
-    
+
 #if JUCE_IOS
     LongPressActionHelper longPressAction;
 #endif

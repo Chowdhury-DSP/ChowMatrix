@@ -34,7 +34,7 @@ void LongPressActionHelper::timerCallback()
     bool wasPressStarted = pressStarted;
     bool wasDragged = dragDistance > dragDistanceThreshold;
     abortPress();
-    
+
     if (! wasPressStarted)
     {
         // No press started? That's not good.
@@ -44,7 +44,7 @@ void LongPressActionHelper::timerCallback()
 
     if (wasDragged)
         return;
-    
+
     longPressCallback (downPosition);
 }
 

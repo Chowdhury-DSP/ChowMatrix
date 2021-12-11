@@ -83,7 +83,7 @@ ParamSlider::ParamSlider (DelayNode& n, Parameter* param, bool showLabel) : node
     setRange (0.0, 1.0);
     setSliderStyle (SliderStyle::RotaryVerticalDrag);
     setDoubleClickReturnValue (true, param->getDefaultValue());
-    
+
 #if JUCE_IOS
     longPressAction.longPressCallback = [=] (Point<int>) {
         auto menu = node.createParamPopupMenu (param->paramID);
@@ -199,7 +199,7 @@ void ParamSlider::mouseDown (const MouseEvent& e)
         isInGesture.store (true);
         node.beginParameterChange ({ param->paramID });
     }
-    
+
 #if JUCE_IOS
     longPressAction.startPress (e.getMouseDownPosition());
 #endif
@@ -218,7 +218,7 @@ void ParamSlider::mouseDrag (const MouseEvent& e)
     }
 
     node.applyParameterChange (param->paramID, (float) this->getValue());
-    
+
 #if JUCE_IOS
     longPressAction.setDragDistance ((float) e.getDistanceFromDragStart());
 #endif
@@ -268,7 +268,7 @@ void ParamSlider::mouseUp (const MouseEvent& e)
         isInGesture.store (false);
         node.endParameterChange ({ param->paramID });
     }
-    
+
 #if JUCE_IOS
     longPressAction.abortPress();
 #endif

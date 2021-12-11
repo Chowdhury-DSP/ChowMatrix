@@ -64,7 +64,7 @@ private:
 #if JUCE_IOS
     LongPressActionHelper longPressAction;
 #endif
-    
+
     chowdsp::SharedLNFAllocator lnfAllocator;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ParamSlider)

@@ -25,7 +25,7 @@ DelayNodeComponent::DelayNodeComponent (DelayNode& n, GraphView* view) : NodeCom
 #else
     setTooltip ("Click to select node, drag to move, alt+click to solo, CTRL+click to delete");
 #endif
-    
+
 #if JUCE_IOS
     longPressAction.longPressCallback = [=] (Point<int>) {
         PopupMenu actionMenu;
@@ -34,7 +34,7 @@ DelayNodeComponent::DelayNodeComponent (DelayNode& n, GraphView* view) : NodeCom
             if (node.getSelected())
                 node.deleteNode();
         });
-        
+
         actionMenu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
         actionMenu.showMenuAsync (PopupMenu::Options());
     };
@@ -66,7 +66,7 @@ void DelayNodeComponent::mouseDown (const MouseEvent& e)
     graphView->setSelected (&node);
     grabKeyboardFocus();
     node.beginParameterChange ({ ParamTags::delayTag, ParamTags::panTag });
-    
+
 #if JUCE_IOS
     longPressAction.startPress (e.getMouseDownPosition());
 #endif
@@ -79,7 +79,7 @@ void DelayNodeComponent::mouseDrag (const MouseEvent& e)
     updateParams();
     updatePosition();
     graphView->mouseDrag (relE);
-    
+
 #if JUCE_IOS
     longPressAction.setDragDistance ((float) e.getDistanceFromDragStart());
 #endif
@@ -88,7 +88,7 @@ void DelayNodeComponent::mouseDrag (const MouseEvent& e)
 void DelayNodeComponent::mouseUp (const MouseEvent&)
 {
     node.endParameterChange ({ ParamTags::delayTag, ParamTags::panTag });
-    
+
 #if JUCE_IOS
     longPressAction.abortPress();
 #endif
