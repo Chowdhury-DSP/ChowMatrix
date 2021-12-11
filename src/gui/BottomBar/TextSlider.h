@@ -21,7 +21,7 @@ public:
         Slider::mouseUp (e);
 
         multiClicking = e.getNumberOfClicks() > 1;
-        bool dontShowLabel = e.mouseWasDraggedSinceMouseDown() || e.mods.isAnyModifierKeyDown() || multiClicking;
+        bool dontShowLabel = e.mouseWasDraggedSinceMouseDown() || e.mods.isAnyModifierKeyDown() || e.mods.isPopupMenu() || multiClicking;
         if (! dontShowLabel)
         {
             Timer::callAfterDelay (270,

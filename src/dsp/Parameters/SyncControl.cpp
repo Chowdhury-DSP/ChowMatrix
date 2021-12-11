@@ -14,7 +14,7 @@ SyncControl::SyncControl (AudioProcessorValueTreeState& vts, std::array<InputNod
 
 void SyncControl::addParameters (Parameters& params)
 {
-    params.push_back (std::make_unique<AudioParameterBool> (syncTag, "Sync", false));
+    chowdsp::ParamUtils::emplace_param<AudioParameterBool> (params, syncTag, "Sync", false);
 }
 
 void SyncControl::setTempo (AudioPlayHead* playhead)

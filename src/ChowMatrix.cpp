@@ -3,6 +3,7 @@
 #include "gui/BottomBar/BottomBarLNF.h"
 #include "gui/BottomBar/HostControlMenu.h"
 #include "gui/BottomBar/TextSliderItem.h"
+#include "gui/BottomBar/WetGainSlider.h"
 #include "gui/DetailsView/NodeDetailsGUI.h"
 #include "gui/LookAndFeel/InsanityLNF.h"
 #include "gui/LookAndFeel/PresetsLNF.h"
@@ -13,6 +14,7 @@ namespace
 {
 const String dryTag = "dry_param";
 const String wetTag = "wet_param";
+const String wetGainCompTag = "wet_gain_comp_param";
 
 const Identifier pluginStateTag = "ChowMatrix_State";
 
@@ -31,6 +33,7 @@ ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
 
     dryParamDB = vts.getRawParameterValue (dryTag);
     wetParamDB = vts.getRawParameterValue (wetTag);
+    wetGainCompParam = vts.getRawParameterValue (wetGainCompTag);
 
     dryGain.setRampDurationSeconds (gainFadeTime);
     wetGain.setRampDurationSeconds (gainFadeTime);
@@ -44,14 +47,15 @@ ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
 
 void ChowMatrix::addParameters (Parameters& params)
 {
-    NormalisableRange<float> gainRange (negInfDB, 12.0f);
+    using namespace chowdsp::ParamUtils;
 
+    NormalisableRange<float> gainRange (negInfDB, 12.0f);
     auto gainToString = [] (float x) { return x <= negInfDB ? "-inf dB" : String (x, 1, false) + " dB"; };
     auto stringToGain = [] (const String& t) { return t.getFloatValue(); };
 
-    params.push_back (std::make_unique<Parameter> (dryTag, "Dry", String(), gainRange, -12.0f, gainToString, stringToGain));
-
-    params.push_back (std::make_unique<Parameter> (wetTag, "Wet", String(), gainRange, -12.0f, gainToString, stringToGain));
+    emplace_param<Parameter> (params, dryTag, "Dry", String(), gainRange, -12.0f, gainToString, stringToGain);
+    emplace_param<Parameter> (params, wetTag, "Wet", String(), gainRange, -12.0f, gainToString, stringToGain);
+    emplace_param<AudioParameterBool> (params, wetGainCompTag, "Wet Gain Comp.", false);
 
     InsanityControl::addParameters (params);
     DelayTypeControl::addParameters (params);
@@ -91,10 +95,6 @@ void ChowMatrix::processAudioBlock (AudioBuffer<float>& buffer)
             gainProc.setGainDecibels (gainParamDB);
     };
 
-    // get parameters
-    setGain (dryGain, dryParamDB->load());
-    setGain (wetGain, wetParamDB->load());
-
     // update BPM
     syncControl.setTempo (getPlayHead());
 
@@ -102,6 +102,8 @@ void ChowMatrix::processAudioBlock (AudioBuffer<float>& buffer)
     dryBuffer.makeCopyOf (buffer, true);
     dsp::AudioBlock<float> dryBlock (dryBuffer);
     dsp::ProcessContextReplacing<float> dryContext (dryBlock);
+
+    setGain (dryGain, dryParamDB->load());
     dryGain.process (dryContext);
 
     // copy input channels
@@ -116,6 +118,18 @@ void ChowMatrix::processAudioBlock (AudioBuffer<float>& buffer)
     buffer.clear();
     for (size_t ch = 0; ch < (size_t) buffer.getNumChannels(); ++ch)
         inputNodes[ch].process (chBuffers[ch], buffer);
+
+    // wet gain (with gain compensation if needed)
+    setGain (wetGain, wetParamDB->load());
+    if (*wetGainCompParam == 1.0f)
+    {
+        auto wetAddedGain = 0.0f;
+        for (size_t ch = 0; ch < (size_t) buffer.getNumChannels(); ++ch)
+            wetAddedGain += inputNodes[ch].getNodeLevel (1.0f);
+
+        if (wetAddedGain > 0.0f)
+            wetGain.setGainLinear (wetGain.getGainLinear() / wetAddedGain);
+    }
 
     dsp::AudioBlock<float> wetBlock (buffer);
     dsp::ProcessContextReplacing<float> wetContext (wetBlock);
@@ -133,6 +147,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerFactory ("GraphView", &GraphViewItem::factory);
     builder->registerFactory ("NodeDetails", &NodeDetailsItem::factory);
     builder->registerFactory ("TextSlider", &TextSliderItem::factory);
+    builder->registerFactory ("WetGainSlider", &WetGainSliderItem::factory);
     builder->registerFactory ("PresetComp", &chowdsp::PresetsItem<ChowMatrix>::factory);
     builder->registerFactory ("ABComp", &ABCompItem::factory);
     builder->registerFactory ("HostControlMenu", &HostControlMenuItem::factory);

@@ -20,7 +20,7 @@ void HostParamControl::addParameters (Parameters& params)
         auto id = getParamID (i);
         auto name = getParamName (i);
         paramIDs.add (id);
-        params.push_back (std::make_unique<AudioParameterFloat> (id, name, 0.0f, 1.0f, 0.0f));
+        chowdsp::ParamUtils::emplace_param<AudioParameterFloat> (params, id, name, 0.0f, 1.0f, 0.0f);
     }
 }
 
