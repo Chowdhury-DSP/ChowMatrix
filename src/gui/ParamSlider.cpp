@@ -41,10 +41,10 @@ void ParamSlider::SliderAttachment::sliderValueChanged (Slider*)
 }
 
 //==================================================================
-ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) : node (node),
-                                                                               param (param),
-                                                                               attachment (*this),
-                                                                               showLabel (showLabel)
+ParamSlider::ParamSlider (DelayNode& n, Parameter* param, bool showLabel) : node (n),
+                                                                            param (param),
+                                                                            attachment (*this),
+                                                                            showLabel (showLabel)
 {
     setName (param->name);
     setTooltip (ParamHelpers::getTooltip (param->paramID));
@@ -83,6 +83,14 @@ ParamSlider::ParamSlider (DelayNode& node, Parameter* param, bool showLabel) : n
     setRange (0.0, 1.0);
     setSliderStyle (SliderStyle::RotaryVerticalDrag);
     setDoubleClickReturnValue (true, param->getDefaultValue());
+    
+#if JUCE_IOS
+    longPressAction.longPressCallback = [=] (Point<int>) {
+        auto menu = node.createParamPopupMenu (param->paramID);
+        menu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
+        menu.showMenuAsync (PopupMenu::Options());
+    };
+#endif
 }
 
 ParamSlider::~ParamSlider() = default;
@@ -191,6 +199,10 @@ void ParamSlider::mouseDown (const MouseEvent& e)
         isInGesture.store (true);
         node.beginParameterChange ({ param->paramID });
     }
+    
+#if JUCE_IOS
+    longPressAction.startPress (e.getMouseDownPosition());
+#endif
 }
 
 void ParamSlider::mouseDrag (const MouseEvent& e)
@@ -206,6 +218,10 @@ void ParamSlider::mouseDrag (const MouseEvent& e)
     }
 
     node.applyParameterChange (param->paramID, (float) this->getValue());
+    
+#if JUCE_IOS
+    longPressAction.setDragDistance ((float) e.getDistanceFromDragStart());
+#endif
 }
 
 void ParamSlider::mouseDoubleClick (const MouseEvent& e)
@@ -252,4 +268,8 @@ void ParamSlider::mouseUp (const MouseEvent& e)
         isInGesture.store (false);
         node.endParameterChange ({ param->paramID });
     }
+    
+#if JUCE_IOS
+    longPressAction.abortPress();
+#endif
 }
