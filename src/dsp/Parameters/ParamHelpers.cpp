@@ -12,64 +12,65 @@ void setParameterValue (Parameter* param, float newVal)
 using Params = std::vector<std::unique_ptr<RangedAudioParameter>>;
 AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
 {
+    using namespace chowdsp::ParamUtils;
+
     Params params;
 
     // set up delay line length
     NormalisableRange<float> delayRange { 0.0f, maxDelay };
     delayRange.setSkewForCentre (centreDelay);
-
-    params.push_back (std::make_unique<Parameter> (delayTag, "Delay", String(), delayRange, centreDelay, &delayValToString, &stringToDelayVal));
+    emplace_param<Parameter> (params, delayTag, "Delay", String(), delayRange, centreDelay, &delayValToString, &stringToDelayVal);
 
     // set up panner
     NormalisableRange<float> panRange { -1.0f, 1.0f };
-    params.push_back (std::make_unique<Parameter> (panTag, "Pan", String(), panRange, 0.0f, &panValToString, &stringToPanVal));
+    emplace_param<Parameter> (params, panTag, "Pan", String(), panRange, 0.0f, &panValToString, &stringToPanVal);
 
     // set up feedback amount
     NormalisableRange<float> fbRange { 0.0f, maxFeedback };
-    params.push_back (std::make_unique<Parameter> (fbTag, "Feedback", String(), fbRange, 0.0f, &fbValToString, &stringToFbVal));
+    emplace_param<Parameter> (params, fbTag, "Feedback", String(), fbRange, 0.0f, &fbValToString, &stringToFbVal);
 
     // set up gain
     NormalisableRange<float> gainRange { -maxGain, maxGain };
-    params.push_back (std::make_unique<Parameter> (gainTag, "Gain", String(), gainRange, 0.0f, &gainValToString, &stringToGainVal));
+    emplace_param<Parameter> (params, gainTag, "Gain", String(), gainRange, 0.0f, &gainValToString, &stringToGainVal);
 
     // set up LPF
     NormalisableRange<float> lpfRange { minLPF, maxLPF };
     lpfRange.setSkewForCentre (std::sqrt (minLPF * maxLPF));
-    params.push_back (std::make_unique<Parameter> (lpfTag, "LPF", String(), lpfRange, maxLPF, &freqValToString, &stringToFreqVal));
+    emplace_param<Parameter> (params, lpfTag, "LPF", String(), lpfRange, maxLPF, &freqValToString, &stringToFreqVal);
 
     // set up HPF
     NormalisableRange<float> hpfRange { minHPF, maxHPF };
     hpfRange.setSkewForCentre (std::sqrt (minHPF * maxHPF));
-    params.push_back (std::make_unique<Parameter> (hpfTag, "HPF", String(), hpfRange, minHPF, &freqValToString, &stringToFreqVal));
+    emplace_param<Parameter> (params, hpfTag, "HPF", String(), hpfRange, minHPF, &freqValToString, &stringToFreqVal);
 
     // set up pitch shift
     NormalisableRange<float> pitchRange { -maxPitch, maxPitch };
-    params.push_back (std::make_unique<Parameter> (pitchTag, "Pitch", String(), pitchRange, 0.0f, &pitchValToString, &stringToPitchVal));
+    emplace_param<Parameter> (params, pitchTag, "Pitch", String(), pitchRange, 0.0f, &pitchValToString, &stringToPitchVal);
 
     // set up diffusion amount
     NormalisableRange<float> diffRange { 0.0f, 1.0f };
-    params.push_back (std::make_unique<Parameter> (diffTag, "Diffusion", String(), diffRange, 0.0f, &percentValToString, &stringToPercentVal));
+    emplace_param<Parameter> (params, diffTag, "Diffusion", String(), diffRange, 0.0f, &percentValToString, &stringToPercentVal);
 
     // set up distortion
     NormalisableRange<float> distRange { 0.0f, 1.0f };
-    params.push_back (std::make_unique<Parameter> (distTag, "Distortion", String(), distRange, 0.0f, &percentValToString, &stringToPercentVal));
+    emplace_param<Parameter> (params, distTag, "Distortion", String(), distRange, 0.0f, &percentValToString, &stringToPercentVal);
 
     // set up reverse
     NormalisableRange<float> revRange { 0.0f, 1000.0f };
-    params.push_back (std::make_unique<Parameter> (revTag, "Reverse", String(), revRange, 0.0f, &delayValToString, &stringToDelayVal));
+    emplace_param<Parameter> (params, revTag, "Reverse", String(), revRange, 0.0f, &delayValToString, &stringToDelayVal);
 
     // set up mod frequency
     NormalisableRange<float> modFreqRange { minModFreq, maxModFreq };
     modFreqRange.setSkewForCentre (2.0f);
-    params.push_back (std::make_unique<Parameter> (modFreqTag, "Mod Freq", String(), modFreqRange, 0.0f, &freqValToString, &stringToFreqVal));
+    emplace_param<Parameter> (params, modFreqTag, "Mod Freq", String(), modFreqRange, 0.0f, &freqValToString, &stringToFreqVal);
 
     // set up delay mod depth
     NormalisableRange<float> delayModRange { 0.0f, 1.0f };
-    params.push_back (std::make_unique<Parameter> (delayModTag, "Delay Mod", String(), delayModRange, 0.0f, &percentValToString, &stringToPercentVal));
+    emplace_param<Parameter> (params, delayModTag, "Delay Mod", String(), delayModRange, 0.0f, &percentValToString, &stringToPercentVal);
 
     // set up pan mod depth
     NormalisableRange<float> panModRange { -1.0f, 1.0f };
-    params.push_back (std::make_unique<Parameter> (panModTag, "Pan Mod", String(), panModRange, 0.0f, &percentValToString, &stringToPercentVal));
+    emplace_param<Parameter> (params, panModTag, "Pan Mod", String(), panModRange, 0.0f, &percentValToString, &stringToPercentVal);
 
     return { params.begin(), params.end() };
 }

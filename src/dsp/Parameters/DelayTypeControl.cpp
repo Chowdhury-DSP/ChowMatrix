@@ -20,10 +20,11 @@ DelayTypeControl::DelayTypeControl (AudioProcessorValueTreeState& vts, std::arra
 
 void DelayTypeControl::addParameters (Parameters& params)
 {
-    params.push_back (std::make_unique<AudioParameterChoice> (delayTypeTag,
+    chowdsp::ParamUtils::emplace_param<AudioParameterChoice> (params,
+                                                              delayTypeTag,
                                                               "Delay Type",
                                                               StringArray ({ "Glitch", "Rough", "Smooth", "Ultra Smooth", "Liquid", "Super Liquid", "Lo-Fi", "Analog", "Alien" }),
-                                                              2));
+                                                              2);
 }
 
 void DelayTypeControl::parameterChanged (const String& paramID, float newValue)

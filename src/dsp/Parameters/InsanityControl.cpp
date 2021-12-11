@@ -20,10 +20,15 @@ InsanityControl::InsanityControl (AudioProcessorValueTreeState& vts, std::array<
 
 void InsanityControl::addParameters (Parameters& params)
 {
-    auto insanityToString = [] (float x) { return String (x * 100.0f) + "%"; };
-    auto stringToInsanity = [] (const String& t) { return t.getFloatValue() / 100.0f; };
-    params.push_back (std::make_unique<AudioProcessorValueTreeState::Parameter> (insanityTag, "Insanity", String(), NormalisableRange<float> { 0.0f, 1.0f }, 0.0f, insanityToString, stringToInsanity));
-    params.push_back (std::make_unique<AudioParameterBool> (insanityResetTag, "Insanity Reset", false));
+    using namespace chowdsp::ParamUtils;
+
+    auto insanityToString = [] (float x)
+    { return String (x * 100.0f) + "%"; };
+    auto stringToInsanity = [] (const String& t)
+    { return t.getFloatValue() / 100.0f; };
+
+    emplace_param<VTSParam> (params, insanityTag, "Insanity", String(), NormalisableRange<float> { 0.0f, 1.0f }, 0.0f, insanityToString, stringToInsanity);
+    emplace_param<AudioParameterBool> (params, insanityResetTag, "Insanity Reset", false);
 }
 
 void InsanityControl::resetInsanityState()

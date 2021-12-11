@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Added forwarding parameters to expose node parameters to DAWs.
 - Added "Alien" delay mode.
 - Added reverse delay parameter.
+- Added optional automatic gain compensation for wet signal.
 - Added lock/unlock options for parameter randomisation.
 - Fixed "hang" when bringing delay to 0 ms in "Analog" mode.
 - Improved performance for pan modulation.
