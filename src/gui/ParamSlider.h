@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../dsp/DelayNode.h"
+#include "IOSUtils/LongPressActionHelper.h"
 
 /**
  * Text slider mapped to a parameter
@@ -59,6 +60,10 @@ private:
     bool isMultiClicking = false;
     std::atomic_bool linkFlag;
     std::atomic_bool isInGesture;
+
+#if JUCE_IOS
+    LongPressActionHelper longPressAction;
+#endif
 
     chowdsp::SharedLNFAllocator lnfAllocator;
 

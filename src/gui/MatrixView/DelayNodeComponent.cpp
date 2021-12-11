@@ -1,11 +1,12 @@
 #include "DelayNodeComponent.h"
 #include "GraphViewItem.h"
+#include "gui/BottomBar/BottomBarLNF.h"
 
 using namespace ParamTags;
 
-DelayNodeComponent::DelayNodeComponent (DelayNode& node, GraphView* view) : NodeComponent (node, view),
-                                                                            node (node),
-                                                                            nodeInfo (node)
+DelayNodeComponent::DelayNodeComponent (DelayNode& n, GraphView* view) : NodeComponent (n, view),
+                                                                         node (n),
+                                                                         nodeInfo (node)
 {
     setWantsKeyboardFocus (true);
     view->addChildComponent (nodeInfo);
@@ -23,6 +24,20 @@ DelayNodeComponent::DelayNodeComponent (DelayNode& node, GraphView* view) : Node
     setTooltip ("Click to select node, drag to move, alt+click to solo, CMD+click to delete");
 #else
     setTooltip ("Click to select node, drag to move, alt+click to solo, CTRL+click to delete");
+#endif
+
+#if JUCE_IOS
+    longPressAction.longPressCallback = [=] (Point<int>) {
+        PopupMenu actionMenu;
+        actionMenu.addItem ("Solo Node", [=] { graphView->setSoloed (&node); });
+        actionMenu.addItem ("Delete Node", [=] {
+            if (node.getSelected())
+                node.deleteNode();
+        });
+
+        actionMenu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
+        actionMenu.showMenuAsync (PopupMenu::Options());
+    };
 #endif
 }
 
@@ -51,6 +66,10 @@ void DelayNodeComponent::mouseDown (const MouseEvent& e)
     graphView->setSelected (&node);
     grabKeyboardFocus();
     node.beginParameterChange ({ ParamTags::delayTag, ParamTags::panTag });
+
+#if JUCE_IOS
+    longPressAction.startPress (e.getMouseDownPosition());
+#endif
 }
 
 void DelayNodeComponent::mouseDrag (const MouseEvent& e)
@@ -60,11 +79,19 @@ void DelayNodeComponent::mouseDrag (const MouseEvent& e)
     updateParams();
     updatePosition();
     graphView->mouseDrag (relE);
+
+#if JUCE_IOS
+    longPressAction.setDragDistance ((float) e.getDistanceFromDragStart());
+#endif
 }
 
 void DelayNodeComponent::mouseUp (const MouseEvent&)
 {
     node.endParameterChange ({ ParamTags::delayTag, ParamTags::panTag });
+
+#if JUCE_IOS
+    longPressAction.abortPress();
+#endif
 }
 
 bool DelayNodeComponent::keyPressed (const KeyPress& key)
