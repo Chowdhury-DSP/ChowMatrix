@@ -1,6 +1,7 @@
 #include "NodeDetails.h"
 #include "../MatrixView/NodeComponent.h"
 #include "NodeDetailsGUI.h"
+#include "gui/BottomBar/BottomBarLNF.h"
 
 using namespace DetailsConsts;
 
@@ -22,12 +23,25 @@ void NodeDetails::resized()
     nodeInfo.setBounds (0, buttonHeight, getWidth(), getHeight() - buttonHeight);
 }
 
-NodeDetails::Button::Button (NodeDetails& nodeDetails) : nodeDetails (nodeDetails)
+NodeDetails::Button::Button (NodeDetails& nd) : nodeDetails (nd)
 {
     setWantsKeyboardFocus (true);
 
     setName ("Node Details");
     setTooltip ("Click to select this node, alt+click to solo, press \"Delete\" to delete");
+    
+    longPressAction.longPressCallback = [=] (Point<int>) {
+        PopupMenu actionMenu;
+        actionMenu.addItem ("Solo Node", [=] { nodeDetails.setSoloed(); });
+        actionMenu.addItem ("Delete Node", [=] {
+            if (nodeDetails.getNode()->getSelected())
+                nodeDetails.getNode()->deleteNode();
+        });
+        
+        actionMenu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
+        
+        actionMenu.showMenuAsync (PopupMenu::Options());
+    };
 }
 
 void NodeDetails::Button::paint (Graphics& g)
@@ -69,6 +83,29 @@ void NodeDetails::Button::mouseDown (const MouseEvent& e)
 
     nodeDetails.setSelected();
     grabKeyboardFocus();
+    
+#if JUCE_IOS
+    longPressAction.startPress (e.getMouseDownPosition());
+#endif
+}
+
+void NodeDetails::Button::mouseDrag (const MouseEvent& e)
+{
+#if JUCE_IOS
+    longPressAction.setDragDistance (e.getDistanceFromDragStart());
+#else
+    Component::mouseDrag (e);
+#endif
+}
+
+void NodeDetails::Button::mouseUp (const MouseEvent& e)
+{
+#if JUCE_IOS
+    ignoreUnused (e);
+    longPressAction.abortPress();
+#else
+    Component::mouseUp (e);
+#endif
 }
 
 bool NodeDetails::Button::keyPressed (const KeyPress& key)

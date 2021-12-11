@@ -2,6 +2,7 @@
 
 #include "../../NodeManager.h"
 #include "../NodeInfo.h"
+#include "gui/IOSUtils/LongPressActionHelper.h"
 
 namespace DetailsConsts
 {
@@ -24,17 +25,25 @@ public:
     struct Button : Component, SettableTooltipClient
     {
         Button (NodeDetails& nodeDetails);
+        
         enum ColourIDs
         {
             nodeColour,
             selectedColour
         };
+        
         void mouseDown (const MouseEvent& e) override;
+        void mouseDrag (const MouseEvent& e) override;
+        void mouseUp (const MouseEvent& e) override;
+        
         bool keyPressed (const KeyPress& key) override;
         void paint (Graphics& g) override;
 
     private:
         NodeDetails& nodeDetails;
+        LongPressActionHelper longPressAction;
+        
+        chowdsp::SharedLNFAllocator lnfAllocator;
     };
 
 private:
