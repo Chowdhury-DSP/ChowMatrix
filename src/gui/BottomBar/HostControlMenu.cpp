@@ -1,4 +1,5 @@
 #include "HostControlMenu.h"
+#include "../IOSUtils/PopupMenuOptionsHelpers.h"
 #include "HostControlMenuComp.h"
 
 HostControlMenu::HostControlMenu (HostParamControl& controller) : controller (controller)
@@ -26,13 +27,13 @@ void HostControlMenu::mouseDown (const MouseEvent& e)
     for (size_t i = 0; i < controller.getNumAssignableParams(); ++i)
         menu.addCustomItem ((int) i + 1, std::make_unique<HostControlMenuComp> (controller, i));
 
-    auto popupOptions = PopupMenu::Options()
-                            .withPreferredPopupDirection (PopupMenu::Options::PopupDirection::upwards)
-                            .withTargetComponent (this);
+    auto popupOptions = PopupMenuOptionsHelpers::createPopupMenuOptions (this)
+                            .withPreferredPopupDirection (PopupMenu::Options::PopupDirection::upwards);
 
     menu.setLookAndFeel (&getLookAndFeel());
-    menu.showMenuAsync (popupOptions, [=] (int id) {
-        if (id > 0)
-            mouseDown (e);
-    });
+    menu.showMenuAsync (popupOptions,
+                        [=] (int id) {
+                            if (id > 0)
+                                mouseDown (e);
+                        });
 }

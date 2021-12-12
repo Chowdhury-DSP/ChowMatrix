@@ -9,11 +9,12 @@
 #endif
 
 class GraphViewport : public Viewport,
-                      private NodeManager::Listener
+                      private NodeManager::Listener,
+                      private Timer
 {
 public:
-    GraphViewport (ChowMatrix& plugin);
-    virtual ~GraphViewport();
+    explicit GraphViewport (ChowMatrix& plugin);
+    ~GraphViewport() override;
 
     void resized() override;
     void mouseDrag (const MouseEvent& e) override;
@@ -27,6 +28,7 @@ public:
 private:
     void setupHomeButton();
     void centerView();
+    void timerCallback() override;
 
     GraphView graphView;
     MatrixAurora aurora;
@@ -35,6 +37,7 @@ private:
     DrawableButton homeButton;
 
 #if JUCE_IOS
+    bool firstTouch = false;
     std::unique_ptr<TwoFingerDragToScrollListener> dragToScrollListener;
 #endif
 

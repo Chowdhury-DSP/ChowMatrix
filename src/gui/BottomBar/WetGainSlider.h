@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../IOSUtils/LongPressActionHelper.h"
+#include "../IOSUtils/PopupMenuOptionsHelpers.h"
 #include "BottomBarLNF.h"
 #include "ChowMatrix.h"
 #include "TextSliderItem.h"
@@ -18,7 +19,7 @@ public:
 
 #if JUCE_IOS
         longPressAction.longPressCallback = [=] (Point<int>) {
-            gainCompMenu.showMenuAsync (PopupMenu::Options());
+            gainCompMenu.showMenuAsync (PopupMenuOptionsHelpers::createPopupMenuOptions (this));
         };
 #endif
     }
@@ -27,7 +28,7 @@ public:
     {
         if (e.mods.isPopupMenu())
         {
-            gainCompMenu.showMenuAsync (PopupMenu::Options());
+            gainCompMenu.showMenuAsync (PopupMenuOptionsHelpers::createPopupMenuOptions (this));
             return;
         }
 

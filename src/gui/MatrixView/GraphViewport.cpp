@@ -31,11 +31,14 @@ GraphViewport::GraphViewport (ChowMatrix& plugin) : graphView (plugin, *this),
 #if JUCE_IOS
     setScrollOnDragEnabled (false);
     dragToScrollListener = std::make_unique<TwoFingerDragToScrollListener> (*this);
+    startTimer (250);
 #endif
 }
 
 GraphViewport::~GraphViewport()
 {
+    stopTimer();
+
 #if JUCE_IOS
     dragToScrollListener.reset();
 #endif
@@ -56,7 +59,23 @@ void GraphViewport::setupHomeButton()
     homeButton.setImages (offImage.get(), downImage.get(), downImage.get());
 
     addAndMakeVisible (homeButton);
-    homeButton.onClick = std::bind (&GraphViewport::centerView, this);
+    homeButton.onClick = [=] { centerView(); };
+}
+
+void GraphViewport::timerCallback()
+{
+#if JUCE_IOS
+    if (firstTouch)
+    {
+        stopTimer();
+        return;
+    }
+
+    // for some reason, the AUv3 UI opens with the GUI not centered
+    // this is a workaround that forces it to re-center every timerCallback
+    // until the first touch occurs
+    centerView();
+#endif
 }
 
 void GraphViewport::resized()
@@ -71,6 +90,10 @@ void GraphViewport::resized()
 
 void GraphViewport::mouseDrag (const MouseEvent& e)
 {
+#if JUCE_IOS
+    firstTouch = true;
+#endif
+
     autoScroll (e.x - getViewPositionX(), e.y - getViewPositionY(), scrollDistanceFromEdge, scrollSpeed);
     graphView.repaint();
 }
@@ -96,6 +119,10 @@ void GraphViewport::centerView()
 
 void GraphViewport::nodeSelected (DelayNode* selectedNode, NodeManager::ActionSource source)
 {
+#if JUCE_IOS
+    firstTouch = true;
+#endif
+
     for (auto* comp : graphView.getDelayNodeComps())
         comp->selectionChanged();
 

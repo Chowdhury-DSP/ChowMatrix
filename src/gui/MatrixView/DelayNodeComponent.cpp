@@ -1,4 +1,5 @@
 #include "DelayNodeComponent.h"
+#include "../IOSUtils/PopupMenuOptionsHelpers.h"
 #include "GraphViewItem.h"
 #include "gui/BottomBar/BottomBarLNF.h"
 
@@ -32,11 +33,10 @@ DelayNodeComponent::DelayNodeComponent (DelayNode& n, GraphView* view) : NodeCom
         actionMenu.addItem ("Solo Node", [=] { graphView->setSoloed (&node); });
         actionMenu.addItem ("Delete Node", [=] {
             if (node.getSelected())
-                node.deleteNode();
-        });
+                node.deleteNode(); });
 
         actionMenu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
-        actionMenu.showMenuAsync (PopupMenu::Options());
+        actionMenu.showMenuAsync (PopupMenuOptionsHelpers::createPopupMenuOptions (this));
     };
 #endif
 }
