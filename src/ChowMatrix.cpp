@@ -5,6 +5,7 @@
 #include "gui/BottomBar/TextSliderItem.h"
 #include "gui/BottomBar/WetGainSlider.h"
 #include "gui/DetailsView/NodeDetailsGUI.h"
+#include "gui/IOSUtils/PopupMenuOptionsHelpers.h"
 #include "gui/LookAndFeel/InsanityLNF.h"
 #include "gui/LookAndFeel/PresetsLNF.h"
 #include "gui/MatrixView/GraphViewItem.h"
@@ -160,14 +161,19 @@ AudioProcessorEditor* ChowMatrix::createEditor()
 #endif
 
     // GUI trigger functions
-    magicState.addTrigger ("flush_delays", [=] { NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->flushDelays(); }); });
+    magicState.addTrigger ("flush_delays", [=]
+                           { NodeManager::doForNodes (&inputNodes, [] (DelayNode* n)
+                                                      { n->flushDelays(); }); });
 
-    magicState.addTrigger ("randomise", [=] { NodeManager::doForNodes (&inputNodes, [] (DelayNode* n) { n->randomiseParameters(); }); });
+    magicState.addTrigger ("randomise", [=]
+                           { NodeManager::doForNodes (&inputNodes, [] (DelayNode* n)
+                                                      { n->randomiseParameters(); }); });
 
-    magicState.addTrigger ("insanity_reset", [=] { insanityControl.resetInsanityState(); });
+    magicState.addTrigger ("insanity_reset", [=]
+                           { insanityControl.resetInsanityState(); });
 
-    auto changeUIComponentsToIgnore = [=] (std::initializer_list<Identifier> ids, bool needsGraphView = false) {
-        if (auto* editor = dynamic_cast<foleys::MagicPluginEditor*> (getActiveEditor()))
+    auto changeUIComponentsToIgnore = [=] (auto* editor, std::initializer_list<Identifier> ids, bool needsGraphView = false)
+    {
         {
             graphViewPtr.reset();
 
@@ -184,15 +190,22 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     };
 
     magicState.addTrigger ("view_control",
-                           [=] {
-                               PopupMenu menu;
-                               menu.addItem ("Only show Matrix View", [=] { changeUIComponentsToIgnore ({ "NodeDetails" }); });
-                               menu.addItem ("Only show Details View", [=] { changeUIComponentsToIgnore ({ "GraphView" }, true); });
-                               menu.addItem ("Show both views", [=] { changeUIComponentsToIgnore ({}); });
+                           [=]
+                           {
+                               if (auto* editor = dynamic_cast<foleys::MagicPluginEditor*> (getActiveEditor()))
+                               {
+                                   PopupMenu menu;
+                                   menu.addItem ("Only show Matrix View", [=]
+                                                 { changeUIComponentsToIgnore (editor, { "NodeDetails" }); });
+                                   menu.addItem ("Only show Details View", [=]
+                                                 { changeUIComponentsToIgnore (editor, { "GraphView" }, true); });
+                                   menu.addItem ("Show both views", [=]
+                                                 { changeUIComponentsToIgnore (editor, {}); });
 
-                               chowdsp::SharedLNFAllocator lnfAllocator;
-                               menu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
-                               menu.showMenuAsync (PopupMenu::Options());
+                                   chowdsp::SharedLNFAllocator lnfAllocator;
+                                   menu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
+                                   menu.showMenuAsync (PopupMenuOptionsHelpers::createPopupMenuOptions (nullptr, editor));
+                               }
                            });
 
 #if ! JUCE_IOS

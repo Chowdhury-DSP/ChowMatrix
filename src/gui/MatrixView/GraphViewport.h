@@ -12,8 +12,8 @@ class GraphViewport : public Viewport,
                       private NodeManager::Listener
 {
 public:
-    GraphViewport (ChowMatrix& plugin);
-    virtual ~GraphViewport();
+    explicit GraphViewport (ChowMatrix& plugin);
+    ~GraphViewport() override;
 
     void resized() override;
     void mouseDrag (const MouseEvent& e) override;
@@ -35,6 +35,8 @@ private:
     DrawableButton homeButton;
 
 #if JUCE_IOS
+    void scrollToBottom();
+    bool firstTouch = false;
     std::unique_ptr<TwoFingerDragToScrollListener> dragToScrollListener;
 #endif
 

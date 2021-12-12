@@ -31,6 +31,7 @@ GraphViewport::GraphViewport (ChowMatrix& plugin) : graphView (plugin, *this),
 #if JUCE_IOS
     setScrollOnDragEnabled (false);
     dragToScrollListener = std::make_unique<TwoFingerDragToScrollListener> (*this);
+    scrollToBottom();
 #endif
 }
 
@@ -56,8 +57,22 @@ void GraphViewport::setupHomeButton()
     homeButton.setImages (offImage.get(), downImage.get(), downImage.get());
 
     addAndMakeVisible (homeButton);
-    homeButton.onClick = std::bind (&GraphViewport::centerView, this);
+    homeButton.onClick = [=]
+    { centerView(); };
 }
+
+#if JUCE_IOS
+void GraphViewport::scrollToBottom()
+{
+    if (firstTouch)
+        return;
+
+    Timer::callAfterDelay (250, [=]
+                           {
+        centerView();
+        scrollToBottom(); });
+}
+#endif
 
 void GraphViewport::resized()
 {
@@ -71,6 +86,10 @@ void GraphViewport::resized()
 
 void GraphViewport::mouseDrag (const MouseEvent& e)
 {
+#if JUCE_IOS
+    firstTouch = true;
+#endif
+
     autoScroll (e.x - getViewPositionX(), e.y - getViewPositionY(), scrollDistanceFromEdge, scrollSpeed);
     graphView.repaint();
 }
@@ -96,6 +115,10 @@ void GraphViewport::centerView()
 
 void GraphViewport::nodeSelected (DelayNode* selectedNode, NodeManager::ActionSource source)
 {
+#if JUCE_IOS
+    firstTouch = true;
+#endif
+
     for (auto* comp : graphView.getDelayNodeComps())
         comp->selectionChanged();
 
