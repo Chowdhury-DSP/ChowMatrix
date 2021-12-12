@@ -49,37 +49,52 @@ struct TwoFingerDragToScrollListener : private MouseListener,
 
     void mouseDrag (const MouseEvent& e) override
     {
-        if (Desktop::getInstance().getNumDraggingMouseSources() >= 2 && ! doesMouseEventComponentBlockViewportDrag (e.eventComponent))
+        if (Desktop::getInstance().getNumDraggingMouseSources() != 2 || doesMouseEventComponentBlockViewportDrag (e.eventComponent))
+            return;
+        
+        const auto* dragSource0 = Desktop::getInstance().getDraggingMouseSource (0);
+        const auto* dragSource1 = Desktop::getInstance().getDraggingMouseSource (1);
+        
+        if (dragSource0 == nullptr || dragSource1 == nullptr)
         {
-            auto totalOffset = e.getOffsetFromDragStart().toFloat();
+            // But the Desktop just told us that 2 drag sources existed... something is terribly wrong!
+            jassertfalse;
+            return;
+        }
+        
+        bool haveDragSourcesMoved = dragSource0->hasMovedSignificantlySincePressed() && dragSource1->hasMovedSignificantlySincePressed();
+        auto dragSource0Offset = dragSource0->getScreenPosition() - dragSource0->getLastMouseDownPosition();
+        auto dragSource1Offset = dragSource1->getScreenPosition() - dragSource1->getLastMouseDownPosition();
+        auto averageOffset = (dragSource0Offset + dragSource1Offset) / 2.0f;
 
-            if (! isDragging && totalOffset.getDistanceFromOrigin() > 8.0f)
-            {
-                isDragging = true;
+        if (! isDragging && haveDragSourcesMoved)
+        {
+            isDragging = true;
 
-                originalViewPos = viewport.getViewPosition();
-                offsetX.setPosition (0.0);
-                offsetX.beginDrag();
-                offsetY.setPosition (0.0);
-                offsetY.beginDrag();
-            }
+            originalViewPos = viewport.getViewPosition();
+            offsetX.setPosition (0.0);
+            offsetX.beginDrag();
+            offsetY.setPosition (0.0);
+            offsetY.beginDrag();
+        }
 
-            if (isDragging)
-            {
-                offsetX.drag (totalOffset.x);
-                offsetY.drag (totalOffset.y);
-            }
+        if (isDragging)
+        {
+            offsetX.drag (averageOffset.x);
+            offsetY.drag (averageOffset.y);
         }
     }
 
     void mouseUp (const MouseEvent&) override
     {
-        if (isGlobalMouseListener && Desktop::getInstance().getNumDraggingMouseSources() < 2)
+        if (isGlobalMouseListener && Desktop::getInstance().getNumDraggingMouseSources() != 2)
             endDragAndClearGlobalMouseListener();
     }
 
     void endDragAndClearGlobalMouseListener()
     {
+        offsetX.endDrag();
+        offsetY.endDrag();
         isDragging = false;
 
         getContentHolder().addMouseListener (this, true);
