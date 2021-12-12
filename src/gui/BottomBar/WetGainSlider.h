@@ -18,8 +18,7 @@ public:
         gainCompMenu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
 
 #if JUCE_IOS
-        longPressAction.longPressCallback = [=] (Point<int>)
-        {
+        longPressAction.longPressCallback = [=] (Point<int>) {
             gainCompMenu.showMenuAsync (PopupMenuOptionsHelpers::createPopupMenuOptions (this));
         };
 #endif

@@ -51,17 +51,17 @@ struct TwoFingerDragToScrollListener : private MouseListener,
     {
         if (Desktop::getInstance().getNumDraggingMouseSources() != 2 || doesMouseEventComponentBlockViewportDrag (e.eventComponent))
             return;
-        
+
         const auto* dragSource0 = Desktop::getInstance().getDraggingMouseSource (0);
         const auto* dragSource1 = Desktop::getInstance().getDraggingMouseSource (1);
-        
+
         if (dragSource0 == nullptr || dragSource1 == nullptr)
         {
             // But the Desktop just told us that 2 drag sources existed... something is terribly wrong!
             jassertfalse;
             return;
         }
-        
+
         bool haveDragSourcesMoved = dragSource0->hasMovedSignificantlySincePressed() && dragSource1->hasMovedSignificantlySincePressed();
         auto dragSource0Offset = dragSource0->getScreenPosition() - dragSource0->getLastMouseDownPosition();
         auto dragSource1Offset = dragSource1->getScreenPosition() - dragSource1->getLastMouseDownPosition();

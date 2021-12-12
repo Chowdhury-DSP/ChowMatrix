@@ -1,6 +1,6 @@
 #include "HostControlMenu.h"
-#include "HostControlMenuComp.h"
 #include "../IOSUtils/PopupMenuOptionsHelpers.h"
+#include "HostControlMenuComp.h"
 
 HostControlMenu::HostControlMenu (HostParamControl& controller) : controller (controller)
 {
@@ -32,8 +32,7 @@ void HostControlMenu::mouseDown (const MouseEvent& e)
 
     menu.setLookAndFeel (&getLookAndFeel());
     menu.showMenuAsync (popupOptions,
-                        [=] (int id)
-                        {
+                        [=] (int id) {
                             if (id > 0)
                                 mouseDown (e);
                         });

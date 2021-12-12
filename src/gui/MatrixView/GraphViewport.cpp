@@ -57,8 +57,7 @@ void GraphViewport::setupHomeButton()
     homeButton.setImages (offImage.get(), downImage.get(), downImage.get());
 
     addAndMakeVisible (homeButton);
-    homeButton.onClick = [=]
-    { centerView(); };
+    homeButton.onClick = [=] { centerView(); };
 }
 
 #if JUCE_IOS
@@ -67,8 +66,7 @@ void GraphViewport::scrollToBottom()
     if (firstTouch)
         return;
 
-    Timer::callAfterDelay (250, [=]
-                           {
+    Timer::callAfterDelay (250, [=] {
         centerView();
         scrollToBottom(); });
 }

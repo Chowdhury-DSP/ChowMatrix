@@ -1,8 +1,8 @@
 #include "NodeDetails.h"
+#include "../IOSUtils/PopupMenuOptionsHelpers.h"
 #include "../MatrixView/NodeComponent.h"
 #include "NodeDetailsGUI.h"
 #include "gui/BottomBar/BottomBarLNF.h"
-#include "../IOSUtils/PopupMenuOptionsHelpers.h"
 
 using namespace DetailsConsts;
 
@@ -30,13 +30,10 @@ NodeDetails::Button::Button (NodeDetails& nd) : nodeDetails (nd)
     setTooltip ("Click to select this node, alt+click to solo, press \"Delete\" to delete");
 
 #if JUCE_IOS
-    longPressAction.longPressCallback = [=] (Point<int>)
-    {
+    longPressAction.longPressCallback = [=] (Point<int>) {
         PopupMenu actionMenu;
-        actionMenu.addItem ("Solo Node", [=]
-                            { nodeDetails.setSoloed(); });
-        actionMenu.addItem ("Delete Node", [=]
-                            {
+        actionMenu.addItem ("Solo Node", [=] { nodeDetails.setSoloed(); });
+        actionMenu.addItem ("Delete Node", [=] {
             if (nodeDetails.getNode()->getSelected())
                 nodeDetails.getNode()->deleteNode(); });
 

@@ -86,8 +86,7 @@ ParamSlider::ParamSlider (DelayNode& n, Parameter* param, bool showLabel) : node
     setDoubleClickReturnValue (true, param->getDefaultValue());
 
 #if JUCE_IOS
-    longPressAction.longPressCallback = [=] (Point<int>)
-    {
+    longPressAction.longPressCallback = [=] (Point<int>) {
         auto menu = node.createParamPopupMenu (param->paramID);
         menu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
         menu.showMenuAsync (PopupMenuOptionsHelpers::createPopupMenuOptions (this));
