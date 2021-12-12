@@ -38,7 +38,7 @@ GraphViewport::GraphViewport (ChowMatrix& plugin) : graphView (plugin, *this),
 GraphViewport::~GraphViewport()
 {
     stopTimer();
-    
+
 #if JUCE_IOS
     dragToScrollListener.reset();
 #endif
