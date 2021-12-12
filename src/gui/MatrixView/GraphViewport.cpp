@@ -31,12 +31,14 @@ GraphViewport::GraphViewport (ChowMatrix& plugin) : graphView (plugin, *this),
 #if JUCE_IOS
     setScrollOnDragEnabled (false);
     dragToScrollListener = std::make_unique<TwoFingerDragToScrollListener> (*this);
-    scrollToBottom();
+    startTimer (250);
 #endif
 }
 
 GraphViewport::~GraphViewport()
 {
+    stopTimer();
+    
 #if JUCE_IOS
     dragToScrollListener.reset();
 #endif
@@ -60,17 +62,21 @@ void GraphViewport::setupHomeButton()
     homeButton.onClick = [=] { centerView(); };
 }
 
-#if JUCE_IOS
-void GraphViewport::scrollToBottom()
+void GraphViewport::timerCallback()
 {
+#if JUCE_IOS
     if (firstTouch)
+    {
+        stopTimer();
         return;
+    }
 
-    Timer::callAfterDelay (250, [=] {
-        centerView();
-        scrollToBottom(); });
-}
+    // for some reason, the AUv3 UI opens with the GUI not centered
+    // this is a workaround that forces it to re-center every timerCallback
+    // until the first touch occurs
+    centerView();
 #endif
+}
 
 void GraphViewport::resized()
 {
