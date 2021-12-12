@@ -1,4 +1,5 @@
 #include "NodeDetails.h"
+#include "../IOSUtils/PopupMenuOptionsHelpers.h"
 #include "../MatrixView/NodeComponent.h"
 #include "NodeDetailsGUI.h"
 #include "gui/BottomBar/BottomBarLNF.h"
@@ -13,9 +14,7 @@ NodeDetails::NodeDetails (DelayNode& node, NodeManager& manager) : manager (mana
     addAndMakeVisible (button);
 }
 
-NodeDetails::~NodeDetails()
-{
-}
+NodeDetails::~NodeDetails() = default;
 
 void NodeDetails::resized()
 {
@@ -36,11 +35,10 @@ NodeDetails::Button::Button (NodeDetails& nd) : nodeDetails (nd)
         actionMenu.addItem ("Solo Node", [=] { nodeDetails.setSoloed(); });
         actionMenu.addItem ("Delete Node", [=] {
             if (nodeDetails.getNode()->getSelected())
-                nodeDetails.getNode()->deleteNode();
-        });
+                nodeDetails.getNode()->deleteNode(); });
 
         actionMenu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
-        actionMenu.showMenuAsync (PopupMenu::Options());
+        actionMenu.showMenuAsync (PopupMenuOptionsHelpers::createPopupMenuOptions (this));
     };
 #endif
 }

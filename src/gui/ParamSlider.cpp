@@ -2,6 +2,7 @@
 #include "../dsp/Delay/TempoSyncUtils.h"
 #include "../dsp/DelayNode.h"
 #include "BottomBar/BottomBarLNF.h"
+#include "IOSUtils/PopupMenuOptionsHelpers.h"
 
 using namespace ParamTags;
 
@@ -88,7 +89,7 @@ ParamSlider::ParamSlider (DelayNode& n, Parameter* param, bool showLabel) : node
     longPressAction.longPressCallback = [=] (Point<int>) {
         auto menu = node.createParamPopupMenu (param->paramID);
         menu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
-        menu.showMenuAsync (PopupMenu::Options());
+        menu.showMenuAsync (PopupMenuOptionsHelpers::createPopupMenuOptions (this));
     };
 #endif
 }
@@ -176,7 +177,7 @@ void ParamSlider::mouseDown (const MouseEvent& e)
     {
         auto menu = node.createParamPopupMenu (param->paramID);
         menu.setLookAndFeel (lnfAllocator->getLookAndFeel<BottomBarLNF>());
-        menu.showMenuAsync (PopupMenu::Options());
+        menu.showMenuAsync (PopupMenuOptionsHelpers::createPopupMenuOptions (this));
 
         return;
     }
