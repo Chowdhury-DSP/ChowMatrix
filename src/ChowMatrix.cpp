@@ -6,6 +6,7 @@
 #include "gui/BottomBar/WetGainSlider.h"
 #include "gui/DetailsView/NodeDetailsGUI.h"
 #include "gui/IOSUtils/PopupMenuOptionsHelpers.h"
+#include "gui/IOSUtils/TipJar.h"
 #include "gui/LookAndFeel/InsanityLNF.h"
 #include "gui/LookAndFeel/PresetsLNF.h"
 #include "gui/MatrixView/GraphViewItem.h"
@@ -157,6 +158,8 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerLookAndFeel ("PresetsLNF", std::make_unique<PresetsLNF>());
 
 #if JUCE_IOS
+    builder->registerFactory ("TipJar", &TipJarItem::factory);
+    builder->registerLookAndFeel ("TipJarLNF", std::make_unique<TipJarLNF>());
     builder->setIdsToIgnore ({ "NodeDetails" });
 #endif
 
