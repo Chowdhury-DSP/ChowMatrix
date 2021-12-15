@@ -35,14 +35,15 @@ Name: "VST_64"; Description: "VST Plugin 64-bit"; Types: full
 Name: "VST3_32"; Description: "VST3 Plugin 32-bit"; Types: full
 Name: "VST_32"; Description: "VST Plugin 32-bit"; Types: full
 Name: "Standalone"; Description: "Standalone Plugin"; Types: full
-; Name: "AAX"; Description: "AAX Plugin"; Types: full
+Name: "AAX"; Description: "AAX Plugin"; Types: full
 
 [Files]
-Source: "../../bin/Win64/ChowMatrix.vst3"; DestDir: "{code:GetDir|VST3_64}"; Components: VST3_64; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "../../bin/Win64/ChowMatrix.dll"; DestDir: "{code:GetDir|VST_64}"; Components: VST_64; Flags: ignoreversion
-Source: "../../bin/Win32/ChowMatrix.vst3"; DestDir: "{code:GetDir|VST3_32}"; Components: VST3_32; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "../../bin/Win32/ChowMatrix.dll"; DestDir: "{code:GetDir|VST_32}"; Components: VST_32; Flags: ignoreversion
-Source: "../../bin/Win64/ChowMatrix.exe"; DestDir: "{code:GetDir|Standalone}"; Components: Standalone; Flags: ignoreversion
+Source: "../../bin/Win64/ChowMatrix.vst3"; Excludes: "*.aaxplugin"; DestDir: "{code:GetDir|VST3_64}"; Components: VST3_64; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "../../bin/Win64/ChowMatrix.dll"; Excludes: "*.vst3,*.aaxplugin"; DestDir: "{code:GetDir|VST_64}"; Components: VST_64; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "../../bin/Win32/ChowMatrix.vst3"; Excludes: "*.aaxplugin"; DestDir: "{code:GetDir|VST3_32}"; Components: VST3_32; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "../../bin/Win32/ChowMatrix.dll"; Excludes: "*.vst3,*.aaxplugin"; DestDir: "{code:GetDir|VST_32}"; Components: VST_32; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "../../bin/Win64/ChowMatrix.exe"; Excludes: "*.vst3,*.aaxplugin"; DestDir: "{code:GetDir|Standalone}"; Components: Standalone; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "../../Bin/Win64/ChowMatrix.aaxplugin"; Excludes: "*.vst3"; DestDir: "{code:GetDir|AAX}"; Components: AAX; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
