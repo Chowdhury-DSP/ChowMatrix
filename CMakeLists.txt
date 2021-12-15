@@ -7,6 +7,8 @@ add_subdirectory(modules)
 include_directories(modules)
 
 # juce_set_vst2_sdk_path(C:/SDKs/VST_SDK/VST2_SDK/)
+# juce_set_aax_sdk_path(NONE)
+
 # set default plugin formats to build
 if(IOS)
     set(JUCE_FORMATS Standalone AUv3)
@@ -20,10 +22,16 @@ if(UNIX AND NOT APPLE)
     list(APPEND JUCE_FORMATS LV2)
 endif()
 
-# Build VST2 is SDK set
+# Build VST2 if SDK target exists
 if(TARGET juce_vst2_sdk)
     message(STATUS "Building VST2 plugin format")
     list(APPEND JUCE_FORMATS VST)
+endif()
+
+# Build AAX if SDK target exists
+if(TARGET juce_aax_sdk)
+    message(STATUS "Building AAX plugin format")
+    list(APPEND JUCE_FORMATS AAX)
 endif()
 
 juce_add_plugin(ChowMatrix
@@ -32,7 +40,14 @@ juce_add_plugin(ChowMatrix
     PLUGIN_CODE spg3
     FORMATS ${JUCE_FORMATS}
     ProductName "ChowMatrix"
+
+    VST2_CATEGORY kPlugCategEffect
+    VST3_CATEGORIES Fx Delay
+    AU_MAIN_TYPE kAudioUnitType_Effect
+    AAX_CATEGORY AAX_ePlugInCategory_Delay
+
     LV2_URI https://github.com/Chowdhury-DSP/ChowMatrix
+
     ICON_BIG res/logo.png
     MICROPHONE_PERMISSION_ENABLED TRUE
     NEEDS_STORE_KIT TRUE
