@@ -43,7 +43,7 @@ Source: "../../bin/Win64/ChowMatrix.dll"; Excludes: "*.vst3,*.aaxplugin"; DestDi
 Source: "../../bin/Win32/ChowMatrix.vst3"; Excludes: "*.aaxplugin"; DestDir: "{code:GetDir|VST3_32}"; Components: VST3_32; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "../../bin/Win32/ChowMatrix.dll"; Excludes: "*.vst3,*.aaxplugin"; DestDir: "{code:GetDir|VST_32}"; Components: VST_32; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "../../bin/Win64/ChowMatrix.exe"; Excludes: "*.vst3,*.aaxplugin"; DestDir: "{code:GetDir|Standalone}"; Components: Standalone; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "../../Bin/Win64/ChowMatrix.aaxplugin"; Excludes: "*.vst3"; DestDir: "{code:GetDir|AAX}"; Components: AAX; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "../../bin/Win64/ChowMatrix.aaxplugin"; Excludes: "*.vst3"; DestDir: "{code:GetDir|AAX}"; Components: AAX; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
