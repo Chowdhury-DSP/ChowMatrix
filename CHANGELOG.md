@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## UNRELEASED
 - Added iOS/AUv3 support.
+- Added Pro Tools/AAX support.
 - Added forwarding parameters to expose node parameters to DAWs.
 - Added "Alien" delay mode.
 - Added reverse delay parameter.
