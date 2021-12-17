@@ -2,12 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## UNRELEASED
+## [1.3.0] - UNRELEASED
 - Added iOS/AUv3 support.
 - Added Pro Tools/AAX support.
 - Added forwarding parameters to expose node parameters to DAWs.
 - Added "Alien" delay mode.
-- Added reverse delay parameter.
+- Added "Reverse" delay parameter.
 - Added optional automatic gain compensation for wet signal.
 - Added lock/unlock options for parameter randomisation.
 - Fixed "hang" when bringing delay to 0 ms in "Analog" mode.
