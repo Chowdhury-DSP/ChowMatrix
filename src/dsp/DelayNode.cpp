@@ -39,7 +39,7 @@ DelayNode::DelayNode() : params (*this, nullptr, Identifier ("Parameters"), Para
 void DelayNode::setDelaySync (bool shouldBeSynced)
 {
     syncDelay = shouldBeSynced;
-    delayMs->sendValueChangedMessageToListeners (*delayMs);
+    delayMs->sendValueChangedMessageToListeners (delayMs->convertTo0to1 (*delayMs));
 }
 
 void DelayNode::cookParameters (bool force)
@@ -140,7 +140,7 @@ PopupMenu DelayNode::createParamPopupMenu (const String& paramID)
 void DelayNode::toggleLFOSync()
 {
     tempoSyncedLFO = ! tempoSyncedLFO;
-    modFreq->sendValueChangedMessageToListeners (*modFreq);
+    modFreq->sendValueChangedMessageToListeners (modFreq->convertTo0to1 (*modFreq));
 }
 
 void DelayNode::setDelayType (VariableDelay::DelayType type)
