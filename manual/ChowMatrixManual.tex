@@ -29,10 +29,11 @@
 matrixing effect. The fundamental idea of the effect is
 to create a ``tree'' of delay lines, each with it's own
 properties, such as delay-time, feedback, paning, etc.
-This flexibility allows musicians and producers to create
-a wide array of delay-based effects, from simple multi-tap
-echoes, to lush reverberant spaces.The plugin is currently
-available as a VST/VST3/AU/LV2 for Windows, Linux, and Mac.
+This flexibility allows users to create a wide array of
+delay-based effects, from simple multi-tap echoes, to
+lush reverberant spaces. The plugin is currently available
+for Windows, Linux, Mac, and iOS, in the following formats:
+VST/VST3, AU, LV2, AUv3, AAX, and Standalone.
 
 \subsection{Installation}
 To install ChowMatrix, download the \dllink{latest release},
@@ -41,6 +42,8 @@ latest builds (potentially unstable), visit the
 \href{https://chowdsp.com/nightly.html\#matrix}{Nightly Builds page}.
 Note that it is also possible to
 \href{https://github.com/Chowdhury-DSP/ChowMatrix#Building}{compile from the source code}.
+ChowMatrix for iOS can be installed from the
+\href{https://apps.apple.com/us/app/chowmatrix/id1598726146}{App Store}.
 
 \begin{figure}[ht]
     \center
@@ -78,14 +81,15 @@ architecture for a single delay node is shown in
         arrow/.style = {thick,->,>=stealth},
     }
     \node (input) {Input};
-    \node (gain) [mynode, right of=input, xshift=0.1cm] {Gain};
-    \node (sum) [draw, fill=white, circle, line width=0.8pt, right of=gain] {+};
-    \node (lpf) [mynode, right of=sum] {LPF};
-    \node (hpf) [mynode, right of=lpf] {HPF};
-    \node (diff) [mynode, right of=hpf, xshift=0.4cm] {Diffusion};
-    \node (dist) [mynode, right of=diff, xshift=0.7cm] {Distortion};
-    \node (pitch) [mynode, right of=dist, xshift=0.4cm] {Pitch};
-    \node (delay) [mynode, right of=pitch, xshift=0.1cm] {Delay};
+    \node (gain) [mynode, right of=input] {Gain};
+    \node (sum) [draw, fill=white, circle, line width=0.8pt, right of=gain, xshift=-0.2cm] {+};
+    \node (lpf) [mynode, right of=sum, xshift=-0.3cm] {LPF};
+    \node (hpf) [mynode, right of=lpf, xshift=-0.1cm] {HPF};
+    \node (diff) [mynode, right of=hpf, xshift=0.2cm] {Diffusion};
+    \node (dist) [mynode, right of=diff, xshift=0.6cm] {Distortion};
+    \node (rev) [mynode, right of=dist, xshift=0.5cm] {Reverse};
+    \node (pitch) [mynode, right of=rev, xshift=0.1cm] {Pitch};
+    \node (delay) [mynode, right of=pitch, xshift=-0.1cm] {Delay};
     \node (split) [circle, fill, inner sep=1.25pt, right of=delay, xshift=-0.5cm] {};
     \node (pan) [mynode, right of=split, xshift=-0.5cm] {Pan};
     \node (output) [right of=pan, xshift=0.25cm] {Output};
@@ -96,7 +100,8 @@ architecture for a single delay node is shown in
     \draw [arrow] (lpf) -- (hpf);
     \draw [arrow] (hpf) -- (diff);
     \draw [arrow] (diff) -- (dist);
-    \draw [arrow] (dist) -- (pitch);
+    \draw [arrow] (dist) -- (rev);
+    \draw [arrow] (rev) -- (pitch);
     \draw [arrow] (pitch) -- (delay);
     \draw [thick] (delay) -- (split);
     \draw [arrow] (split) -- (pan);
@@ -111,7 +116,7 @@ architecture for a single delay node is shown in
     \draw [arrow] (over) -- (sum);
 
     \coordinate[below of=split, yshift=0.25cm] (down);
-    \node (children) [right of=down, xshift=1.0cm] {\it To child nodes...};
+    \node (children) [right of=down, xshift=0.5cm] {\it To child nodes...};
     \draw [thick] (split) -- (down);
     \draw [arrow] (down) -- (children);
 \end{tikzpicture}
@@ -144,6 +149,11 @@ The \boldtheme{Pitch} processor re-pitches the signal up
 or down by a given number of semitones. This effect can be
 useful for obtaining interesting and creative soundscapes.
 \newline
+The \boldtheme{Reverse} processor will reverse grains of
+a given length in the delay line. Note that the length
+of the grain will be added to the apparent delay time
+of the signal.
+\newpar
 The \boldtheme{Delay} line has a length that can be
 controlled either as a ``free'' parameter, with units
 of milliseconds, or synced to the tempo of the song.
@@ -159,6 +169,7 @@ The \boldtheme{Pan} processor applies a constant-power
 panner to the mono signal processed by the delay node,
 turning it into a stereo signal that is then fed to the
 plugin output.
+\newline\newline\newline
 
 \subsubsection{Modulation}
 Each delay node also contains modulations controls for the
@@ -182,7 +193,9 @@ set to negative values to reverse the modulation.
 \subsection{Controls}
 The ChowMatrix interface is made up of four main sections:
 the ``Graph View'', ``Details View'', ``Bottom Bar''
-and ``Insanity Control''.
+and ``Insanity Control''. The three-dots button in the
+top left corner of the plugin UI can be used to control
+whether the Graph View and Details View are visible.
 
 \begin{figure}[ht]
     \center
@@ -297,6 +310,9 @@ as well as a presets menu.
 The \boldtheme{Dry/Wet} sliders control the level of the dry
 and wet signals coming out of the plugin. To use ChowMatrix as
 a ``send'', turn the Dry level all the way down to \texttt{-inf}.
+Note that by right-clicking on the Wet gain control, automatic gain
+conpensation can be enabled, which will attempt to match the levels
+of the dry and wet signals (before the Dry and Wet gains are applied).
 \newpar
 \hypertarget{goto:interp-mode}{\boldtheme{Mode}} controls
 the style of delay line used by the delay nodes. The
@@ -318,6 +334,7 @@ nodes quickly.
           delay line\footnote{For more information on BBD emulation, see
           \href{https://www.dafx.de/paper-archive/2018/papers/DAFx2018_paper_12.pdf}{Holters and Parker, 2018}.}.
     \item \boldtheme{Analog} uses a longer BBD delay line.
+    \item \boldtheme{Alien} uses a broken BBD delay line for glitchy effects.
 \end{itemize}
 %
 \boldtheme{Clear} will flush all signal from the delay nodes.
@@ -339,24 +356,25 @@ save the current state as either the A or B state.
 \newpar
 The \boldtheme{Randomise} button will randomise the parameters
 for all the delay nodes. This can be useful for quickly
-dicovering new delay node configurations.
+dicovering new delay node configurations. Note that by right-clicking
+on a parameter, you may ``lock'' parameters so that they are not
+affected by randomisation.
 \newpar
 The \boldtheme{Param Assignment Menu} shows which delay
 node parameters are assigned to global parameters that
 can be altered from the plugin host (see below).
 
-\subsection{Parameter Assignment}
-Typically, plugin parameters are exposed to the host DAW,
-to allow for things like automation, or MIDI control.
-Unfortunately, most DAWs expect a plugin's number of
-parameters to stay constant, meaning that ChowMatrix's
-delay node parameters cannot be exposed to the DAW,
-since the user could create an unlimited number of
-delay nodes.
+\subsection{Parameter Assignment / Automation}
+ChowMatrix will expose node parameters to the DAW, up to
+the 50th node. These parameters can be used to record
+automation for node parameters, or link certain parameters
+to a MIDI controller.
 \newpar
-To allow for delay node parameters to be host controlled,
-ChowMatrix contains 8 ``target'' parameters each of which
-can be mapped to any number of parameters within the plugin.
+However, if you require control over more than 50 nodes,
+or if you would like to control a certain parameter for
+all nodes simultaneously, ChowMatrix also contains 8
+``target'' parameters each of which can be mapped to any
+number of parameters within the plugin.
 \newpar
 To assign a delay node parameter to a target, right-click
 on the parameter slider, and select either ``Assign Param'',
@@ -366,7 +384,9 @@ the target for \emph{all} delay nodes.
 The ``Param Assignment Menu'' accessible from the bottom bar
 can be used to quickly view which parameters are mapped to
 which targets, and to remove unwanted mappings.
-
+\newline
+\newline
+\newline
 \subsection{Presets}
 Presets provide a quick way to achieve a specific sound
 with the plugin. ChowMatrix comes with a set of built-in
@@ -430,5 +450,8 @@ Jatin Chowdhury
     \hline
    \end{tabular}
 \end{center}
+Note than on iOS, most extended actions are available via
+context menus that will be shown when ``long-pressing'' on
+an element in the UI.
 
 \end{document}
