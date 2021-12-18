@@ -19,8 +19,11 @@ void ScreenshotGenerator::takeScreenshots (const ArgumentList& args)
     std::cout << "Generating screenshots... Saving to " << outputDir.getFullPathName() << std::endl;
 
     std::unique_ptr<AudioProcessor> plugin (createPluginFilterOfType (AudioProcessor::WrapperType::wrapperType_Standalone));
-    plugin->setCurrentProgram (3); // set to "crazy" preset
+    plugin->setCurrentProgram (2); // set to "crazy" preset
+    MessageManager::getInstance()->runDispatchLoopUntil (1000);
+
     std::unique_ptr<AudioProcessorEditor> editor (plugin->createEditorIfNeeded());
+    MessageManager::getInstance()->runDispatchLoopUntil (1000);
 
     editor->setSize (700, 700); // make editor larger
     screenshotForBounds (editor.get(), editor->getLocalBounds(), outputDir, "full_gui.png");
