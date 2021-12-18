@@ -8,10 +8,12 @@
 CHOW Matrix is a delay effect, made up of an infinitely growable
 tree of delay lines, each with individual controls for feedback,
 panning, distortion, and more. ChowMatrix is available as a VST,
-VST3, AU, LV2, and Standalone Application.
+VST3, AU, LV2, AUv3, AAX, and Standalone Application.
+
 
 ### Quick Links
 - [Latest Release](https://chowdsp.com/products.html#matrix)
+- [ChowMatrix for iOS](https://apps.apple.com/us/app/chowmatrix/id1598726146)
 - [Nightly Builds](https://chowdsp.com/nightly.html#matrix)
 - [User Manual](https://ccrma.stanford.edu/~jatin/chowdsp/Products/ChowMatrixManual.pdf)
 
@@ -44,6 +46,7 @@ $ cmake -Bbuild
 $ cmake --build build --config Release
 ```
 The built plugins will be located in `ChowMatrix/build/ChowMatrix_artefacts/`
+
 
 ## Credits
 
