@@ -100,5 +100,6 @@ void NodeParamControl::setCurrentPresetDirty()
     if (presetManager == nullptr)
         return;
 
-    return presetManager->setIsDirty (true);
+    // Getting a crash here in some DAWs, so let's comment this out for now!
+    // presetManager->setIsDirty (true);
 }
