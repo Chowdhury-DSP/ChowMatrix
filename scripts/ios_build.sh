@@ -17,11 +17,14 @@ echo "Running CMake configuration..."
 if [ "$2" == "clean" ]; then rm -Rf build-ios; fi
 
 # generate new builds
+if [ "$1" == "configure" ]; then
 cmake -Bbuild-ios -GXcode -DCMAKE_SYSTEM_NAME=iOS \
     -DCMAKE_OSX_DEPLOYMENT_TARGET=11.4 \
     -DCMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM="$TEAM_ID" \
     -DCMAKE_XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY="1,2" \
-    -DCMAKE_XCODE_ATTRIBUTE_ENABLE_BITCODE="NO"
+    -DCMAKE_XCODE_ATTRIBUTE_ENABLE_BITCODE="NO" \
+    -DCMAKE_XCODE_ATTRIBUTE_ENABLE_IN_APP_PURCHASE="YES"
+fi
 
 if [ "$1" == "build" ]; then
 xcodebuild -project build-ios/ChowMatrix.xcodeproj \
