@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.3.0] - UNRELEASED
+## [1.3.0] 2021-12-21
 - Added iOS/AUv3 support.
 - Added Pro Tools/AAX support.
 - Added forwarding parameters to expose node parameters to DAWs.
