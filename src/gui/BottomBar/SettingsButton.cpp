@@ -3,7 +3,7 @@
 
 namespace
 {
-const Colour onColour = Colour (0xFFEAA92C);
+const Colour onColour = Colour (0xFF21CCA5);
 const Colour offColour = Colours::white;
 } // namespace
 
