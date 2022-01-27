@@ -4,7 +4,7 @@
 
 HostControlMenu::HostControlMenu (HostParamControl& controller) : controller (controller)
 {
-    cog = Drawable::createFromImageData (BinaryData::cogsolid_svg, BinaryData::cogsolid_svgSize);
+    cog = Drawable::createFromImageData (BinaryData::barssolid_svg, BinaryData::barssolid_svgSize);
     cog->replaceColour (Colours::black, Colours::white);
 
     setTooltip ("Lists which parameters are currently assigned to targets");
@@ -18,7 +18,7 @@ void HostControlMenu::paint (Graphics& g)
     bounds.reduce (6.0f, 6.0f);
 
     auto placement = RectanglePlacement (RectanglePlacement::stretchToFit);
-    cog->drawWithin (g, bounds, placement, 1.0f);
+    cog->drawWithin (g, bounds.reduced (2.5f), placement, 1.0f);
 }
 
 void HostControlMenu::mouseDown (const MouseEvent& e)

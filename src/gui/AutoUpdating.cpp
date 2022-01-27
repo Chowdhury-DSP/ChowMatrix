@@ -132,11 +132,11 @@ bool AutoUpdater::runAutoUpdateCheck()
     if (latestVersion <= newVersion) // you're up to date!
         return false;
 
-    String updateVersion = getUpdateFileVersion (updateFile);
+    chowdsp::VersionUtils::Version updateVersion { getUpdateFileVersion (updateFile) };
     bool lastYesNo = getUpdateFileYesNo (updateFile);
 
     // you've already said you don't want to update to this version
-    if ((updateVersion == latestVersion) && (lastYesNo == false))
+    if ((updateVersion == latestVersion) && ! lastYesNo)
         return false;
 
     newVersion = latestVersion;

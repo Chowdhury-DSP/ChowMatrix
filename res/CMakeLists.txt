@@ -6,6 +6,7 @@ juce_add_binary_data(BinaryData SOURCES
     Panic.png
     home.svg
     undo-solid.png
+    bars-solid.svg
     cog-solid.svg
     LeftArrow.svg
     RightArrow.svg
