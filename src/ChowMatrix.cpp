@@ -3,6 +3,7 @@
 #include "gui/BottomBar/BottomBarLNF.h"
 #include "gui/BottomBar/HostControlMenu.h"
 #include "gui/BottomBar/TextSliderItem.h"
+#include "gui/BottomBar/SettingsButton.h"
 #include "gui/BottomBar/WetGainSlider.h"
 #include "gui/DetailsView/NodeDetailsGUI.h"
 #include "gui/IOSUtils/PopupMenuOptionsHelpers.h"
@@ -22,6 +23,8 @@ const Identifier pluginStateTag = "ChowMatrix_State";
 
 constexpr double gainFadeTime = 0.05;
 constexpr float negInfDB = -60.0f;
+
+const String settingsFilePath = "ChowdhuryDSP/ChowMatrix/.plugin_settings.json";
 } // namespace
 
 ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
@@ -31,6 +34,8 @@ ChowMatrix::ChowMatrix() : insanityControl (vts, &inputNodes),
                            nodeParamControl (vts, &inputNodes, presetManager),
                            stateManager (vts, hostParamControl, inputNodes)
 {
+    pluginSettings->initialise (settingsFilePath);
+
     manager.initialise (&inputNodes);
 
     dryParamDB = vts.getRawParameterValue (dryTag);
@@ -153,6 +158,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     builder->registerFactory ("PresetComp", &chowdsp::PresetsItem<ChowMatrix>::factory);
     builder->registerFactory ("ABComp", &ABCompItem::factory);
     builder->registerFactory ("HostControlMenu", &HostControlMenuItem::factory);
+    builder->registerFactory ("SettingsButton", &SettingsButtonItem::factory);
     builder->registerLookAndFeel ("InsanityLNF", std::make_unique<InsanityLNF>());
     builder->registerLookAndFeel ("BottomBarLNF", std::make_unique<BottomBarLNF>());
     builder->registerLookAndFeel ("PresetsLNF", std::make_unique<PresetsLNF>());
@@ -213,6 +219,8 @@ AudioProcessorEditor* ChowMatrix::createEditor()
 
     // we need to set resize limits for StandalonePluginHolder
     editor->setResizeLimits (20, 20, 2000, 2000);
+
+    openGLHelper.setComponent (editor);
 
     return editor;
 }

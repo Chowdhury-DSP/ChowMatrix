@@ -44,8 +44,11 @@ public:
     StateManager& getStateManager() { return stateManager; }
     HostParamControl& getHostControl() { return hostParamControl; }
     AudioProcessorValueTreeState& getVTS() { return vts; }
+    auto& getOpenGLHelper() { return openGLHelper; }
 
 private:
+    chowdsp::SharedPluginSettings pluginSettings;
+
     std::array<InputNode, 2> inputNodes;
     NodeManager manager;
 
@@ -71,6 +74,8 @@ private:
     SharedResourcePointer<DelayStore> delayStore;
 
     StateManager stateManager;
+
+    chowdsp::OpenGLHelper openGLHelper;
 
 #if CHOWDSP_AUTO_UPDATE
     AutoUpdater updater;
