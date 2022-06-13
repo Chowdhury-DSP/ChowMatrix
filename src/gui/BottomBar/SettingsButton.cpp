@@ -8,8 +8,8 @@ const Colour offColour = Colours::white;
 } // namespace
 
 SettingsButton::SettingsButton (const ChowMatrix& processor, chowdsp::OpenGLHelper* oglHelper) : DrawableButton ("Settings", DrawableButton::ImageFitted),
-                                                                                                     proc (processor),
-                                                                                                     openGLHelper (oglHelper)
+                                                                                                 proc (processor),
+                                                                                                 openGLHelper (oglHelper)
 {
     Logger::writeToLog ("Checking OpenGL availability...");
     const auto shouldUseOpenGLByDefault = openGLHelper != nullptr && openGLHelper->isOpenGLAvailable();
