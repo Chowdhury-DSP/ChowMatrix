@@ -56,6 +56,14 @@ juce_add_plugin(ChowMatrix
     IPAD_SCREEN_ORIENTATIONS UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
 )
 
+if(NOT IOS)
+    clap_juce_extensions_plugin(
+        TARGET ChowMatrix
+        CLAP_ID "org.chowdsp.ChowMatrix"
+        CLAP_FEATURES audio-effect delay
+    )
+endif()
+
 # create JUCE header
 juce_generate_juce_header(ChowMatrix)
 

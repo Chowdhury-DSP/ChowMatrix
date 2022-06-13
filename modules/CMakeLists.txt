@@ -1,13 +1,13 @@
 add_subdirectory(JUCE)
-include(cmake/SubprojectVersion.cmake)
+add_subdirectory(chowdsp_utils)
+juce_add_modules(foleys_gui_magic)
+add_subdirectory(clap-juce-extensions EXCLUDE_FROM_ALL)
+add_subdirectory(polylogarithm)
+
 subproject_version(JUCE juce_version)
 message(STATUS "VERSION for JUCE: ${juce_version}")
-
-juce_add_modules(foleys_gui_magic)
-juce_add_modules(chowdsp_utils/modules/chowdsp_dsp)
-juce_add_modules(chowdsp_utils/modules/chowdsp_gui)
-juce_add_modules(chowdsp_utils/modules/chowdsp_plugin_utils)
-add_subdirectory(polylogarithm)
+subproject_version(chowdsp_utils chowdsp_version)
+message(STATUS "VERSION for chowdsp_utils: ${chowdsp_version}")
 
 include(cmake/WarningFlags.cmake)
 add_library(juce_plugin_modules STATIC)
@@ -18,15 +18,19 @@ target_link_libraries(juce_plugin_modules
         juce::juce_audio_plugin_client
         juce::juce_dsp
         foleys_gui_magic
-        chowdsp_dsp
-        chowdsp_gui
+        chowdsp_dsp_utils
+        chowdsp_foleys
+        chowdsp_plugin_base
         chowdsp_plugin_utils
+        chowdsp_presets
         polylogarithm
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         warning_flags
 )
+
+add_diagnostic_info(juce_plugin_modules)
 
 target_compile_definitions(juce_plugin_modules
     PUBLIC

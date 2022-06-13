@@ -80,9 +80,6 @@ void DelayProc::process (const ProcessContext& context)
                 outputSamples[i] = processSample (inputSamples[i], channel);
         }
     }
-
-    procs.get<lpfIdx>().snapToZero();
-    procs.get<hpfIdx>().snapToZero();
 }
 
 template <typename SampleType>
@@ -106,8 +103,6 @@ inline SampleType DelayProc::processSampleSmooth (SampleType x, size_t ch)
     state[ch] = y * feedback.getNextValue(); // save feedback state
     return y;
 }
-
-using IIRCoefs = chowdsp::IIR::Coefficients<float, 1>;
 
 void DelayProc::setParameters (const Parameters& params, bool force)
 {
@@ -138,8 +133,8 @@ void DelayProc::setParameters (const Parameters& params, bool force)
         feedback.setTargetValue (fbVal);
     }
 
-    procs.get<lpfIdx>().coefficients = IIRCoefs::makeFirstOrderLowPass ((double) fs, params.lpfFreq);
-    procs.get<hpfIdx>().coefficients = IIRCoefs::makeFirstOrderHighPass ((double) fs, params.hpfFreq);
+    procs.get<lpfIdx>().calcCoefs (params.lpfFreq, fs);
+    procs.get<hpfIdx>().calcCoefs (params.hpfFreq, fs);
     procs.get<diffusionIdx>().setDepth (params.diffAmt, force);
     procs.get<distortionIdx>().setGain (19.5f * std::pow (params.distortion, 2.0f) + 0.5f);
     procs.get<pitchIdx>().setPitchSemitones (params.pitchSt, force);

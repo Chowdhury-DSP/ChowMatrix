@@ -77,8 +77,8 @@ private:
     };
 
     MyProcessorChain<
-        chowdsp::IIR::Filter<float, 1>,
-        chowdsp::IIR::Filter<float, 1>,
+        chowdsp::FirstOrderLPF<float>,
+        chowdsp::FirstOrderHPF<float>,
         Diffusion,
         Distortion,
         Reverser,
