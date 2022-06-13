@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [UNRELEASED]
+- Added support for the CLAP plugin format.
+- Improved the model used for Analog and Lo-Fi delay modes.
+
 ## [1.3.0] 2021-12-21
 - Added iOS/AUv3 support.
 - Added Pro Tools/AAX support.

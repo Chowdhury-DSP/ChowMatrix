@@ -149,8 +149,12 @@ void ChowMatrix::processAudioBlock (AudioBuffer<float>& buffer)
 
 AudioProcessorEditor* ChowMatrix::createEditor()
 {
+    if (openGLHelper == nullptr)
+        openGLHelper = std::make_unique<chowdsp::OpenGLHelper>();
+
     // Register GUI items for Foleys GUI Magic
     auto builder = chowdsp::createGUIBuilder (magicState);
+    builder->registerFactory ("ChowMatrixInfoComp", &chowdsp::InfoItem<ChowMatrix>::factory);
     builder->registerFactory ("GraphView", &GraphViewItem::factory);
     builder->registerFactory ("NodeDetails", &NodeDetailsItem::factory);
     builder->registerFactory ("TextSlider", &TextSliderItem::factory);
@@ -220,7 +224,7 @@ AudioProcessorEditor* ChowMatrix::createEditor()
     // we need to set resize limits for StandalonePluginHolder
     editor->setResizeLimits (20, 20, 2000, 2000);
 
-    openGLHelper.setComponent (editor);
+    openGLHelper->setComponent (editor);
 
     return editor;
 }

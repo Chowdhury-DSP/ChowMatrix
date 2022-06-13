@@ -24,7 +24,6 @@ on:
 
 jobs:
   build_and_test:
-    if: contains(toJson(github.event.commits), '***NO_CI***') == false && contains(toJson(github.event.commits), '[ci skip]') == false && contains(toJson(github.event.commits), '[skip ci]') == false
     name: Test ChowMatrix on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -34,7 +33,7 @@ jobs:
           - os: ubuntu-latest
             cmake_args: "-DBUILD_HEADLESS=ON"
             build_args: ""
-          - os: windows-latest
+          - os: windows-2019
             cmake_args: "-DRUN_PLUGINVAL=ON"
             build_args: "--target pluginval-all"
           - os: macos-latest
@@ -56,7 +55,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-        submodules: true
+        submodules: recursive
 
     - name: Configure
       env:
