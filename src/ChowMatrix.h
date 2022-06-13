@@ -44,7 +44,7 @@ public:
     StateManager& getStateManager() { return stateManager; }
     HostParamControl& getHostControl() { return hostParamControl; }
     AudioProcessorValueTreeState& getVTS() { return vts; }
-    auto& getOpenGLHelper() { return openGLHelper; }
+    auto* getOpenGLHelper() { return openGLHelper.get(); }
 
 private:
     chowdsp::SharedPluginSettings pluginSettings;
@@ -75,7 +75,7 @@ private:
 
     StateManager stateManager;
 
-    chowdsp::OpenGLHelper openGLHelper;
+    std::unique_ptr<chowdsp::OpenGLHelper> openGLHelper;
 
 #if CHOWDSP_AUTO_UPDATE
     AutoUpdater updater;
